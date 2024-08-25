@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "magical-scepter",
+	"version": "${version}",
+	"name": "Magical Scepter",
+	"description": "Fabric Minecraft mod that adds a magical scepter",
+	"authors": [
+		"pistonpoek"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": "https://github.com/pistonpoek/magical-scepter"
+	},
+	"license": "CC BY-NC 4.0",
+	"icon": "assets/magical-scepter/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.pistonpoek.scepter.MagicalScepter"
+		],
+		"client": [
+			"net.pistonpoek.scepter.MagicalScepterClient"
+		],
+		"fabric-datagen": [
+			"net.pistonpoek.scepter.MagicalScepterDataGenerator"
+		]
+	},
+	"mixins": [
+		"magical-scepter.mixins.json",
+		{
+			"config": "magical-scepter.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.2",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
