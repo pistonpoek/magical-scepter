@@ -11,7 +11,7 @@
 		"homepage": "",
 		"sources": "https://github.com/pistonpoek/magical-scepter"
 	},
-	"license": "CC BY-NC 4.0",
+	"license": "",
 	"icon": "assets/magical-scepter/icon.png",
 	"environment": "*",
 	"entrypoints": {
