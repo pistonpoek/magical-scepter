@@ -16,13 +16,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.pistonpoek.scepter.MagicalScepter"
+			"net.pistonpoek.magical_scepter.MagicalScepter"
 		],
 		"client": [
-			"net.pistonpoek.scepter.MagicalScepterClient"
+			"net.pistonpoek.magical_scepter.MagicalScepterClient"
 		],
 		"fabric-datagen": [
-			"net.pistonpoek.scepter.MagicalScepterDataGenerator"
+			"net.pistonpoek.magical_scepter.MagicalScepterDataGenerator"
 		]
 	},
 	"mixins": [

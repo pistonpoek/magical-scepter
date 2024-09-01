@@ -1,0 +1,15 @@
+{
+  "effect.magical-scepter.stability" : "Stability",
+  "item.magical-scepter.scepter" : "Scepter",
+  "item.magical-scepter.empty_scepter" : "Scepter",
+  "item.magical-scepter.scepter.spell.magical" : "Magical Scepter",
+  "item.magical-scepter.scepter.spell.blaze" : "Blaze Scepter",
+  "item.magical-scepter.scepter.spell.breeze" : "Breeze Scepter",
+  "item.magical-scepter.scepter.spell.dragon" : "Dragon Scepter",
+  "item.magical-scepter.scepter.spell.evoker" : "Evoker Scepter",
+  "item.magical-scepter.scepter.spell.ghast" : "Ghast Scepter",
+  "item.magical-scepter.scepter.spell.guardian" : "Guardian Scepter",
+  "item.magical-scepter.scepter.spell.shulker" : "Shulker Scepter",
+  "item.magical-scepter.scepter.spell.warden" : "Warden Scepter",
+  "item.magical-scepter.scepter.spell.wither" : "Wither Scepter"
+}
