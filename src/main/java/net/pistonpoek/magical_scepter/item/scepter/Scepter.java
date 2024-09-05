@@ -5,14 +5,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.potion.Potion;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.pistonpoek.magical_scepter.ModRegistries;
 import net.pistonpoek.magical_scepter.ModRegistryKeys;
-import net.pistonpoek.magical_scepter.item.scepter.infusions.ScepterInfusion;
+import net.pistonpoek.magical_scepter.item.scepter.infusion.ScepterInfusion;
 import net.pistonpoek.magical_scepter.item.scepter.spell.ScepterSpell;
 import org.jetbrains.annotations.Nullable;
 

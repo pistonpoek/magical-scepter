@@ -1,4 +1,4 @@
-package net.pistonpoek.magical_scepter.item.scepter.infusions;
+package net.pistonpoek.magical_scepter.item.scepter.infusion;
 
 public abstract class WrittenScepter implements ScepterInfusion {
     @Override

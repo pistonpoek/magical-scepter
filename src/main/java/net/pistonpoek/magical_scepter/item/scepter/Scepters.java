@@ -3,7 +3,7 @@ package net.pistonpoek.magical_scepter.item.scepter;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
-import net.pistonpoek.magical_scepter.item.scepter.infusions.ScepterInfusions;
+import net.pistonpoek.magical_scepter.item.scepter.infusion.ScepterInfusions;
 import net.pistonpoek.magical_scepter.item.scepter.spell.ScepterSpells;
 import net.pistonpoek.magical_scepter.util.ModIdentifier;
 
