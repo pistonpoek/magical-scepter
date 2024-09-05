@@ -1,4 +1,4 @@
-package net.pistonpoek.magical_scepter.item.scepter.spell.projectiles;
+package net.pistonpoek.magical_scepter.item.scepter.spell.projectile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

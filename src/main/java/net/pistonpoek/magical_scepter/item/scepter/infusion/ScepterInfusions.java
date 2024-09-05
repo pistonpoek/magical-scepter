@@ -1,4 +1,4 @@
-package net.pistonpoek.magical_scepter.item.scepter.infusions;
+package net.pistonpoek.magical_scepter.item.scepter.infusion;
 
 import net.minecraft.entity.EntityType;
 

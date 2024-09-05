@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Vec3d;
-import net.pistonpoek.magical_scepter.item.scepter.spell.projectiles.ScepterFireballEntity;
+import net.pistonpoek.magical_scepter.item.scepter.spell.projectile.ScepterFireballEntity;
 
 public class GhastScepterSpell extends InstantScepterSpell {
     public GhastScepterSpell(int experienceCost, int castCooldown) {

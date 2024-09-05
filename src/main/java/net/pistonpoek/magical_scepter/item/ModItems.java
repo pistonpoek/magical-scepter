@@ -16,11 +16,12 @@ import net.pistonpoek.magical_scepter.util.ModIdentifier;
 import java.util.List;
 
 public class ModItems {
-    public static final Item SCEPTER = registerItem("scepter",
-            new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)
-                    .component(ModDataComponentTypes.SCEPTER, Scepters.MAGICAL)));
     public static final Item EMPTY_SCEPTER = registerItem("empty_scepter",
             new Item(new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
+    public static final Item SCEPTER = registerItem("scepter",
+            new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)
+                    .component(ModDataComponentTypes.SCEPTER, Scepters.MAGICAL)
+                    .component(ModDataComponentTypes.INFUSABLE, true)));
 
     // Trident max damage : 250
 

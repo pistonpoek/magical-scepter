@@ -3,10 +3,13 @@
   "category": "equipment",
   "ingredients": [
     {
-      "item": "magical-scepter:empty_scepter"
+      "item": "minecraft:brown_mushroom"
     },
     {
-      "item": "minecraft:mushroom_stew"
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "magical-scepter:empty_scepter"
     },
     {
       "item": "minecraft:lapis_lazuli"

@@ -10,7 +10,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.pistonpoek.magical_scepter.item.ModItems;
-import net.pistonpoek.magical_scepter.util.EquipmentSlot;
 
 import static net.pistonpoek.magical_scepter.item.scepter.ScepterUtil.getScepter;
 
@@ -34,45 +33,48 @@ public class ScepterItem extends Item {
             user.getItemCooldownManager().set(this, scepter.getSpellCooldown());
         }
 
+        user.incrementStat(Stats.USED.getOrCreateStat(this));
+
         scepter.setCastingSpell(!user.isSneaking());
         if (!world.isClient()) {
             scepter.castSpell(user);
-            itemStack.damage(1, ModItems.EMPTY_SCEPTER, user, EquipmentSlot.fromHand(hand));
+            ItemStack damagedItemStack = itemStack.damage(1, ModItems.EMPTY_SCEPTER, user, LivingEntity.getSlotForHand(hand));
+            return TypedActionResult.success(damagedItemStack, false);
         } else {
-            if (scepter.isInstantSpell()) {
-                scepter.displaySpell(user, 0);
-            }
+            scepter.displaySpell(user, 0);
         }
-
-        if (scepter.isInstantSpell()) {
-            return TypedActionResult.success(itemStack, world.isClient());
-        } else {
+        if (!scepter.isInstantSpell()) {
             user.setCurrentHand(hand);
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
-            return TypedActionResult.fail(itemStack);
         }
+        return TypedActionResult.pass(itemStack);
     }
 
     @Override
-    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+    public void usageTick(World world, LivingEntity player, ItemStack stack, int remainingUseTicks) {
         Scepter scepter = getScepter(stack);
         if (!world.isClient()) {
-            scepter.updateSpell(user, MAX_SPELL_TIME - remainingUseTicks);
+            scepter.updateSpell(player, MAX_SPELL_TIME - remainingUseTicks);
         } else {
-            scepter.displaySpell(user, MAX_SPELL_TIME - remainingUseTicks);
+            scepter.displaySpell(player, MAX_SPELL_TIME - remainingUseTicks);
         }
     }
 
     @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        return super.postHit(stack, target, attacker);
+
+    }
+
+    @Override
+    public void onStoppedUsing(ItemStack stack, World world, LivingEntity player, int remainingUseTicks) {
         if (!world.isClient()) {
             Scepter scepter = getScepter(stack);
-            scepter.endSpell(user, MAX_SPELL_TIME - remainingUseTicks);
+            scepter.endSpell(player, MAX_SPELL_TIME - remainingUseTicks);
         }
     }
 
     @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
+    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity player) {
         return stack;
     }
 
@@ -82,7 +84,7 @@ public class ScepterItem extends Item {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
+    public int getMaxUseTime(ItemStack stack, LivingEntity player) {
         return MAX_SPELL_TIME;
     }
 

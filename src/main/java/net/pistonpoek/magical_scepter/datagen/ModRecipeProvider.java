@@ -21,7 +21,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     @Override
     public void generate(RecipeExporter exporter) {
         ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.SCEPTER)
-                .input(ModItems.EMPTY_SCEPTER).input(Items.MUSHROOM_STEW).input(Items.LAPIS_LAZULI)
+                .input(Items.BROWN_MUSHROOM).input(Items.RED_MUSHROOM).input(ModItems.EMPTY_SCEPTER).input(Items.LAPIS_LAZULI)
                 .criterion(FabricRecipeProvider.hasItem(ModItems.EMPTY_SCEPTER),
                 FabricRecipeProvider.conditionsFromItem(ModItems.EMPTY_SCEPTER)).offerTo(exporter);
     }

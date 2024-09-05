@@ -1,5 +1,6 @@
 package net.pistonpoek.magical_scepter;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -9,7 +10,12 @@ import net.pistonpoek.magical_scepter.util.ModIdentifier;
 
 import java.util.function.UnaryOperator;
 
+//https://docs.fabricmc.net/develop/items/custom-data-components
 public class ModDataComponentTypes {
+    public static final ComponentType<Boolean> INFUSABLE = register(
+            "infusable", builder -> builder.codec(Codec.BOOL).cache()
+    );
+
     public static final ComponentType<RegistryEntry<Scepter>> SCEPTER = register(
             "scepter_contents", builder -> builder.codec(Scepter.CODEC).packetCodec(Scepter.PACKET_CODEC).cache()
     );
