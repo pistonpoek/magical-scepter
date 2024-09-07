@@ -1,0 +1,16 @@
+{
+  "color": 12438015,
+  "id": "breeze",
+  "infusable": false,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:breeze"
+        }
+      }
+    }
+  ],
+  "sound": "minecraft:entity.breeze.shoot"
+}

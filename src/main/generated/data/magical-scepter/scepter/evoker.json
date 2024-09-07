@@ -1,0 +1,19 @@
+{
+  "color": 9804699,
+  "id": "evoker",
+  "infusable": false,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "direct_entity": {
+          "type": "minecraft:evoker_fangs"
+        },
+        "source_entity": {
+          "type": "minecraft:evoker"
+        }
+      }
+    }
+  ],
+  "sound": "minecraft:entity.evoker.cast_spell"
+}

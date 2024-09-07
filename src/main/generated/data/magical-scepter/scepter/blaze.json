@@ -1,0 +1,16 @@
+{
+  "color": 16750848,
+  "id": "blaze",
+  "infusable": false,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:blaze"
+        }
+      }
+    }
+  ],
+  "sound": "minecraft:entity.blaze.shoot"
+}
