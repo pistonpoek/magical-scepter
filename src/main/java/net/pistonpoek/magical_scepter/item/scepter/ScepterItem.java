@@ -9,9 +9,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import net.pistonpoek.magical_scepter.ModRegistries;
 import net.pistonpoek.magical_scepter.item.ModItems;
 
-import static net.pistonpoek.magical_scepter.item.scepter.ScepterUtil.getScepter;
+import static net.pistonpoek.magical_scepter.item.scepter.ScepterHelper.getScepter;
 
 public class ScepterItem extends Item {
     public final static int MAX_SPELL_TIME = 100;
@@ -24,26 +25,26 @@ public class ScepterItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         Scepter scepter = getScepter(itemStack);
         if (!user.getAbilities().creativeMode) {
-            if (user.totalExperience < scepter.getExperienceCost()) {
+            if (user.totalExperience < scepter.getSpell().experienceCost()) {
                 return TypedActionResult.fail(itemStack);
             }
 
-            user.addExperience(-scepter.getExperienceCost());
-            user.addScore(scepter.getExperienceCost()); // Compensating for lost score in adding experience cost.
-            user.getItemCooldownManager().set(this, scepter.getSpellCooldown());
+            user.addExperience(-scepter.getSpell().experienceCost());
+            user.addScore(scepter.getSpell().experienceCost()); // Compensating for lost score in adding experience cost.
+            user.getItemCooldownManager().set(this, scepter.getSpell().cooldown());
         }
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
-        scepter.setCastingSpell(!user.isSneaking());
+        //scepter.setCastingSpell(!user.isSneaking());
         if (!world.isClient()) {
-            scepter.castSpell(user);
+            scepter.getSpell().castSpell(user);
             ItemStack damagedItemStack = itemStack.damage(1, ModItems.EMPTY_SCEPTER, user, LivingEntity.getSlotForHand(hand));
             return TypedActionResult.success(damagedItemStack, false);
         } else {
-            scepter.displaySpell(user, 0);
+            scepter.getSpell().displaySpell(user, 0);
         }
-        if (!scepter.isInstantSpell()) {
+        if (!scepter.getSpell().isInstant()) {
             user.setCurrentHand(hand);
         }
         return TypedActionResult.pass(itemStack);
@@ -53,9 +54,9 @@ public class ScepterItem extends Item {
     public void usageTick(World world, LivingEntity player, ItemStack stack, int remainingUseTicks) {
         Scepter scepter = getScepter(stack);
         if (!world.isClient()) {
-            scepter.updateSpell(player, MAX_SPELL_TIME - remainingUseTicks);
+            scepter.getSpell().updateSpell(player, MAX_SPELL_TIME - remainingUseTicks);
         } else {
-            scepter.displaySpell(player, MAX_SPELL_TIME - remainingUseTicks);
+            scepter.getSpell().displaySpell(player, MAX_SPELL_TIME - remainingUseTicks);
         }
     }
 
@@ -69,7 +70,7 @@ public class ScepterItem extends Item {
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity player, int remainingUseTicks) {
         if (!world.isClient()) {
             Scepter scepter = getScepter(stack);
-            scepter.endSpell(player, MAX_SPELL_TIME - remainingUseTicks);
+            scepter.getSpell().endSpell(player, MAX_SPELL_TIME - remainingUseTicks);
         }
     }
 
@@ -90,7 +91,7 @@ public class ScepterItem extends Item {
 
     @Override
     public String getTranslationKey(ItemStack stack) {
-        return getScepter(stack).finishTranslationKey(this.getTranslationKey() + ".spell.");
+        return this.getTranslationKey() + "." + getScepter(stack).getId();
     }
 
 }

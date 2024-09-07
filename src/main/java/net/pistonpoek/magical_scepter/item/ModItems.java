@@ -19,9 +19,7 @@ public class ModItems {
     public static final Item EMPTY_SCEPTER = registerItem("empty_scepter",
             new Item(new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
     public static final Item SCEPTER = registerItem("scepter",
-            new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)
-                    .component(ModDataComponentTypes.SCEPTER, Scepters.MAGICAL)
-                    .component(ModDataComponentTypes.INFUSABLE, true)));
+            new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)));
 
     // Trident max damage : 250
 
@@ -33,8 +31,8 @@ public class ModItems {
 
     // See ItemGroups.java for how Potions and alike add the items to the entries.
     private static void addScepters(FabricItemGroupEntries entries, RegistryWrapper<Scepter> registryWrapper, Item item, ItemGroup.StackVisibility visibility) {
-        registryWrapper.streamEntries().filter(entry -> !entry.matches(Scepters.MAGICAL))
-                .map(entry -> ScepterUtil.setScepter(new ItemStack(item), entry))
+        registryWrapper.streamEntries().filter(entry -> !ScepterHelper.createScepter(entry).equals(SCEPTER.getDefaultStack()))
+                .map(ScepterHelper::createScepter)
                 .forEach(stack -> entries.addAfter((ItemConvertible) SCEPTER, List.of((ItemStack) stack), visibility));
     }
 

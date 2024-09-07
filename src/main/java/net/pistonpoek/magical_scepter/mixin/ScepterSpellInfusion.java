@@ -1,15 +1,25 @@
 package net.pistonpoek.magical_scepter.mixin;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Attackable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import net.pistonpoek.magical_scepter.ModRegistryKeys;
 import net.pistonpoek.magical_scepter.item.scepter.Scepter;
+import net.pistonpoek.magical_scepter.item.scepter.ScepterHelper;
 import net.pistonpoek.magical_scepter.item.scepter.ScepterUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,6 +29,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import static net.pistonpoek.magical_scepter.item.scepter.ScepterHelper.getScepterRegistry;
 
 @Mixin(LivingEntity.class)
 public abstract class ScepterSpellInfusion
@@ -46,10 +58,10 @@ public abstract class ScepterSpellInfusion
     /***
      * Try to infuse a scepter for the living entity.
      *
-     * @param source Damage source to potentially infuse the scepter with.
+     * @param damageSource Damage source to potentially infuse the scepter with.
      * @return Truth assignment, if scepter is infused.
      */
-    private boolean tryInfuseScepter(DamageSource source) {
+    private boolean tryInfuseScepter(DamageSource damageSource) {
         // Check if the living entity is holding an infusable scepter
         if (!this.isHolding(ScepterUtil.IS_INFUSABLE_SCEPTER)) {
             return false;
@@ -64,7 +76,9 @@ public abstract class ScepterSpellInfusion
         }
 
         // Get the infusion scepter for the damage source.
-        Optional<RegistryEntry<Scepter>> scepter = ScepterUtil.getInfusion(source);
+        Optional<RegistryEntry<Scepter>> scepter =
+                ScepterHelper.getInfusion(getScepterRegistry(this.getWorld()),
+                        damageSource, getLootContext(damageSource));
 
         // Check if there is an infusion scepter, if so infuse the held scepter.
         if (scepter.isPresent()) {
@@ -79,6 +93,17 @@ public abstract class ScepterSpellInfusion
         }
 
         return false;
+    }
+
+    private LootContext getLootContext(DamageSource damageSource) {
+        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld)this.getWorld())
+                .add(LootContextParameters.THIS_ENTITY, this)
+                .add(LootContextParameters.ORIGIN, this.getPos())
+                .add(LootContextParameters.DAMAGE_SOURCE, damageSource)
+                .addOptional(LootContextParameters.ATTACKING_ENTITY, damageSource.getAttacker())
+                .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, damageSource.getSource());
+        LootContextParameterSet lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
+        return new LootContext.Builder(lootContextParameterSet).build(Optional.empty());
     }
 
 }

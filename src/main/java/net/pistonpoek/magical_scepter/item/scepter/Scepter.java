@@ -1,113 +1,89 @@
 package net.pistonpoek.magical_scepter.item.scepter;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.entity.LivingEntity;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.loot.context.LootContext;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
-import net.pistonpoek.magical_scepter.ModRegistries;
+import net.minecraft.registry.entry.RegistryFixedCodec;
+import net.minecraft.sound.SoundEvent;
 import net.pistonpoek.magical_scepter.ModRegistryKeys;
-import net.pistonpoek.magical_scepter.item.scepter.infusion.ScepterInfusion;
-import net.pistonpoek.magical_scepter.item.scepter.spell.ScepterSpell;
-import org.jetbrains.annotations.Nullable;
 
-public class Scepter {
+import java.util.Optional;
 
-    public static final Codec<RegistryEntry<Scepter>> CODEC = ModRegistries.SCEPTER.getEntryCodec();
-    public static final PacketCodec<RegistryByteBuf, RegistryEntry<Scepter>> PACKET_CODEC = PacketCodecs.registryEntry(ModRegistryKeys.SCEPTER);
+public record Scepter(Scepter.Definition definition) {
+    public static final Scepter DEFAULT = new Scepter(new Definition("empty", 0, false, Optional.empty(), Optional.empty()));
+    public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                            Scepter.Definition.CODEC.forGetter(Scepter::definition)
+                    )
+                    .apply(instance, Scepter::new)
+    );
+    public static final Codec<RegistryEntry<Scepter>> ENTRY_CODEC = RegistryFixedCodec.of(ModRegistryKeys.SCEPTER);
+    public static final PacketCodec<RegistryByteBuf, RegistryEntry<Scepter>> ENTRY_PACKET_CODEC =
+            PacketCodecs.registryEntry(ModRegistryKeys.SCEPTER);
 
-    @Nullable
-    private final String baseName;
-
-    public static Scepter byId(String id) {
-        return ModRegistries.SCEPTER.get(Identifier.tryParse(id));
-    }
-
-    private final int color;
-    private final ScepterSpell primarySpell;
-    private final ScepterSpell secondarySpell;
-    private final ScepterInfusion scepterInfusion;
-
-    private boolean castingPrimarySpell = true;
-
-    public Scepter(int color, ScepterSpell primarySpell, ScepterSpell secondarySpell, ScepterInfusion scepterInfusion) {
-        this(null, color, primarySpell, secondarySpell, scepterInfusion);
-    }
-
-    public Scepter(@Nullable String baseName, int color, ScepterSpell primarySpell, ScepterSpell secondarySpell, ScepterInfusion scepterInfusion) {
-        this.baseName = baseName;
-        this.color = color;
-        this.primarySpell = primarySpell;
-        this.secondarySpell = secondarySpell;
-        this.scepterInfusion = scepterInfusion;
-    }
-
-    public void castSpell(LivingEntity caster) {
-        getCastingSpell().castSpell(caster);
-    }
-
-    public void updateSpell(LivingEntity caster, int scepterTick) {
-        ScepterSpell castingSpell = getCastingSpell();
-        if (castingSpell.isInstant()) {
-            caster.stopUsingItem();
-        } else {
-            castingSpell.updateSpell(caster, castingSpell.getCastDuration() - scepterTick);
-        }
-    }
-
-    public void displaySpell(LivingEntity caster, int scepterTick) {
-        ScepterSpell castingSpell = getCastingSpell();
-        if (castingSpell.isInstant()) {
-            castingSpell.displaySpell(caster, castingSpell.getCastDuration());
-        } else {
-            castingSpell.displaySpell(caster, castingSpell.getCastDuration() - scepterTick);
-        }
-    }
-
-    public void endSpell(LivingEntity caster, int scepterTick) {
-        ScepterSpell castingSpell = getCastingSpell();
-        castingSpell.endSpell(caster, castingSpell.getCastDuration() - scepterTick);
+    public String getId() {
+        return definition.id;
     }
 
     public int getColor() {
-        return this.color;
+        return definition.color;
     }
 
     public boolean isInfusable() {
-        return scepterInfusion.isInfusable();
+        return definition.infusable;
     }
 
-    public ScepterInfusion getInfusionPredicate() {
-        return scepterInfusion;
+    public boolean infuses(LootContext lootContext) {
+        if (definition.infusion.isEmpty()) return false;
+
+        LootContextPredicate lootContextPredicate = definition.infusion.get();
+
+        return lootContextPredicate.test(lootContext);
     }
 
-    public void setCastingSpell(boolean castingPrimarySpell) {
-        this.castingPrimarySpell = castingPrimarySpell;
+    public Spell getSpell() {
+        return new Spell(30, 100);
     }
 
-    public ScepterSpell getCastingSpell() {
-        if (castingPrimarySpell) {
-            return primarySpell;
-        } else {
-            return secondarySpell;
+    public static Scepter.Builder builder(Scepter.Definition definition) {
+        return new Scepter.Builder(definition);
+    }
+
+    public static class Builder {
+        private final Scepter.Definition definition;
+
+        public Builder(Scepter.Definition properties) {
+            this.definition = properties;
+        }
+
+        public Scepter build() {
+            return new Scepter(this.definition);
         }
     }
 
-    public boolean isInstantSpell() {
-        return getCastingSpell().isInstant();
+    public record Definition(
+            String id,
+            int color,
+            boolean infusable,
+            Optional<LootContextPredicate> infusion,
+            Optional<RegistryEntry<SoundEvent>> sound
+    ) {
+        public static final MapCodec<Scepter.Definition> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                    Codec.STRING.fieldOf("id").forGetter(Scepter.Definition::id),
+                    Codec.INT.fieldOf("color").forGetter(Scepter.Definition::color),
+                    Codec.BOOL.fieldOf("infusable").forGetter(Scepter.Definition::infusable),
+                    LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter.Definition::infusion),
+                    SoundEvent.ENTRY_CODEC.optionalFieldOf("sound").forGetter(Scepter.Definition::sound)
+                )
+                .apply(instance, Scepter.Definition::new)
+        );
     }
 
-    public int getExperienceCost() {
-        return getCastingSpell().getExperienceCost();
-    }
-
-    public int getSpellCooldown() {
-        return getCastingSpell().getSpellCooldown();
-    }
-
-    public String finishTranslationKey(String prefix) {
-        return prefix + (this.baseName == null ? ModRegistries.SCEPTER.getId(this).getPath() : this.baseName);
-    }
 }

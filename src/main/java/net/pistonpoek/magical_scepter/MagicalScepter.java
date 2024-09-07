@@ -1,11 +1,9 @@
 package net.pistonpoek.magical_scepter;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
-import net.minecraft.item.Items;
-import net.pistonpoek.magical_scepter.item.ModItems;
-import net.pistonpoek.magical_scepter.item.scepter.ScepterContentsComponent;
-import net.pistonpoek.magical_scepter.item.scepter.Scepters;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries.SyncOption;
+import net.pistonpoek.magical_scepter.item.scepter.Scepter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +28,7 @@ public class MagicalScepter implements ModInitializer {
 		registerModItems();
 		ModDataComponentTypes.init();
 		LOGGER.info("Ready for some magic?!");
+		DynamicRegistries.registerSynced(ModRegistryKeys.SCEPTER, Scepter.CODEC, SyncOption.SKIP_WHEN_EMPTY);
 	}
 
 }

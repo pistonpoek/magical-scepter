@@ -1,5 +1,6 @@
 package net.pistonpoek.magical_scepter.item.scepter;
 
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.minecraft.component.ComponentChanges;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.ComponentType;
@@ -23,17 +24,17 @@ public class ScepterUtil {
             (ItemStack itemStack) -> IS_SCEPTER.test(itemStack)
             && ScepterUtil.isInfusable(itemStack);
 
-    public static Scepter getScepter(ItemStack stack) {
-        return ScepterUtil.getScepter(stack.getComponents());
-    }
+//    public static Scepter getScepter(ItemStack stack) {
+//        return ScepterUtil.getScepter(stack.getComponents());
+//    }
 
-    public static Scepter getScepter(ComponentMap components) {
-        return components.getOrDefault(SCEPTER, Scepters.MAGICAL).value();
-    }
+//    public static Scepter getScepter(ComponentMap components) {
+//        return components.getOrDefault(SCEPTER, Scepters.MAGICAL).value();
+//    }
 
     public static ItemStack setScepter(ItemStack stack, RegistryEntry<Scepter> scepter) {
         stack.set(SCEPTER, scepter);
-        stack.set(INFUSABLE, scepter.value().isInfusable());
+        //stack.set(INFUSABLE, scepter.value().isInfusable());
         return stack;
     }
 
@@ -54,24 +55,24 @@ public class ScepterUtil {
     public static boolean isInfusable(ItemStack itemStack) {
         return itemStack.getComponents().getOrDefault(ModDataComponentTypes.INFUSABLE, false);
     }
-
-    /**
-     * Get the infusion for the damage source
-     *
-     * @param source Damage source to get infusion scepter for.
-     * @return Optional scepter for the damage source infusion.
-     */
-    public static Optional<RegistryEntry<Scepter>> getInfusion(DamageSource source) {
-        MagicalScepter.LOGGER.info("Getting infusion for damage source:" + source.getName());
-        for (Scepter scepter: ModRegistries.SCEPTER) {
-            if (scepter.getInfusionPredicate().test(source)) {
-                MagicalScepter.LOGGER.info("Got infusion for scepter:" + scepter);
-                return Optional.of(ModRegistries.SCEPTER.getEntry(scepter));
-            }
-        }
-        MagicalScepter.LOGGER.info("Returning empty infusion for damage source:" + source.getName());
-        return Optional.empty();
-    }
+//
+//    /**
+//     * Get the infusion for the damage source
+//     *
+//     * @param source Damage source to get infusion scepter for.
+//     * @return Optional scepter for the damage source infusion.
+//     */
+//    public static Optional<RegistryEntry<Scepter>> getInfusion(DamageSource source) {
+//        MagicalScepter.LOGGER.info("Getting infusion for damage source:" + source.getName());
+//        for (Scepter scepter: ModRegistries.SCEPTER) {
+//            if (scepter.getInfusionPredicate().test(source)) {
+//                MagicalScepter.LOGGER.info("Got infusion for scepter:" + scepter);
+//                return Optional.of(ModRegistries.SCEPTER.getEntry(scepter));
+//            }
+//        }
+//        MagicalScepter.LOGGER.info("Returning empty infusion for damage source:" + source.getName());
+//        return Optional.empty();
+//    }
 
     public static ItemStack createScepter(RegistryEntry<Scepter> scepter) {
         return ScepterUtil.setScepter(ModItems.SCEPTER.getDefaultStack(), scepter);
