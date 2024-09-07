@@ -1,0 +1,16 @@
+{
+  "color": 12067829,
+  "id": "dragon",
+  "infusable": false,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:ender_dragon"
+        }
+      }
+    }
+  ],
+  "sound": "minecraft:entity.ender_dragon.shoot"
+}
