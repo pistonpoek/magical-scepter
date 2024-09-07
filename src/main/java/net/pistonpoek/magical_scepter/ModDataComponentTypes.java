@@ -17,7 +17,7 @@ public class ModDataComponentTypes {
     );
 
     public static final ComponentType<RegistryEntry<Scepter>> SCEPTER = register(
-            "scepter_contents", builder -> builder.codec(Scepter.CODEC).packetCodec(Scepter.PACKET_CODEC).cache()
+            "scepter", builder -> builder.codec(Scepter.ENTRY_CODEC).packetCodec(Scepter.ENTRY_PACKET_CODEC).cache()
     );
 
     public static void init() {
