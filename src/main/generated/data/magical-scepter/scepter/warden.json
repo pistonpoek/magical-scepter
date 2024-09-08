@@ -1,0 +1,16 @@
+{
+  "color": 2941931,
+  "id": "warden",
+  "infusable": false,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:warden"
+        }
+      }
+    }
+  ],
+  "sound": "minecraft:entity.warden.sonic_boom"
+}

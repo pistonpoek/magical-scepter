@@ -3,23 +3,36 @@ package net.pistonpoek.magical_scepter.item.scepter;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.predicate.entity.LootContextPredicate;
+import net.minecraft.registry.Registerable;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 import net.pistonpoek.magical_scepter.ModRegistryKeys;
+import net.pistonpoek.magical_scepter.util.ModIdentifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public record Scepter(Scepter.Definition definition) {
-    public static final Scepter DEFAULT = new Scepter(new Definition("empty", 0, false, Optional.empty(), Optional.empty()));
+public record Scepter(String id, int color, boolean infusable,
+                      Optional<LootContextPredicate> infusion,
+                      Optional<RegistryEntry<SoundEvent>> sound) {
+    public static final Scepter DEFAULT = new Scepter("empty", 0, false, Optional.empty(), Optional.empty());
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                            Scepter.Definition.CODEC.forGetter(Scepter::definition)
+                            Codec.STRING.fieldOf("id").forGetter(Scepter::id),
+                            Codec.INT.fieldOf("color").forGetter(Scepter::color),
+                            Codec.BOOL.fieldOf("infusable").forGetter(Scepter::infusable),
+                            LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion),
+                            SoundEvent.ENTRY_CODEC.optionalFieldOf("sound").forGetter(Scepter::sound)
                     )
                     .apply(instance, Scepter::new)
     );
@@ -28,21 +41,21 @@ public record Scepter(Scepter.Definition definition) {
             PacketCodecs.registryEntry(ModRegistryKeys.SCEPTER);
 
     public String getId() {
-        return definition.id;
+        return id;
     }
 
     public int getColor() {
-        return definition.color;
+        return color;
     }
 
     public boolean isInfusable() {
-        return definition.infusable;
+        return infusable;
     }
 
     public boolean infuses(LootContext lootContext) {
-        if (definition.infusion.isEmpty()) return false;
+        if (infusion.isEmpty()) return false;
 
-        LootContextPredicate lootContextPredicate = definition.infusion.get();
+        LootContextPredicate lootContextPredicate = infusion.get();
 
         return lootContextPredicate.test(lootContext);
     }
@@ -50,40 +63,4 @@ public record Scepter(Scepter.Definition definition) {
     public Spell getSpell() {
         return new Spell(30, 100);
     }
-
-    public static Scepter.Builder builder(Scepter.Definition definition) {
-        return new Scepter.Builder(definition);
-    }
-
-    public static class Builder {
-        private final Scepter.Definition definition;
-
-        public Builder(Scepter.Definition properties) {
-            this.definition = properties;
-        }
-
-        public Scepter build() {
-            return new Scepter(this.definition);
-        }
-    }
-
-    public record Definition(
-            String id,
-            int color,
-            boolean infusable,
-            Optional<LootContextPredicate> infusion,
-            Optional<RegistryEntry<SoundEvent>> sound
-    ) {
-        public static final MapCodec<Scepter.Definition> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                    Codec.STRING.fieldOf("id").forGetter(Scepter.Definition::id),
-                    Codec.INT.fieldOf("color").forGetter(Scepter.Definition::color),
-                    Codec.BOOL.fieldOf("infusable").forGetter(Scepter.Definition::infusable),
-                    LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter.Definition::infusion),
-                    SoundEvent.ENTRY_CODEC.optionalFieldOf("sound").forGetter(Scepter.Definition::sound)
-                )
-                .apply(instance, Scepter.Definition::new)
-        );
-    }
-
 }
