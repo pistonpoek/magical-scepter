@@ -1,15 +1,15 @@
 {
-  "color": 7561558,
+  "color": 13565951,
   "infusable": false,
   "infusion": [
     {
       "condition": "minecraft:damage_source_properties",
       "predicate": {
         "source_entity": {
-          "type": "minecraft:wither"
+          "type": "minecraft:shulker"
         }
       }
     }
   ],
-  "sound": "minecraft:entity.wither.shoot"
+  "sound": "minecraft:entity.shulker.shoot"
 }

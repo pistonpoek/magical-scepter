@@ -27,6 +27,7 @@ public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
         provider.accept(Scepters.EVOKER_KEY.getValue(), Scepters.EVOKER);
         provider.accept(Scepters.GHAST_KEY.getValue(), Scepters.GHAST);
         provider.accept(Scepters.GUARDIAN_KEY.getValue(), Scepters.GUARDIAN);
+        provider.accept(Scepters.SHULKER_KEY.getValue(), Scepters.SHULKER);
         provider.accept(Scepters.WARDEN_KEY.getValue(), Scepters.WARDEN);
         provider.accept(Scepters.WITHER_KEY.getValue(), Scepters.WITHER);
     }
