@@ -126,6 +126,8 @@ public class Scepters {
                 Optional.ofNullable(soundEvent).map(Registries.SOUND_EVENT::getEntry));
     }
 
+    public static final Scepter DEFAULT = MAGICAL;
+
     public static Identifier registerAndGetDefault() {
         return DEFAULT_KEY.getValue();
     }
