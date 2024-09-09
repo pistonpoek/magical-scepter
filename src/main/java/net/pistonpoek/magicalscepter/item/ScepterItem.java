@@ -14,6 +14,7 @@ import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModTags;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
+import net.pistonpoek.magicalscepter.scepter.Scepters;
 
 import java.util.Optional;
 
@@ -32,15 +33,7 @@ public class ScepterItem extends Item {
         });
 
         ItemStack itemStack = user.getStackInHand(hand);
-
-        // Get the scepter for this item stack or else we return the empty scepter
-        Optional<RegistryEntry<Scepter>> scepterEntry = ScepterHelper.getScepter(itemStack);
-        if (scepterEntry.isEmpty() || scepterEntry.get().value() == null) {
-            MagicalScepter.LOGGER.info("returning empty scepter for using magical scepter.");
-            return TypedActionResult.fail(ModItems.EMPTY_SCEPTER.getDefaultStack());
-        }
-
-        Scepter scepter = scepterEntry.get().value();
+        Scepter scepter = ScepterHelper.getScepter(itemStack).value();
 
         if (!user.getAbilities().creativeMode) {
             if (user.totalExperience < scepter.getSpell().experienceCost()) {
@@ -108,7 +101,7 @@ public class ScepterItem extends Item {
     @Override
     public String getTranslationKey(ItemStack stack) {
         return this.getTranslationKey() + "." + ScepterHelper.getScepter(stack)
-                .flatMap(RegistryEntry::getKey).map(key -> key.getValue().getPath()).orElse("empty");
+                .getKey().orElse(Scepters.DEFAULT_KEY).getValue().getPath();
     }
 
 }

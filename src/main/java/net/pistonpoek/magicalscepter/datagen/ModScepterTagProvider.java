@@ -17,7 +17,7 @@ public class ModScepterTagProvider extends FabricTagProvider<Scepter> {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        getOrCreateTagBuilder(ModTags.Scepters.INFUSABLE)
-                .add(Scepters.MAGICAL_KEY);
+//        getOrCreateTagBuilder(ModTags.Scepters.INFUSABLE)
+//                .add(Scepters.MAGICAL_KEY);
     }
 }

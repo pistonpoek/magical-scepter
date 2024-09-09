@@ -12,13 +12,8 @@ import java.util.Optional;
 public class MagicalScepterClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex > 0 ?
-				-1 : getColor(stack), ModItems.SCEPTER);
-	}
-
-	private int getColor(ItemStack stack) {
-		return ScepterHelper.getScepter(stack).flatMap(scepter ->
-				Optional.of(ColorHelper.Argb.fullAlpha(scepter.value().getColor())))
-				.orElse(ColorHelper.Argb.withAlpha(0, 0));
+		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex > 0 ? -1 :
+				ColorHelper.Argb.fullAlpha(ScepterHelper.getScepter(stack).value().getColor()),
+				ModItems.SCEPTER);
 	}
 }
