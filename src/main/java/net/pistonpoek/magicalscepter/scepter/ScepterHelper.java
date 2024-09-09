@@ -12,9 +12,9 @@ import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.item.ModItems;
-import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
-import net.pistonpoek.magicalscepter.registry.ModTags;
+import net.pistonpoek.magicalscepter.spell.Spell;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -31,15 +31,11 @@ public class ScepterHelper {
         return ScepterHelper.setScepter(ModItems.SCEPTER.getDefaultStack(), scepter);
     }
 
-    public static Scepter getScepter(ItemStack stack) {
-        return getScepterEntry(stack).map(RegistryEntry::value).orElse(Scepter.DEFAULT);
+    public static Optional<RegistryEntry<Scepter>> getScepter(ItemStack stack) {
+        return ScepterHelper.getScepter(stack.getComponents());
     }
 
-    public static Optional<RegistryEntry<Scepter>> getScepterEntry(ItemStack stack) {
-        return ScepterHelper.getScepterEntry(stack.getComponents());
-    }
-
-    public static Optional<RegistryEntry<Scepter>> getScepterEntry(ComponentMap components) {
+    public static Optional<RegistryEntry<Scepter>> getScepter(ComponentMap components) {
         return Optional.ofNullable(components.get(SCEPTER_CONTENTS)).flatMap(ScepterContentsComponent::scepter);
     }
 
@@ -59,13 +55,17 @@ public class ScepterHelper {
      * @return Truth assignment, if item stack is infusable.
      */
     public static boolean isInfusable(ItemStack itemStack) {
-        return getInfusable(itemStack).orElse(isInfusable(getScepter(itemStack)));
+        return getInfusable(itemStack).orElse(isInfusable(getScepter(itemStack).orElse(null)));
     }
 
-    public static boolean isInfusable(Scepter scepter) {
+    public static boolean isInfusable(RegistryEntry<Scepter> scepter) {
         if (scepter == null) return false;
 
-        return scepter.isInfusable();
+        return scepter.value().isInfusable();
+    }
+
+    public static Spell getSpell(ItemStack itemStack) {
+        return getScepter(itemStack).flatMap(scepter -> Optional.of(scepter.value().getSpell())).orElse(new Spell(0, 0));
     }
 
     public static Registry<Scepter> getScepterRegistry(World world) {

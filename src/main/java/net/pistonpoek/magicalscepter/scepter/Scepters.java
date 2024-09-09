@@ -31,7 +31,7 @@ public class Scepters {
     public static final RegistryKey<Scepter> WITHER_KEY = of("wither");
     public static final RegistryKey<Scepter> DEFAULT_KEY = MAGICAL_KEY;
 
-    public static final Scepter MAGICAL = create("magical", 0xBC7C5C, true,
+    public static final Scepter MAGICAL = create(0xBC7C5C, true,
             null, SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL);
 
     protected static LootCondition.@NotNull Builder damagedByBlaze() {
@@ -40,7 +40,7 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.BLAZE))
         );
     }
-    public static final Scepter BLAZE = create("blaze", 0xFF9900, false,
+    public static final Scepter BLAZE = create(0xFF9900, false,
             damagedByBlaze(), SoundEvents.ENTITY_BLAZE_SHOOT);
 
     protected static LootCondition.@NotNull Builder damagedByBreeze() {
@@ -49,7 +49,7 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.BREEZE))
         );
     }
-    public static final Scepter BREEZE = create("breeze", 0xBDC9FF, false,
+    public static final Scepter BREEZE = create(0xBDC9FF, false,
             damagedByBreeze(), SoundEvents.ENTITY_BREEZE_SHOOT);
 
     protected static LootCondition.@NotNull Builder damagedByDragon() {
@@ -58,7 +58,7 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.ENDER_DRAGON))
         );
     }
-    public static final Scepter DRAGON = create("dragon", 0xB823F5, false,
+    public static final Scepter DRAGON = create(0xB823F5, false,
             damagedByDragon(), SoundEvents.ENTITY_ENDER_DRAGON_SHOOT);
 
     protected static LootCondition.@NotNull Builder damagedByEvokerFangs() {
@@ -68,7 +68,7 @@ public class Scepters {
                         .directEntity(EntityPredicate.Builder.create().type(EntityType.EVOKER_FANGS))
         );
     }
-    public static final Scepter EVOKER = create("evoker", 0x959B9B, false, 
+    public static final Scepter EVOKER = create(0x959B9B, false,
             damagedByEvokerFangs(), SoundEvents.ENTITY_EVOKER_CAST_SPELL);
 
     protected static LootCondition.@NotNull Builder damagedByGhast() {
@@ -77,7 +77,7 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.GHAST))
         );
     }
-    public static final Scepter GHAST = create("ghast", 0xCD5CAB, false,
+    public static final Scepter GHAST = create(0xCD5CAB, false,
             damagedByGhast(), SoundEvents.ENTITY_GHAST_SHOOT);
 
     protected static LootCondition.@NotNull Builder damagedByGuardian() {
@@ -88,7 +88,7 @@ public class Scepters {
                 DamageSourcePredicate.Builder.create()
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.ELDER_GUARDIAN))));
     }
-    public static final Scepter GUARDIAN = create("guardian", 0x4f7d8c, false,
+    public static final Scepter GUARDIAN = create(0x4f7d8c, false,
             damagedByGuardian(), SoundEvents.ENTITY_GUARDIAN_ATTACK);
 
     protected static LootCondition.@NotNull Builder damagedByShulker() {
@@ -97,7 +97,7 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.SHULKER))
         );
     }
-    public static final Scepter SHULKER = create("shulker", 0xCEFFFF, false,
+    public static final Scepter SHULKER = create(0xCEFFFF, false,
             damagedByShulker(), SoundEvents.ENTITY_SHULKER_SHOOT);
 
     protected static LootCondition.@NotNull Builder damagedByWarden() {
@@ -106,7 +106,7 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.WARDEN))
         );
     }
-    public static final Scepter WARDEN = create("warden", 0x2ce3eb, false,
+    public static final Scepter WARDEN = create(0x2ce3eb, false,
             damagedByWarden(), SoundEvents.ENTITY_WARDEN_SONIC_BOOM);
 
     protected static LootCondition.@NotNull Builder damagedByWither() {
@@ -115,13 +115,13 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.WITHER))
         );
     }
-    public static final Scepter WITHER = create("wither", 0x736156, false,
+    public static final Scepter WITHER = create(0x736156, false,
             damagedByWither(), SoundEvents.ENTITY_WITHER_SHOOT);
 
-    private static Scepter create(String id, int color, boolean infusable,
+    private static Scepter create(int color, boolean infusable,
                                   @Nullable LootCondition.Builder lootConditionBuilder,
                                   @Nullable SoundEvent soundEvent) {
-        return new Scepter(id, color, infusable,
+        return new Scepter(color, infusable,
                 Optional.ofNullable(lootConditionBuilder).map(builder -> LootContextPredicate.create(builder.build())),
                 Optional.ofNullable(soundEvent).map(Registries.SOUND_EVENT::getEntry));
     }

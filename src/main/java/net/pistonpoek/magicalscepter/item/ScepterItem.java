@@ -4,6 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -13,6 +14,8 @@ import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModTags;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
+
+import java.util.Optional;
 
 public class ScepterItem extends Item {
     public final static int MAX_SPELL_TIME = 100;
@@ -29,7 +32,16 @@ public class ScepterItem extends Item {
         });
 
         ItemStack itemStack = user.getStackInHand(hand);
-        Scepter scepter = ScepterHelper.getScepter(itemStack);
+
+        // Get the scepter for this item stack or else we return the empty scepter
+        Optional<RegistryEntry<Scepter>> scepterEntry = ScepterHelper.getScepter(itemStack);
+        if (scepterEntry.isEmpty() || scepterEntry.get().value() == null) {
+            MagicalScepter.LOGGER.info("returning empty scepter for using magical scepter.");
+            return TypedActionResult.fail(ModItems.EMPTY_SCEPTER.getDefaultStack());
+        }
+
+        Scepter scepter = scepterEntry.get().value();
+
         if (!user.getAbilities().creativeMode) {
             if (user.totalExperience < scepter.getSpell().experienceCost()) {
                 return TypedActionResult.fail(itemStack);
@@ -58,11 +70,10 @@ public class ScepterItem extends Item {
 
     @Override
     public void usageTick(World world, LivingEntity player, ItemStack stack, int remainingUseTicks) {
-        Scepter scepter = ScepterHelper.getScepter(stack);
         if (!world.isClient()) {
-            scepter.getSpell().updateSpell(player, MAX_SPELL_TIME - remainingUseTicks);
+            ScepterHelper.getSpell(stack).updateSpell(player, MAX_SPELL_TIME - remainingUseTicks);
         } else {
-            scepter.getSpell().displaySpell(player, MAX_SPELL_TIME - remainingUseTicks);
+            ScepterHelper.getSpell(stack).displaySpell(player, MAX_SPELL_TIME - remainingUseTicks);
         }
     }
 
@@ -75,8 +86,7 @@ public class ScepterItem extends Item {
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity player, int remainingUseTicks) {
         if (!world.isClient()) {
-            Scepter scepter = ScepterHelper.getScepter(stack);
-            scepter.getSpell().endSpell(player, MAX_SPELL_TIME - remainingUseTicks);
+            ScepterHelper.getSpell(stack).endSpell(player, MAX_SPELL_TIME - remainingUseTicks);
         }
     }
 
@@ -97,7 +107,8 @@ public class ScepterItem extends Item {
 
     @Override
     public String getTranslationKey(ItemStack stack) {
-        return this.getTranslationKey() + "." + ScepterHelper.getScepter(stack).getId();
+        return this.getTranslationKey() + "." + ScepterHelper.getScepter(stack)
+                .flatMap(RegistryEntry::getKey).map(key -> key.getValue().getPath()).orElse("empty");
     }
 
 }
