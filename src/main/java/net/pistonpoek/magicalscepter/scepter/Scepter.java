@@ -12,6 +12,7 @@ import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.sound.SoundEvent;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.Spell;
+import net.pistonpoek.magicalscepter.spell.Spells;
 
 import java.util.Optional;
 
@@ -49,7 +50,7 @@ public record Scepter(int color, boolean infusable,
     }
 
     public Spell getSpell() {
-        return new Spell(30, 100);
+        return Spells.DEFAULT;
     }
 
 }
