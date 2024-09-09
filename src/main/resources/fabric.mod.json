@@ -1,39 +1,39 @@
 {
 	"schemaVersion": 1,
-	"id": "magical-scepter",
+	"id": "magicalscepter",
 	"version": "${version}",
 	"name": "Magical Scepter",
-	"description": "Fabric Minecraft mod that adds a magical scepter",
+	"description": "Magical scepter that can be infused with spells of (vanilla) monsters",
 	"authors": [
 		"pistonpoek"
 	],
 	"contact": {
-		"homepage": "",
-		"sources": "https://github.com/pistonpoek/magical-scepter"
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
-	"license": "",
-	"icon": "assets/magical-scepter/icon.png",
+	"license": "CC0-1.0",
+	"icon": "assets/magicalscepter/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.pistonpoek.magical_scepter.MagicalScepter"
+			"net.pistonpoek.magicalscepter.MagicalScepter"
 		],
 		"client": [
-			"net.pistonpoek.magical_scepter.MagicalScepterClient"
+			"net.pistonpoek.magicalscepter.MagicalScepterClient"
 		],
 		"fabric-datagen": [
-			"net.pistonpoek.magical_scepter.MagicalScepterDataGenerator"
+			"net.pistonpoek.magicalscepter.datagen.MagicalScepterDataGenerator"
 		]
 	},
 	"mixins": [
-		"magical-scepter.mixins.json",
+		"magicalscepter.mixins.json",
 		{
-			"config": "magical-scepter.client.mixins.json",
+			"config": "magicalscepter.client.mixins.json",
 			"environment": "client"
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.2",
+		"fabricloader": ">=0.16.5",
 		"minecraft": "~1.21.1",
 		"java": ">=21",
 		"fabric-api": "*"
