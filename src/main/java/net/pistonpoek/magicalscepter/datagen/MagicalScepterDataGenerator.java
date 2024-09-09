@@ -9,6 +9,7 @@ public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
 		pack.addProvider(ScepterTypeProvider::new);
+		pack.addProvider(SpellTypeProvider::new);
 		pack.addProvider(ModBlockTagProvider::new);
 		pack.addProvider(ModItemTagProvider::new);
 		pack.addProvider(ModScepterTagProvider::new);
