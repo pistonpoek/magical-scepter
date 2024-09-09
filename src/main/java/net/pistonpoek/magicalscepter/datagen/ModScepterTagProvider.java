@@ -4,7 +4,9 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.registry.RegistryWrapper;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import net.pistonpoek.magicalscepter.registry.ModTags;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
+import net.pistonpoek.magicalscepter.scepter.Scepters;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -15,7 +17,7 @@ public class ModScepterTagProvider extends FabricTagProvider<Scepter> {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-//        getOrCreateTagBuilder(ModTags.Scepters.INFUSABLE)
-//                .add(Scepters.MAGICAL_KEY);
+        getOrCreateTagBuilder(ModTags.Scepters.INFUSABLE)
+                .add(Scepters.MAGICAL_KEY);
     }
 }

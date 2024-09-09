@@ -9,6 +9,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import net.pistonpoek.magicalscepter.MagicalScepter;
+import net.pistonpoek.magicalscepter.registry.ModTags;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
 
@@ -20,6 +22,12 @@ public class ScepterItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+
+        MagicalScepter.LOGGER.info("Checking infusable scepters");
+        ScepterHelper.getScepterRegistry(world).iterateEntries(ModTags.Scepters.INFUSABLE).forEach(scepter -> {
+            MagicalScepter.LOGGER.info("Got infusable scepter {}", scepter.getIdAsString());
+        });
+
         ItemStack itemStack = user.getStackInHand(hand);
         Scepter scepter = ScepterHelper.getScepter(itemStack);
         if (!user.getAbilities().creativeMode) {
