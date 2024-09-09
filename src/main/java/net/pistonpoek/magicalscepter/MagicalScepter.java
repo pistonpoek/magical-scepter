@@ -21,6 +21,5 @@ public class MagicalScepter implements ModInitializer {
 		ModItems.registerModItems();
 		ModDataComponentTypes.init();
 		DynamicRegistries.registerSynced(ModRegistryKeys.SCEPTER, Scepter.CODEC);
-		LOGGER.info("Hello Fabric world!");
 	}
 }
