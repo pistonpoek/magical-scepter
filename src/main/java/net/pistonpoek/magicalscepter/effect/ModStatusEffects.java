@@ -1,4 +1,4 @@
-package net.pistonpoek.magicalscepter.effects;
+package net.pistonpoek.magicalscepter.effect;
 
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
