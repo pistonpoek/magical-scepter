@@ -9,22 +9,19 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
-import net.minecraft.sound.SoundEvent;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.Spell;
-import net.pistonpoek.magicalscepter.spell.Spells;
 
 import java.util.Optional;
 
-public record Scepter(int color, boolean infusable,
-                      Optional<LootContextPredicate> infusion,
-                      Optional<RegistryEntry<SoundEvent>> sound) {
+public record Scepter(int color, boolean infusable, Spell spell,
+                      Optional<LootContextPredicate> infusion) {
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Codec.INT.fieldOf("color").forGetter(Scepter::color),
                             Codec.BOOL.fieldOf("infusable").forGetter(Scepter::infusable),
-                            LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion),
-                            SoundEvent.ENTRY_CODEC.optionalFieldOf("sound").forGetter(Scepter::sound)
+                            Spell.CODEC.fieldOf("spell").forGetter(Scepter::spell),
+                            LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
                     )
                     .apply(instance, Scepter::new)
     );
@@ -50,7 +47,7 @@ public record Scepter(int color, boolean infusable,
     }
 
     public Spell getSpell() {
-        return Spells.DEFAULT;
+        return spell;
     }
 
 }

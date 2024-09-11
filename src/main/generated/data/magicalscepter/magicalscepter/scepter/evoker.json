@@ -14,5 +14,9 @@
       }
     }
   ],
-  "sound": "minecraft:entity.evoker.cast_spell"
+  "spell": {
+    "cooldown": 100,
+    "experience_cost": 30,
+    "sound": "minecraft:entity.evoker.cast_spell"
+  }
 }

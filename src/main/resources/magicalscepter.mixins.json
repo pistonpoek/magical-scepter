@@ -4,7 +4,7 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"ExampleMixin",
-		"ScepterSpellInfusion"
+      	"ScepterInfusion"
 	],
 	"injectors": {
 		"defaultRequire": 1
