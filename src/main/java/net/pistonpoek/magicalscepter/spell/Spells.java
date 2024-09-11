@@ -50,9 +50,7 @@ public class Spells {
 
     public static final Spell DEFAULT = MAGICAL;
 
-    public static Identifier registerAndGetDefault() {
-        return DEFAULT_KEY.getValue();
+    public static void init() {
     }
-
 
 }
