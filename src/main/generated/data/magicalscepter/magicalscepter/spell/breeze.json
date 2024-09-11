@@ -1,0 +1,5 @@
+{
+  "cooldown": 100,
+  "experience_cost": 30,
+  "sound": "minecraft:entity.breeze.shoot"
+}

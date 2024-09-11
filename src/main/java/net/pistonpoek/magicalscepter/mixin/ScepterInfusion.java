@@ -27,9 +27,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @Mixin(LivingEntity.class)
-public abstract class ScepterSpellInfusion
+public abstract class ScepterInfusion
         extends Entity implements Attackable {
-    public ScepterSpellInfusion(EntityType<?> type, World world) {
+    public ScepterInfusion(EntityType<?> type, World world) {
         super(type, world);
     }
 
@@ -58,8 +58,7 @@ public abstract class ScepterSpellInfusion
     private boolean tryInfuseScepter(DamageSource damageSource) {
         // Check if the living entity is holding an infusable scepter
         if (!this.isHolding(ScepterHelper.IS_INFUSABLE_SCEPTER)) {
-            MagicalScepter.LOGGER.info("Testing for not infusable scepter");
-            //return false;
+            return false;
         }
 
         // Get the item stack that is the infusable scepter.

@@ -11,5 +11,9 @@
       }
     }
   ],
-  "sound": "minecraft:entity.ghast.shoot"
+  "spell": {
+    "cooldown": 100,
+    "experience_cost": 30,
+    "sound": "minecraft:entity.ghast.shoot"
+  }
 }

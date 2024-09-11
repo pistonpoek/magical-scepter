@@ -4,7 +4,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -15,8 +14,6 @@ import net.pistonpoek.magicalscepter.registry.ModTags;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.pistonpoek.magicalscepter.scepter.Scepters;
-
-import java.util.Optional;
 
 public class ScepterItem extends Item {
     public final static int MAX_SPELL_TIME = 100;
@@ -53,7 +50,7 @@ public class ScepterItem extends Item {
             ItemStack damagedItemStack = itemStack.damage(1, ModItems.EMPTY_SCEPTER, user, LivingEntity.getSlotForHand(hand));
             return TypedActionResult.success(damagedItemStack, false);
         } else {
-            scepter.getSpell().displaySpell(user, 0);
+            scepter.getSpell().displaySpell(world, user, 0);
         }
         if (!scepter.getSpell().isInstant()) {
             user.setCurrentHand(hand);
@@ -66,7 +63,7 @@ public class ScepterItem extends Item {
         if (!world.isClient()) {
             ScepterHelper.getSpell(stack).updateSpell(player, MAX_SPELL_TIME - remainingUseTicks);
         } else {
-            ScepterHelper.getSpell(stack).displaySpell(player, MAX_SPELL_TIME - remainingUseTicks);
+            ScepterHelper.getSpell(stack).displaySpell(world, player, MAX_SPELL_TIME - remainingUseTicks);
         }
     }
 
@@ -101,7 +98,7 @@ public class ScepterItem extends Item {
     @Override
     public String getTranslationKey(ItemStack stack) {
         return this.getTranslationKey() + "." + ScepterHelper.getScepter(stack)
-                .getKey().orElse(Scepters.DEFAULT_KEY).getValue().getPath();
+                .getKey().orElse(Scepters.DEFAULT_KEY).getValue().getPath().replace("/", ".");
     }
 
 }

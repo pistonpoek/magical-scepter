@@ -24,5 +24,9 @@
       ]
     }
   ],
-  "sound": "minecraft:entity.guardian.attack"
+  "spell": {
+    "cooldown": 100,
+    "experience_cost": 30,
+    "sound": "minecraft:entity.guardian.attack"
+  }
 }

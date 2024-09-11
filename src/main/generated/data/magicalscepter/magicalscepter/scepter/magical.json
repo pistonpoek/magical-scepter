@@ -1,5 +1,9 @@
 {
   "color": 12352604,
   "infusable": true,
-  "sound": "minecraft:entity.illusioner.cast_spell"
+  "spell": {
+    "cooldown": 100,
+    "experience_cost": 30,
+    "sound": "minecraft:entity.illusioner.cast_spell"
+  }
 }
