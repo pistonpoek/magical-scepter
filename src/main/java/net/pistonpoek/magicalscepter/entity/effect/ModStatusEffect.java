@@ -1,4 +1,4 @@
-package net.pistonpoek.magicalscepter.effect;
+package net.pistonpoek.magicalscepter.entity.effect;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;

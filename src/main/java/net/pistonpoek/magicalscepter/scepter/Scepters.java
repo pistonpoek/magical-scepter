@@ -130,7 +130,6 @@ public class Scepters {
                 Optional.ofNullable(lootConditionBuilder).map(builder -> LootContextPredicate.create(builder.build())));
     }
 
-    public static Identifier registerAndGetDefault() {
-        return DEFAULT_KEY.getValue();
+    public static void init() {
     }
 }

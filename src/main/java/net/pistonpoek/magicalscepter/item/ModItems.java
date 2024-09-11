@@ -51,7 +51,7 @@ public class ModItems {
         return Registry.register(Registries.ITEM, ModIdentifier.of(name), item);
     }
 
-    public static void registerModItems() {
+    public static void init() {
         MagicalScepter.LOGGER.info("Registering Mod Items for " + ModIdentifier.MOD_ID);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(ModItems::addItemsToCombatItemGroup);
