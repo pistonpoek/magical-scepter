@@ -1,20 +1,18 @@
 {
   "cooldown": 100,
-  "effects": [
+  "experience_cost": 30,
+  "spells": [
     {
-      "effect": {
-        "type": "minecraft:play_sound",
-        "pitch": {
-          "type": "minecraft:uniform",
-          "max_exclusive": 1.2,
-          "min_inclusive": 0.8
-        },
-        "sound": {
-          "sound_id": "minecraft:entity.breeze.shoot"
-        },
-        "volume": 1.0
-      }
+      "type": "minecraft:play_sound",
+      "pitch": {
+        "type": "minecraft:uniform",
+        "max_exclusive": 1.2,
+        "min_inclusive": 0.8
+      },
+      "sound": {
+        "sound_id": "minecraft:entity.breeze.shoot"
+      },
+      "volume": 1.0
     }
-  ],
-  "experience_cost": 30
+  ]
 }
