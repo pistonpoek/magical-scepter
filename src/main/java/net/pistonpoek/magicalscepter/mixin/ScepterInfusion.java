@@ -70,9 +70,8 @@ public abstract class ScepterInfusion
         }
 
         // Get the infusion scepter for the damage source.
-        Optional<RegistryEntry<Scepter>> scepter =
-                ScepterHelper.getInfusion(ScepterHelper.getScepterRegistry(this.getWorld()),
-                        damageSource, getLootContext(damageSource));
+        Optional<RegistryEntry<Scepter>> scepter = ScepterHelper.getInfusion(
+                ScepterHelper.getScepterRegistry(this.getWorld()), getLootContext(damageSource));
 
         // Check if there is an infusion scepter, if so infuse the held scepter.
         if (scepter.isPresent()) {

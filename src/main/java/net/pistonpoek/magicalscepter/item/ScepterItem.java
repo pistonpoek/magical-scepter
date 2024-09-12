@@ -23,12 +23,6 @@ public class ScepterItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-
-        MagicalScepter.LOGGER.info("Checking infusable scepters");
-        ScepterHelper.getScepterRegistry(world).iterateEntries(ModTags.Scepters.INFUSABLE).forEach(scepter -> {
-            MagicalScepter.LOGGER.info("Got infusable scepter {}", scepter.getIdAsString());
-        });
-
         ItemStack itemStack = user.getStackInHand(hand);
         Scepter scepter = ScepterHelper.getScepter(itemStack).value();
 
@@ -46,7 +40,7 @@ public class ScepterItem extends Item {
 
         //scepter.setCastingSpell(!user.isSneaking());
         if (!world.isClient()) {
-            scepter.getSpell().castSpell(user, itemStack, LivingEntity.getSlotForHand(hand));
+            scepter.getSpell().castSpell(user);
             ItemStack damagedItemStack = itemStack.damage(1, ModItems.EMPTY_SCEPTER, user, LivingEntity.getSlotForHand(hand));
             return TypedActionResult.success(damagedItemStack, false);
         } else {
