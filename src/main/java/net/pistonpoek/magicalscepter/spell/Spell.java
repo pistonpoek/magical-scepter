@@ -4,9 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.enchantment.EnchantmentEffectContext;
-import net.minecraft.enchantment.effect.EnchantmentEffectEntry;
-import net.minecraft.enchantment.effect.EnchantmentEntityEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -25,17 +22,18 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 
 import java.util.List;
 import java.util.Optional;
 
 public record Spell(int experienceCost, int cooldown,
-                    List<EnchantmentEffectEntry<EnchantmentEntityEffect>> effects) {
+                    List<SpellEffect> spells) {
     public static final Codec<Spell> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Codec.INT.fieldOf("experience_cost").forGetter(Spell::experienceCost),
                             Codec.INT.fieldOf("cooldown").forGetter(Spell::cooldown),
-                            EnchantmentEffectEntry.createCodec(EnchantmentEntityEffect.CODEC, LootContextTypes.ENCHANTED_ENTITY).listOf().fieldOf("effects").forGetter(Spell::effects)
+                            SpellEffect.CODEC.listOf().fieldOf("spells").forGetter(Spell::spells)
                     )
                     .apply(instance, Spell::new)
     );
@@ -56,11 +54,8 @@ public record Spell(int experienceCost, int cooldown,
     public void castSpell(LivingEntity caster, ItemStack itemStack, EquipmentSlot slot) {
         MagicalScepter.LOGGER.info("Casting spell");
         ServerWorld serverWorld = (ServerWorld)caster.getWorld();
-        LootContext lootContext = createEnchantedEntityLootContext(serverWorld, caster, caster.getPos());
-        for (EnchantmentEffectEntry<EnchantmentEntityEffect> enchantmentEffectEntry : effects) {
-            if (enchantmentEffectEntry.test(lootContext)) {
-                enchantmentEffectEntry.effect().apply(serverWorld, 1, new EnchantmentEffectContext(itemStack, slot, caster), caster, caster.getPos());
-            }
+        for (SpellEffect spell : spells) {
+            spell.apply(serverWorld, caster, caster.getPos());
         }
     }
 
