@@ -73,24 +73,16 @@ public class ScepterHelper {
     /**
      * Get the infusion for the damage source
      *
-     * @param source Damage source to get infusion scepter for.
      * @param lootContext Loot context to check infusion conditions with.
      *
      * @return Optional scepter for the damage source infusion.
      */
-    public static Optional<RegistryEntry<Scepter>> getInfusion(Registry<Scepter> scepterRegistry,
-                                                               DamageSource source, LootContext lootContext) {
-        MagicalScepter.LOGGER.info("Getting infusion for damage source:" + source.getName());
-
+    public static Optional<RegistryEntry<Scepter>> getInfusion(Registry<Scepter> scepterRegistry, LootContext lootContext) {
         for (RegistryEntry<Scepter> scepter: scepterRegistry.streamEntries().toList()) {
-
-            MagicalScepter.LOGGER.info("Testing for scepter registry entry:" + scepter.getIdAsString());
             if (scepter.value().infuses(lootContext)) {
-                MagicalScepter.LOGGER.info("Got infusion for scepter:" + scepter);
                 return Optional.of(scepter);
             }
         }
-        MagicalScepter.LOGGER.info("Returning empty infusion for damage source:" + source.getName());
         return Optional.empty();
     }
 
