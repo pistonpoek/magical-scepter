@@ -31,19 +31,19 @@ public record SummonEntitySpellEffect(
     );
 
     @Override
-    public void apply(ServerWorld world, Entity user, Vec3d pos) {
+    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
         BlockPos blockPos = BlockPos.ofFloored(pos);
         if (World.isValid(blockPos)) {
             Optional<RegistryEntry<EntityType<?>>> optional = this.entityTypes().getRandom(world.getRandom());
             if (optional.isPresent()) {
                 Entity entity = ((EntityType<?>)((RegistryEntry<?>)optional.get()).value()).spawn(world, blockPos, SpawnReason.TRIGGERED);
                 if (entity != null) {
-                    if (entity instanceof LightningEntity lightningEntity && user instanceof ServerPlayerEntity serverPlayerEntity) {
+                    if (entity instanceof LightningEntity lightningEntity && caster instanceof ServerPlayerEntity serverPlayerEntity) {
                         lightningEntity.setChanneler(serverPlayerEntity);
                     }
 
-                    if (this.joinTeam && user.getScoreboardTeam() != null) {
-                        world.getScoreboard().addScoreHolderToTeam(entity.getNameForScoreboard(), user.getScoreboardTeam());
+                    if (this.joinTeam && caster.getScoreboardTeam() != null) {
+                        world.getScoreboard().addScoreHolderToTeam(entity.getNameForScoreboard(), caster.getScoreboardTeam());
                     }
 
                     entity.refreshPositionAndAngles(pos.x, pos.y, pos.z, entity.getYaw(), entity.getPitch());

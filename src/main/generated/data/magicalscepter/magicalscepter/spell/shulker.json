@@ -13,6 +13,11 @@
         "sound_id": "minecraft:entity.shulker.shoot"
       },
       "volume": 1.0
+    },
+    {
+      "type": "minecraft:shoot_projectile",
+      "projectile": "minecraft:shulker_bullet",
+      "velocity": 1.0
     }
   ]
 }

@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.projectile.SpellProjectile;
+import net.pistonpoek.magicalscepter.spell.projectile.SpellProjectileHelper;
 
 public record ShootProjectileSpellEffect(
         RegistryEntryList<SpellProjectile<? extends Entity>> projectile,
@@ -29,14 +30,16 @@ public record ShootProjectileSpellEffect(
     );
 
     @Override
-    public void apply(ServerWorld world, Entity user, Vec3d pos) {
+    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
         BlockPos blockPos = BlockPos.ofFloored(pos);
         if (World.isValid(blockPos)) {
-            Optional<RegistryEntry<SpellProjectile<? extends Entity>>> spellProjectile = this.projectile.getRandom(world.getRandom());
+            Optional<RegistryEntry<SpellProjectile<? extends Entity>>> spellProjectile =
+                    this.projectile.getRandom(world.getRandom());
             if (spellProjectile.isPresent()) {
-                Optional<? extends Entity> projectile = spellProjectile.get().value().shoot(world, user, pos);
+                Optional<? extends Entity> projectile = spellProjectile.get().value().shoot(world, caster, pos);
                 if (projectile.isPresent()) {
-                    MagicalScepter.LOGGER.info("Shot a {}, triggered by spell", projectile.getClass());
+                    projectile.get().refreshPositionAfterTeleport(SpellProjectileHelper.getProjectilePosition(caster));
+                    MagicalScepter.LOGGER.info("Shot a {}, triggered by spell", projectile.get().getClass().getSimpleName());
                 }
             }
         }

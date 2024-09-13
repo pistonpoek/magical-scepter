@@ -13,6 +13,11 @@
         "sound_id": "minecraft:entity.breeze.shoot"
       },
       "volume": 1.0
+    },
+    {
+      "type": "minecraft:shoot_projectile",
+      "projectile": "minecraft:wind_charge",
+      "velocity": 1.5
     }
   ]
 }

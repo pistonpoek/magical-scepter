@@ -26,6 +26,11 @@
           "sound_id": "minecraft:entity.ghast.shoot"
         },
         "volume": 1.0
+      },
+      {
+        "type": "minecraft:shoot_projectile",
+        "projectile": "minecraft:fireball",
+        "velocity": 1.0
       }
     ]
   }

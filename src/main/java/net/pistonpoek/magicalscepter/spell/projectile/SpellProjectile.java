@@ -13,7 +13,12 @@ import java.util.Optional;
 public interface SpellProjectile<T extends Entity> {
 
     enum Type implements StringIdentifiable {
-        SMALL_FIREBALL("small_fireball", new SmallFireballSpellProjectile());
+        SMALL_FIREBALL("small_fireball", new SmallFireballSpellProjectile()),
+        FIREBALL("fireball", new FireballSpellProjectile()),
+        DRAGON_FIREBALL("dragon_fireball", new DragonFireballSpellProjectile()),
+        WIND_CHARGE("wind_charge", new WindChargeSpellProjectile()),
+        SHULKER_BULLET("shulker_bullet", new ShulkerBulletSpellProjectile()),
+        WITHER_SKULL("wither_skull", new WitherSkullSpellProjectile());
 
         private final String name;
         private final SpellProjectile<? extends Entity> spellProjectile;
@@ -37,7 +42,6 @@ public interface SpellProjectile<T extends Entity> {
         for (Type projectileType: Type.values()) {
             Registry.register(registry, projectileType.name, projectileType.spellProjectile);
         }
-        // Add spell projectiles to be used, can be done by extending a EntityProjectile and then implementing the shoot method.
     }
 
     // TODO add more variables to the shoot method.

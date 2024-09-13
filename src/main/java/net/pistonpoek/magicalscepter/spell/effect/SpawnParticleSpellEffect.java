@@ -52,16 +52,16 @@ public record SpawnParticleSpellEffect(
     }
 
     @Override
-    public void apply(ServerWorld world, Entity user, Vec3d pos) {
-        Random random = user.getRandom();
-        Vec3d vec3d = user.getMovement();
-        float f = user.getWidth();
-        float g = user.getHeight();
+    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
+        Random random = caster.getRandom();
+        Vec3d vec3d = caster.getMovement();
+        float width = caster.getWidth();
+        float height = caster.getHeight();
         world.spawnParticles(
                 this.particle,
-                this.horizontalPosition.getPosition(pos.getX(), pos.getX(), f, random),
-                this.verticalPosition.getPosition(pos.getY(), pos.getY() + (double)(g / 2.0F), g, random),
-                this.horizontalPosition.getPosition(pos.getZ(), pos.getZ(), f, random),
+                this.horizontalPosition.getPosition(pos.getX(), pos.getX(), width, random),
+                this.verticalPosition.getPosition(pos.getY(), pos.getY() + (double)(height / 2.0F), height, random),
+                this.horizontalPosition.getPosition(pos.getZ(), pos.getZ(), width, random),
                 0,
                 this.horizontalVelocity.getVelocity(vec3d.getX(), random),
                 this.verticalVelocity.getVelocity(vec3d.getY(), random),

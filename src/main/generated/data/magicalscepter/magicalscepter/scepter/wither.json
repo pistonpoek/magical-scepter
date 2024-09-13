@@ -26,6 +26,11 @@
           "sound_id": "minecraft:entity.wither.shoot"
         },
         "volume": 1.0
+      },
+      {
+        "type": "minecraft:shoot_projectile",
+        "projectile": "minecraft:wither_skull",
+        "velocity": 1.0
       }
     ]
   }
