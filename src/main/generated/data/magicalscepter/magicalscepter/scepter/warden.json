@@ -11,7 +11,7 @@
       }
     }
   ],
-  "spell": {
+  "primary_spell": {
     "cooldown": 100,
     "experience_cost": 30,
     "spells": [
@@ -26,7 +26,13 @@
           "sound_id": "minecraft:entity.warden.sonic_boom"
         },
         "volume": 1.0
-      },
+      }
+    ]
+  },
+  "secondary_spell": {
+    "cooldown": 100,
+    "experience_cost": 30,
+    "spells": [
       {
         "type": "minecraft:apply_mob_effect",
         "max_amplifier": 3.0,

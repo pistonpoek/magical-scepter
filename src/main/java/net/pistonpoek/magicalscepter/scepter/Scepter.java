@@ -14,13 +14,14 @@ import net.pistonpoek.magicalscepter.spell.Spell;
 
 import java.util.Optional;
 
-public record Scepter(int color, boolean infusable, Spell spell,
+public record Scepter(int color, boolean infusable, Spell primarySpell, Optional<Spell> secondarySpell,
                       Optional<LootContextPredicate> infusion) {
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Codec.INT.fieldOf("color").forGetter(Scepter::color),
                             Codec.BOOL.fieldOf("infusable").forGetter(Scepter::infusable),
-                            Spell.CODEC.fieldOf("spell").forGetter(Scepter::spell),
+                            Spell.CODEC.fieldOf("primary_spell").forGetter(Scepter::primarySpell),
+                            Spell.CODEC.optionalFieldOf("secondary_spell").forGetter(Scepter::secondarySpell),
                             LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
                     )
                     .apply(instance, Scepter::new)
@@ -46,8 +47,12 @@ public record Scepter(int color, boolean infusable, Spell spell,
         return lootContextPredicate.test(lootContext);
     }
 
-    public Spell getSpell() {
-        return spell;
+    public Spell getPrimarySpell() {
+        return primarySpell;
+    }
+
+    public Spell getSecondarySpell() {
+        return secondarySpell.orElse(primarySpell);
     }
 
 }

@@ -62,10 +62,6 @@ public class ScepterHelper {
         return scepter.value().isInfusable();
     }
 
-    public static Spell getSpell(ItemStack itemStack) {
-        return getScepter(itemStack).value().getSpell();
-    }
-
     public static Registry<Scepter> getScepterRegistry(World world) {
         return world.getRegistryManager().get(ModRegistryKeys.SCEPTER);
     }

@@ -33,7 +33,8 @@ public class Scepters {
         return RegistryKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(id));
     }
 
-    public static final Scepter MAGICAL = create(0xBC7C5C, true, Spells.MAGICAL,
+    public static final Scepter MAGICAL = create(0xBC7C5C, true,
+            Spells.MAGICAL,
             null);
 
     protected static LootCondition.@NotNull Builder damagedByBlaze() {
@@ -42,7 +43,8 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.BLAZE))
         );
     }
-    public static final Scepter BLAZE = create(0xFF9900, false, Spells.BLAZE_SMALL_FIREBALL,
+    public static final Scepter BLAZE = create(0xFF9900, false,
+            Spells.BLAZE_SMALL_FIREBALL, Spells.BLAZE_FIRE_RESISTANCE,
             damagedByBlaze());
 
     protected static LootCondition.@NotNull Builder damagedByBreeze() {
@@ -51,7 +53,8 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.BREEZE))
         );
     }
-    public static final Scepter BREEZE = create(0xBDC9FF, false, Spells.BREEZE_WIND_CHARGE,
+    public static final Scepter BREEZE = create(0xBDC9FF, false,
+            Spells.BREEZE_WIND_CHARGE,
             damagedByBreeze());
 
     protected static LootCondition.@NotNull Builder damagedByDragon() {
@@ -60,7 +63,8 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.ENDER_DRAGON))
         );
     }
-    public static final Scepter DRAGON = create(0xB823F5, false, Spells.DRAGON,
+    public static final Scepter DRAGON = create(0xB823F5, false,
+            Spells.DRAGON_FIREBALL,
             damagedByDragon());
 
     protected static LootCondition.@NotNull Builder damagedByEvokerFangs() {
@@ -70,7 +74,8 @@ public class Scepters {
                         .directEntity(EntityPredicate.Builder.create().type(EntityType.EVOKER_FANGS))
         );
     }
-    public static final Scepter EVOKER = create(0x959B9B, false, Spells.EVOKER,
+    public static final Scepter EVOKER = create(0x959B9B, false,
+            Spells.EVOKER,
             damagedByEvokerFangs());
 
     protected static LootCondition.@NotNull Builder damagedByGhast() {
@@ -79,7 +84,8 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.GHAST))
         );
     }
-    public static final Scepter GHAST = create(0xCD5CAB, false, Spells.GHAST,
+    public static final Scepter GHAST = create(0xCD5CAB, false,
+            Spells.GHAST_FIREBALL, Spells.GHAST_REGENERATION,
             damagedByGhast());
 
     protected static LootCondition.@NotNull Builder damagedByElderGuardian() {
@@ -87,7 +93,8 @@ public class Scepters {
                 DamageSourcePredicate.Builder.create()
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.ELDER_GUARDIAN)));
     }
-    public static final Scepter GUARDIAN = create(0x4f7d8c, false, Spells.GUARDIAN,
+    public static final Scepter GUARDIAN = create(0x4f7d8c, false,
+            Spells.GUARDIAN,
             damagedByElderGuardian());
 
     protected static LootCondition.@NotNull Builder damagedByShulker() {
@@ -96,7 +103,8 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.SHULKER))
         );
     }
-    public static final Scepter SHULKER = create(0xCEFFFF, false, Spells.SHULKER,
+    public static final Scepter SHULKER = create(0xCEFFFF, false,
+            Spells.SHULKER_BULLET, Spells.SHULKER_TELEPORT,
             damagedByShulker());
 
     protected static LootCondition.@NotNull Builder damagedByWarden() {
@@ -105,7 +113,8 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.WARDEN))
         );
     }
-    public static final Scepter WARDEN = create(0x2ce3eb, false, Spells.WARDEN,
+    public static final Scepter WARDEN = create(0x2ce3eb, false,
+            Spells.WARDEN_SONIC_BOOM, Spells.WARDEN_STABILITY,
             damagedByWarden());
 
     protected static LootCondition.@NotNull Builder damagedByWither() {
@@ -114,14 +123,21 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.WITHER))
         );
     }
-    public static final Scepter WITHER = create(0x736156, false, Spells.WITHER,
+    public static final Scepter WITHER = create(0x736156, false,
+            Spells.WITHER_SKULL,
             damagedByWither());
 
     public static final Scepter DEFAULT = MAGICAL;
 
-    private static Scepter create(int color, boolean infusable, Spell spell,
+    private static Scepter create(int color, boolean infusable, Spell primarySpell,
                                   @Nullable LootCondition.Builder lootConditionBuilder) {
-        return new Scepter(color, infusable, spell,
+        return new Scepter(color, infusable, primarySpell, Optional.empty(),
+                Optional.ofNullable(lootConditionBuilder).map(builder -> LootContextPredicate.create(builder.build())));
+    }
+
+    private static Scepter create(int color, boolean infusable, Spell primarySpell, Spell secondarySpell,
+                                  @Nullable LootCondition.Builder lootConditionBuilder) {
+        return new Scepter(color, infusable, primarySpell, Optional.of(secondarySpell),
                 Optional.ofNullable(lootConditionBuilder).map(builder -> LootContextPredicate.create(builder.build())));
     }
 
