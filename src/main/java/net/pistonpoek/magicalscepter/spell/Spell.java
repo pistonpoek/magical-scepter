@@ -51,11 +51,10 @@ public record Spell(int experienceCost, int cooldown,
         return 0;
     }
 
-    public void castSpell(LivingEntity caster, ItemStack itemStack, EquipmentSlot slot) {
-        MagicalScepter.LOGGER.info("Casting spell");
+    public void castSpell(LivingEntity caster) {
         ServerWorld serverWorld = (ServerWorld)caster.getWorld();
-        for (SpellEffect spell : spells) {
-            spell.apply(serverWorld, caster, caster.getPos());
+        for (SpellEffect spellEffect : spells) {
+            spellEffect.apply(serverWorld, caster, caster.getPos());
         }
     }
 
