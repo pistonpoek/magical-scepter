@@ -20,15 +20,19 @@ public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
     @Override
     protected void configure(BiConsumer<Identifier, Spell> provider, RegistryWrapper.WrapperLookup lookup) {
         provider.accept(Spells.MAGICAL_KEY.getValue(), Spells.MAGICAL);
-        provider.accept(Spells.BLAZE_KEY.getValue(), Spells.BLAZE_SMALL_FIREBALL);
-        provider.accept(Spells.BREEZE_KEY.getValue(), Spells.BREEZE_WIND_CHARGE);
-        provider.accept(Spells.DRAGON_KEY.getValue(), Spells.DRAGON);
-        provider.accept(Spells.EVOKER_KEY.getValue(), Spells.EVOKER);
-        provider.accept(Spells.GHAST_KEY.getValue(), Spells.GHAST);
+        provider.accept(Spells.BLAZE_SMALL_FIREBALL_KEY.getValue(), Spells.BLAZE_SMALL_FIREBALL);
+        provider.accept(Spells.BLAZE_FIRE_RESISTANCE_KEY.getValue(), Spells.BLAZE_FIRE_RESISTANCE);
+        provider.accept(Spells.BREEZE_WIND_CHARGE_KEY.getValue(), Spells.BREEZE_WIND_CHARGE);
+        provider.accept(Spells.DRAGON_FIREBALL_KEY.getValue(), Spells.DRAGON_FIREBALL);
+        provider.accept(Spells.EVOKER_FANG_LINE_KEY.getValue(), Spells.EVOKER);
+        provider.accept(Spells.GHAST_FIREBALL_KEY.getValue(), Spells.GHAST_FIREBALL);
+        provider.accept(Spells.GHAST_REGENERATION_KEY.getValue(), Spells.GHAST_REGENERATION);
         provider.accept(Spells.GUARDIAN_KEY.getValue(), Spells.GUARDIAN);
-        provider.accept(Spells.SHULKER_KEY.getValue(), Spells.SHULKER);
-        provider.accept(Spells.WARDEN_KEY.getValue(), Spells.WARDEN);
-        provider.accept(Spells.WITHER_KEY.getValue(), Spells.WITHER);
+        provider.accept(Spells.SHULKER_BULLET_KEY.getValue(), Spells.SHULKER_BULLET);
+        provider.accept(Spells.SHULKER_TELEPORT_KEY.getValue(), Spells.SHULKER_TELEPORT);
+        provider.accept(Spells.WARDEN_SONIC_BOOM_KEY.getValue(), Spells.WARDEN_SONIC_BOOM);
+        provider.accept(Spells.WARDEN_STABILITY_KEY.getValue(), Spells.WARDEN_STABILITY);
+        provider.accept(Spells.WITHER_SKULL_KEY.getValue(), Spells.WITHER_SKULL);
     }
 
     @Override

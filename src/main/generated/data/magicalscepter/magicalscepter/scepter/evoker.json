@@ -14,7 +14,7 @@
       }
     }
   ],
-  "spell": {
+  "primary_spell": {
     "cooldown": 100,
     "experience_cost": 30,
     "spells": [
