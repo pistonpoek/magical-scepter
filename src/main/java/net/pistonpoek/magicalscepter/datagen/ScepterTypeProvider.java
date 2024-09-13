@@ -3,9 +3,10 @@ package net.pistonpoek.magicalscepter.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.data.DataOutput;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
-import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.Scepters;
@@ -20,16 +21,17 @@ public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
 
     @Override
     protected void configure(BiConsumer<Identifier, Scepter> provider, RegistryWrapper.WrapperLookup lookup) {
-        provider.accept(Scepters.MAGICAL_KEY.getValue(), Scepters.MAGICAL);
-        provider.accept(Scepters.BLAZE_KEY.getValue(), Scepters.BLAZE);
-        provider.accept(Scepters.BREEZE_KEY.getValue(), Scepters.BREEZE);
-        provider.accept(Scepters.DRAGON_KEY.getValue(), Scepters.DRAGON);
-        provider.accept(Scepters.EVOKER_KEY.getValue(), Scepters.EVOKER);
-        provider.accept(Scepters.GHAST_KEY.getValue(), Scepters.GHAST);
-        provider.accept(Scepters.GUARDIAN_KEY.getValue(), Scepters.GUARDIAN);
-        provider.accept(Scepters.SHULKER_KEY.getValue(), Scepters.SHULKER);
-        provider.accept(Scepters.WARDEN_KEY.getValue(), Scepters.WARDEN);
-        provider.accept(Scepters.WITHER_KEY.getValue(), Scepters.WITHER);
+        RegistryEntryLookup<Scepter> scepterLookup = lookup.createRegistryLookup().getOrThrow(ModRegistryKeys.SCEPTER);
+
+        for (RegistryKey<Scepter> scepterKey: Scepters.SCEPTER_KEYS) {
+            addSpell(provider, scepterLookup, scepterKey);
+        }
+    }
+
+    private static void addSpell(BiConsumer<Identifier, Scepter> provider,
+                                 RegistryEntryLookup<Scepter> lookup,
+                                 RegistryKey<Scepter> key) {
+        provider.accept(key.getValue(), lookup.getOrThrow(key).value());
     }
 
     @Override

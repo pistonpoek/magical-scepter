@@ -1,7 +1,6 @@
 {
-  "cooldown": 100,
-  "experience_cost": 30,
-  "spells": [
+  "cooldown": 30,
+  "effects": [
     {
       "type": "minecraft:apply_mob_effect",
       "max_amplifier": 3.0,
@@ -10,5 +9,6 @@
       "min_duration": 1000.0,
       "to_apply": "minecraft:fire_resistance"
     }
-  ]
+  ],
+  "experience_cost": 10
 }

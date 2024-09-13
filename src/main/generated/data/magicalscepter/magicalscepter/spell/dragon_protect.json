@@ -9,14 +9,9 @@
         "min_inclusive": 0.8
       },
       "sound": {
-        "sound_id": "minecraft:entity.shulker.shoot"
+        "sound_id": "minecraft:entity.ender_dragon.growl"
       },
       "volume": 1.0
-    },
-    {
-      "type": "minecraft:shoot_projectile",
-      "projectile": "minecraft:shulker_bullet",
-      "velocity": 1.0
     }
   ],
   "experience_cost": 10

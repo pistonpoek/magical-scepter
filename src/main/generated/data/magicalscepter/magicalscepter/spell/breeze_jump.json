@@ -7,7 +7,7 @@
       "max_duration": 400.0,
       "min_amplifier": 1.0,
       "min_duration": 1000.0,
-      "to_apply": "minecraft:regeneration"
+      "to_apply": "minecraft:jump_boost"
     }
   ],
   "experience_cost": 10

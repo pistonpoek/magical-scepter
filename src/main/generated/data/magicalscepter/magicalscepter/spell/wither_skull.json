@@ -1,7 +1,6 @@
 {
-  "cooldown": 100,
-  "experience_cost": 30,
-  "spells": [
+  "cooldown": 30,
+  "effects": [
     {
       "type": "minecraft:play_sound",
       "pitch": {
@@ -19,5 +18,6 @@
       "projectile": "minecraft:wither_skull",
       "velocity": 1.0
     }
-  ]
+  ],
+  "experience_cost": 10
 }

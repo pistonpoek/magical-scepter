@@ -4,13 +4,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
-import net.pistonpoek.magicalscepter.MagicalScepter;
-import net.pistonpoek.magicalscepter.registry.ModTags;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.pistonpoek.magicalscepter.scepter.Scepters;
@@ -27,7 +26,8 @@ public class ScepterItem extends Item {
         ItemStack itemStack = user.getStackInHand(hand);
         Scepter scepter = ScepterHelper.getScepter(itemStack).value();
 
-        Spell spell = !user.isSneaking() ? scepter.getPrimarySpell() : scepter.getSecondarySpell();
+        RegistryEntry<Spell> spellEntry = !user.isSneaking() ? scepter.getAttackSpell() : scepter.getProtectSpell();
+        Spell spell = spellEntry.value();
 
         if (!user.getAbilities().creativeMode) {
             if (user.totalExperience < spell.experienceCost()) {
@@ -46,11 +46,6 @@ public class ScepterItem extends Item {
             spell.castSpell(user);
             ItemStack damagedItemStack = itemStack.damage(1, ModItems.EMPTY_SCEPTER, user, LivingEntity.getSlotForHand(hand));
             return TypedActionResult.success(damagedItemStack, !user.isSneaking());
-        } else {
-            spell.displaySpell(world, user, 0);
-        }
-        if (!spell.isInstant()) {
-            user.setCurrentHand(hand);
         }
         return TypedActionResult.pass(itemStack);
     }

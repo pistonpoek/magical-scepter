@@ -10,11 +10,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
 
-public record RandomTeleportSpellEffect(boolean spawnParticles)
+public record RandomTeleportSpellEffect(boolean spawnParticles, double bound)
         implements SpellEffect {
     public static final MapCodec<RandomTeleportSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Codec.BOOL.fieldOf("spawn_particles").forGetter(RandomTeleportSpellEffect::spawnParticles)
+                    Codec.BOOL.fieldOf("spawn_particles").forGetter(RandomTeleportSpellEffect::spawnParticles),
+                    Codec.DOUBLE.optionalFieldOf("bound", 16.0).forGetter(RandomTeleportSpellEffect::bound)
                     ).apply(instance, RandomTeleportSpellEffect::new)
     );
     @Override
@@ -23,13 +24,13 @@ public record RandomTeleportSpellEffect(boolean spawnParticles)
             return;
         }
         for (int i = 0; i < 16; i++) {
-            double d = caster.getX() + (caster.getRandom().nextDouble() - 0.5) * 16.0;
+            double d = caster.getX() + (caster.getRandom().nextDouble() - 0.5) * bound;
             double e = MathHelper.clamp(
-                    caster.getY() + (double) (caster.getRandom().nextInt(16) - 8),
+                    caster.getY() + (double) (caster.getRandom().nextInt((int)bound) - 8),
                     (double) world.getBottomY(),
                     (double) (world.getBottomY() + ((ServerWorld) world).getLogicalHeight() - 1)
             );
-            double f = caster.getZ() + (caster.getRandom().nextDouble() - 0.5) * 16.0;
+            double f = caster.getZ() + (caster.getRandom().nextDouble() - 0.5) * bound;
             if (caster.hasVehicle()) {
                 caster.stopRiding();
             }

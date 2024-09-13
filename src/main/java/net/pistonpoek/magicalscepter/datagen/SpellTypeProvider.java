@@ -3,6 +3,8 @@ package net.pistonpoek.magicalscepter.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.data.DataOutput;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
@@ -19,20 +21,17 @@ public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
 
     @Override
     protected void configure(BiConsumer<Identifier, Spell> provider, RegistryWrapper.WrapperLookup lookup) {
-        provider.accept(Spells.MAGICAL_KEY.getValue(), Spells.MAGICAL);
-        provider.accept(Spells.BLAZE_SMALL_FIREBALL_KEY.getValue(), Spells.BLAZE_SMALL_FIREBALL);
-        provider.accept(Spells.BLAZE_FIRE_RESISTANCE_KEY.getValue(), Spells.BLAZE_FIRE_RESISTANCE);
-        provider.accept(Spells.BREEZE_WIND_CHARGE_KEY.getValue(), Spells.BREEZE_WIND_CHARGE);
-        provider.accept(Spells.DRAGON_FIREBALL_KEY.getValue(), Spells.DRAGON_FIREBALL);
-        provider.accept(Spells.EVOKER_FANG_LINE_KEY.getValue(), Spells.EVOKER);
-        provider.accept(Spells.GHAST_FIREBALL_KEY.getValue(), Spells.GHAST_FIREBALL);
-        provider.accept(Spells.GHAST_REGENERATION_KEY.getValue(), Spells.GHAST_REGENERATION);
-        provider.accept(Spells.GUARDIAN_KEY.getValue(), Spells.GUARDIAN);
-        provider.accept(Spells.SHULKER_BULLET_KEY.getValue(), Spells.SHULKER_BULLET);
-        provider.accept(Spells.SHULKER_TELEPORT_KEY.getValue(), Spells.SHULKER_TELEPORT);
-        provider.accept(Spells.WARDEN_SONIC_BOOM_KEY.getValue(), Spells.WARDEN_SONIC_BOOM);
-        provider.accept(Spells.WARDEN_STABILITY_KEY.getValue(), Spells.WARDEN_STABILITY);
-        provider.accept(Spells.WITHER_SKULL_KEY.getValue(), Spells.WITHER_SKULL);
+        RegistryEntryLookup<Spell> spellLookup = lookup.createRegistryLookup().getOrThrow(ModRegistryKeys.SPELL);
+
+        for (RegistryKey<Spell> spellKey: Spells.SPELL_KEYS) {
+            addSpell(provider, spellLookup, spellKey);
+        }
+    }
+
+    private static void addSpell(BiConsumer<Identifier, Spell> provider,
+                                 RegistryEntryLookup<Spell> lookup,
+                                 RegistryKey<Spell> key) {
+        provider.accept(key.getValue(), lookup.getOrThrow(key).value());
     }
 
     @Override
