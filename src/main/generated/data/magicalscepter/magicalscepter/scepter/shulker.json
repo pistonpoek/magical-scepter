@@ -11,49 +11,6 @@
       }
     }
   ],
-  "primary_spell": {
-    "cooldown": 100,
-    "experience_cost": 30,
-    "spells": [
-      {
-        "type": "minecraft:play_sound",
-        "pitch": {
-          "type": "minecraft:uniform",
-          "max_exclusive": 1.2,
-          "min_inclusive": 0.8
-        },
-        "sound": {
-          "sound_id": "minecraft:entity.shulker.shoot"
-        },
-        "volume": 1.0
-      },
-      {
-        "type": "minecraft:shoot_projectile",
-        "projectile": "minecraft:shulker_bullet",
-        "velocity": 1.0
-      }
-    ]
-  },
-  "secondary_spell": {
-    "cooldown": 100,
-    "experience_cost": 30,
-    "spells": [
-      {
-        "type": "minecraft:play_sound",
-        "pitch": {
-          "type": "minecraft:uniform",
-          "max_exclusive": 1.2,
-          "min_inclusive": 0.8
-        },
-        "sound": {
-          "sound_id": "minecraft:entity.shulker.teleport"
-        },
-        "volume": 1.0
-      },
-      {
-        "type": "minecraft:random_teleport",
-        "spawn_particles": true
-      }
-    ]
-  }
+  "spell_attack": "magicalscepter:shulker_bullet",
+  "spell_protect": "magicalscepter:shulker_teleport"
 }

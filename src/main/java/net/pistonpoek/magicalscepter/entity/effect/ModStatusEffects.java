@@ -16,6 +16,10 @@ public class ModStatusEffects {
                         ModIdentifier.of("stability"),
                         0.1f, EntityAttributeModifier.Operation.ADD_VALUE));
 
+    public static void init() {
+
+    }
+
     private static RegistryEntry<StatusEffect> register(String id, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, ModIdentifier.of(id), statusEffect);
     }

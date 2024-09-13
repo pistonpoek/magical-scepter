@@ -12,19 +12,18 @@ import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.Spell;
 
-import java.util.Optional;
+import java.util.*;
 
-public record Scepter(int color, boolean infusable, Spell primarySpell, Optional<Spell> secondarySpell,
+public record Scepter(int color, boolean infusable, RegistryEntry<Spell> attackSpell, RegistryEntry<Spell> protectSpell,
                       Optional<LootContextPredicate> infusion) {
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Codec.INT.fieldOf("color").forGetter(Scepter::color),
                             Codec.BOOL.fieldOf("infusable").forGetter(Scepter::infusable),
-                            Spell.CODEC.fieldOf("primary_spell").forGetter(Scepter::primarySpell),
-                            Spell.CODEC.optionalFieldOf("secondary_spell").forGetter(Scepter::secondarySpell),
+                            Spell.ENTRY_CODEC.fieldOf("spell_attack").forGetter(Scepter::attackSpell),
+                            Spell.ENTRY_CODEC.fieldOf("spell_protect").forGetter(Scepter::protectSpell),
                             LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
-                    )
-                    .apply(instance, Scepter::new)
+                    ).apply(instance, Scepter::new)
     );
     public static final Codec<RegistryEntry<Scepter>> ENTRY_CODEC = RegistryFixedCodec.of(ModRegistryKeys.SCEPTER);
     public static final PacketCodec<RegistryByteBuf, RegistryEntry<Scepter>> ENTRY_PACKET_CODEC =
@@ -47,12 +46,42 @@ public record Scepter(int color, boolean infusable, Spell primarySpell, Optional
         return lootContextPredicate.test(lootContext);
     }
 
-    public Spell getPrimarySpell() {
-        return primarySpell;
+    public RegistryEntry<Spell> getAttackSpell() {
+        return attackSpell;
     }
 
-    public Spell getSecondarySpell() {
-        return secondarySpell.orElse(primarySpell);
+    public RegistryEntry<Spell> getProtectSpell() {
+        return protectSpell;
+    }
+
+    public static Scepter.Builder builder(int color, boolean infusable,
+                                          RegistryEntry<Spell> attackSpell, RegistryEntry<Spell> protectSpell) {
+        return new Scepter.Builder(color, infusable, attackSpell, protectSpell);
+    }
+
+    public static class Builder {
+        private final int color;
+        private final boolean infusable;
+        private final RegistryEntry<Spell> attackSpell;
+        private final RegistryEntry<Spell> protectSpell;
+        private LootContextPredicate infusion = null;
+
+        public Builder(int color, boolean infusable,
+                       RegistryEntry<Spell> attackSpell, RegistryEntry<Spell> protectSpell) {
+            this.color = color;
+            this.infusable = infusable;
+            this.attackSpell = attackSpell;
+            this.protectSpell = protectSpell;
+        }
+
+        public Scepter.Builder infusion(LootContextPredicate infusion) {
+            this.infusion = infusion;
+            return this;
+        }
+
+        public Scepter build() {
+            return new Scepter(color, infusable, attackSpell, protectSpell, Optional.ofNullable(infusion));
+        }
     }
 
 }

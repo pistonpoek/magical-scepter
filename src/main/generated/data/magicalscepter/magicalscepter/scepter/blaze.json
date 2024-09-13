@@ -11,41 +11,6 @@
       }
     }
   ],
-  "primary_spell": {
-    "cooldown": 100,
-    "experience_cost": 30,
-    "spells": [
-      {
-        "type": "minecraft:play_sound",
-        "pitch": {
-          "type": "minecraft:uniform",
-          "max_exclusive": 1.2,
-          "min_inclusive": 0.8
-        },
-        "sound": {
-          "sound_id": "minecraft:entity.blaze.shoot"
-        },
-        "volume": 1.0
-      },
-      {
-        "type": "minecraft:shoot_projectile",
-        "projectile": "minecraft:small_fireball",
-        "velocity": 1.0
-      }
-    ]
-  },
-  "secondary_spell": {
-    "cooldown": 100,
-    "experience_cost": 30,
-    "spells": [
-      {
-        "type": "minecraft:apply_mob_effect",
-        "max_amplifier": 3.0,
-        "max_duration": 400.0,
-        "min_amplifier": 1.0,
-        "min_duration": 1000.0,
-        "to_apply": "minecraft:fire_resistance"
-      }
-    ]
-  }
+  "spell_attack": "magicalscepter:blaze_small_fireball",
+  "spell_protect": "magicalscepter:blaze_fire_resistance"
 }

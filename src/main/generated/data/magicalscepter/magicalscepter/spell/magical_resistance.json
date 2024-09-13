@@ -9,14 +9,17 @@
         "min_inclusive": 0.8
       },
       "sound": {
-        "sound_id": "minecraft:entity.shulker.shoot"
+        "sound_id": "minecraft:entity.illusioner.cast_spell"
       },
       "volume": 1.0
     },
     {
-      "type": "minecraft:shoot_projectile",
-      "projectile": "minecraft:shulker_bullet",
-      "velocity": 1.0
+      "type": "minecraft:apply_mob_effect",
+      "max_amplifier": 3.0,
+      "max_duration": 400.0,
+      "min_amplifier": 1.0,
+      "min_duration": 1000.0,
+      "to_apply": "minecraft:resistance"
     }
   ],
   "experience_cost": 10

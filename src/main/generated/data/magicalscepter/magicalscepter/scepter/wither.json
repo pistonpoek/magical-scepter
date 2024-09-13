@@ -11,27 +11,6 @@
       }
     }
   ],
-  "primary_spell": {
-    "cooldown": 100,
-    "experience_cost": 30,
-    "spells": [
-      {
-        "type": "minecraft:play_sound",
-        "pitch": {
-          "type": "minecraft:uniform",
-          "max_exclusive": 1.2,
-          "min_inclusive": 0.8
-        },
-        "sound": {
-          "sound_id": "minecraft:entity.wither.shoot"
-        },
-        "volume": 1.0
-      },
-      {
-        "type": "minecraft:shoot_projectile",
-        "projectile": "minecraft:wither_skull",
-        "velocity": 1.0
-      }
-    ]
-  }
+  "spell_attack": "magicalscepter:wither_skull",
+  "spell_protect": "magicalscepter:wither_shield"
 }

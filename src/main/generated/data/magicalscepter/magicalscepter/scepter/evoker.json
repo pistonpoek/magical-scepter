@@ -14,22 +14,6 @@
       }
     }
   ],
-  "primary_spell": {
-    "cooldown": 100,
-    "experience_cost": 30,
-    "spells": [
-      {
-        "type": "minecraft:play_sound",
-        "pitch": {
-          "type": "minecraft:uniform",
-          "max_exclusive": 1.2,
-          "min_inclusive": 0.8
-        },
-        "sound": {
-          "sound_id": "minecraft:entity.evoker.cast_spell"
-        },
-        "volume": 1.0
-      }
-    ]
-  }
+  "spell_attack": "magicalscepter:evoker_fang_line",
+  "spell_protect": "magicalscepter:evoker_fang_circle"
 }

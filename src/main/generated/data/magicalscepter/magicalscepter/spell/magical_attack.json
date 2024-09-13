@@ -1,7 +1,6 @@
 {
-  "cooldown": 100,
-  "experience_cost": 30,
-  "spells": [
+  "cooldown": 30,
+  "effects": [
     {
       "type": "minecraft:play_sound",
       "pitch": {
@@ -15,12 +14,10 @@
       "volume": 1.0
     },
     {
-      "type": "minecraft:apply_mob_effect",
-      "max_amplifier": 3.0,
-      "max_duration": 400.0,
-      "min_amplifier": 1.0,
-      "min_duration": 1000.0,
-      "to_apply": "minecraft:resistance"
+      "type": "minecraft:shoot_projectile",
+      "projectile": "minecraft:dragon_fireball",
+      "velocity": 1.0
     }
-  ]
+  ],
+  "experience_cost": 10
 }
