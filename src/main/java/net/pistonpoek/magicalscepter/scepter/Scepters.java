@@ -7,7 +7,6 @@ import net.minecraft.predicate.entity.DamageSourcePredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.Spell;
@@ -43,7 +42,7 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.BLAZE))
         );
     }
-    public static final Scepter BLAZE = create(0xFF9900, false, Spells.BLAZE,
+    public static final Scepter BLAZE = create(0xFF9900, false, Spells.BLAZE_SMALL_FIREBALL,
             damagedByBlaze());
 
     protected static LootCondition.@NotNull Builder damagedByBreeze() {
@@ -52,7 +51,7 @@ public class Scepters {
                         .sourceEntity(EntityPredicate.Builder.create().type(EntityType.BREEZE))
         );
     }
-    public static final Scepter BREEZE = create(0xBDC9FF, false, Spells.BREEZE,
+    public static final Scepter BREEZE = create(0xBDC9FF, false, Spells.BREEZE_WIND_CHARGE,
             damagedByBreeze());
 
     protected static LootCondition.@NotNull Builder damagedByDragon() {

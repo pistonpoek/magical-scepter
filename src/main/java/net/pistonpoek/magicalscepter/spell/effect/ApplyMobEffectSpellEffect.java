@@ -37,8 +37,8 @@ public record ApplyMobEffectSpellEffect(
     );
 
     @Override
-    public void apply(ServerWorld world, Entity user, Vec3d pos) {
-        if (user instanceof LivingEntity livingEntity) {
+    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
+        if (caster instanceof LivingEntity livingEntity) {
             Random random = livingEntity.getRandom();
             Optional<RegistryEntry<StatusEffect>> optional = this.toApply.getRandom(random);
             if (optional.isPresent()) {

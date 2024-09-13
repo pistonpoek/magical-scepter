@@ -20,8 +20,8 @@ public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
     @Override
     protected void configure(BiConsumer<Identifier, Spell> provider, RegistryWrapper.WrapperLookup lookup) {
         provider.accept(Spells.MAGICAL_KEY.getValue(), Spells.MAGICAL);
-        provider.accept(Spells.BLAZE_KEY.getValue(), Spells.BLAZE);
-        provider.accept(Spells.BREEZE_KEY.getValue(), Spells.BREEZE);
+        provider.accept(Spells.BLAZE_KEY.getValue(), Spells.BLAZE_SMALL_FIREBALL);
+        provider.accept(Spells.BREEZE_KEY.getValue(), Spells.BREEZE_WIND_CHARGE);
         provider.accept(Spells.DRAGON_KEY.getValue(), Spells.DRAGON);
         provider.accept(Spells.EVOKER_KEY.getValue(), Spells.EVOKER);
         provider.accept(Spells.GHAST_KEY.getValue(), Spells.GHAST);

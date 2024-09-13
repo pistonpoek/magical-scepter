@@ -23,7 +23,7 @@ public interface SpellEffect {
         Registry.register(registry, "shoot_projectile", ShootProjectileSpellEffect.CODEC);
     }
 
-    void apply(ServerWorld world, Entity user, Vec3d pos);
+    void apply(ServerWorld world, Entity caster, Vec3d pos);
 
     MapCodec<? extends SpellEffect> getCodec();
 }

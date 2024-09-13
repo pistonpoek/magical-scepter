@@ -13,6 +13,11 @@
         "sound_id": "minecraft:entity.ender_dragon.shoot"
       },
       "volume": 1.0
+    },
+    {
+      "type": "minecraft:shoot_projectile",
+      "projectile": "minecraft:dragon_fireball",
+      "velocity": 1.0
     }
   ]
 }
