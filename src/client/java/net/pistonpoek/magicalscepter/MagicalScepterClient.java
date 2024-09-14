@@ -13,7 +13,7 @@ public class MagicalScepterClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex > 0 ? -1 :
-				ColorHelper.Argb.fullAlpha(ScepterHelper.getScepter(stack).value().getColor()),
+				ScepterHelper.getColor(stack),
 				ModItems.SCEPTER);
 	}
 }

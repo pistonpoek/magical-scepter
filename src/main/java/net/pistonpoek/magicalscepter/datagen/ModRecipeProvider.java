@@ -2,12 +2,18 @@ package net.pistonpoek.magicalscepter.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancement.AdvancementRequirements;
+import net.minecraft.advancement.AdvancementRewards;
+import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
+import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
-import net.minecraft.item.Items;
+import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Identifier;
 import net.pistonpoek.magicalscepter.item.ModItems;
+import net.pistonpoek.magicalscepter.recipe.MagicalScepterRecipe;
+import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,9 +25,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void generate(RecipeExporter exporter) {
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.SCEPTER)
-                .input(Items.BROWN_MUSHROOM).input(Items.RED_MUSHROOM).input(ModItems.EMPTY_SCEPTER).input(Items.LAPIS_LAZULI)
-                .criterion(FabricRecipeProvider.hasItem(ModItems.EMPTY_SCEPTER),
-                FabricRecipeProvider.conditionsFromItem(ModItems.EMPTY_SCEPTER)).offerTo(exporter);
+        Identifier recipeId = ModIdentifier.of("magical_scepter");
+        RecipeCategory category = RecipeCategory.COMBAT;
+        exporter.accept(recipeId,
+                new MagicalScepterRecipe(CraftingRecipeJsonBuilder.toCraftingCategory(category)),
+                exporter.getAdvancementBuilder()
+                        .criterion("has_empty_scepter", conditionsFromPredicates(ItemPredicate.Builder.create().items(ModItems.SCEPTER)))
+                        .criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId))
+                        .rewards(AdvancementRewards.Builder.recipe(recipeId))
+                        .criteriaMerger(AdvancementRequirements.CriterionMerger.OR)
+                        .build(recipeId.withPrefixedPath("recipes/" + category.getName() + "/")));
     }
 }
