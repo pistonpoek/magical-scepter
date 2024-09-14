@@ -19,8 +19,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public class ModItems {
-    public static final Item EMPTY_SCEPTER = registerItem("empty_scepter",
-            new Item(new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
     public static final Item SCEPTER = registerItem("scepter",
             new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)));
     private static final Predicate<RegistryEntry.Reference<Scepter>> DEFAULT_SCEPTER =
@@ -31,7 +29,7 @@ public class ModItems {
         registryWrapper.streamEntries().filter(DEFAULT_SCEPTER.negate())
                 .map(ScepterHelper::createScepter)
                 .forEach(scepters::add);
-        entries.addAfter(Items.SPECTRAL_ARROW, scepters, visibility);
+        entries.addAfter(Items.WIND_CHARGE, scepters, visibility);
     }
 
     private static void addItemsToCombatItemGroup(FabricItemGroupEntries entries) {
@@ -44,7 +42,7 @@ public class ModItems {
     }
 
     private static void addItemsToIngredientsGroup(FabricItemGroupEntries entries) {
-        entries.addAfter(Items.BOWL, EMPTY_SCEPTER);
+        entries.addAfter(Items.BOWL, SCEPTER);
     }
 
     private static Item registerItem(String name, Item item) {

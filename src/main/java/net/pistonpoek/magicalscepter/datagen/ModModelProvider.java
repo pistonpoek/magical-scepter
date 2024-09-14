@@ -21,10 +21,6 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        // Add empty scepter item model
-        Identifier emptyScepterId = ModelIds.getItemModelId(ModItems.EMPTY_SCEPTER);
-        HANDHELD_ROD.upload(emptyScepterId, TextureMap.layer0(emptyScepterId), itemModelGenerator.writer);
-
         // Add scepter item model
         Identifier scepterId = ModelIds.getItemModelId(ModItems.SCEPTER);
         Model HANDHELD_ROD_TWO_LAYERS =

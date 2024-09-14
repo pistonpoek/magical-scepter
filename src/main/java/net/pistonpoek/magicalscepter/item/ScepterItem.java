@@ -57,7 +57,7 @@ public class ScepterItem extends Item {
         //scepter.setCastingSpell(!user.isSneaking());
         if (!world.isClient()) {
             spell.castSpell(user);
-            ItemStack damagedItemStack = itemStack.damage(1, ModItems.EMPTY_SCEPTER, user, LivingEntity.getSlotForHand(hand));
+            ItemStack damagedItemStack = itemStack.damage(1, ModItems.SCEPTER, user, LivingEntity.getSlotForHand(hand));
             return TypedActionResult.success(damagedItemStack, !user.isSneaking());
         }
         return TypedActionResult.pass(itemStack);
