@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import net.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import net.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import net.pistonpoek.magicalscepter.item.ModItems;
+import net.pistonpoek.magicalscepter.recipe.ModRecipeSerializer;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistries;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ public class MagicalScepter implements ModInitializer {
 	public void onInitialize() {
 		ModRegistries.init();
 		ModItems.init();
+		ModRecipeSerializer.init();
 		ModStatusEffects.init();
 		ModDataComponentTypes.init();
 	}

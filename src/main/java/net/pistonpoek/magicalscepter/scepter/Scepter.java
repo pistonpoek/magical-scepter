@@ -14,7 +14,9 @@ import net.pistonpoek.magicalscepter.spell.Spell;
 
 import java.util.*;
 
-public record Scepter(int color, boolean infusable, RegistryEntry<Spell> attackSpell, RegistryEntry<Spell> protectSpell,
+public record Scepter(int color, boolean infusable,
+                      RegistryEntry<Spell> attackSpell,
+                      RegistryEntry<Spell> protectSpell,
                       Optional<LootContextPredicate> infusion) {
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(

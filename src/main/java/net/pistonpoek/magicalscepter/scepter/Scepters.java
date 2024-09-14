@@ -161,13 +161,8 @@ public class Scepters {
         );
     }
 
-    public static Scepter DEFAULT = null;
-
     private static void register(Registerable<Scepter> registry, RegistryKey<Scepter> key, Scepter.Builder builder) {
         SCEPTER_KEYS.add(key);
-        if (DEFAULT_KEY == null) {
-            DEFAULT = builder.build();
-        }
         registry.register(key, builder.build());
     }
 }

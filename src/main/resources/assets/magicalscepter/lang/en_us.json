@@ -1,7 +1,6 @@
 {
   "effect.magicalscepter.stability" : "Stability",
-  "item.magicalscepter.empty_scepter" : "Scepter",
-  "item.magicalscepter.scepter.empty" : "Uncraftable Scepter",
+  "item.magicalscepter.scepter" : "Scepter",
   "item.magicalscepter.scepter.magical" : "Magical Scepter",
   "item.magicalscepter.scepter.blaze" : "Blaze Scepter",
   "item.magicalscepter.scepter.breeze" : "Breeze Scepter",

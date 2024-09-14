@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "magicalscepter:empty_scepter"
+            "items": "magicalscepter:scepter"
           }
         ]
       },
@@ -13,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magicalscepter:scepter"
+        "recipe": "magicalscepter:magical_scepter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_the_recipe",
-      "has_empty_scepter"
+      "has_empty_scepter",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "magicalscepter:scepter"
+      "magicalscepter:magical_scepter"
     ]
   }
 }
