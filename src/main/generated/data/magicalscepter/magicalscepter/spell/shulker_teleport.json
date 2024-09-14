@@ -2,7 +2,7 @@
   "cooldown": 30,
   "effects": [
     {
-      "type": "minecraft:play_sound",
+      "type": "magicalscepter:play_sound",
       "pitch": {
         "type": "minecraft:uniform",
         "max_exclusive": 1.2,
@@ -14,7 +14,7 @@
       "volume": 1.0
     },
     {
-      "type": "minecraft:random_teleport",
+      "type": "magicalscepter:random_teleport",
       "spawn_particles": true
     }
   ],

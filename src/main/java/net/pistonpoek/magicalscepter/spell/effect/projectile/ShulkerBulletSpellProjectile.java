@@ -1,15 +1,11 @@
-package net.pistonpoek.magicalscepter.spell.projectile;
+package net.pistonpoek.magicalscepter.spell.effect.projectile;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -19,9 +15,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ShulkerBulletSpellProjectile implements SpellProjectile<ShulkerBulletEntity> {
+public class ShulkerBulletSpellProjectile implements ShootProjectileSpellEffect {
+    public static final MapCodec<ShulkerBulletSpellProjectile> CODEC = MapCodec.unit(ShulkerBulletSpellProjectile::new);
+
     @Override
-    public Optional<ShulkerBulletEntity> shoot(ServerWorld world, Entity caster, Vec3d pos) {
+    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
         Optional<ShulkerBulletEntity> projectile = Optional.empty();
         if (caster instanceof LivingEntity) {
             Vec3d rotation = caster.getRotationVector().normalize();
@@ -35,10 +33,7 @@ public class ShulkerBulletSpellProjectile implements SpellProjectile<ShulkerBull
             projectile.get().setPosition(position.x, position.y, position.z);
         }
 
-        if (projectile.isPresent()) {
-            return caster.getWorld().spawnEntity(projectile.get()) ? projectile : Optional.empty();
-        }
-        return projectile;
+        projectile.ifPresent(shulkerBulletEntity -> caster.getWorld().spawnEntity(shulkerBulletEntity));
     }
 
     private LivingEntity getTarget(Entity caster) {
@@ -60,5 +55,10 @@ public class ShulkerBulletSpellProjectile implements SpellProjectile<ShulkerBull
         }
 
         return target;
+    }
+
+    @Override
+    public MapCodec<ShulkerBulletSpellProjectile> getProjectileCodec() {
+        return CODEC;
     }
 }

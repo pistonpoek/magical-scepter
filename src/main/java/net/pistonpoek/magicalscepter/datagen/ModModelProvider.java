@@ -24,7 +24,7 @@ public class ModModelProvider extends FabricModelProvider {
         // Add scepter item model
         Identifier scepterId = ModelIds.getItemModelId(ModItems.SCEPTER);
         Model HANDHELD_ROD_TWO_LAYERS =
-                new Model(Optional.of(Identifier.ofVanilla("item/handheld_rod")),
+                new Model(Optional.of(Identifier.ofVanilla("item/handheld")),
                         Optional.empty(), TextureKey.LAYER0, TextureKey.LAYER1);
         HANDHELD_ROD_TWO_LAYERS.upload(scepterId, TextureMap.layered(scepterId.withSuffixedPath("_overlay"), scepterId), itemModelGenerator.writer);
     }

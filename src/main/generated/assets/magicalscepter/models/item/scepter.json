@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/handheld_rod",
+  "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "magicalscepter:item/scepter_overlay",
     "layer1": "magicalscepter:item/scepter"
