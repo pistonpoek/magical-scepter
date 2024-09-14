@@ -1,5 +1,6 @@
-package net.pistonpoek.magicalscepter.spell.projectile;
+package net.pistonpoek.magicalscepter.spell.effect.projectile;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
@@ -8,9 +9,11 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.Optional;
 
-public class SmallFireballSpellProjectile implements SpellProjectile<SmallFireballEntity> {
+public class SmallFireballSpellProjectile implements ShootProjectileSpellEffect {
+    public static final MapCodec<SmallFireballSpellProjectile> CODEC = MapCodec.unit(SmallFireballSpellProjectile::new);
+
     @Override
-    public Optional<SmallFireballEntity> shoot(ServerWorld world, Entity caster, Vec3d pos) {
+    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
         Optional<SmallFireballEntity> projectile = Optional.empty();
         double deviation = 0.2;
         if (caster instanceof LivingEntity) {
@@ -27,9 +30,17 @@ public class SmallFireballSpellProjectile implements SpellProjectile<SmallFireba
                             caster.getRandom().nextTriangular(rotation.z, deviation))));
         }
 
-        if (projectile.isPresent()) {
-            return caster.getWorld().spawnEntity(projectile.get()) ? projectile : Optional.empty();
+        if (projectile.isEmpty()) {
+            return;
         }
-        return projectile;
+
+        Vec3d position = SpellProjectileHelper.getProjectilePosition(caster);
+        projectile.get().setPosition(position.x, position.y, position.z);
+        caster.getWorld().spawnEntity(projectile.get());
+    }
+
+    @Override
+    public MapCodec<SmallFireballSpellProjectile> getProjectileCodec() {
+        return CODEC;
     }
 }

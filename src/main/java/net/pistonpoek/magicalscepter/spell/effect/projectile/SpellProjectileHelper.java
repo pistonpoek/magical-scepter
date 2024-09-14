@@ -1,4 +1,4 @@
-package net.pistonpoek.magicalscepter.spell.projectile;
+package net.pistonpoek.magicalscepter.spell.effect.projectile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

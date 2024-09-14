@@ -9,6 +9,7 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.StringIdentifiable;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
@@ -41,6 +42,24 @@ public record Spell(int experienceCost, int cooldown,
 
     public static Spell.Builder builder(int experienceCost, int cooldown) {
         return new Spell.Builder(experienceCost, cooldown);
+    }
+
+    // See SpawnParticlesEnchantmentEffect
+    public enum Target implements StringIdentifiable {
+        CASTER("caster"),
+        ENTITY("entity"),
+        POSITION("position");
+
+        private final String name;
+
+        Target(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String asString() {
+            return name;
+        }
     }
 
     public static class Builder {

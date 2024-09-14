@@ -2,7 +2,7 @@
   "cooldown": 30,
   "effects": [
     {
-      "type": "minecraft:apply_mob_effect",
+      "type": "magicalscepter:apply_mob_effect",
       "max_amplifier": 3.0,
       "max_duration": 400.0,
       "min_amplifier": 1.0,

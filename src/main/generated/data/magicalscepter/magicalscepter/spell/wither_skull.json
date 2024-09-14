@@ -2,7 +2,7 @@
   "cooldown": 30,
   "effects": [
     {
-      "type": "minecraft:play_sound",
+      "type": "magicalscepter:play_sound",
       "pitch": {
         "type": "minecraft:uniform",
         "max_exclusive": 1.2,
@@ -14,9 +14,8 @@
       "volume": 1.0
     },
     {
-      "type": "minecraft:shoot_projectile",
-      "projectile": "minecraft:wither_skull",
-      "velocity": 1.0
+      "type": "magicalscepter:shoot_projectile",
+      "projectile": "magicalscepter:wither_skull"
     }
   ],
   "experience_cost": 10
