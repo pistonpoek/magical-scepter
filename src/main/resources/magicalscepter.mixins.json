@@ -3,8 +3,7 @@
 	"package": "net.pistonpoek.magicalscepter.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin",
-      	"ScepterInfusion"
+		"ExampleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -29,18 +29,18 @@ public class SpellCastTimerCallback implements TimerCallback<MinecraftServer> {
 
     @Override
     public void call(MinecraftServer server, Timer<MinecraftServer> events, long time) {
-        Entity entity = null;
+        Entity foundCaster = null;
         for(ServerWorld world: server.getWorlds()) {
-            entity = world.getEntity(caster);
-            if (entity != null) {
+            foundCaster = world.getEntity(caster);
+            if (foundCaster != null) {
                 break;
             }
         }
-        if (entity == null || !entity.isLiving() || !entity.isAlive()) {
+        if (foundCaster == null || !foundCaster.isLiving() || !foundCaster.isAlive()) {
             MagicalScepter.LOGGER.info("Spell cast is missing a living caster.");
             return;
         }
-        Spell.Cast.apply(effects, (LivingEntity) entity);
+        Spell.Cast.apply(effects, (LivingEntity) foundCaster);
     }
 
     public static class Serializer extends TimerCallback.Serializer<MinecraftServer, SpellCastTimerCallback> {

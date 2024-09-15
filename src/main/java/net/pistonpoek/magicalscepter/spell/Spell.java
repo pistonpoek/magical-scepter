@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -66,6 +67,17 @@ public record Spell(List<Cast> casts, int cooldown, int experienceCost) {
                         .apply(instance, Cast::new)
         );
 
+        public void apply(LivingEntity caster) {
+            apply(effects, caster);
+        }
+
+        public static void apply(List<SpellEffect> effects, LivingEntity caster) {
+            ServerWorld serverWorld = (ServerWorld)caster.getWorld();
+            for (SpellEffect spellEffect: effects) {
+                spellEffect.apply(serverWorld, caster, caster.getPos());
+            }
+        }
+
         public void schedule(@NotNull LivingEntity caster) {
             MinecraftServer minecraftServer = caster.getServer();
             if (minecraftServer == null) {
@@ -81,15 +93,20 @@ public record Spell(List<Cast> casts, int cooldown, int experienceCost) {
             timer.setEvent(caster.getUuid().toString(), cast_time, new SpellCastTimerCallback(effects, caster.getUuid()));
         }
 
-        public void apply(LivingEntity caster) {
-            apply(effects, caster);
+        public static void clear(@NotNull LivingEntity caster) {
+            MinecraftServer minecraftServer = caster.getServer();
+            if (minecraftServer == null) {
+                return;
+            }
+            Timer<MinecraftServer> timer = minecraftServer.getSaveProperties().getMainWorldProperties().getScheduledEvents();
+            timer.remove(caster.getUuid().toString());
         }
 
-        public static void apply(List<SpellEffect> effects, LivingEntity caster) {
-            ServerWorld serverWorld = (ServerWorld)caster.getWorld();
-            for (SpellEffect spellEffect: effects) {
-                spellEffect.apply(serverWorld, caster, caster.getPos());
+        public static void afterDeath(LivingEntity entity, DamageSource damageSource) {
+            if (entity == null) {
+                return;
             }
+            clear(entity);
         }
 
         public static Spell.Cast.Builder builder() {

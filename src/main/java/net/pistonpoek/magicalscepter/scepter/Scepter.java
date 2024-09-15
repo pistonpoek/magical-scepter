@@ -2,6 +2,8 @@ package net.pistonpoek.magicalscepter.scepter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -54,6 +56,10 @@ public record Scepter(int color, boolean infusable,
 
     public RegistryEntry<Spell> getProtectSpell() {
         return protectSpell;
+    }
+
+    public static void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
+
     }
 
     public static Scepter.Builder builder(int color, boolean infusable,
