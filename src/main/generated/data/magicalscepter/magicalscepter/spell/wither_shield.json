@@ -1,5 +1,9 @@
 {
-  "cooldown": 30,
-  "effects": [],
-  "experience_cost": 10
+  "casts": [
+    {
+      "effects": []
+    }
+  ],
+  "cooldown": 100,
+  "experience_cost": 32
 }

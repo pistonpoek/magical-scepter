@@ -50,6 +50,8 @@ public class ScepterItem extends Item {
             user.addExperience(-spell.experienceCost());
             user.addScore(spell.experienceCost()); // Compensating for lost score in adding experience cost.
             user.getItemCooldownManager().set(this, spell.cooldown());
+        } else {
+            user.getItemCooldownManager().set(this, spell.getDuration() + 10);
         }
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));
