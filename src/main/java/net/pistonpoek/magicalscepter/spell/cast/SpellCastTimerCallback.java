@@ -18,19 +18,13 @@ import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import java.util.List;
 import java.util.UUID;
 
-public class SpellCastTimerCallback implements TimerCallback<MinecraftServer> {
-    final List<SpellEffect> effects;
-    final UUID caster;
-
-    public SpellCastTimerCallback(List<SpellEffect> effects, UUID caster) {
-        this.effects = effects;
-        this.caster = caster;
-    }
+public record SpellCastTimerCallback(List<SpellEffect> effects,
+                                     UUID caster) implements TimerCallback<MinecraftServer> {
 
     @Override
     public void call(MinecraftServer server, Timer<MinecraftServer> events, long time) {
         Entity foundCaster = null;
-        for(ServerWorld world: server.getWorlds()) {
+        for (ServerWorld world : server.getWorlds()) {
             foundCaster = world.getEntity(caster);
             if (foundCaster != null) {
                 break;
