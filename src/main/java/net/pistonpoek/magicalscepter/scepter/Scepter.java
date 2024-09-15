@@ -23,7 +23,7 @@ public record Scepter(int color, boolean infusable,
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Codec.INT.fieldOf("color").forGetter(Scepter::color),
-                            Codec.BOOL.fieldOf("infusable").forGetter(Scepter::infusable),
+                            Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
                             Spell.ENTRY_CODEC.fieldOf("spell_attack").forGetter(Scepter::attackSpell),
                             Spell.ENTRY_CODEC.fieldOf("spell_protect").forGetter(Scepter::protectSpell),
                             LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)

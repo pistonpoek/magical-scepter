@@ -89,7 +89,6 @@ public record Spell(List<Cast> casts, int cooldown, int experienceCost) {
             }
             Timer<MinecraftServer> timer = minecraftServer.getSaveProperties().getMainWorldProperties().getScheduledEvents();
             long cast_time = caster.getWorld().getTime() + (long)delay;
-            // TODO check if event name is good as caster uuid.
             timer.setEvent(caster.getUuid().toString(), cast_time, new SpellCastTimerCallback(effects, caster.getUuid()));
         }
 
