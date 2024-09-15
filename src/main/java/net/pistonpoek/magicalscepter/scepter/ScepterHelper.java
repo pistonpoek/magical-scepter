@@ -22,8 +22,6 @@ public class ScepterHelper {
             itemStack.isOf(ModItems.SCEPTER);
     public static final Predicate<ItemStack> IS_EMPTY_SCEPTER = itemStack -> IS_SCEPTER.test(itemStack) &&
             getScepter(itemStack).isEmpty();
-    public static final Predicate<ItemStack> IS_INFUSABLE_SCEPTER = itemStack -> IS_SCEPTER.test(itemStack) &&
-            ScepterHelper.isInfusable(itemStack);
 
     public static ItemStack createScepter(RegistryEntry<Scepter> scepter) {
         return ScepterHelper.setScepter(ModItems.SCEPTER.getDefaultStack(), scepter);
@@ -53,44 +51,9 @@ public class ScepterHelper {
         return ColorHelper.Argb.fullAlpha(scepter.value().getColor());
     }
 
-    private static Optional<Boolean> getInfusable(ItemStack itemStack) {
-        return Optional.ofNullable(itemStack.get(ModDataComponentTypes.INFUSABLE));
-    }
-
-    /**
-     * Check if an item stack is infusable.
-     *
-     * @param itemStack Item stack to check for.
-     * @return Truth assignment, if item stack is infusable.
-     */
-    public static boolean isInfusable(ItemStack itemStack) {
-        return getInfusable(itemStack).orElse(isInfusable(getScepter(itemStack).orElse(null)));
-    }
-
-    public static boolean isInfusable(RegistryEntry<Scepter> scepter) {
-        if (scepter == null) return false;
-
-        return scepter.value().isInfusable();
-    }
 
     public static Registry<Scepter> getScepterRegistry(World world) {
         return world.getRegistryManager().get(ModRegistryKeys.SCEPTER);
-    }
-
-    /**
-     * Get the infusion for the damage source
-     *
-     * @param lootContext Loot context to check infusion conditions with.
-     *
-     * @return Optional scepter for the damage source infusion.
-     */
-    public static Optional<RegistryEntry<Scepter>> getInfusion(Registry<Scepter> scepterRegistry, LootContext lootContext) {
-        for (RegistryEntry<Scepter> scepter: scepterRegistry.streamEntries().toList()) {
-            if (scepter.value().infuses(lootContext)) {
-                return Optional.of(scepter);
-            }
-        }
-        return Optional.empty();
     }
 
 }
