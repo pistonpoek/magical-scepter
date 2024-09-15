@@ -1,26 +1,30 @@
 {
-  "cooldown": 30,
-  "effects": [
+  "casts": [
     {
-      "type": "magicalscepter:play_sound",
-      "pitch": {
-        "type": "minecraft:uniform",
-        "max_exclusive": 1.2,
-        "min_inclusive": 0.8
-      },
-      "sound": {
-        "sound_id": "minecraft:entity.illusioner.cast_spell"
-      },
-      "volume": 1.0
-    },
-    {
-      "type": "magicalscepter:apply_mob_effect",
-      "max_amplifier": 3.0,
-      "max_duration": 400.0,
-      "min_amplifier": 1.0,
-      "min_duration": 1000.0,
-      "to_apply": "minecraft:resistance"
+      "effects": [
+        {
+          "type": "magicalscepter:play_sound",
+          "pitch": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          },
+          "sound": {
+            "sound_id": "minecraft:entity.illusioner.cast_spell"
+          },
+          "volume": 1.0
+        },
+        {
+          "type": "magicalscepter:apply_mob_effect",
+          "max_amplifier": 3.0,
+          "max_duration": 400.0,
+          "min_amplifier": 1.0,
+          "min_duration": 1000.0,
+          "to_apply": "minecraft:resistance"
+        }
+      ]
     }
   ],
-  "experience_cost": 10
+  "cooldown": 100,
+  "experience_cost": 32
 }

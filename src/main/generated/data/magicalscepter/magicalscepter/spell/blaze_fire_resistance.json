@@ -1,14 +1,18 @@
 {
-  "cooldown": 30,
-  "effects": [
+  "casts": [
     {
-      "type": "magicalscepter:apply_mob_effect",
-      "max_amplifier": 3.0,
-      "max_duration": 400.0,
-      "min_amplifier": 1.0,
-      "min_duration": 1000.0,
-      "to_apply": "minecraft:fire_resistance"
+      "effects": [
+        {
+          "type": "magicalscepter:apply_mob_effect",
+          "max_amplifier": 3.0,
+          "max_duration": 400.0,
+          "min_amplifier": 1.0,
+          "min_duration": 1000.0,
+          "to_apply": "minecraft:fire_resistance"
+        }
+      ]
     }
   ],
-  "experience_cost": 10
+  "cooldown": 100,
+  "experience_cost": 32
 }

@@ -1,18 +1,22 @@
 {
-  "cooldown": 30,
-  "effects": [
+  "casts": [
     {
-      "type": "magicalscepter:play_sound",
-      "pitch": {
-        "type": "minecraft:uniform",
-        "max_exclusive": 1.2,
-        "min_inclusive": 0.8
-      },
-      "sound": {
-        "sound_id": "minecraft:entity.ender_dragon.growl"
-      },
-      "volume": 1.0
+      "effects": [
+        {
+          "type": "magicalscepter:play_sound",
+          "pitch": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          },
+          "sound": {
+            "sound_id": "minecraft:entity.ender_dragon.growl"
+          },
+          "volume": 1.0
+        }
+      ]
     }
   ],
-  "experience_cost": 10
+  "cooldown": 100,
+  "experience_cost": 32
 }
