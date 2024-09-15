@@ -58,10 +58,6 @@ public record Scepter(int color, boolean infusable,
         return protectSpell;
     }
 
-    public static void afterDamage(LivingEntity entity, DamageSource source, float baseDamageTaken, float damageTaken, boolean blocked) {
-
-    }
-
     public static Scepter.Builder builder(int color, boolean infusable,
                                           RegistryEntry<Spell> attackSpell, RegistryEntry<Spell> protectSpell) {
         return new Scepter.Builder(color, infusable, attackSpell, protectSpell);
