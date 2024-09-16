@@ -1,24 +1,16 @@
 package net.pistonpoek.magicalscepter.item;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potions;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
-import net.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import net.pistonpoek.magicalscepter.scepter.Scepter;
-import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
-import net.pistonpoek.magicalscepter.scepter.Scepters;
 import net.pistonpoek.magicalscepter.spell.Spell;
 
 import java.util.Optional;
@@ -32,15 +24,16 @@ public class ScepterItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
-        Optional<Scepter> optionalScepter = ScepterHelper.getScepter(itemStack).map(RegistryEntry::value);
-        if (optionalScepter.isEmpty()) {
+
+        Optional<RegistryEntry<Spell>> optionalSpell = (!user.isSneaking() ?
+                ScepterContentsComponent.getAttackSpell(itemStack) :
+                ScepterContentsComponent.getProtectSpell(itemStack));
+
+        if (optionalSpell.isEmpty()) {
             return TypedActionResult.pass(itemStack);
         }
 
-        Scepter scepter = optionalScepter.get();
-
-        RegistryEntry<Spell> spellEntry = !user.isSneaking() ? scepter.getAttackSpell() : scepter.getProtectSpell();
-        Spell spell = spellEntry.value();
+        Spell spell = optionalSpell.get().value();
 
         if (!user.getAbilities().creativeMode) {
             if (user.totalExperience < spell.experienceCost()) {
@@ -56,7 +49,6 @@ public class ScepterItem extends Item {
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
-        //scepter.setCastingSpell(!user.isSneaking());
         if (!world.isClient()) {
             spell.castSpell(user);
             ItemStack damagedItemStack = itemStack.damage(1, ModItems.SCEPTER, user, LivingEntity.getSlotForHand(hand));
@@ -104,12 +96,11 @@ public class ScepterItem extends Item {
 
     @Override
     public String getTranslationKey(ItemStack stack) {
-        Optional<RegistryKey<Scepter>> optionalScepterKey = ScepterHelper.getScepter(stack).flatMap(RegistryEntry::getKey);
-        if (optionalScepterKey.isEmpty()) {
+        String key = ScepterContentsComponent.getTranslationKey(stack);
+        if (key.equals("")) {
             return this.getTranslationKey();
         }
-        return this.getTranslationKey() + "." +
-                optionalScepterKey.get().getValue().getPath().replace("/", ".");
+        return String.join(".", this.getTranslationKey(), key);
     }
 
 }
