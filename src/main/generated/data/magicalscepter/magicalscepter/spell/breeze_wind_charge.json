@@ -22,5 +22,8 @@
     }
   ],
   "cooldown": 100,
+  "description": {
+    "translate": "magicalscepter.spell.wind_charge"
+  },
   "experience_cost": 32
 }

@@ -1,22 +1,25 @@
 package net.pistonpoek.magicalscepter.item;
 
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.spell.Spell;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ScepterItem extends Item {
-    public final static int MAX_SPELL_TIME = 100;
     public ScepterItem(Settings settings) {
         super(settings);
     }
@@ -36,13 +39,13 @@ public class ScepterItem extends Item {
         Spell spell = optionalSpell.get().value();
 
         if (!user.getAbilities().creativeMode) {
-            if (user.totalExperience < spell.experienceCost()) {
+            if (user.totalExperience < spell.getExperienceCost()) {
                 return TypedActionResult.fail(itemStack);
             }
 
-            user.addExperience(-spell.experienceCost());
-            user.addScore(spell.experienceCost()); // Compensating for lost score in adding experience cost.
-            user.getItemCooldownManager().set(this, spell.cooldown());
+            user.addExperience(-spell.getExperienceCost());
+            user.addScore(spell.getExperienceCost()); // Compensating for lost score in adding experience cost.
+            user.getItemCooldownManager().set(this, spell.getCooldown());
         } else {
             user.getItemCooldownManager().set(this, spell.getDuration() + 10);
         }
@@ -58,40 +61,9 @@ public class ScepterItem extends Item {
     }
 
     @Override
-    public void usageTick(World world, LivingEntity player, ItemStack stack, int remainingUseTicks) {
-//        if (!world.isClient()) {
-//            ScepterHelper.getSpell(stack).updateSpell(player, MAX_SPELL_TIME - remainingUseTicks);
-//        } else {
-//            ScepterHelper.getSpell(stack).displaySpell(world, player, MAX_SPELL_TIME - remainingUseTicks);
-//        }
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        return super.postHit(stack, target, attacker);
-
-    }
-
-    @Override
-    public void onStoppedUsing(ItemStack stack, World world, LivingEntity player, int remainingUseTicks) {
-//        if (!world.isClient()) {
-//            ScepterHelper.getSpell(stack).endSpell(player, MAX_SPELL_TIME - remainingUseTicks);
-//        }
-    }
-
-    @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity player) {
-        return stack;
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.NONE;
-    }
-
-    @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity player) {
-        return MAX_SPELL_TIME;
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
+        Optional<ScepterContentsComponent> scepterContentsComponent = ScepterContentsComponent.get(stack);
+        scepterContentsComponent.ifPresent(contentsComponent -> contentsComponent.buildTooltip(tooltip::add));
     }
 
     @Override

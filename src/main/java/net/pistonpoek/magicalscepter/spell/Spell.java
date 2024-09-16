@@ -2,8 +2,6 @@ package net.pistonpoek.magicalscepter.spell;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.RegistryByteBuf;
@@ -13,11 +11,11 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.*;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.StringIdentifiable;
-import net.minecraft.world.timer.FunctionTimerCallback;
 import net.minecraft.world.timer.Timer;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
-import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.spell.cast.SpellCastTimerCallback;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import org.jetbrains.annotations.NotNull;
@@ -25,12 +23,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Spell(List<Cast> casts, int cooldown, int experienceCost) {
+public record Spell(List<Cast> casts, int cooldown, int experienceCost, Text description) {
     public static final Codec<Spell> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Cast.CODEC.listOf().fieldOf("casts").forGetter(Spell::casts),
                             Codec.INT.fieldOf("cooldown").forGetter(Spell::cooldown),
-                            Codec.INT.fieldOf("experience_cost").forGetter(Spell::experienceCost)
+                            Codec.INT.fieldOf("experience_cost").forGetter(Spell::experienceCost),
+                            TextCodecs.CODEC.fieldOf("description").forGetter(Spell::description)
                     )
                     .apply(instance, Spell::new)
     );
@@ -50,12 +49,30 @@ public record Spell(List<Cast> casts, int cooldown, int experienceCost) {
         }
     }
 
+    public int getCooldown() {
+        return cooldown;
+    }
+
+    public int getExperienceCost() {
+        return experienceCost;
+    }
+
     public int getDuration() {
         int duration = 0;
         for (Cast cast : casts) {
             duration = Math.max(duration, cast.delay);
         }
         return duration;
+    }
+
+    public String toString() {
+        return "Spell " + this.description.getString();
+    }
+
+    public static Text getName(RegistryEntry<Spell> spell) {
+        MutableText mutableText = spell.value().description.copy();
+        Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(Formatting.BLUE));
+        return mutableText;
     }
 
     public record Cast(int delay, List<SpellEffect> effects) {
@@ -138,30 +155,32 @@ public record Spell(List<Cast> casts, int cooldown, int experienceCost) {
         ENTITY("entity"),
         POSITION("position");
 
-        private final String name;
+        private final String description;
 
-        Target(String name) {
-            this.name = name;
+        Target(String description) {
+            this.description = description;
         }
 
         @Override
         public String asString() {
-            return name;
+            return description;
         }
     }
 
-    public static Spell.Builder builder(int cooldown, int experienceCost) {
-        return new Spell.Builder(cooldown, experienceCost);
+    public static Spell.Builder builder(int cooldown, int experienceCost, Text description) {
+        return new Spell.Builder(cooldown, experienceCost, description);
     }
 
     public static class Builder {
         private final int cooldown;
         private final int experienceCost;
+        private final Text description;
         private final List<Cast> casts = new ArrayList<>();
 
-        public Builder(int cooldown, int experienceCost) {
+        public Builder(int cooldown, int experienceCost, Text description) {
             this.cooldown = cooldown;
             this.experienceCost = experienceCost;
+            this.description = description;
         }
 
         public Spell.Builder addCast(Cast cast) {
@@ -170,7 +189,7 @@ public record Spell(List<Cast> casts, int cooldown, int experienceCost) {
         }
 
         public Spell build() {
-            return new Spell(casts, cooldown, experienceCost);
+            return new Spell(casts, cooldown, experienceCost, description);
         }
     }
 }
