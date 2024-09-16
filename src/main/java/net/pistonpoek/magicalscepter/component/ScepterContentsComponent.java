@@ -219,6 +219,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
 
 
     public void buildTooltip(Consumer<Text> textConsumer) {
+        textConsumer.accept(ScreenTexts.LINE_BREAK);
+        
         Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         if (attackSpell.isPresent()) {
             MutableText attackText = Text.translatable("magicalscepter.scepter.on_cast_attack");

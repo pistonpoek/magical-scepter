@@ -27,6 +27,19 @@ public record Scepter(int color, boolean infusable,
                             LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
                     ).apply(instance, Scepter::new)
     );
+    public static final Codec<Scepter> NETWORK_CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Codec.INT.fieldOf("color").forGetter(Scepter::color),
+                    Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
+                    Spell.ENTRY_CODEC.fieldOf("spell_attack").forGetter(Scepter::attackSpell),
+                    Spell.ENTRY_CODEC.fieldOf("spell_protect").forGetter(Scepter::protectSpell)
+            ).apply(instance, Scepter::createClientScepter)
+    );
+    private static Scepter createClientScepter(int color, boolean infusable,
+                                               RegistryEntry<Spell> attackSpell,
+                                               RegistryEntry<Spell> protectSpell) {
+        return new Scepter(color, infusable, attackSpell, protectSpell, Optional.empty());
+    }
     public static final Codec<RegistryEntry<Scepter>> ENTRY_CODEC = RegistryFixedCodec.of(ModRegistryKeys.SCEPTER);
     public static final PacketCodec<RegistryByteBuf, RegistryEntry<Scepter>> ENTRY_PACKET_CODEC =
             PacketCodecs.registryEntry(ModRegistryKeys.SCEPTER);

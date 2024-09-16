@@ -18,7 +18,7 @@ public class ModRegistries {
     public static void init() {
         SpellEffect.register(SPELL_EFFECT_TYPE);
         ShootProjectileSpellEffect.register(SPELL_EFFECT_PROJECTILE);
-        DynamicRegistries.registerSynced(ModRegistryKeys.SCEPTER, Scepter.CODEC);
-        DynamicRegistries.registerSynced(ModRegistryKeys.SPELL, Spell.CODEC);
+        DynamicRegistries.registerSynced(ModRegistryKeys.SCEPTER, Scepter.CODEC, Scepter.NETWORK_CODEC);
+        DynamicRegistries.registerSynced(ModRegistryKeys.SPELL, Spell.CODEC, Spell.NETWORK_CODEC);
     }
 }
