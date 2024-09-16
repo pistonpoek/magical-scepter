@@ -23,7 +23,7 @@
   ],
   "cooldown": 100,
   "description": {
-    "translate": "magicalscepter.spell.magical_attack"
+    "translate": "spell.magicalscepter.magical_attack"
   },
   "experience_cost": 32
 }

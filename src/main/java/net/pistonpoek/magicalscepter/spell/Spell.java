@@ -81,7 +81,7 @@ public record Spell(List<Cast> casts, int cooldown, int experienceCost, Text des
 
     public static Text getName(RegistryEntry<Spell> spell) {
         MutableText mutableText = spell.value().description.copy();
-        Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(Formatting.BLUE));
+        Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(Formatting.LIGHT_PURPLE));
         return mutableText;
     }
 

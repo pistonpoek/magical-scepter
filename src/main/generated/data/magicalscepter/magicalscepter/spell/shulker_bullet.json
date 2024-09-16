@@ -23,7 +23,7 @@
   ],
   "cooldown": 100,
   "description": {
-    "translate": "magicalscepter.spell.shulker_bullet"
+    "translate": "spell.magicalscepter.shulker_bullet"
   },
   "experience_cost": 32
 }

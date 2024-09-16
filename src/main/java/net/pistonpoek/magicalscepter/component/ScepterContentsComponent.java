@@ -13,7 +13,10 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
+import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.pistonpoek.magicalscepter.spell.Spell;
@@ -217,24 +220,25 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                 Optional.empty(), Optional.empty(), Optional.empty());
     }
 
+    private static final Formatting TITLE_FORMATTING = Formatting.GRAY;
+    private static final Text CAST_ATTACK_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.on_cast_attack")
+            .formatted(TITLE_FORMATTING);
+    private static final Text CAST_PROTECT_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.on_cast_protect")
+            .formatted(TITLE_FORMATTING);
 
     public void buildTooltip(Consumer<Text> textConsumer) {
         textConsumer.accept(ScreenTexts.EMPTY);
 
         Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         if (attackSpell.isPresent()) {
-            MutableText attackText = Text.translatable("magicalscepter.scepter.on_cast_attack");
-            Texts.setStyleIfAbsent(attackText, Style.EMPTY.withColor(Formatting.GRAY));
-            textConsumer.accept(attackText);
-            textConsumer.accept(Spell.getName(attackSpell.get()));
+            textConsumer.accept(CAST_ATTACK_TEXT);
+            textConsumer.accept(ScreenTexts.space().append(Spell.getName(attackSpell.get())));
         }
 
         Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
         if (protectSpell.isPresent()) {
-            MutableText protectText = Text.translatable("magicalscepter.scepter.on_cast_protect");
-            Texts.setStyleIfAbsent(protectText, Style.EMPTY.withColor(Formatting.GRAY));
-            textConsumer.accept(protectText);
-            textConsumer.accept(Spell.getName(protectSpell.get()));
+            textConsumer.accept(CAST_PROTECT_TEXT);
+            textConsumer.accept(ScreenTexts.space().append(Spell.getName(protectSpell.get())));
         }
     }
 }

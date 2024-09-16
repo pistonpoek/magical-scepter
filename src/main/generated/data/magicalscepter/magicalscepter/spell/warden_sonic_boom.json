@@ -19,7 +19,7 @@
   ],
   "cooldown": 100,
   "description": {
-    "translate": "magicalscepter.spell.sonic_boom"
+    "translate": "spell.magicalscepter.sonic_boom"
   },
   "experience_cost": 32
 }

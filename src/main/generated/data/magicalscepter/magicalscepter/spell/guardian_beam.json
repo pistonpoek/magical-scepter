@@ -6,7 +6,7 @@
   ],
   "cooldown": 100,
   "description": {
-    "translate": "magicalscepter.spell.guardian_beam"
+    "translate": "spell.magicalscepter.guardian_beam"
   },
   "experience_cost": 32
 }

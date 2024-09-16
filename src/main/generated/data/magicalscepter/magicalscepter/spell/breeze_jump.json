@@ -15,7 +15,7 @@
   ],
   "cooldown": 100,
   "description": {
-    "translate": "magicalscepter.spell.breeze_jump"
+    "translate": "spell.magicalscepter.breeze_jump"
   },
   "experience_cost": 32
 }
