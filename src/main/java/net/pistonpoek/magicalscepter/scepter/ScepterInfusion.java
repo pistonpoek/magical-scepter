@@ -1,6 +1,5 @@
 package net.pistonpoek.magicalscepter.scepter;
 
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
@@ -12,13 +11,10 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
-import net.pistonpoek.magicalscepter.component.ModDataComponentTypes;
-import org.jetbrains.annotations.Nullable;
+import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 
 import java.util.Optional;
-import java.util.function.Predicate;
-
-import static net.pistonpoek.magicalscepter.scepter.ScepterHelper.IS_SCEPTER;
+import static net.pistonpoek.magicalscepter.scepter.ScepterHelper.IS_INFUSABLE_SCEPTER;
 
 public class ScepterInfusion {
     public static void afterDamage(LivingEntity entity, DamageSource source,
@@ -28,44 +24,6 @@ public class ScepterInfusion {
         }
     }
 
-    /**
-     * Get infusable component value for an item stack.
-     *
-     * @param itemStack Item stack to get infusable component value for.
-     * @return Infusable component value from the item stack.
-     */
-    private static Optional<Boolean> getInfusable(ItemStack itemStack) {
-        return Optional.ofNullable(itemStack.get(ModDataComponentTypes.INFUSABLE));
-    }
-
-    /**
-     * Predicate to check if an item stack is both a scepter and infusable.
-     */
-    public static final Predicate<ItemStack> IS_INFUSABLE_SCEPTER = itemStack -> IS_SCEPTER.test(itemStack) &&
-            isInfusable(itemStack);
-
-    /**
-     * Check if an item stack is infusable.
-     *
-     * @param itemStack Item stack to check for.
-     * @return Truth assignment, if item stack is infusable.
-     */
-    public static boolean isInfusable(ItemStack itemStack) {
-        return getInfusable(itemStack)
-                .orElse(isInfusable(ScepterHelper.getScepter(itemStack).orElse(null)));
-    }
-
-    /**
-     * Check if a scepter entry is infusable.
-     *
-     * @param scepter Registry entry of a scepter to check.
-     * @return Truth assignment, if scepter is infusable.
-     */
-    public static boolean isInfusable(@Nullable RegistryEntry<Scepter> scepter) {
-        if (scepter == null) return false;
-
-        return scepter.value().isInfusable();
-    }
 
     /**
      * Get the infusion for the damage source
@@ -74,7 +32,9 @@ public class ScepterInfusion {
      *
      * @return Optional scepter for the damage source infusion.
      */
-    public static Optional<RegistryEntry<Scepter>> getInfusion(Registry<Scepter> scepterRegistry, LootContext lootContext) {
+    public static Optional<RegistryEntry<Scepter>> getInfusion(
+            Registry<Scepter> scepterRegistry, LootContext lootContext) {
+
         for (RegistryEntry<Scepter> scepter: scepterRegistry.streamEntries().toList()) {
             if (scepter.value().infuses(lootContext)) {
                 return Optional.of(scepter);
@@ -108,7 +68,7 @@ public class ScepterInfusion {
 
         // Check if there is an infusion scepter, if so infuse the held scepter.
         if (scepter.isPresent()) {
-            ItemStack infusedScepter = ScepterHelper.setScepter(itemStack, scepter.get());
+            ItemStack infusedScepter = ScepterContentsComponent.setScepter(itemStack, scepter.get());
             entity.setStackInHand(hand, infusedScepter);
         }
     }

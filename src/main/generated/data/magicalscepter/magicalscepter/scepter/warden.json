@@ -1,6 +1,5 @@
 {
   "color": 2941931,
-  "infusable": false,
   "infusion": [
     {
       "condition": "minecraft:damage_source_properties",

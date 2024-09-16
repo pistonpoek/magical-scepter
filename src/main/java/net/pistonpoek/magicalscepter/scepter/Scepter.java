@@ -2,8 +2,6 @@ package net.pistonpoek.magicalscepter.scepter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -42,20 +40,20 @@ public record Scepter(int color, boolean infusable,
         return infusable;
     }
 
-    public boolean infuses(LootContext lootContext) {
-        if (infusion.isEmpty()) return false;
-
-        LootContextPredicate lootContextPredicate = infusion.get();
-
-        return lootContextPredicate.test(lootContext);
-    }
-
     public RegistryEntry<Spell> getAttackSpell() {
         return attackSpell;
     }
 
     public RegistryEntry<Spell> getProtectSpell() {
         return protectSpell;
+    }
+
+    public boolean infuses(LootContext lootContext) {
+        if (infusion.isEmpty()) return false;
+
+        LootContextPredicate lootContextPredicate = infusion.get();
+
+        return lootContextPredicate.test(lootContext);
     }
 
     public static Scepter.Builder builder(int color, boolean infusable,
