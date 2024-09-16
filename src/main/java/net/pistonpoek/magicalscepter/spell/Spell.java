@@ -33,6 +33,16 @@ public record Spell(List<Cast> casts, int cooldown, int experienceCost, Text des
                     )
                     .apply(instance, Spell::new)
     );
+    public static final Codec<Spell> NETWORK_CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Codec.INT.fieldOf("cooldown").forGetter(Spell::cooldown),
+                    Codec.INT.fieldOf("experience_cost").forGetter(Spell::experienceCost),
+                    TextCodecs.CODEC.fieldOf("description").forGetter(Spell::description)
+            ).apply(instance, Spell::createClientSpell)
+    );
+    private static Spell createClientSpell(int cooldown, int experienceCost, Text description) {
+        return new Spell(List.of(), cooldown, experienceCost, description);
+    }
     public static final Codec<RegistryEntry<Spell>> ENTRY_CODEC = RegistryFixedCodec.of(ModRegistryKeys.SPELL);
     public static final Codec<Spell> CODEC = Codec.withAlternative(BASE_CODEC, ENTRY_CODEC, RegistryEntry::value);
     public static final PacketCodec<RegistryByteBuf, RegistryEntry<Spell>> ENTRY_PACKET_CODEC =
