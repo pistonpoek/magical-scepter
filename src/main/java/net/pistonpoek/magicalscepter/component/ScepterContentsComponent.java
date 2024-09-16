@@ -219,7 +219,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
 
 
     public void buildTooltip(Consumer<Text> textConsumer) {
-        textConsumer.accept(ScreenTexts.LINE_BREAK);
+        textConsumer.accept(ScreenTexts.EMPTY);
 
         Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         if (attackSpell.isPresent()) {
