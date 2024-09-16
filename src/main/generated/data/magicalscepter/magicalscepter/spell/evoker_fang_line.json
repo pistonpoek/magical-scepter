@@ -19,7 +19,7 @@
   ],
   "cooldown": 100,
   "description": {
-    "translate": "magicalscepter.spell.fang_line"
+    "translate": "spell.magicalscepter.fang_line"
   },
   "experience_cost": 32
 }

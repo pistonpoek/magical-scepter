@@ -7,6 +7,8 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import net.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
@@ -56,7 +58,7 @@ public class Spells {
                     .addEffect(new DragonFireballSpellProjectile()).build())
         );
         register(registry, MAGICAL_RESISTANCE_KEY, Spell.builder(100, 32,
-                        Text.translatable("effect.minecraft.resistance"))
+                        Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("resistance"))))
             .addCast(Spell.Cast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL),
@@ -94,7 +96,7 @@ public class Spells {
                         .addEffect(new SmallFireballSpellProjectile()).build())
         );
         register(registry, BLAZE_FIRE_RESISTANCE_KEY, Spell.builder(100, 32,
-                        Text.translatable("effect.minecraft.fire_resistance"))
+                        Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("fire_resistance"))))
             .addCast(Spell.Cast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.FIRE_RESISTANCE),
@@ -169,7 +171,7 @@ public class Spells {
                     .addEffect(new FireballSpellProjectile()).build())
         );
         register(registry, GHAST_REGENERATION_KEY, Spell.builder(100, 32,
-                        Text.translatable("effect.minecraft.regeneration"))
+                        Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("regeneration"))))
             .addCast(Spell.Cast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.REGENERATION),
@@ -184,7 +186,7 @@ public class Spells {
             .addCast(Spell.Cast.builder().build())
         );
         register(registry, GUARDIAN_HASTE_KEY, Spell.builder(100, 32,
-                        Text.translatable("effect.minecraft.haste"))
+                        Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("haste"))))
             .addCast(Spell.Cast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.HASTE),
@@ -223,7 +225,7 @@ public class Spells {
                             UniformFloatProvider.create(0.8F, 1.2F))).build())
         );
         register(registry, WARDEN_STABILITY_KEY, Spell.builder(100, 32,
-                        Text.translatable("effect.magicalscepter.stability"))
+                        Text.translatable(Util.createTranslationKey("effect", ModIdentifier.of("stability"))))
             .addCast(Spell.Cast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(ModStatusEffects.STABILITY),
@@ -254,6 +256,6 @@ public class Spells {
     }
     
     private static Text textOf(String nameKey) {
-        return Text.translatable("magicalscepter.spell." + nameKey);
+        return Text.translatable(Util.createTranslationKey("spell", ModIdentifier.of(nameKey)));
     }
 }

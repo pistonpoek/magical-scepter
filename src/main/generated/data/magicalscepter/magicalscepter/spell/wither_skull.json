@@ -23,7 +23,7 @@
   ],
   "cooldown": 100,
   "description": {
-    "translate": "magicalscepter.spell.wither_skull"
+    "translate": "spell.magicalscepter.wither_skull"
   },
   "experience_cost": 32
 }
