@@ -64,5 +64,8 @@
     }
   ],
   "cooldown": 100,
+  "description": {
+    "translate": "magicalscepter.spell.small_fireballs"
+  },
   "experience_cost": 32
 }

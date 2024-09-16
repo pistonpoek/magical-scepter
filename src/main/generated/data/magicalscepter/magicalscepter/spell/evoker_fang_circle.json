@@ -18,5 +18,8 @@
     }
   ],
   "cooldown": 100,
+  "description": {
+    "translate": "magicalscepter.spell.fang_circle"
+  },
   "experience_cost": 32
 }

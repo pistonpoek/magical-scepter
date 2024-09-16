@@ -22,5 +22,8 @@
     }
   ],
   "cooldown": 100,
+  "description": {
+    "translate": "magicalscepter.spell.teleport"
+  },
   "experience_cost": 32
 }

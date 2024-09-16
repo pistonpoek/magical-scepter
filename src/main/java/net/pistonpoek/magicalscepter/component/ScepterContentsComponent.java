@@ -7,6 +7,12 @@ import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.text.Texts;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ColorHelper;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
@@ -14,6 +20,7 @@ import net.pistonpoek.magicalscepter.spell.Spell;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static net.pistonpoek.magicalscepter.component.ModDataComponentTypes.SCEPTER_CONTENTS;
 
@@ -76,11 +83,10 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     /**
      * Get scepter value for an item stack.
      *
-     * @param stack Item stack to get scepter value for.
      * @return Scepter value from the item stack.
      */
-    private static Optional<Scepter> getScepterValue(ItemStack stack) {
-        return getScepter(stack).map(RegistryEntry::value);
+    public Optional<Scepter> getScepterValue() {
+        return scepter.map(RegistryEntry::value);
     }
 
     /**
@@ -102,9 +108,18 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Truth assignment, if stack is infusable.
      */
     public static boolean isInfusable(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::infusable)
-                .or(() -> getScepterValue(stack).map(Scepter::isInfusable))
+        return get(stack).flatMap(ScepterContentsComponent::isInfusable)
                 .orElse(false);
+    }
+
+    /**
+     * Checks if scepter contents is infusable.
+     *
+     * @return Truth assignment, if scepter contents is infusable.
+     */
+    public Optional<Boolean> isInfusable() {
+        return infusable
+                .or(() -> getScepterValue().map(Scepter::isInfusable));
     }
 
     /**
@@ -114,10 +129,19 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Color value from the item stack.
      */
     public static int getColor(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::customColor)
-                .or(() -> getScepterValue(stack).map(Scepter::getColor))
-                    .map(ColorHelper.Argb::fullAlpha)
+        return get(stack).flatMap(ScepterContentsComponent::getColor)
                 .orElse(ColorHelper.Argb.getArgb(0, 0, 0, 0));
+    }
+
+    /**
+     * Get color value for scepter contents.
+     *
+     * @return Color value from the scepter contents.
+     */
+    public Optional<Integer> getColor() {
+        return customColor
+                .or(() -> getScepterValue().map(Scepter::getColor))
+                .map(ColorHelper.Argb::fullAlpha);
     }
 
     /**
@@ -127,10 +151,19 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Name value from the item stack.
      */
     public static String getTranslationKey(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::customName)
-                .or(() -> getScepter(stack).flatMap(RegistryEntry::getKey)
-                        .map(key -> key.getValue().getPath().replace("/", ".")))
+        return get(stack).flatMap(ScepterContentsComponent::getTranslationKey)
                 .orElse("");
+    }
+
+    /**
+     * Get name value for scepter contents.
+     *
+     * @return Name value from scepter contents.
+     */
+    public Optional<String> getTranslationKey() {
+        return customName
+                .or(() -> scepter.flatMap(RegistryEntry::getKey)
+                        .map(key -> key.getValue().getPath().replace("/", ".")));
     }
 
     /**
@@ -140,8 +173,17 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Attack spell value from the item stack.
      */
     public static Optional<RegistryEntry<Spell>> getAttackSpell(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::customAttackSpell)
-                .or(() -> getScepterValue(stack).map(Scepter::getAttackSpell));
+        return get(stack).flatMap(ScepterContentsComponent::getAttackSpell);
+    }
+
+    /**
+     * Get attack spell value for scepter contents.
+     *
+     * @return Attack spell value from scepter contents.
+     */
+    public Optional<RegistryEntry<Spell>> getAttackSpell() {
+        return customAttackSpell
+                .or(() -> getScepterValue().map(Scepter::getAttackSpell));
     }
 
     /**
@@ -151,8 +193,17 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Protect spell value from the item stack.
      */
     public static Optional<RegistryEntry<Spell>> getProtectSpell(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::customProtectSpell)
-                .or(() -> getScepterValue(stack).map(Scepter::getProtectSpell));
+        return get(stack).flatMap(ScepterContentsComponent::getProtectSpell);
+    }
+
+    /**
+     * Get protect spell value for scepter contents.
+     *
+     * @return Protect spell value from scepter contents.
+     */
+    public Optional<RegistryEntry<Spell>> getProtectSpell() {
+        return customProtectSpell
+                .or(() -> getScepterValue().map(Scepter::getProtectSpell));
     }
 
     /**
@@ -164,5 +215,24 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     public static ScepterContentsComponent with(RegistryEntry<Scepter> scepter) {
         return new ScepterContentsComponent(Optional.of(scepter), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty());
+    }
+
+
+    public void buildTooltip(Consumer<Text> textConsumer) {
+        Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
+        if (attackSpell.isPresent()) {
+            MutableText attackText = Text.translatable("magicalscepter.scepter.on_cast_attack");
+            Texts.setStyleIfAbsent(attackText, Style.EMPTY.withColor(Formatting.GRAY));
+            textConsumer.accept(attackText);
+            textConsumer.accept(Spell.getName(attackSpell.get()));
+        }
+
+        Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
+        if (protectSpell.isPresent()) {
+            MutableText protectText = Text.translatable("magicalscepter.scepter.on_cast_protect");
+            Texts.setStyleIfAbsent(protectText, Style.EMPTY.withColor(Formatting.GRAY));
+            textConsumer.accept(protectText);
+            textConsumer.accept(Spell.getName(protectSpell.get()));
+        }
     }
 }

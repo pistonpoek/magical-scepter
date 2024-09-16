@@ -26,5 +26,8 @@
     }
   ],
   "cooldown": 100,
+  "description": {
+    "translate": "effect.minecraft.resistance"
+  },
   "experience_cost": 32
 }

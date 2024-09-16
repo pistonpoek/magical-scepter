@@ -5,5 +5,8 @@
     }
   ],
   "cooldown": 100,
+  "description": {
+    "translate": "magicalscepter.spell.wither_shield"
+  },
   "experience_cost": 32
 }

@@ -14,5 +14,8 @@
     }
   ],
   "cooldown": 100,
+  "description": {
+    "translate": "effect.minecraft.haste"
+  },
   "experience_cost": 32
 }
