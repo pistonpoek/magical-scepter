@@ -1,7 +1,5 @@
 package net.pistonpoek.magicalscepter.item;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -15,6 +13,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.spell.Spell;
+import net.pistonpoek.magicalscepter.util.PlayerExperience;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +38,7 @@ public class ScepterItem extends Item {
         Spell spell = optionalSpell.get().value();
 
         if (!user.getAbilities().creativeMode) {
-            if (user.totalExperience < spell.getExperienceCost()) {
+            if (PlayerExperience.getTotalExperience(user) < spell.getExperienceCost()) {
                 return TypedActionResult.fail(itemStack);
             }
 
