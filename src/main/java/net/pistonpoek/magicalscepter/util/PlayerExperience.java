@@ -2,7 +2,6 @@ package net.pistonpoek.magicalscepter.util;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
-import net.pistonpoek.magicalscepter.MagicalScepter;
 
 public class PlayerExperience {
     public static int getExperiencePoints(PlayerEntity player) {
@@ -19,7 +18,6 @@ public class PlayerExperience {
         } else {
             levelPoints = 7 * level + (level - 1) * (level);
         }
-        MagicalScepter.LOGGER.info("Total experience is {}", levelPoints + getExperiencePoints(player));
         return levelPoints + getExperiencePoints(player);
     }
 }
