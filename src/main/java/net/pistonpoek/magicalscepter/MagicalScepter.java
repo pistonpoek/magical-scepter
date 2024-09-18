@@ -10,7 +10,7 @@ import net.pistonpoek.magicalscepter.recipe.ModRecipeSerializer;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistries;
 import net.pistonpoek.magicalscepter.scepter.ScepterInfusion;
-import net.pistonpoek.magicalscepter.spell.Spell;
+import net.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ public class MagicalScepter implements ModInitializer {
 		ModRecipeSerializer.init();
 		ModStatusEffects.init();
 		ModDataComponentTypes.init();
-		ServerLivingEntityEvents.AFTER_DEATH.register(Spell.Cast::afterDeath);
+		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCast::afterDeath);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
 	}
 }
