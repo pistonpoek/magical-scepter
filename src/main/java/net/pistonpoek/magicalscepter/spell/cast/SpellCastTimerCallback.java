@@ -34,7 +34,7 @@ public record SpellCastTimerCallback(List<SpellEffect> effects,
             MagicalScepter.LOGGER.info("Spell cast is missing a living caster.");
             return;
         }
-        Spell.Cast.apply(effects, (LivingEntity) foundCaster);
+        SpellCast.apply(effects, (LivingEntity) foundCaster);
     }
 
     public static class Serializer extends TimerCallback.Serializer<MinecraftServer, SpellCastTimerCallback> {
