@@ -1,6 +1,7 @@
 {
   "casts": [
     {
+      "type": "magicalscepter:cast",
       "effects": [
         {
           "type": "magicalscepter:play_sound",
@@ -15,6 +16,35 @@
           "volume": 1.0
         }
       ]
+    },
+    {
+      "type": "magicalscepter:line_cast",
+      "amount": 16,
+      "end_position": {
+        "type": "relative",
+        "value": [
+          0.0,
+          0.0,
+          21.25
+        ]
+      },
+      "spell_cast": {
+        "effects": [
+          {
+            "type": "magicalscepter:summon_entity",
+            "entity": "minecraft:evoker_fangs"
+          }
+        ]
+      },
+      "start_position": {
+        "type": "relative",
+        "value": [
+          0.0,
+          0.0,
+          1.25
+        ]
+      },
+      "step_delay": 1
     }
   ],
   "cooldown": 100,

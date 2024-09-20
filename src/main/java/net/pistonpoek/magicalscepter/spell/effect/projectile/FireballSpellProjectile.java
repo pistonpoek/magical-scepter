@@ -13,24 +13,23 @@ public class FireballSpellProjectile implements ShootProjectileSpellEffect {
     public static final MapCodec<FireballSpellProjectile> CODEC = MapCodec.unit(FireballSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
+    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
         Optional<FireballEntity> projectile = Optional.empty();
         double deviation = 0.2;
-        if (caster instanceof LivingEntity) {
-            Vec3d rotation = caster.getRotationVector().normalize();
-            projectile = Optional.of(new FireballEntity(world, (LivingEntity) caster,
-                    new Vec3d(caster.getRandom().nextTriangular(rotation.x, deviation),
-                            rotation.y,
-                            caster.getRandom().nextTriangular(rotation.z, deviation)), 1));
+        if (entity instanceof LivingEntity) {
+            Vec3d rot = rotation.normalize();
+            projectile = Optional.of(new FireballEntity(world, (LivingEntity) entity,
+                    new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
+                            rot.getY(),
+                            entity.getRandom().nextTriangular(rot.getZ(), deviation)), 1));
         }
 
         if (projectile.isEmpty()) {
             return;
         }
 
-        Vec3d position = SpellProjectileHelper.getProjectilePosition(caster);
-        projectile.get().setPosition(position.x, position.y, position.z);
-        caster.getWorld().spawnEntity(projectile.get());
+        projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
+        world.spawnEntity(projectile.get());
     }
 
     @Override

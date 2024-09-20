@@ -13,30 +13,26 @@ public class SmallFireballSpellProjectile implements ShootProjectileSpellEffect 
     public static final MapCodec<SmallFireballSpellProjectile> CODEC = MapCodec.unit(SmallFireballSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
-        Optional<SmallFireballEntity> projectile = Optional.empty();
+    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+        Optional<SmallFireballEntity> projectile;
         double deviation = 0.2;
-        if (caster instanceof LivingEntity) {
-            Vec3d rotation = caster.getRotationVector().normalize();
-            projectile = Optional.of(new SmallFireballEntity(world, (LivingEntity) caster,
-                    new Vec3d(caster.getRandom().nextTriangular(rotation.x, deviation),
-                            rotation.y,
-                            caster.getRandom().nextTriangular(rotation.z, deviation))));
-        } else if (caster != null) {
-            Vec3d rotation = caster.getRotationVector().normalize();
-            projectile = Optional.of(new SmallFireballEntity(world, caster.getX(), caster.getEyePos().getY(), caster.getZ(),
-                    new Vec3d(caster.getRandom().nextTriangular(rotation.x, deviation),
-                            rotation.y,
-                            caster.getRandom().nextTriangular(rotation.z, deviation))));
+        Vec3d rot = rotation.normalize();
+        Vec3d velocity = new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
+                rot.getY(),
+                entity.getRandom().nextTriangular(rot.getZ(), deviation));
+        if (entity instanceof LivingEntity) {
+            projectile = Optional.of(new SmallFireballEntity(world, (LivingEntity) entity, velocity));
+        } else {
+            projectile = Optional.of(new SmallFireballEntity(world, 
+                    position.getX(), position.getY(), position.getZ(), velocity));
         }
 
         if (projectile.isEmpty()) {
             return;
         }
 
-        Vec3d position = SpellProjectileHelper.getProjectilePosition(caster);
-        projectile.get().setPosition(position.x, position.y, position.z);
-        caster.getWorld().spawnEntity(projectile.get());
+        projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
+        entity.getWorld().spawnEntity(projectile.get());
     }
 
     @Override

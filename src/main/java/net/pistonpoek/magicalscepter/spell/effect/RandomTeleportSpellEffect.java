@@ -19,26 +19,26 @@ public record RandomTeleportSpellEffect(boolean spawnParticles, double bound)
                     ).apply(instance, RandomTeleportSpellEffect::new)
     );
     @Override
-    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
-        if (!(caster instanceof LivingEntity)) {
+    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+        if (!(entity instanceof LivingEntity)) {
             return;
         }
         for (int i = 0; i < 16; i++) {
-            double d = caster.getX() + (caster.getRandom().nextDouble() - 0.5) * bound;
+            double d = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * bound;
             double e = MathHelper.clamp(
-                    caster.getY() + (double) (caster.getRandom().nextInt((int)bound) - 8),
+                    entity.getY() + (double) (entity.getRandom().nextInt((int)bound) - 8),
                     (double) world.getBottomY(),
-                    (double) (world.getBottomY() + ((ServerWorld) world).getLogicalHeight() - 1)
+                    (double) (world.getBottomY() + world.getLogicalHeight() - 1)
             );
-            double f = caster.getZ() + (caster.getRandom().nextDouble() - 0.5) * bound;
-            if (caster.hasVehicle()) {
-                caster.stopRiding();
+            double f = entity.getZ() + (entity.getRandom().nextDouble() - 0.5) * bound;
+            if (entity.hasVehicle()) {
+                entity.stopRiding();
             }
 
-            Vec3d vec3d = caster.getPos();
-            if (((LivingEntity)caster).teleport(d, e, f, true)) {
-                world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(caster));
-                caster.onLanding();
+            Vec3d vec3d = entity.getPos();
+            if (((LivingEntity)entity).teleport(d, e, f, true)) {
+                world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(entity));
+                entity.onLanding();
             }
         }
     }

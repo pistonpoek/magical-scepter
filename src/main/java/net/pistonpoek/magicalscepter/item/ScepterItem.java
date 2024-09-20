@@ -11,6 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.spell.Spell;
 import net.pistonpoek.magicalscepter.util.PlayerExperience;
@@ -25,11 +26,15 @@ public class ScepterItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+
         ItemStack itemStack = user.getStackInHand(hand);
 
         Optional<RegistryEntry<Spell>> optionalSpell = (!user.isSneaking() ?
                 ScepterContentsComponent.getAttackSpell(itemStack) :
                 ScepterContentsComponent.getProtectSpell(itemStack));
+
+        Optional<ScepterContentsComponent> component = ScepterContentsComponent.get(itemStack);
+        component.ifPresent(content -> MagicalScepter.LOGGER.info(content.getAttackSpellName().toString()));
 
         if (optionalSpell.isEmpty()) {
             return TypedActionResult.pass(itemStack);

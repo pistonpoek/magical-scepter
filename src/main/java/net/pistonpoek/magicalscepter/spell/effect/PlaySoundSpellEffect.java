@@ -22,11 +22,11 @@ public record PlaySoundSpellEffect(RegistryEntry<SoundEvent> soundEvent, FloatPr
     );
 
     @Override
-    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
-        Random random = caster.getRandom();
-        if (!caster.isSilent()) {
-            world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), this.soundEvent,
-                    caster.getSoundCategory(), this.volume.get(random), this.pitch.get(random));
+    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+        Random random = entity.getRandom();
+        if (!entity.isSilent()) {
+            world.playSound(null, position.getX(), position.getY(), position.getZ(), this.soundEvent,
+                    entity.getSoundCategory(), this.volume.get(random), this.pitch.get(random));
         }
     }
 

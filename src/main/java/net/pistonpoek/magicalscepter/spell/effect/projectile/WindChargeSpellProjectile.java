@@ -13,28 +13,24 @@ public class WindChargeSpellProjectile implements ShootProjectileSpellEffect {
     public static final MapCodec<WindChargeSpellProjectile> CODEC = MapCodec.unit(WindChargeSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
-        Optional<WindChargeEntity> projectile = Optional.empty();
+    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+        Optional<WindChargeEntity> projectile;
         double deviation = 0.2;
-        if (caster instanceof PlayerEntity) {
-            projectile = Optional.of(new WindChargeEntity((PlayerEntity) caster,
-                    world, caster.getPos().getX(), caster.getEyePos().getY(), caster.getPos().getZ()));
-            projectile.get().setVelocity(caster, caster.getPitch(), caster.getYaw(), 0.0F, 1.5F, 1.0F);
-        } else if (caster != null) {
-            Vec3d rotation = caster.getRotationVector().normalize();
-            projectile = Optional.of(new WindChargeEntity(world, caster.getX(), caster.getEyePos().getY(), caster.getZ(),
-                    new Vec3d(caster.getRandom().nextTriangular(rotation.x, deviation),
-                            rotation.y,
-                            caster.getRandom().nextTriangular(rotation.z, deviation))));
+        Vec3d rot = rotation.normalize();
+        Vec3d velocity = new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
+                rot.getY(),
+                entity.getRandom().nextTriangular(rot.getZ(), deviation));
+        if (entity instanceof PlayerEntity) {
+            projectile = Optional.of(new WindChargeEntity((PlayerEntity) entity,
+                    world, position.getX(), position.getY(), position.getZ()));
+            projectile.get().setVelocity(velocity.getX(), velocity.getY(), velocity.getZ(), 1.5F, 1.0F);
+        } else {
+            projectile = Optional.of(new WindChargeEntity(world, position.getX(), position.getY(), position.getZ(),
+                    velocity));
         }
 
-        if (projectile.isEmpty()) {
-            return;
-        }
-
-        Vec3d position = SpellProjectileHelper.getProjectilePosition(caster);
-        projectile.get().setPosition(position.x, position.y, position.z);
-        caster.getWorld().spawnEntity(projectile.get());
+        projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
+        world.spawnEntity(projectile.get());
     }
 
     @Override

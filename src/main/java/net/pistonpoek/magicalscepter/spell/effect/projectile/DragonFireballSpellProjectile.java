@@ -13,26 +13,24 @@ public record DragonFireballSpellProjectile() implements ShootProjectileSpellEff
     public static final MapCodec<DragonFireballSpellProjectile> CODEC = MapCodec.unit(DragonFireballSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
+    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
         Optional<DragonFireballEntity> projectile = Optional.empty();
         double deviation = 0.2;
-        if (caster instanceof LivingEntity) {
-            Vec3d rotation = caster.getRotationVector().normalize();
-            projectile = Optional.of(new DragonFireballEntity(world, (LivingEntity) caster,
-                    new Vec3d(caster.getRandom().nextTriangular(rotation.x, deviation),
-                            rotation.y,
-                            caster.getRandom().nextTriangular(rotation.z, deviation))));
-            Vec3d position = SpellProjectileHelper.getProjectilePosition(caster);
-            projectile.get().setPosition(position.x, position.y, position.z);
+        if (entity instanceof LivingEntity) {
+            Vec3d rot = rotation.normalize();
+            projectile = Optional.of(new DragonFireballEntity(world, (LivingEntity) entity,
+                    new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
+                            rot.getY(),
+                            entity.getRandom().nextTriangular(rot.getZ(), deviation))));
+            projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
         }
 
         if (projectile.isEmpty()) {
             return;
         }
 
-        Vec3d position = SpellProjectileHelper.getProjectilePosition(caster);
-        projectile.get().setPosition(position.x, position.y, position.z);
-        caster.getWorld().spawnEntity(projectile.get());
+        projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
+        world.spawnEntity(projectile.get());
     }
 
     @Override

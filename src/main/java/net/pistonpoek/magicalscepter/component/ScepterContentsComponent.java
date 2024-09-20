@@ -220,6 +220,29 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                 Optional.empty(), Optional.empty(), Optional.empty());
     }
 
+    private static final Formatting ATTACK_SPELL_FORMATTING = Formatting.GREEN;
+    private static final Formatting PROTECT_SPELL_FORMATTING = Formatting.BLUE;
+    private static final Text NO_SPELL_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.empty_spell")
+            .formatted(Formatting.DARK_GRAY);
+
+    public Text getAttackSpellName() {
+        Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
+        if (attackSpell.isEmpty()) {
+            return NO_SPELL_TEXT;
+        }
+        MutableText mutableText = Spell.getName(attackSpell.get());
+        return Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(ATTACK_SPELL_FORMATTING));
+    }
+
+    public Text getProtectSpellName() {
+        Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
+        if (protectSpell.isEmpty()) {
+            return NO_SPELL_TEXT;
+        }
+        MutableText mutableText = Spell.getName(protectSpell.get());
+        return Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(PROTECT_SPELL_FORMATTING));
+    }
+
     private static final Formatting TITLE_FORMATTING = Formatting.GRAY;
     private static final Text CAST_ATTACK_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.on_cast_attack")
             .formatted(TITLE_FORMATTING);
@@ -232,13 +255,13 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
         Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         if (attackSpell.isPresent()) {
             textConsumer.accept(CAST_ATTACK_TEXT);
-            textConsumer.accept(ScreenTexts.space().append(Spell.getName(attackSpell.get())));
+            textConsumer.accept(ScreenTexts.space().append(getAttackSpellName()));
         }
 
         Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
         if (protectSpell.isPresent()) {
             textConsumer.accept(CAST_PROTECT_TEXT);
-            textConsumer.accept(ScreenTexts.space().append(Spell.getName(protectSpell.get())));
+            textConsumer.accept(ScreenTexts.space().append(getProtectSpellName()));
         }
     }
 }
