@@ -31,22 +31,22 @@ public record SummonEntitySpellEffect(
     );
 
     @Override
-    public void apply(ServerWorld world, Entity caster, Vec3d pos) {
-        BlockPos blockPos = BlockPos.ofFloored(pos);
+    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+        BlockPos blockPos = BlockPos.ofFloored(position);
         if (World.isValid(blockPos)) {
             Optional<RegistryEntry<EntityType<?>>> optional = this.entityTypes().getRandom(world.getRandom());
             if (optional.isPresent()) {
-                Entity entity = ((EntityType<?>)((RegistryEntry<?>)optional.get()).value()).spawn(world, blockPos, SpawnReason.TRIGGERED);
-                if (entity != null) {
-                    if (entity instanceof LightningEntity lightningEntity && caster instanceof ServerPlayerEntity serverPlayerEntity) {
+                Entity summonedEntity = ((EntityType<?>)((RegistryEntry<?>)optional.get()).value()).spawn(world, blockPos, SpawnReason.TRIGGERED);
+                if (summonedEntity != null) {
+                    if (summonedEntity instanceof LightningEntity lightningEntity && entity instanceof ServerPlayerEntity serverPlayerEntity) {
                         lightningEntity.setChanneler(serverPlayerEntity);
                     }
 
-                    if (this.joinTeam && caster.getScoreboardTeam() != null) {
-                        world.getScoreboard().addScoreHolderToTeam(entity.getNameForScoreboard(), caster.getScoreboardTeam());
+                    if (this.joinTeam && entity.getScoreboardTeam() != null) {
+                        world.getScoreboard().addScoreHolderToTeam(entity.getNameForScoreboard(), entity.getScoreboardTeam());
                     }
 
-                    entity.refreshPositionAndAngles(pos.x, pos.y, pos.z, entity.getYaw(), entity.getPitch());
+                    summonedEntity.refreshPositionAndAngles(position.getX(), position.getY(), position.getZ(), entity.getYaw(), entity.getPitch());
                 }
             }
         }

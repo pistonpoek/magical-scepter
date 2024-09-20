@@ -1,6 +1,7 @@
 {
   "casts": [
     {
+      "type": "magicalscepter:cast",
       "effects": [
         {
           "type": "magicalscepter:random_teleport",

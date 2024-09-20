@@ -1,88 +1,130 @@
 package net.pistonpoek.magicalscepter.spell.cast;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.timer.Timer;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.StringIdentifiable;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.pistonpoek.magicalscepter.MagicalScepter;
+import net.pistonpoek.magicalscepter.registry.ModIdentifier;
+import net.pistonpoek.magicalscepter.registry.ModRegistries;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
+import net.pistonpoek.magicalscepter.spell.effect.projectile.SpellProjectileHelper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
-public record SpellCast(int delay, List<SpellEffect> effects) {
-    public static final Codec<SpellCast> CODEC = RecordCodecBuilder.create(
-            instance -> instance.group(
-                            Codec.INT.optionalFieldOf("delay", 0).forGetter(SpellCast::delay),
-                            SpellEffect.CODEC.listOf().fieldOf("effects").forGetter(SpellCast::effects)
-                    )
-                    .apply(instance, SpellCast::new)
-    );
+public interface SpellCast {
+    Codec<SpellCast> CODEC = ModRegistries.SPELL_CAST_TYPE.getCodec().dispatch(SpellCast::getCodec, Function.identity());
 
-    public void apply(LivingEntity caster) {
-        apply(effects, caster);
+    static void register(Registry<MapCodec<? extends SpellCast>> registry) {
+        Registry.register(registry, ModIdentifier.of("cast"), DelayedSpellCast.CODEC);
+        Registry.register(registry, ModIdentifier.of("line_cast"), LineSpellCast.CODEC);
     }
 
-    public static void apply(List<SpellEffect> effects, LivingEntity caster) {
-        ServerWorld serverWorld = (ServerWorld)caster.getWorld();
-        for (SpellEffect spellEffect: effects) {
-            spellEffect.apply(serverWorld, caster, caster.getPos());
+    void apply(@NotNull LivingEntity caster);
+
+    default int getDelay() {
+        return 0;
+    }
+
+    MapCodec<? extends SpellCast> getCodec();
+
+    static void apply(List<SpellEffect> effects, Entity entity, PositionSource position, RotationSource rotation) {
+        ServerWorld serverWorld = (ServerWorld) entity.getWorld();
+        for (SpellEffect spellEffect : effects) {
+            spellEffect.apply(serverWorld, entity, position.getPosition(entity), rotation.getRotation(entity));
         }
     }
 
-    public void schedule(@NotNull LivingEntity caster) {
-        MinecraftServer minecraftServer = caster.getServer();
-        if (minecraftServer == null) {
-            return;
+    record PositionSource(Vec3d value, Type type) {
+        static Codec<PositionSource> CODEC = RecordCodecBuilder.create(
+                        instance -> instance.group(
+                                Vec3d.CODEC.fieldOf("value").forGetter(PositionSource::value),
+                                StringIdentifiable.createBasicCodec(Type::values).fieldOf("type").forGetter(PositionSource::type)
+                        ).apply(instance, PositionSource::new)
+        );
+
+        public enum Type implements StringIdentifiable {
+            VALUE("value"),
+            PROJECTILE("projectile"),
+            ENTITY_FEET("entity_feet"),
+            ENTITY_EYE("entity_eye"),
+            RELATIVE("relative"),
+            ABSOLUTE("absolute");
+
+            final String name;
+
+            Type(String name) {
+                this.name = name;
+            }
+
+            @Override
+            public String asString() {
+                return name;
+            }
         }
-        if (delay <= 0) {
-            apply(caster);
-            return;
+
+        Vec3d getPosition(@NotNull Entity entity) {
+            return switch (type) {
+                case VALUE -> value;
+                case ENTITY_EYE -> entity.getEyePos();
+                case ENTITY_FEET -> entity.getPos();
+                case PROJECTILE -> SpellProjectileHelper.getProjectilePosition(entity);
+                case RELATIVE -> getRelativeVector(entity.getPos(), entity, value);
+                case ABSOLUTE -> entity.getPos().add(value);
+            };
         }
-        Timer<MinecraftServer> timer = minecraftServer.getSaveProperties().getMainWorldProperties().getScheduledEvents();
-        long cast_time = caster.getWorld().getTime() + (long)delay;
-        timer.setEvent(caster.getUuid().toString(), cast_time, new SpellCastTimerCallback(effects, caster.getUuid()));
+
+        private Vec3d getRelativeVector(Vec3d base, Entity entity, Vec3d value) {
+            float pitch = entity.getPitch();
+            float yaw = entity.getYaw();
+            return base
+                    .add(entity.getRotationVector(0, MathHelper.wrapDegrees(yaw - 90)).normalize().multiply(value.x))
+                    .add(entity.getRotationVector(MathHelper.wrapDegrees(pitch - 90), yaw).normalize().multiply(value.y))
+                    .add(entity.getRotationVector().normalize().multiply(value.z));
+        }
     }
 
-    public static void clear(@NotNull LivingEntity caster) {
-        MinecraftServer minecraftServer = caster.getServer();
-        if (minecraftServer == null) {
-            return;
-        }
-        Timer<MinecraftServer> timer = minecraftServer.getSaveProperties().getMainWorldProperties().getScheduledEvents();
-        timer.remove(caster.getUuid().toString());
-    }
+    record RotationSource(Vec3d value, Type type) {
+        static Codec<RotationSource> CODEC = RecordCodecBuilder.create(
+                instance -> instance.group(
+                        Vec3d.CODEC.fieldOf("value").forGetter(RotationSource::value),
+                        StringIdentifiable.createBasicCodec(Type::values).fieldOf("type").forGetter(RotationSource::type)
+                ).apply(instance, RotationSource::new)
+        );
 
-    public static void afterDeath(LivingEntity entity, DamageSource damageSource) {
-        if (entity == null) {
-            return;
-        }
-        clear(entity);
-    }
+        enum Type implements StringIdentifiable {
+            VALUE("value"),
+            ENTITY("entity"),
+            RELATIVE("relative");
 
-    public static SpellCast.Builder builder() {
-        return new SpellCast.Builder();
-    }
+            final String name;
 
-    public static class Builder {
-        private int delay = 0;
-        private final List<SpellEffect> effects = new ArrayList<>();
+            Type(String name) {
+                this.name = name;
+            }
 
-        public SpellCast.Builder delay(int delay) {
-            this.delay = delay;
-            return this;
+            @Override
+            public String asString() {
+                return name;
+            }
         }
 
-        public SpellCast.Builder addEffect(SpellEffect effect) {
-            effects.add(effect);
-            return this;
-        }
-
-        public SpellCast build() {
-            return new SpellCast(delay, effects);
+        Vec3d getRotation(@NotNull Entity entity) {
+            return switch (type) {
+                case VALUE -> value;
+                case ENTITY -> entity.getRotationVector();
+                case RELATIVE -> entity.getRotationVector().add(value);
+            };
         }
     }
 }

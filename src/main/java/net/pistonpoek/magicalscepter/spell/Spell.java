@@ -10,7 +10,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.StringIdentifiable;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +49,7 @@ public record Spell(List<SpellCast> casts, int cooldown, int experienceCost, Tex
         }
 
         for (SpellCast cast : casts) {
-            cast.schedule(caster);
+            cast.apply(caster);
         }
     }
 
@@ -65,7 +64,7 @@ public record Spell(List<SpellCast> casts, int cooldown, int experienceCost, Tex
     public int getDuration() {
         int duration = 0;
         for (SpellCast cast : casts) {
-            duration = Math.max(duration, cast.delay());
+            duration = Math.max(duration, cast.getDelay());
         }
         return duration;
     }
@@ -74,10 +73,8 @@ public record Spell(List<SpellCast> casts, int cooldown, int experienceCost, Tex
         return "Spell " + this.description.getString();
     }
 
-    public static Text getName(RegistryEntry<Spell> spell) {
-        MutableText mutableText = spell.value().description.copy();
-        Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(Formatting.LIGHT_PURPLE));
-        return mutableText;
+    public static MutableText getName(RegistryEntry<Spell> spell) {
+        return spell.value().description.copy();
     }
 
     // See SpawnParticlesEnchantmentEffect

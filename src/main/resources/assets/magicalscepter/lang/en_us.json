@@ -13,6 +13,7 @@
   "item.magicalscepter.scepter.wither" : "Wither Scepter",
   "magicalscepter.scepter.on_cast_attack" : "On Attack:",
   "magicalscepter.scepter.on_cast_protect" : "On Protect:",
+  "magicalscepter.scepter.empty_spell" : "No Spell",
   "spell.magicalscepter.magical_attack" : "Magical Attack",
   "spell.magicalscepter.small_fireballs" : "Shoot Small Fireballs",
   "spell.magicalscepter.wind_charge" : "Shoot Wind Charge",

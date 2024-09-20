@@ -1,6 +1,7 @@
 {
   "casts": [
     {
+      "type": "magicalscepter:cast",
       "effects": [
         {
           "type": "magicalscepter:play_sound",
@@ -21,6 +22,7 @@
       ]
     },
     {
+      "type": "magicalscepter:cast",
       "delay": 6,
       "effects": [
         {
@@ -42,6 +44,7 @@
       ]
     },
     {
+      "type": "magicalscepter:cast",
       "delay": 12,
       "effects": [
         {
