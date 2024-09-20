@@ -7,12 +7,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.Pair;
 import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistries;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
@@ -41,14 +39,14 @@ public interface SpellCast {
     static void apply(List<SpellEffect> effects, Entity entity, PositionSource position, RotationSource rotation) {
         ServerWorld serverWorld = (ServerWorld) entity.getWorld();
         for (SpellEffect spellEffect : effects) {
-            spellEffect.apply(serverWorld, entity, position.getPosition(entity), rotation.getRotation(entity));
+            spellEffect.apply(serverWorld, entity, position.getPosition(entity), rotation.getPitch(entity), rotation.getYaw(entity));
         }
     }
 
     record PositionSource(Vec3d value, Type type) {
         static Codec<PositionSource> CODEC = RecordCodecBuilder.create(
                         instance -> instance.group(
-                                Vec3d.CODEC.fieldOf("value").forGetter(PositionSource::value),
+                                Vec3d.CODEC.optionalFieldOf("value", Vec3d.ZERO).forGetter(PositionSource::value),
                                 StringIdentifiable.createBasicCodec(Type::values).fieldOf("type").forGetter(PositionSource::type)
                         ).apply(instance, PositionSource::new)
         );
@@ -73,7 +71,7 @@ public interface SpellCast {
             }
         }
 
-        Vec3d getPosition(@NotNull Entity entity) {
+        public Vec3d getPosition(@NotNull Entity entity) {
             return switch (type) {
                 case VALUE -> value;
                 case ENTITY_EYE -> entity.getEyePos();
@@ -92,17 +90,30 @@ public interface SpellCast {
                     .add(entity.getRotationVector(MathHelper.wrapDegrees(pitch - 90), yaw).normalize().multiply(value.y))
                     .add(entity.getRotationVector().normalize().multiply(value.z));
         }
+
+        public double getX(@NotNull Entity entity) {
+            return getPosition(entity).getX();
+        }
+
+        public double getY(@NotNull Entity entity) {
+            return getPosition(entity).getY();
+        }
+
+        public double getZ(@NotNull Entity entity) {
+            return getPosition(entity).getZ();
+        }
     }
 
-    record RotationSource(Vec3d value, Type type) {
+    record RotationSource(float pitch, float yaw, Type type) {
         static Codec<RotationSource> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
-                        Vec3d.CODEC.fieldOf("value").forGetter(RotationSource::value),
+                        Codec.FLOAT.optionalFieldOf("pitch", 0.0F).forGetter(RotationSource::pitch),
+                        Codec.FLOAT.optionalFieldOf("yaw", 0.0F).forGetter(RotationSource::yaw),
                         StringIdentifiable.createBasicCodec(Type::values).fieldOf("type").forGetter(RotationSource::type)
                 ).apply(instance, RotationSource::new)
         );
 
-        enum Type implements StringIdentifiable {
+        public enum Type implements StringIdentifiable {
             VALUE("value"),
             ENTITY("entity"),
             RELATIVE("relative");
@@ -119,12 +130,22 @@ public interface SpellCast {
             }
         }
 
-        Vec3d getRotation(@NotNull Entity entity) {
+        private Pair<Float, Float> getRotation(@NotNull Entity entity) {
             return switch (type) {
-                case VALUE -> value;
-                case ENTITY -> entity.getRotationVector();
-                case RELATIVE -> entity.getRotationVector().add(value);
+                case VALUE -> new Pair<>(pitch, yaw);
+                case ENTITY -> new Pair<>(entity.getPitch(), entity.getYaw());
+                case RELATIVE -> new Pair<>(
+                        MathHelper.wrapDegrees(entity.getPitch()) + pitch,
+                        MathHelper.wrapDegrees(entity.getYaw() + yaw));
             };
+        }
+
+        public float getPitch(@NotNull Entity entity) {
+            return getRotation(entity).getLeft();
+        }
+
+        public float getYaw(@NotNull Entity entity) {
+            return getRotation(entity).getRight();
         }
     }
 }

@@ -2,6 +2,7 @@ package net.pistonpoek.magicalscepter.spell;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -162,9 +163,11 @@ public class Spells {
                     new SpellCast.PositionSource(new Vec3d(0, 0, 20), SpellCast.PositionSource.Type.RELATIVE),
                     DelayedSpellCast.builder()
                             .addEffect(new SummonEntitySpellEffect(
-                                    RegistryEntryList.of(Registries.ENTITY_TYPE.getEntry(EntityType.EVOKER_FANGS)), false
+                                    RegistryEntryList.of(Registries.ENTITY_TYPE.getEntry(EntityType.EVOKER_FANGS)),
+                                    false, 4.0
                             )).build()
-            ).stepDelay(1).build())
+            ).stepDelay(1).rotation(new SpellCast.RotationSource(0, 90,
+                    SpellCast.RotationSource.Type.RELATIVE)).build())
         );
         register(registry, EVOKER_FANG_CIRCLE_KEY, Spell.builder(100, 32,
                         textOf("fang_circle"))
@@ -237,6 +240,15 @@ public class Spells {
                             RegistryEntry.of(SoundEvents.ENTITY_WARDEN_SONIC_BOOM),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F))).build())
+//                .addCast(LineSpellCast.builder(15,
+//                        new SpellCast.PositionSource(new Vec3d(0, 0, 1.25), SpellCast.PositionSource.Type.RELATIVE),
+//                        new SpellCast.PositionSource(new Vec3d(0, 0, 20), SpellCast.PositionSource.Type.RELATIVE),
+//                        DelayedSpellCast.builder().addEffect(
+//                                new SpawnParticlesSpellEffect(
+//                                        ParticleTypes.SONIC_BOOM,
+//
+//                                        ))
+//                                .build()))
         );
         register(registry, WARDEN_STABILITY_KEY, Spell.builder(100, 32,
                         Text.translatable(Util.createTranslationKey("effect", ModIdentifier.of("stability"))))

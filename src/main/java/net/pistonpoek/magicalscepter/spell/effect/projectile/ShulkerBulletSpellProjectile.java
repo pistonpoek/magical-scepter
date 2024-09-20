@@ -10,6 +10,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.pistonpoek.magicalscepter.util.RotationVector;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,10 +20,10 @@ public class ShulkerBulletSpellProjectile implements ShootProjectileSpellEffect 
     public static final MapCodec<ShulkerBulletSpellProjectile> CODEC = MapCodec.unit(ShulkerBulletSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
         Optional<ShulkerBulletEntity> projectile = Optional.empty();
         if (entity instanceof LivingEntity) {
-            Vec3d rot = rotation.normalize();
+            Vec3d rot = RotationVector.get(pitch, yaw);
             Direction.Axis axis = Direction.Axis.X;
             if (MathHelper.abs((float) rot.getX()) < MathHelper.abs((float) rot.getZ())) {
                 axis = Direction.Axis.Z;
