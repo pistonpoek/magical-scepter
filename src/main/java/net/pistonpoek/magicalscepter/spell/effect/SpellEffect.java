@@ -33,7 +33,7 @@ public interface SpellEffect {
 //        Registry.register(registry, "set_block_properties", SetBlockPropertiesEnchantmentEffect.CODEC);
     }
 
-    void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation);
+    void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw);
 
     MapCodec<? extends SpellEffect> getCodec();
 }

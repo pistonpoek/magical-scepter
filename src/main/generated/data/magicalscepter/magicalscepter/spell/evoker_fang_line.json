@@ -25,14 +25,19 @@
         "value": [
           0.0,
           0.0,
-          21.25
+          20.0
         ]
+      },
+      "rotation": {
+        "type": "relative",
+        "yaw": 90.0
       },
       "spell_cast": {
         "effects": [
           {
             "type": "magicalscepter:summon_entity",
-            "entity": "minecraft:evoker_fangs"
+            "entity": "minecraft:evoker_fangs",
+            "require_surface_distance": 4.0
           }
         ]
       },

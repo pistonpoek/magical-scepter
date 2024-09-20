@@ -52,7 +52,7 @@ public record SpawnParticlesSpellEffect(
     }
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
         Random random = entity.getRandom();
         Vec3d vec3d = entity.getMovement();
         float width = entity.getWidth();

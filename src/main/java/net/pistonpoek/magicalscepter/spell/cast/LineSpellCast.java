@@ -19,7 +19,7 @@ public record LineSpellCast(DelayedSpellCast spellCast,
                             PositionSource.CODEC.fieldOf("start_position").forGetter(LineSpellCast::startPosition),
                             PositionSource.CODEC.fieldOf("end_position").forGetter(LineSpellCast::endPosition),
                             SpellCast.RotationSource.CODEC.optionalFieldOf("rotation",
-                                            new RotationSource(Vec3d.ZERO, RotationSource.Type.ENTITY))
+                                            new RotationSource(0, 0, RotationSource.Type.ENTITY))
                                     .forGetter(LineSpellCast::rotation),
                             Codec.INT.fieldOf("amount").forGetter(LineSpellCast::amount),
                             Codec.INT.optionalFieldOf("step_delay", 0).forGetter(LineSpellCast::stepDelay)
@@ -35,7 +35,7 @@ public record LineSpellCast(DelayedSpellCast spellCast,
                     spellCast.getDelay() + i * stepDelay,
                     spellCast.effects(),
                     new PositionSource(startPos.add(lineVector.multiply(((double)i) / (amount - 1))), PositionSource.Type.VALUE),
-                    new RotationSource(rotation.getRotation(caster), RotationSource.Type.VALUE)
+                    new RotationSource(rotation.getPitch(caster), rotation.getYaw(caster), RotationSource.Type.VALUE)
                     ).apply(caster);
         }
     }
@@ -56,7 +56,7 @@ public record LineSpellCast(DelayedSpellCast spellCast,
         private final DelayedSpellCast spellCast;
         private final PositionSource startPosition;
         private final PositionSource endPosition;
-        private RotationSource rotation = new RotationSource(Vec3d.ZERO, RotationSource.Type.ENTITY);
+        private RotationSource rotation = new RotationSource(0, 0, RotationSource.Type.ENTITY);
         private final int amount;
         private int stepDelay = 0;
 

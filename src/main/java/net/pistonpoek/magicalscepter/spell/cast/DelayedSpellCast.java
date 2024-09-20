@@ -26,7 +26,7 @@ public record DelayedSpellCast(int delay,
                                     new PositionSource(Vec3d.ZERO, PositionSource.Type.ENTITY_EYE))
                                     .forGetter(DelayedSpellCast::position),
                             SpellCast.RotationSource.CODEC.optionalFieldOf("rotation",
-                                    new RotationSource(Vec3d.ZERO, RotationSource.Type.ENTITY))
+                                    new RotationSource(0, 0, RotationSource.Type.ENTITY))
                                     .forGetter(DelayedSpellCast::rotation)
                     )
                     .apply(instance, DelayedSpellCast::new)
@@ -83,7 +83,7 @@ public record DelayedSpellCast(int delay,
         private int delay = 0;
         private final List<SpellEffect> effects = new ArrayList<>();
         private PositionSource position = new PositionSource(Vec3d.ZERO, PositionSource.Type.ENTITY_EYE);
-        private RotationSource rotation = new RotationSource(Vec3d.ZERO, RotationSource.Type.ENTITY);
+        private RotationSource rotation = new RotationSource(0, 0, RotationSource.Type.ENTITY);
 
         public DelayedSpellCast.Builder delay(int delay) {
             this.delay = delay;

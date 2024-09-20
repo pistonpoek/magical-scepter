@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
+import net.pistonpoek.magicalscepter.util.RotationVector;
 
 import java.util.Optional;
 
@@ -13,11 +14,11 @@ public class FireballSpellProjectile implements ShootProjectileSpellEffect {
     public static final MapCodec<FireballSpellProjectile> CODEC = MapCodec.unit(FireballSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
         Optional<FireballEntity> projectile = Optional.empty();
         double deviation = 0.2;
         if (entity instanceof LivingEntity) {
-            Vec3d rot = rotation.normalize();
+            Vec3d rot = RotationVector.get(pitch, yaw).normalize();
             projectile = Optional.of(new FireballEntity(world, (LivingEntity) entity,
                     new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
                             rot.getY(),

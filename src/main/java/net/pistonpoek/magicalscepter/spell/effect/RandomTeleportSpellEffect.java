@@ -19,7 +19,7 @@ public record RandomTeleportSpellEffect(boolean spawnParticles, double bound)
                     ).apply(instance, RandomTeleportSpellEffect::new)
     );
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, Vec3d rotation) {
+    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
         if (!(entity instanceof LivingEntity)) {
             return;
         }
