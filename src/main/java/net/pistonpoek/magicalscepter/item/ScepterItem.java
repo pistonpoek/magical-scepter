@@ -49,16 +49,20 @@ public class ScepterItem extends Item {
 
             user.addExperience(-spell.getExperienceCost());
             user.addScore(spell.getExperienceCost()); // Compensating for lost score in adding experience cost.
-            user.getItemCooldownManager().set(this, spell.getCooldown());
-        } else {
-            user.getItemCooldownManager().set(this, spell.getDuration() + 10);
         }
+        user.getItemCooldownManager().set(this, spell.getCooldown());
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
         if (!world.isClient()) {
-            spell.castSpell(user);
+            int castDuration = spell.castSpell(user);
             ItemStack damagedItemStack = itemStack.damage(1, ModItems.SCEPTER, user, LivingEntity.getSlotForHand(hand));
+
+            // Correct spell duration cooldown, increase cooldown for non-creative and decrease for creative players.
+            if (user.getAbilities().creativeMode ^ castDuration + 10 >= spell.getCooldown()) {
+                user.getItemCooldownManager().set(this, castDuration + 10);
+            }
+
             return TypedActionResult.success(damagedItemStack, !user.isSneaking());
         }
         return TypedActionResult.pass(itemStack);

@@ -36,15 +36,13 @@ public record ApplyMobEffectSpellEffect(
     );
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
-        if (entity instanceof LivingEntity livingEntity) {
-            Random random = livingEntity.getRandom();
-            Optional<RegistryEntry<StatusEffect>> optional = this.toApply.getRandom(random);
-            if (optional.isPresent()) {
-                int duration = Math.round(MathHelper.nextBetween(random, this.minDuration.get(random), this.maxDuration.get(random)) * 20.0F);
-                int amplifier = Math.max(0, Math.round(MathHelper.nextBetween(random, this.minAmplifier.get(random), this.maxAmplifier.get(random))));
-                livingEntity.addStatusEffect(new StatusEffectInstance((RegistryEntry<StatusEffect>)optional.get(), duration, amplifier));
-            }
+    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
+        Random random = entity.getRandom();
+        Optional<RegistryEntry<StatusEffect>> optional = this.toApply.getRandom(random);
+        if (optional.isPresent()) {
+            int duration = Math.round(MathHelper.nextBetween(random, this.minDuration.get(random), this.maxDuration.get(random)) * 20.0F);
+            int amplifier = Math.max(0, Math.round(MathHelper.nextBetween(random, this.minAmplifier.get(random), this.maxAmplifier.get(random))));
+            entity.addStatusEffect(new StatusEffectInstance((RegistryEntry<StatusEffect>)optional.get(), duration, amplifier));
         }
     }
 

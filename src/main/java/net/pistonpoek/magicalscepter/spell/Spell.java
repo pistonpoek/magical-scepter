@@ -9,7 +9,6 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.text.*;
-import net.minecraft.util.Formatting;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import org.jetbrains.annotations.NotNull;
@@ -43,14 +42,22 @@ public record Spell(List<SpellCast> casts, int cooldown, int experienceCost, Tex
             PacketCodecs.registryEntry(ModRegistryKeys.SPELL);
     public static final PacketCodec<RegistryByteBuf, Spell> PACKET_CODEC = PacketCodecs.registryCodec(CODEC);
 
-    public void castSpell(@NotNull LivingEntity caster) {
+    /**
+     * Cast this spell for a specific living entity.
+     *
+     * @param caster Living entity to cast the spell for.
+     * @return Duration that the spell takes.
+     */
+    public int castSpell(@NotNull LivingEntity caster) {
         if (caster.getWorld().isClient()) {
-            return;
+            return 0;
         }
-
+        int duration = 0;
         for (SpellCast cast : casts) {
-            cast.apply(caster);
+            int castTime = cast.apply(caster);
+            duration = Math.max(duration, castTime);
         }
+        return duration;
     }
 
     public int getCooldown() {
@@ -61,14 +68,6 @@ public record Spell(List<SpellCast> casts, int cooldown, int experienceCost, Tex
         return experienceCost;
     }
 
-    public int getDuration() {
-        int duration = 0;
-        for (SpellCast cast : casts) {
-            duration = Math.max(duration, cast.getDelay());
-        }
-        return duration;
-    }
-
     public String toString() {
         return "Spell " + this.description.getString();
     }
@@ -76,8 +75,6 @@ public record Spell(List<SpellCast> casts, int cooldown, int experienceCost, Tex
     public static MutableText getName(RegistryEntry<Spell> spell) {
         return spell.value().description.copy();
     }
-
-    // See SpawnParticlesEnchantmentEffect
 
     public static Spell.Builder builder(int cooldown, int experienceCost, Text description) {
         return new Spell.Builder(cooldown, experienceCost, description);

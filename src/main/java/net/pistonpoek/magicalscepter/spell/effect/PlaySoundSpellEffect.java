@@ -3,6 +3,7 @@ package net.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -22,7 +23,7 @@ public record PlaySoundSpellEffect(RegistryEntry<SoundEvent> soundEvent, FloatPr
     );
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
+    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
         Random random = entity.getRandom();
         if (!entity.isSilent()) {
             world.playSound(null, position.getX(), position.getY(), position.getZ(), this.soundEvent,

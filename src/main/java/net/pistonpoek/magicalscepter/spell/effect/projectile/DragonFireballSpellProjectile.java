@@ -14,24 +14,15 @@ public record DragonFireballSpellProjectile() implements ShootProjectileSpellEff
     public static final MapCodec<DragonFireballSpellProjectile> CODEC = MapCodec.unit(DragonFireballSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
-        Optional<DragonFireballEntity> projectile = Optional.empty();
+    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
         double deviation = 0.2;
-        if (entity instanceof LivingEntity) {
-            Vec3d rot = RotationVector.get(pitch, yaw);
-            projectile = Optional.of(new DragonFireballEntity(world, (LivingEntity) entity,
-                    new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
-                            rot.getY(),
-                            entity.getRandom().nextTriangular(rot.getZ(), deviation))));
-            projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
-        }
-
-        if (projectile.isEmpty()) {
-            return;
-        }
-
-        projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
-        world.spawnEntity(projectile.get());
+        Vec3d rot = RotationVector.get(pitch, yaw);
+        DragonFireballEntity projectile = new DragonFireballEntity(world, entity,
+                new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
+                        rot.getY(),
+                        entity.getRandom().nextTriangular(rot.getZ(), deviation)));
+        projectile.setPosition(position.getX(), position.getY(), position.getZ());
+        world.spawnEntity(projectile);
     }
 
     @Override

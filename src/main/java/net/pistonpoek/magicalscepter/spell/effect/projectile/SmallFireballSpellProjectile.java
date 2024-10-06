@@ -14,26 +14,17 @@ public class SmallFireballSpellProjectile implements ShootProjectileSpellEffect 
     public static final MapCodec<SmallFireballSpellProjectile> CODEC = MapCodec.unit(SmallFireballSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
-        Optional<SmallFireballEntity> projectile;
+    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
         double deviation = 0.2;
         Vec3d rot = RotationVector.get(pitch, yaw).normalize();
         Vec3d velocity = new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
                 rot.getY(),
                 entity.getRandom().nextTriangular(rot.getZ(), deviation));
-        if (entity instanceof LivingEntity) {
-            projectile = Optional.of(new SmallFireballEntity(world, (LivingEntity) entity, velocity));
-        } else {
-            projectile = Optional.of(new SmallFireballEntity(world, 
-                    position.getX(), position.getY(), position.getZ(), velocity));
-        }
 
-        if (projectile.isEmpty()) {
-            return;
-        }
+        SmallFireballEntity projectile = new SmallFireballEntity(world, entity, velocity);
 
-        projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
-        entity.getWorld().spawnEntity(projectile.get());
+        projectile.setPosition(position.getX(), position.getY(), position.getZ());
+        entity.getWorld().spawnEntity(projectile);
     }
 
     @Override

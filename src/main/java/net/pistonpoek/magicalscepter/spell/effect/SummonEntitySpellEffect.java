@@ -6,10 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LightningEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.registry.RegistryCodecs;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -38,7 +35,7 @@ public record SummonEntitySpellEffect(
     );
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
+    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
         Optional<Vec3d> floorPosition = getSurfacePosition(position, entity.getWorld());
         if (floorPosition.isEmpty())  {
             return;

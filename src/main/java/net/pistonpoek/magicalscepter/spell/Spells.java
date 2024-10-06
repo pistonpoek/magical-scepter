@@ -18,9 +18,10 @@ import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import net.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
-import net.pistonpoek.magicalscepter.spell.cast.DelayedSpellCast;
-import net.pistonpoek.magicalscepter.spell.cast.LineSpellCast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellCast;
+import net.pistonpoek.magicalscepter.spell.cast.*;
+import net.pistonpoek.magicalscepter.spell.cast.transformer.DelayCastTransformer;
+import net.pistonpoek.magicalscepter.spell.cast.transformer.LineCastTransformer;
+import net.pistonpoek.magicalscepter.spell.cast.transformer.RotateCastTransformer;
 import net.pistonpoek.magicalscepter.spell.effect.*;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.*;
 
@@ -57,7 +58,7 @@ public class Spells {
     public static void bootstrap(Registerable<Spell> registry) {
         register(registry, MAGICAL_ATTACK_KEY, Spell.builder(100, 32,
                         textOf("magical_attack"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL),
                             ConstantFloatProvider.create(1.0F),
@@ -66,7 +67,7 @@ public class Spells {
         );
         register(registry, MAGICAL_RESISTANCE_KEY, Spell.builder(100, 32,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("resistance"))))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL),
                             ConstantFloatProvider.create(1.0F),
@@ -81,30 +82,30 @@ public class Spells {
 
         register(registry, BLAZE_SMALL_FIREBALL_KEY, Spell.builder(100, 32,
                         textOf("small_fireballs"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_BLAZE_SHOOT),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F)))
                     .addEffect(new SmallFireballSpellProjectile()).build())
-            .addCast(DelayedSpellCast.builder()
-                    .delay(6)
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_BLAZE_SHOOT),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F)))
-                    .addEffect(new SmallFireballSpellProjectile()).build())
-            .addCast(DelayedSpellCast.builder()
-                        .delay(12)
+                    .addEffect(new SmallFireballSpellProjectile())
+                    .addTransformer(new DelayCastTransformer(6)).build())
+            .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_BLAZE_SHOOT),
                                 ConstantFloatProvider.create(1.0F),
                                 UniformFloatProvider.create(0.8F, 1.2F)))
-                        .addEffect(new SmallFireballSpellProjectile()).build())
+                        .addEffect(new SmallFireballSpellProjectile())
+                    .addTransformer(new DelayCastTransformer(12)).build())
         );
         register(registry, BLAZE_FIRE_RESISTANCE_KEY, Spell.builder(100, 32,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("fire_resistance"))))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.FIRE_RESISTANCE),
                             ConstantFloatProvider.create(1000.0F),
@@ -115,7 +116,7 @@ public class Spells {
 
         register(registry, BREEZE_WIND_CHARGE_KEY, Spell.builder(100, 32,
                         textOf("wind_charge"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_BREEZE_SHOOT),
                             ConstantFloatProvider.create(1.0F),
@@ -124,7 +125,7 @@ public class Spells {
         );
         register(registry, BREEZE_JUMP_KEY, Spell.builder(100, 32,
                         textOf("breeze_jump"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.JUMP_BOOST),
                             ConstantFloatProvider.create(1000.0F),
@@ -135,7 +136,7 @@ public class Spells {
 
         register(registry, DRAGON_FIREBALL_KEY, Spell.builder(100, 32,
                         textOf("dragon_fireball"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_ENDER_DRAGON_SHOOT),
                             ConstantFloatProvider.create(1.0F),
@@ -144,7 +145,7 @@ public class Spells {
         );
         register(registry, DRAGON_PROTECT_KEY, Spell.builder(100, 32,
                         textOf("dragon_growl"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_ENDER_DRAGON_GROWL),
                             ConstantFloatProvider.create(1.0F),
@@ -153,25 +154,27 @@ public class Spells {
 
         register(registry, EVOKER_FANG_LINE_KEY, Spell.builder(100, 32,
                         textOf("fang_line"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_EVOKER_CAST_SPELL),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F))).build())
-            .addCast(LineSpellCast.builder(16,
-                    new SpellCast.PositionSource(new Vec3d(0, 0, 1.25), SpellCast.PositionSource.Type.RELATIVE),
-                    new SpellCast.PositionSource(new Vec3d(0, 0, 20), SpellCast.PositionSource.Type.RELATIVE),
-                    DelayedSpellCast.builder()
-                            .addEffect(new SummonEntitySpellEffect(
-                                    RegistryEntryList.of(Registries.ENTITY_TYPE.getEntry(EntityType.EVOKER_FANGS)),
-                                    false, 4.0
-                            )).build()
-            ).stepDelay(1).rotation(new SpellCast.RotationSource(0, 90,
-                    SpellCast.RotationSource.Type.RELATIVE)).build())
+            .addCast(SpellCast.builder()
+                    .addEffect(new SummonEntitySpellEffect(
+                            RegistryEntryList.of(Registries.ENTITY_TYPE.getEntry(EntityType.EVOKER_FANGS)),
+                            false, 4.0))
+                    .addTransformer(LineCastTransformer.builder(16,
+                            new RelativePositionSource(new Vec3d(0, 0, 1.25),
+                                    new EntityPositionSource(EntityPositionSource.Anchor.EYES),
+                                    new RelativeRotationSource(0, 0)),
+                            new RelativePositionSource(new Vec3d(0, 0, 20),
+                                    new EntityPositionSource(EntityPositionSource.Anchor.EYES),
+                                    new RelativeRotationSource(0, 0))).stepDelay(1).build())
+                    .addTransformer(new RotateCastTransformer(new RelativeRotationSource(0, 90))).build())
         );
         register(registry, EVOKER_FANG_CIRCLE_KEY, Spell.builder(100, 32,
                         textOf("fang_circle"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_EVOKER_CAST_SPELL),
                             ConstantFloatProvider.create(1.0F),
@@ -180,7 +183,7 @@ public class Spells {
 
         register(registry, GHAST_FIREBALL_KEY, Spell.builder(100, 32,
                         textOf("fireball"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_GHAST_SHOOT),
                             ConstantFloatProvider.create(1.0F),
@@ -189,7 +192,7 @@ public class Spells {
         );
         register(registry, GHAST_REGENERATION_KEY, Spell.builder(100, 32,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("regeneration"))))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.REGENERATION),
                             ConstantFloatProvider.create(1000.0F),
@@ -200,11 +203,11 @@ public class Spells {
 
         register(registry, GUARDIAN_BEAM_KEY, Spell.builder(100, 32,
                         textOf("guardian_beam"))
-            .addCast(DelayedSpellCast.builder().build())
+            .addCast(SpellCast.builder().build())
         );
         register(registry, GUARDIAN_HASTE_KEY, Spell.builder(100, 32,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("haste"))))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.HASTE),
                             ConstantFloatProvider.create(1000.0F),
@@ -215,7 +218,7 @@ public class Spells {
 
         register(registry, SHULKER_BULLET_KEY, Spell.builder(100, 32,
                         textOf("shulker_bullet"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_SHULKER_SHOOT),
                             ConstantFloatProvider.create(1.0F),
@@ -224,7 +227,7 @@ public class Spells {
         );
         register(registry, SHULKER_TELEPORT_KEY, Spell.builder(100, 32,
                         textOf("teleport"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new RandomTeleportSpellEffect(
                             true, 16.0))
                     .addEffect(new PlaySoundSpellEffect(
@@ -235,24 +238,29 @@ public class Spells {
 
         register(registry, WARDEN_SONIC_BOOM_KEY, Spell.builder(100, 32,
                         textOf("sonic_boom"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_WARDEN_SONIC_BOOM),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F))).build())
-//                .addCast(LineSpellCast.builder(15,
-//                        new SpellCast.PositionSource(new Vec3d(0, 0, 1.25), SpellCast.PositionSource.Type.RELATIVE),
-//                        new SpellCast.PositionSource(new Vec3d(0, 0, 20), SpellCast.PositionSource.Type.RELATIVE),
-//                        DelayedSpellCast.builder().addEffect(
+            .addCast(SpellCast.builder()
+                    .addTransformer(LineCastTransformer.builder(15,
+                                new RelativePositionSource(new Vec3d(0, 0, 1.25),
+                                        new EntityPositionSource(EntityPositionSource.Anchor.EYES),
+                                        new RelativeRotationSource(0, 0)),
+                                new RelativePositionSource(new Vec3d(0, 0, 20),
+                                        new EntityPositionSource(EntityPositionSource.Anchor.EYES),
+                                        new RelativeRotationSource(0, 0))).build()).build())
+//                        SpellCast.builder().addEffect(
 //                                new SpawnParticlesSpellEffect(
 //                                        ParticleTypes.SONIC_BOOM,
-//
+//// TODO update SpawnParticleSpellEffect
 //                                        ))
-//                                .build()))
+
         );
         register(registry, WARDEN_STABILITY_KEY, Spell.builder(100, 32,
                         Text.translatable(Util.createTranslationKey("effect", ModIdentifier.of("stability"))))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(ModStatusEffects.STABILITY),
                             ConstantFloatProvider.create(1000.0F),
@@ -263,7 +271,7 @@ public class Spells {
 
         register(registry, WITHER_SKULL_KEY, Spell.builder(100, 32,
                         textOf("wither_skull"))
-            .addCast(DelayedSpellCast.builder()
+            .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_WITHER_SHOOT),
                             ConstantFloatProvider.create(1.0F),
@@ -272,7 +280,7 @@ public class Spells {
         );
         register(registry, WITHER_SHIELD_KEY, Spell.builder(100, 32,
                         textOf("wither_shield"))
-            .addCast(DelayedSpellCast.builder().build())
+            .addCast(SpellCast.builder().build())
         );
     }
 
