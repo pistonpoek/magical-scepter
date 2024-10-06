@@ -1,10 +1,9 @@
 package net.pistonpoek.magicalscepter.spell.cast.transformer;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.StringIdentifiable;
 import net.pistonpoek.magicalscepter.spell.cast.*;
+import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

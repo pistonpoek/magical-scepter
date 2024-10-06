@@ -1,4 +1,4 @@
-package net.pistonpoek.magicalscepter.spell.cast;
+package net.pistonpoek.magicalscepter.spell.rotation;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -6,6 +6,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Pair;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistries;
+import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.RotateCastTransformer;
 import org.jetbrains.annotations.NotNull;
 

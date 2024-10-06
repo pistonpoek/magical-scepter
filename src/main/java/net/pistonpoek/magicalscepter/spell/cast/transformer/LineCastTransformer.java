@@ -5,8 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.Vec3d;
 import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.PositionSource;
-import net.pistonpoek.magicalscepter.spell.cast.ValuePositionSource;
+import net.pistonpoek.magicalscepter.spell.position.PositionSource;
+import net.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public record LineCastTransformer(PositionSource startPosition,
             Cast pointCast = cast.clone();
             pointCast.setDelay(cast.getDelay() + i * stepDelay);
             pointCast.setPosition(
-                    new ValuePositionSource(startPos.add(lineVector.multiply(((double)i) / (amount - 1)))));
+                    new AbsolutePositionSource(startPos.add(lineVector.multiply(((double)i) / (amount - 1)))));
             casts.add(pointCast);
         }
         return casts;

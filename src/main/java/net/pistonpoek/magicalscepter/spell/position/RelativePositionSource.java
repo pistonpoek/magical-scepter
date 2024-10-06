@@ -1,10 +1,13 @@
-package net.pistonpoek.magicalscepter.spell.cast;
+package net.pistonpoek.magicalscepter.spell.position;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.pistonpoek.magicalscepter.spell.cast.Cast;
+import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.rotation.AbsoluteRotationSource;
+import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.pistonpoek.magicalscepter.util.RotationVector;
 import org.jetbrains.annotations.NotNull;
 

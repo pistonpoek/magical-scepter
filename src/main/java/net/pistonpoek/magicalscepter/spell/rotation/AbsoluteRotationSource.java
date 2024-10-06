@@ -1,9 +1,11 @@
-package net.pistonpoek.magicalscepter.spell.cast;
+package net.pistonpoek.magicalscepter.spell.rotation;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Pair;
+import net.pistonpoek.magicalscepter.spell.cast.Cast;
+import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record AbsoluteRotationSource(float pitch, float yaw) implements RotationSource {
