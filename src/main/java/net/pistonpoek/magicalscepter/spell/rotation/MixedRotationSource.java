@@ -20,7 +20,7 @@ public record MixedRotationSource(Optional<RotationSource> pitch, Optional<Rotat
 
     @Override
     public RotationSource getSource(@NotNull Cast cast) {
-        return ListRotationSource.combine(cast.getRotation(), this);
+        return ListRotationSource.combine(cast.getRotationSource(), this);
     }
 
     @Override
@@ -32,7 +32,7 @@ public record MixedRotationSource(Optional<RotationSource> pitch, Optional<Rotat
 
     @Override
     public MapCodec<MixedRotationSource> getCodec() {
-        return MixedRotationSource.CODEC;
+        return CODEC;
     }
 
 }

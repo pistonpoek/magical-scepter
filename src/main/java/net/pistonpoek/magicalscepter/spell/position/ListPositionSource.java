@@ -18,7 +18,7 @@ public record ListPositionSource(List<PositionSource> positions) implements Posi
 
     @Override
     public PositionSource getSource(@NotNull Cast cast) {
-        return append(cast.getPosition());
+        return append(cast.getPositionSource());
     }
 
     @Override
@@ -55,7 +55,7 @@ public record ListPositionSource(List<PositionSource> positions) implements Posi
     }
 
     @Override
-    public MapCodec<? extends PositionSource> getCodec() {
+    public MapCodec<ListPositionSource> getCodec() {
         return CODEC;
     }
 

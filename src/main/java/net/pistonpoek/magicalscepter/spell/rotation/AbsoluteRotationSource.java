@@ -28,7 +28,7 @@ public record AbsoluteRotationSource(float pitch, float yaw) implements Rotation
 
     @Override
     public MapCodec<AbsoluteRotationSource> getCodec() {
-        return AbsoluteRotationSource.CODEC;
+        return CODEC;
     }
 
 }

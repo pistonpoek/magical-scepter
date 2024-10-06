@@ -22,7 +22,7 @@ public record MixedPositionSource(Optional<PositionSource> x,
 
     @Override
     public PositionSource getSource(@NotNull Cast cast) {
-        return ListPositionSource.combine(cast.getPosition(), this);
+        return ListPositionSource.combine(cast.getPositionSource(), this);
     }
 
     @Override
@@ -35,7 +35,7 @@ public record MixedPositionSource(Optional<PositionSource> x,
 
     @Override
     public MapCodec<MixedPositionSource> getCodec() {
-        return MixedPositionSource.CODEC;
+        return CODEC;
     }
 
 }

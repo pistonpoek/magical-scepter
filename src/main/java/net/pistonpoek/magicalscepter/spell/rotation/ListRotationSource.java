@@ -18,7 +18,7 @@ public record ListRotationSource(List<RotationSource> rotations) implements Rota
 
     @Override
     public RotationSource getSource(@NotNull Cast cast) {
-        return this.append(cast.getRotation());
+        return this.append(cast.getRotationSource());
     }
 
     @Override
@@ -55,7 +55,7 @@ public record ListRotationSource(List<RotationSource> rotations) implements Rota
     }
 
     @Override
-    public MapCodec<? extends RotationSource> getCodec() {
+    public MapCodec<ListRotationSource> getCodec() {
         return CODEC;
     }
 }

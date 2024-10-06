@@ -27,7 +27,7 @@ public record RotateCastTransformer(RotationSource rotation) implements CastTran
     }
 
     @Override
-    public MapCodec<? extends CastTransformer> getCodec() {
+    public MapCodec<RotateCastTransformer> getCodec() {
         return CODEC;
     }
 }

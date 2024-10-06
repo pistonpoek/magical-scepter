@@ -26,7 +26,7 @@ public record AbsolutePositionSource(Vec3d value) implements PositionSource {
 
     @Override
     public MapCodec<AbsolutePositionSource> getCodec() {
-        return AbsolutePositionSource.CODEC;
+        return CODEC;
     }
 
 }

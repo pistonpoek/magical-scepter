@@ -18,15 +18,13 @@ import net.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.cast.*;
-import net.pistonpoek.magicalscepter.spell.cast.transformer.DelayCastTransformer;
-import net.pistonpoek.magicalscepter.spell.cast.transformer.LineCastTransformer;
-import net.pistonpoek.magicalscepter.spell.cast.transformer.MoveCastTransformer;
-import net.pistonpoek.magicalscepter.spell.cast.transformer.RotateCastTransformer;
+import net.pistonpoek.magicalscepter.spell.cast.transformer.*;
 import net.pistonpoek.magicalscepter.spell.effect.*;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.*;
 import net.pistonpoek.magicalscepter.spell.position.EntityPositionSource;
 import net.pistonpoek.magicalscepter.spell.position.RelativePositionSource;
 import net.pistonpoek.magicalscepter.spell.rotation.AbsoluteRotationSource;
+import net.pistonpoek.magicalscepter.spell.rotation.EntityRotationSource;
 import net.pistonpoek.magicalscepter.spell.rotation.MixedRotationSource;
 import net.pistonpoek.magicalscepter.spell.rotation.RelativeRotationSource;
 
@@ -167,8 +165,7 @@ public class Spells {
                             UniformFloatProvider.create(0.8F, 1.2F))).build())
             .addCast(SpellCast.builder()
                     .addEffect(new SummonEntitySpellEffect(
-                            RegistryEntryList.of(Registries.ENTITY_TYPE.getEntry(EntityType.EVOKER_FANGS)),
-                            false, 8.0))
+                            RegistryEntryList.of(Registries.ENTITY_TYPE.getEntry(EntityType.EVOKER_FANGS)), false))
                     .addTransformer(
                             new MoveCastTransformer(
                                     new RelativePositionSource(new Vec3d(0, 0, 1.25),
@@ -179,6 +176,10 @@ public class Spells {
                                     Optional.of(new EntityPositionSource(EntityPositionSource.Anchor.FEET)),
                                     Optional.of(new MixedRotationSource(Optional.of(new AbsoluteRotationSource(0, 0)), Optional.empty()))))
                             .stepDelay(1).build())
+                    .addTransformer(new SurfaceCastTransformer(1, true,
+                            Optional.of(new RelativePositionSource(new Vec3d(0, 0, 20),
+                                            Optional.of(new EntityPositionSource(EntityPositionSource.Anchor.EYES)),
+                                            Optional.of(new EntityRotationSource(0, 0))))))
                     .addTransformer(new RotateCastTransformer(new RelativeRotationSource(0, 90))).build())
         );
         register(registry, EVOKER_FANG_CIRCLE_KEY, Spell.builder(100, 32,

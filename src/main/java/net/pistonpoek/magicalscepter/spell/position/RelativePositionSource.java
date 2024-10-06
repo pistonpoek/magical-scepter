@@ -24,7 +24,7 @@ public record RelativePositionSource(Vec3d value, Optional<PositionSource> posit
 
     @Override
     public PositionSource getSource(@NotNull Cast cast) {
-        return ListPositionSource.combine(cast.getPosition(), this);
+        return ListPositionSource.combine(cast.getPositionSource(), this);
     }
 
     @Override
