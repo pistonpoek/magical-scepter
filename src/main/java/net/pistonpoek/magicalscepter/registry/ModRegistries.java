@@ -6,10 +6,11 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.registry.*;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.spell.Spell;
-import net.pistonpoek.magicalscepter.spell.cast.*;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.ShootProjectileSpellEffect;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
+import net.pistonpoek.magicalscepter.spell.position.PositionSource;
+import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 
 public class ModRegistries {
     public static final Registry<MapCodec<? extends SpellEffect>> SPELL_EFFECT_TYPE =

@@ -4,6 +4,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
+import net.pistonpoek.magicalscepter.spell.position.EntityPositionSource;
+import net.pistonpoek.magicalscepter.spell.position.PositionSource;
+import net.pistonpoek.magicalscepter.spell.rotation.RelativeRotationSource;
+import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 
 import java.util.List;
 

@@ -5,10 +5,11 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.spell.Spell;
-import net.pistonpoek.magicalscepter.spell.cast.*;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.ShootProjectileSpellEffect;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
+import net.pistonpoek.magicalscepter.spell.position.PositionSource;
+import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 
 public class ModRegistryKeys {
     public static final RegistryKey<Registry<Scepter>> SCEPTER = of("scepter");

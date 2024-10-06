@@ -1,11 +1,12 @@
-package net.pistonpoek.magicalscepter.spell.cast;
+package net.pistonpoek.magicalscepter.spell.position;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.Vec3d;
+import net.pistonpoek.magicalscepter.spell.cast.Cast;
+import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record EntityPositionSource(Anchor anchor) implements PositionSource {

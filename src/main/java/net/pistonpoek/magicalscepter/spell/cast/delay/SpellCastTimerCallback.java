@@ -13,8 +13,8 @@ import net.minecraft.world.timer.TimerCallback;
 import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.PositionSource;
-import net.pistonpoek.magicalscepter.spell.cast.RotationSource;
+import net.pistonpoek.magicalscepter.spell.position.PositionSource;
+import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 
 import java.util.List;

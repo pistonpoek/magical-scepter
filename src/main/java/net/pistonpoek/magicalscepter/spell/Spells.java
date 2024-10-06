@@ -2,7 +2,6 @@ package net.pistonpoek.magicalscepter.spell;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -24,6 +23,9 @@ import net.pistonpoek.magicalscepter.spell.cast.transformer.LineCastTransformer;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.RotateCastTransformer;
 import net.pistonpoek.magicalscepter.spell.effect.*;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.*;
+import net.pistonpoek.magicalscepter.spell.position.EntityPositionSource;
+import net.pistonpoek.magicalscepter.spell.position.RelativePositionSource;
+import net.pistonpoek.magicalscepter.spell.rotation.RelativeRotationSource;
 
 import java.util.ArrayList;
 import java.util.List;
