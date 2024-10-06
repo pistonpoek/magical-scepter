@@ -30,8 +30,8 @@ public record EntityRotationSource(float pitch, float yaw) implements RotationSo
     }
 
     @Override
-    public MapCodec<RelativeRotationSource> getCodec() {
-        return RelativeRotationSource.CODEC;
+    public MapCodec<EntityRotationSource> getCodec() {
+        return CODEC;
     }
 
 }

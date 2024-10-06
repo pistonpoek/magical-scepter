@@ -26,8 +26,8 @@ public interface SpellCastScheduler {
                 new SpellCastTimerCallback(
                         effects,
                         cast.getCaster().getUuid(),
-                        cast.getPosition(),
-                        cast.getRotation()
+                        cast.getPositionSource(),
+                        cast.getRotationSource()
                 )
         );
     }

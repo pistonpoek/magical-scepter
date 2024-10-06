@@ -51,7 +51,7 @@ public class Cast implements Cloneable {
         return this;
     }
 
-    public PositionSource getPosition() {
+    public PositionSource getPositionSource() {
         return position;
     }
 
@@ -60,7 +60,7 @@ public class Cast implements Cloneable {
         return this;
     }
 
-    public RotationSource getRotation() {
+    public RotationSource getRotationSource() {
         return rotation;
     }
 

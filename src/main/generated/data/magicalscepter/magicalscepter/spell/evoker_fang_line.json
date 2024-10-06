@@ -20,8 +20,7 @@
       "effects": [
         {
           "type": "magicalscepter:summon_entity",
-          "entity": "minecraft:evoker_fangs",
-          "require_surface_distance": 8.0
+          "entity": "minecraft:evoker_fangs"
         }
       ],
       "transformers": [
@@ -66,6 +65,25 @@
             ]
           },
           "step_delay": 1
+        },
+        {
+          "type": "magicalscepter:surface",
+          "distance": 1.0,
+          "position": {
+            "type": "magicalscepter:relative",
+            "position": {
+              "type": "magicalscepter:entity",
+              "anchor": "eyes"
+            },
+            "rotation": {
+              "type": "magicalscepter:entity"
+            },
+            "value": [
+              0.0,
+              0.0,
+              20.0
+            ]
+          }
         },
         {
           "type": "magicalscepter:rotate",

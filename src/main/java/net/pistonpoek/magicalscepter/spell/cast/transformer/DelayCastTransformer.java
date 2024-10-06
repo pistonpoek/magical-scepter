@@ -22,7 +22,7 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
     }
 
     @Override
-    public MapCodec<? extends CastTransformer> getCodec() {
+    public MapCodec<DelayCastTransformer> getCodec() {
         return CODEC;
     }
 }

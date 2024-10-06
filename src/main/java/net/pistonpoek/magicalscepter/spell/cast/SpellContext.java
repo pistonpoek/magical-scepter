@@ -7,9 +7,9 @@ import net.minecraft.util.math.Vec3d;
 public record SpellContext(LivingEntity caster, Vec3d position, float pitch, float yaw) implements Position {
     SpellContext(Cast cast, SpellContext spellContext) {
         this(cast.getCaster(),
-             cast.getPosition().getPosition(spellContext),
-             cast.getRotation().getPitch(spellContext),
-             cast.getRotation().getYaw(spellContext));
+             cast.getPositionSource().getPosition(spellContext),
+             cast.getRotationSource().getPitch(spellContext),
+             cast.getRotationSource().getYaw(spellContext));
     }
 
     @Override

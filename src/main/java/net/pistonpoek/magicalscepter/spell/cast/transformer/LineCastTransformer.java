@@ -25,7 +25,7 @@ public record LineCastTransformer(PositionSource position,
 
     @Override
     public Collection<Cast> transform(@NotNull Cast cast) {
-        Vec3d startPos = cast.getPosition().getPosition(cast.getContext());
+        Vec3d startPos = cast.getPositionSource().getPosition(cast.getContext());
         Vec3d lineVector = position.getPosition(cast.getContext()).subtract(startPos);
         Collection<Cast> casts = new ArrayList<>();
         for (int i = 0; i <= amount; i++) {
@@ -64,7 +64,7 @@ public record LineCastTransformer(PositionSource position,
     }
 
     @Override
-    public MapCodec<? extends CastTransformer> getCodec() {
+    public MapCodec<LineCastTransformer> getCodec() {
         return CODEC;
     }
 }

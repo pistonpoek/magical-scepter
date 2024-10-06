@@ -47,7 +47,7 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
 
     @Override
     public MapCodec<EntityPositionSource> getCodec() {
-        return EntityPositionSource.CODEC;
+        return CODEC;
     }
 
 }

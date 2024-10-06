@@ -22,8 +22,8 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("summon_entity"), SummonEntitySpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("shoot_projectile"), ShootProjectileSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("random_teleport"), RandomTeleportSpellEffect.CODEC);
-        // run_function
-        // explode
+        // TODO add run_function
+        // TODO add explode
         //
 
 

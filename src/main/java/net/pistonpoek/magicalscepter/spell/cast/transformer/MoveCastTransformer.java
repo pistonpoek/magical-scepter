@@ -27,7 +27,7 @@ public record MoveCastTransformer(PositionSource position) implements CastTransf
     }
 
     @Override
-    public MapCodec<? extends CastTransformer> getCodec() {
+    public MapCodec<MoveCastTransformer> getCodec() {
         return CODEC;
     }
 }

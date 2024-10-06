@@ -18,7 +18,7 @@ public record RelativeRotationSource(float pitch, float yaw) implements Rotation
     );
 
     public RotationSource getSource(@NotNull Cast cast) {
-        return ListRotationSource.combine(cast.getRotation(), this);
+        return ListRotationSource.combine(cast.getRotationSource(), this);
     }
 
     public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
@@ -29,7 +29,7 @@ public record RelativeRotationSource(float pitch, float yaw) implements Rotation
 
     @Override
     public MapCodec<RelativeRotationSource> getCodec() {
-        return RelativeRotationSource.CODEC;
+        return CODEC;
     }
 
 }
