@@ -20,15 +20,19 @@ import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.cast.*;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.DelayCastTransformer;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.LineCastTransformer;
+import net.pistonpoek.magicalscepter.spell.cast.transformer.MoveCastTransformer;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.RotateCastTransformer;
 import net.pistonpoek.magicalscepter.spell.effect.*;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.*;
 import net.pistonpoek.magicalscepter.spell.position.EntityPositionSource;
 import net.pistonpoek.magicalscepter.spell.position.RelativePositionSource;
+import net.pistonpoek.magicalscepter.spell.rotation.AbsoluteRotationSource;
+import net.pistonpoek.magicalscepter.spell.rotation.MixedRotationSource;
 import net.pistonpoek.magicalscepter.spell.rotation.RelativeRotationSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Spells {
     public static final List<RegistryKey<Spell>> SPELL_KEYS = new ArrayList<>();
@@ -164,14 +168,17 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addEffect(new SummonEntitySpellEffect(
                             RegistryEntryList.of(Registries.ENTITY_TYPE.getEntry(EntityType.EVOKER_FANGS)),
-                            false, 4.0))
+                            false, 8.0))
+                    .addTransformer(
+                            new MoveCastTransformer(
+                                    new RelativePositionSource(new Vec3d(0, 0, 1.25),
+                                            Optional.of(new EntityPositionSource(EntityPositionSource.Anchor.FEET)),
+                                            Optional.of(new MixedRotationSource(Optional.of(new AbsoluteRotationSource(0, 0)), Optional.empty())))))
                     .addTransformer(LineCastTransformer.builder(16,
-                            new RelativePositionSource(new Vec3d(0, 0, 1.25),
-                                    new EntityPositionSource(EntityPositionSource.Anchor.EYES),
-                                    new RelativeRotationSource(0, 0)),
                             new RelativePositionSource(new Vec3d(0, 0, 20),
-                                    new EntityPositionSource(EntityPositionSource.Anchor.EYES),
-                                    new RelativeRotationSource(0, 0))).stepDelay(1).build())
+                                    Optional.of(new EntityPositionSource(EntityPositionSource.Anchor.FEET)),
+                                    Optional.of(new MixedRotationSource(Optional.of(new AbsoluteRotationSource(0, 0)), Optional.empty()))))
+                            .stepDelay(1).build())
                     .addTransformer(new RotateCastTransformer(new RelativeRotationSource(0, 90))).build())
         );
         register(registry, EVOKER_FANG_CIRCLE_KEY, Spell.builder(100, 32,
@@ -247,12 +254,9 @@ public class Spells {
                             UniformFloatProvider.create(0.8F, 1.2F))).build())
             .addCast(SpellCast.builder()
                     .addTransformer(LineCastTransformer.builder(15,
-                                new RelativePositionSource(new Vec3d(0, 0, 1.25),
-                                        new EntityPositionSource(EntityPositionSource.Anchor.EYES),
-                                        new RelativeRotationSource(0, 0)),
                                 new RelativePositionSource(new Vec3d(0, 0, 20),
-                                        new EntityPositionSource(EntityPositionSource.Anchor.EYES),
-                                        new RelativeRotationSource(0, 0))).build()).build())
+                                        Optional.empty(),
+                                        Optional.empty())).build()).build())
 //                        SpellCast.builder().addEffect(
 //                                new SpawnParticlesSpellEffect(
 //                                        ParticleTypes.SONIC_BOOM,

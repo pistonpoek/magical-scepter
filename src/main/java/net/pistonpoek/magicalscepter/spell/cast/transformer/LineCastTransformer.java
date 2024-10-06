@@ -12,14 +12,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public record LineCastTransformer(PositionSource startPosition,
-                                  PositionSource endPosition,
+public record LineCastTransformer(PositionSource position,
                                   int amount,
                                   int stepDelay) implements CastTransformer {
     public static final MapCodec<LineCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    PositionSource.CODEC.fieldOf("start_position").forGetter(LineCastTransformer::startPosition),
-                    PositionSource.CODEC.fieldOf("end_position").forGetter(LineCastTransformer::endPosition),
+                    PositionSource.CODEC.fieldOf("position").forGetter(LineCastTransformer::position),
                     Codec.INT.fieldOf("amount").forGetter(LineCastTransformer::amount),
                     Codec.INT.optionalFieldOf("step_delay", 0).forGetter(LineCastTransformer::stepDelay)
             ).apply(instance, LineCastTransformer::new)
@@ -27,8 +25,8 @@ public record LineCastTransformer(PositionSource startPosition,
 
     @Override
     public Collection<Cast> transform(@NotNull Cast cast) {
-        Vec3d startPos = startPosition.getPosition(cast.getContext());
-        Vec3d lineVector = endPosition.getPosition(cast.getContext()).subtract(startPos);
+        Vec3d startPos = cast.getPosition().getPosition(cast.getContext());
+        Vec3d lineVector = position.getPosition(cast.getContext()).subtract(startPos);
         Collection<Cast> casts = new ArrayList<>();
         for (int i = 0; i <= amount; i++) {
             Cast pointCast = cast.clone();
@@ -40,23 +38,18 @@ public record LineCastTransformer(PositionSource startPosition,
         return casts;
     }
 
-    public static LineCastTransformer.Builder builder(int amount,
-                                                      PositionSource startPosition,
-                                                      PositionSource endPosition) {
-        return new LineCastTransformer.Builder(startPosition, endPosition, amount);
+    public static LineCastTransformer.Builder builder(int amount, PositionSource position) {
+        return new LineCastTransformer.Builder(position, amount);
     }
 
     public static class Builder {
-        private final PositionSource startPosition;
-        private final PositionSource endPosition;
+        private final PositionSource position;
         private final int amount;
         private int stepDelay = 0;
 
-        public Builder(PositionSource startPosition,
-                       PositionSource endPosition,
+        public Builder(PositionSource position,
                        int amount) {
-            this.startPosition = startPosition;
-            this.endPosition = endPosition;
+            this.position = position;
             this.amount = amount;
         }
 
@@ -66,7 +59,7 @@ public record LineCastTransformer(PositionSource startPosition,
         }
 
         public LineCastTransformer build() {
-            return new LineCastTransformer(startPosition, endPosition, amount, stepDelay);
+            return new LineCastTransformer(position, amount, stepDelay);
         }
     }
 

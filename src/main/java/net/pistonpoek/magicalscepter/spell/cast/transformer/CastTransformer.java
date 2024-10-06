@@ -19,9 +19,8 @@ public interface CastTransformer {
         Registry.register(registry, ModIdentifier.of("move"), MoveCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("delay"), DelayCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("rotate"), RotateCastTransformer.CODEC);
-        // TODO Add Circle transformer
-        // TODO add target_entity transformer
-        // TODO add target block transformer
+        // TODO Add circle transformer
+        // TODO add target transformer (entity, block, liquid?)
         // TODO add surface transformer
     }
 

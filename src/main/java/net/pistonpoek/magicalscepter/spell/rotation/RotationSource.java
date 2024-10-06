@@ -20,6 +20,8 @@ public interface RotationSource extends RotateCastTransformer.CastRotator {
         Registry.register(registry, ModIdentifier.of("absolute"), AbsoluteRotationSource.CODEC);
         Registry.register(registry, ModIdentifier.of("relative"), RelativeRotationSource.CODEC);
         Registry.register(registry, ModIdentifier.of("entity"), EntityRotationSource.CODEC);
+        Registry.register(registry, ModIdentifier.of("list"), ListRotationSource.CODEC);
+        Registry.register(registry, ModIdentifier.of("mixed"), MixedRotationSource.CODEC);
         // TODO RANDOM
         // TODO allow mixed/combined rotation source (i.e. absolute and relative rotation source).
     }

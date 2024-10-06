@@ -21,41 +21,48 @@
         {
           "type": "magicalscepter:summon_entity",
           "entity": "minecraft:evoker_fangs",
-          "require_surface_distance": 4.0
+          "require_surface_distance": 8.0
         }
       ],
       "transformers": [
         {
-          "type": "magicalscepter:line",
-          "amount": 16,
-          "end_position": {
+          "type": "magicalscepter:move",
+          "position": {
             "type": "magicalscepter:relative",
             "position": {
-              "type": "magicalscepter:entity",
-              "anchor": "eyes"
+              "type": "magicalscepter:entity"
             },
             "rotation": {
-              "type": "magicalscepter:relative"
-            },
-            "value": [
-              0.0,
-              0.0,
-              20.0
-            ]
-          },
-          "start_position": {
-            "type": "magicalscepter:relative",
-            "position": {
-              "type": "magicalscepter:entity",
-              "anchor": "eyes"
-            },
-            "rotation": {
-              "type": "magicalscepter:relative"
+              "type": "magicalscepter:mixed",
+              "pitch": {
+                "type": "magicalscepter:absolute"
+              }
             },
             "value": [
               0.0,
               0.0,
               1.25
+            ]
+          }
+        },
+        {
+          "type": "magicalscepter:line",
+          "amount": 16,
+          "position": {
+            "type": "magicalscepter:relative",
+            "position": {
+              "type": "magicalscepter:entity"
+            },
+            "rotation": {
+              "type": "magicalscepter:mixed",
+              "pitch": {
+                "type": "magicalscepter:absolute"
+              }
+            },
+            "value": [
+              0.0,
+              0.0,
+              20.0
             ]
           },
           "step_delay": 1

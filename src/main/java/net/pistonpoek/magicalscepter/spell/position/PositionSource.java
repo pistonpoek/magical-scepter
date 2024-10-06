@@ -20,8 +20,10 @@ public interface PositionSource extends MoveCastTransformer.CastMover {
         Registry.register(registry, ModIdentifier.of("absolute"), AbsolutePositionSource.CODEC);
         Registry.register(registry, ModIdentifier.of("entity"), EntityPositionSource.CODEC);
         Registry.register(registry, ModIdentifier.of("relative"), RelativePositionSource.CODEC);
+        Registry.register(registry, ModIdentifier.of("list"), ListPositionSource.CODEC);
+        Registry.register(registry, ModIdentifier.of("mixed"), MixedPositionSource.CODEC);
         // TODO ENTITY PROJECTILE ANCHOR
-        // TODO SURFACE POSITION
+        // TODO SURFACE POSITION (Allow a position to be used for determining y height, current position and entity target position as evoker does)
         // TODO RANDOM BOX CAST
     }
 
