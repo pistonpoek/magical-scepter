@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Vec3d;
 
 public record SpellContext(LivingEntity caster, Vec3d position, float pitch, float yaw) {
-    public SpellContext(Cast cast, SpellContext spellContext) {
+    SpellContext(Cast cast, SpellContext spellContext) {
         this(cast.getCaster(),
              cast.getPosition().getPosition(spellContext),
              cast.getRotation().getPitch(spellContext),
