@@ -1,7 +1,6 @@
 {
   "casts": [
     {
-      "type": "magicalscepter:cast",
       "effects": [
         {
           "type": "magicalscepter:play_sound",
@@ -22,8 +21,6 @@
       ]
     },
     {
-      "type": "magicalscepter:cast",
-      "delay": 6,
       "effects": [
         {
           "type": "magicalscepter:play_sound",
@@ -41,11 +38,15 @@
           "type": "magicalscepter:shoot_projectile",
           "projectile": "magicalscepter:small_fireball"
         }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:delay",
+          "delay": 6
+        }
       ]
     },
     {
-      "type": "magicalscepter:cast",
-      "delay": 12,
       "effects": [
         {
           "type": "magicalscepter:play_sound",
@@ -62,6 +63,12 @@
         {
           "type": "magicalscepter:shoot_projectile",
           "projectile": "magicalscepter:small_fireball"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:delay",
+          "delay": 12
         }
       ]
     }

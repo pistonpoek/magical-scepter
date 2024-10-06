@@ -2,7 +2,7 @@ package net.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
@@ -22,6 +22,11 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("summon_entity"), SummonEntitySpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("shoot_projectile"), ShootProjectileSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("random_teleport"), RandomTeleportSpellEffect.CODEC);
+        // run_function
+        // explode
+        //
+
+
 //        Registry.register(registry, "all_of", AllOfEnchantmentEffects.EntityEffects.CODEC);
 //        Registry.register(registry, "damage_entity", DamageEntityEnchantmentEffect.CODEC);
 //        Registry.register(registry, "damage_item", DamageItemEnchantmentEffect.CODEC);
@@ -33,7 +38,7 @@ public interface SpellEffect {
 //        Registry.register(registry, "set_block_properties", SetBlockPropertiesEnchantmentEffect.CODEC);
     }
 
-    void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw);
+    void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw);
 
     MapCodec<? extends SpellEffect> getCodec();
 }

@@ -1,7 +1,8 @@
-package net.pistonpoek.magicalscepter.spell.cast;
+package net.pistonpoek.magicalscepter.spell.cast.delay;
 
 import com.mojang.serialization.DataResult;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -11,6 +12,9 @@ import net.minecraft.world.timer.Timer;
 import net.minecraft.world.timer.TimerCallback;
 import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
+import net.pistonpoek.magicalscepter.spell.cast.Cast;
+import net.pistonpoek.magicalscepter.spell.cast.PositionSource;
+import net.pistonpoek.magicalscepter.spell.cast.RotationSource;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 
 import java.util.List;
@@ -18,8 +22,8 @@ import java.util.UUID;
 
 public record SpellCastTimerCallback(List<SpellEffect> effects,
                                      UUID entityUUID,
-                                     SpellCast.PositionSource position,
-                                     SpellCast.RotationSource rotation) implements TimerCallback<MinecraftServer> {
+                                     PositionSource position,
+                                     RotationSource rotation) implements TimerCallback<MinecraftServer> {
 
     @Override
     public void call(MinecraftServer server, Timer<MinecraftServer> events, long time) {
@@ -34,7 +38,7 @@ public record SpellCastTimerCallback(List<SpellEffect> effects,
             MagicalScepter.LOGGER.info("Spell cast is missing an entity.");
             return;
         }
-        SpellCast.apply(effects, entity, position, rotation);
+        new Cast((LivingEntity) entity).setPosition(position).setRotation(rotation).apply(effects);
     }
 
     public static class Serializer extends TimerCallback.Serializer<MinecraftServer, SpellCastTimerCallback> {
@@ -47,10 +51,10 @@ public record SpellCastTimerCallback(List<SpellEffect> effects,
                     .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.effects);
             nbtCompound.put("effects", encodedEffects.getOrThrow());
             nbtCompound.putUuid("entity", spellCastTimerCallback.entityUUID);
-            final DataResult<NbtElement> encodedPositionSource = SpellCast.PositionSource.CODEC
+            final DataResult<NbtElement> encodedPositionSource = PositionSource.CODEC
                     .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.position);
             nbtCompound.put("position", encodedPositionSource.getOrThrow());
-            final DataResult<NbtElement> encodedRotationSource = SpellCast.RotationSource.CODEC
+            final DataResult<NbtElement> encodedRotationSource = RotationSource.CODEC
                     .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.rotation);
             nbtCompound.put("rotation", encodedRotationSource.getOrThrow());
         }
@@ -59,9 +63,9 @@ public record SpellCastTimerCallback(List<SpellEffect> effects,
             List<SpellEffect> effects = SpellEffect.CODEC.listOf()
                     .decode(NbtOps.INSTANCE, nbtCompound.get("effects")).getOrThrow().getFirst();
             UUID entityUUID = nbtCompound.getUuid("entity");
-            SpellCast.PositionSource position = SpellCast.PositionSource.CODEC
+            PositionSource position = PositionSource.CODEC
                     .decode(NbtOps.INSTANCE, nbtCompound.get("position")).getOrThrow().getFirst();
-            SpellCast.RotationSource rotation = SpellCast.RotationSource.CODEC
+            RotationSource rotation = RotationSource.CODEC
                     .decode(NbtOps.INSTANCE, nbtCompound.get("rotation")).getOrThrow().getFirst();
 
             return new SpellCastTimerCallback(effects, entityUUID, position, rotation);

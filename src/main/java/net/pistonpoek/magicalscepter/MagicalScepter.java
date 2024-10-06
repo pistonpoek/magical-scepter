@@ -11,8 +11,8 @@ import net.pistonpoek.magicalscepter.recipe.ModRecipeSerializer;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistries;
 import net.pistonpoek.magicalscepter.scepter.ScepterInfusion;
-import net.pistonpoek.magicalscepter.spell.cast.DelayedSpellCast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellCastTimerCallback;
+import net.pistonpoek.magicalscepter.spell.cast.delay.SpellCastScheduler;
+import net.pistonpoek.magicalscepter.spell.cast.delay.SpellCastTimerCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class MagicalScepter implements ModInitializer {
 		ModRecipeSerializer.init();
 		ModStatusEffects.init();
 		ModDataComponentTypes.init();
-		ServerLivingEntityEvents.AFTER_DEATH.register(DelayedSpellCast::afterDeath);
+		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastScheduler::afterDeath);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
 		TimerCallbackSerializer.INSTANCE.registerSerializer(new SpellCastTimerCallback.Serializer());
 	}

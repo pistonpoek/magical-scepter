@@ -6,7 +6,8 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.registry.*;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.spell.Spell;
-import net.pistonpoek.magicalscepter.spell.cast.SpellCast;
+import net.pistonpoek.magicalscepter.spell.cast.*;
+import net.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.ShootProjectileSpellEffect;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 
@@ -15,13 +16,19 @@ public class ModRegistries {
             FabricRegistryBuilder.createSimple(ModRegistryKeys.SPELL_EFFECT_TYPE).buildAndRegister();
     public static final Registry<MapCodec<? extends ShootProjectileSpellEffect>> SPELL_EFFECT_PROJECTILE =
             FabricRegistryBuilder.createSimple(ModRegistryKeys.SPELL_EFFECT_PROJECTILE).buildAndRegister();
-    public static final Registry<MapCodec<? extends SpellCast>> SPELL_CAST_TYPE =
-            FabricRegistryBuilder.createSimple(ModRegistryKeys.SPELL_CAST_TYPE).buildAndRegister();
+    public static final Registry<MapCodec<? extends CastTransformer>> CAST_TRANSFORMER_TYPE =
+            FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_TRANSFORMER_TYPE).buildAndRegister();
+    public static final Registry<MapCodec<? extends PositionSource>> CAST_POSITION_SOURCE_TYPE =
+            FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_POSITION_SOURCE_TYPE).buildAndRegister();
+    public static final Registry<MapCodec<? extends RotationSource>> CAST_ROTATION_SOURCE_TYPE =
+            FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_ROTATION_SOURCE_TYPE).buildAndRegister();
 
     public static void init() {
         SpellEffect.register(SPELL_EFFECT_TYPE);
         ShootProjectileSpellEffect.register(SPELL_EFFECT_PROJECTILE);
-        SpellCast.register(SPELL_CAST_TYPE);
+        CastTransformer.register(CAST_TRANSFORMER_TYPE);
+        PositionSource.register(CAST_POSITION_SOURCE_TYPE);
+        RotationSource.register(CAST_ROTATION_SOURCE_TYPE);
         DynamicRegistries.registerSynced(ModRegistryKeys.SCEPTER, Scepter.CODEC, Scepter.NETWORK_CODEC);
         DynamicRegistries.registerSynced(ModRegistryKeys.SPELL, Spell.CODEC, Spell.NETWORK_CODEC);
     }

@@ -5,6 +5,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
+import net.pistonpoek.magicalscepter.util.RotationVector;
 
 public record SpawnParticlesSpellEffect(
         ParticleEffect particle,
@@ -52,7 +54,8 @@ public record SpawnParticlesSpellEffect(
     }
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
+    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
+        RotationVector.get(pitch, yaw);
         Random random = entity.getRandom();
         Vec3d vec3d = entity.getMovement();
         float width = entity.getWidth();

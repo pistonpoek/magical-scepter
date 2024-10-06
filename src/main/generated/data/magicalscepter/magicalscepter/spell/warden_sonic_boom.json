@@ -1,7 +1,6 @@
 {
   "casts": [
     {
-      "type": "magicalscepter:cast",
       "effects": [
         {
           "type": "magicalscepter:play_sound",
@@ -14,6 +13,45 @@
             "sound_id": "minecraft:entity.warden.sonic_boom"
           },
           "volume": 1.0
+        }
+      ]
+    },
+    {
+      "effects": [],
+      "transformers": [
+        {
+          "type": "magicalscepter:line",
+          "amount": 15,
+          "end_position": {
+            "type": "magicalscepter:relative",
+            "position": {
+              "type": "magicalscepter:entity",
+              "anchor": "eyes"
+            },
+            "rotation": {
+              "type": "magicalscepter:relative"
+            },
+            "value": [
+              0.0,
+              0.0,
+              20.0
+            ]
+          },
+          "start_position": {
+            "type": "magicalscepter:relative",
+            "position": {
+              "type": "magicalscepter:entity",
+              "anchor": "eyes"
+            },
+            "rotation": {
+              "type": "magicalscepter:relative"
+            },
+            "value": [
+              0.0,
+              0.0,
+              1.25
+            ]
+          }
         }
       ]
     }

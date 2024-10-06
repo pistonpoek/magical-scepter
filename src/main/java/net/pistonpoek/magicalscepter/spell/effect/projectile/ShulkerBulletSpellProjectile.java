@@ -20,20 +20,16 @@ public class ShulkerBulletSpellProjectile implements ShootProjectileSpellEffect 
     public static final MapCodec<ShulkerBulletSpellProjectile> CODEC = MapCodec.unit(ShulkerBulletSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, Entity entity, Vec3d position, float pitch, float yaw) {
-        Optional<ShulkerBulletEntity> projectile = Optional.empty();
-        if (entity instanceof LivingEntity) {
-            Vec3d rot = RotationVector.get(pitch, yaw);
-            Direction.Axis axis = Direction.Axis.X;
-            if (MathHelper.abs((float) rot.getX()) < MathHelper.abs((float) rot.getZ())) {
-                axis = Direction.Axis.Z;
-            }
-            projectile = Optional.of(new ShulkerBulletEntity(world, (LivingEntity) entity,
-                    getTarget(entity), axis));
-            projectile.get().setPosition(position.getX(), position.getY(), position.getZ());
+    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
+        Vec3d rot = RotationVector.get(pitch, yaw);
+        Direction.Axis axis = Direction.Axis.X;
+        if (MathHelper.abs((float) rot.getX()) < MathHelper.abs((float) rot.getZ())) {
+            axis = Direction.Axis.Z;
         }
-
-        projectile.ifPresent(world::spawnEntity);
+        ShulkerBulletEntity projectile = new ShulkerBulletEntity(world, entity,
+                getTarget(entity), axis);
+        projectile.setPosition(position.getX(), position.getY(), position.getZ());
+        world.spawnEntity(projectile);
     }
 
     // TODO make target search size an optional variable

@@ -1,7 +1,6 @@
 {
   "casts": [
     {
-      "type": "magicalscepter:cast",
       "effects": [
         {
           "type": "magicalscepter:apply_mob_effect",
