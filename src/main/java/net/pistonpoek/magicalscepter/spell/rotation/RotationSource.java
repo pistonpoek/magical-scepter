@@ -24,6 +24,7 @@ public interface RotationSource extends RotateCastTransformer.CastRotator {
         Registry.register(registry, ModIdentifier.of("mixed"), MixedRotationSource.CODEC);
         // TODO RANDOM
         // TODO allow mixed/combined rotation source (i.e. absolute and relative rotation source).
+        // TODO Movement (entity.getMovement() form vector to pitch yaw??)
     }
 
     Pair<Float, Float> getRotation(@NotNull SpellContext context);

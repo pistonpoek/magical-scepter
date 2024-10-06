@@ -17,7 +17,14 @@
       ]
     },
     {
-      "effects": [],
+      "effects": [
+        {
+          "type": "magicalscepter:spawn_particles",
+          "particle": {
+            "type": "minecraft:sonic_boom"
+          }
+        }
+      ],
       "transformers": [
         {
           "type": "magicalscepter:line",

@@ -17,7 +17,7 @@ public interface SpellEffect {
 
     static void register(Registry<MapCodec<? extends SpellEffect>> registry) {
         Registry.register(registry, ModIdentifier.of("play_sound"), PlaySoundSpellEffect.CODEC);
-        Registry.register(registry, ModIdentifier.of("spawn_particles"), SpawnParticlesSpellEffect.CODEC);
+        Registry.register(registry, ModIdentifier.of("spawn_particles"), SpawnParticleSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("apply_mob_effect"), ApplyMobEffectSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("summon_entity"), SummonEntitySpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("shoot_projectile"), ShootProjectileSpellEffect.CODEC);
