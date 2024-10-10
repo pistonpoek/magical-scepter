@@ -3,13 +3,13 @@ package net.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
+import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
 
 public record PlaySoundSpellEffect(RegistryEntry<SoundEvent> soundEvent, FloatProvider volume, FloatProvider pitch)
         implements SpellEffect {
@@ -23,11 +23,15 @@ public record PlaySoundSpellEffect(RegistryEntry<SoundEvent> soundEvent, FloatPr
     );
 
     @Override
-    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
-        Random random = entity.getRandom();
-        if (!entity.isSilent()) {
+    public void apply(SpellContext context) {
+        Random random = context.getRandom();
+        Entity target = context.target();
+        ServerWorld world = context.getWorld();
+        Vec3d position = context.position();
+
+        if (!target.isSilent()) {
             world.playSound(null, position.getX(), position.getY(), position.getZ(), this.soundEvent,
-                    entity.getSoundCategory(), this.volume.get(random), this.pitch.get(random));
+                    target.getSoundCategory(), this.volume.get(random), this.pitch.get(random));
         }
     }
 

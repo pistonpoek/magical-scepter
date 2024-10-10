@@ -50,5 +50,21 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
         return CODEC;
     }
 
+    public static Builder builder(Anchor anchor) {
+        return new Builder(anchor);
+    }
+
+    public static class Builder {
+        private final Anchor anchor;
+
+        public Builder(Anchor anchor) {
+            this.anchor = anchor;
+        }
+
+        public EntityPositionSource build() {
+            return new EntityPositionSource(anchor);
+        }
+    }
+
 }
 

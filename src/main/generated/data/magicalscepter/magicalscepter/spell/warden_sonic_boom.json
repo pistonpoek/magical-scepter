@@ -31,12 +31,31 @@
           "amount": 15,
           "position": {
             "type": "magicalscepter:relative",
-            "value": [
-              0.0,
-              0.0,
-              20.0
-            ]
+            "x": 0.0,
+            "y": 0.0,
+            "z": 20.0
           }
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:move",
+          "knockback": true,
+          "power": 2.0
+        },
+        {
+          "type": "magicalscepter:damage",
+          "amount": 10.0,
+          "damage_type": "minecraft:sonic_boom"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:target",
+          "range": 20.0,
+          "target": "entity"
         }
       ]
     }

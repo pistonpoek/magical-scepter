@@ -25,4 +25,20 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
     public MapCodec<DelayCastTransformer> getCodec() {
         return CODEC;
     }
+
+    public static Builder builder(int delay) {
+        return new Builder(delay);
+    }
+
+    public static class Builder {
+        private final int delay;
+
+        public Builder(int delay) {
+            this.delay = delay;
+        }
+
+        public DelayCastTransformer build() {
+            return new DelayCastTransformer(delay);
+        }
+    }
 }

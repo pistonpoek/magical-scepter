@@ -38,4 +38,38 @@ public record MixedPositionSource(Optional<PositionSource> x,
         return CODEC;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private PositionSource xPosition = null;
+        private PositionSource yPosition = null;
+        private PositionSource zPosition = null;
+
+        public Builder xPosition(PositionSource position) {
+            this.xPosition = position;
+            return this;
+        }
+
+        public Builder yPosition(PositionSource position) {
+            this.yPosition = position;
+            return this;
+        }
+
+        public Builder zPosition(PositionSource position) {
+            this.zPosition = position;
+            return this;
+        }
+
+        public MixedPositionSource build() {
+            return new MixedPositionSource(
+                Optional.ofNullable(xPosition),
+                Optional.ofNullable(yPosition),
+                Optional.ofNullable(zPosition)
+            );
+        }
+
+    }
+
 }

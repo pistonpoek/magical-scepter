@@ -35,4 +35,27 @@ public record MixedRotationSource(Optional<RotationSource> pitch, Optional<Rotat
         return CODEC;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private RotationSource pitchRotation = null;
+        private RotationSource yawRotation = null;
+
+        public Builder pitchRotation(RotationSource rotation) {
+            this.pitchRotation = rotation;
+            return this;
+        }
+
+        public Builder yawRotation(RotationSource rotation) {
+            this.yawRotation = rotation;
+            return this;
+        }
+
+        public MixedRotationSource build() {
+            return new MixedRotationSource(Optional.ofNullable(pitchRotation), Optional.ofNullable(yawRotation));
+        }
+    }
+
 }

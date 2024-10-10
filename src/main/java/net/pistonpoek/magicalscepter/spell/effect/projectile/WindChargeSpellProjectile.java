@@ -7,6 +7,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.WindChargeEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
 import net.pistonpoek.magicalscepter.util.RotationVector;
 
 import java.util.Optional;
@@ -15,13 +17,21 @@ public class WindChargeSpellProjectile implements ShootProjectileSpellEffect {
     public static final MapCodec<WindChargeSpellProjectile> CODEC = MapCodec.unit(WindChargeSpellProjectile::new);
 
     @Override
-    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
+    public void apply(SpellContext context) {
         WindChargeEntity projectile;
         double deviation = 0.2;
-        Vec3d rot = RotationVector.get(pitch, yaw).normalize();
-        Vec3d velocity = new Vec3d(entity.getRandom().nextTriangular(rot.getX(), deviation),
-                rot.getY(),
-                entity.getRandom().nextTriangular(rot.getZ(), deviation));
+        Vec3d rotation = context.getRotationVector().normalize();
+        Vec3d position = context.position();
+        Random random = context.getRandom();
+        Entity entity = context.target();
+        ServerWorld world = context.getWorld();
+
+        Vec3d velocity = new Vec3d(
+                random.nextTriangular(rotation.getX(), deviation),
+                rotation.getY(),
+                random.nextTriangular(rotation.getZ(), deviation)
+        );
+
         if (entity instanceof PlayerEntity) {
             projectile = new WindChargeEntity((PlayerEntity) entity,
                     world, position.getX(), position.getY(), position.getZ());

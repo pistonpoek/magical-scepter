@@ -1,7 +1,7 @@
 package net.pistonpoek.magicalscepter.spell.cast;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import net.pistonpoek.magicalscepter.spell.position.EntityPositionSource;
@@ -11,11 +11,11 @@ import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 
 import java.util.List;
 
-
 public class Cast implements Cloneable {
     private PositionSource position = new EntityPositionSource(EntityPositionSource.Anchor.EYES);
     private RotationSource rotation = new RelativeRotationSource(0, 0);
     private LivingEntity caster;
+    private Entity target;
     private int delay = 0;
     private SpellContext context;
 
@@ -25,7 +25,8 @@ public class Cast implements Cloneable {
 
     public Cast(LivingEntity caster, Vec3d position, float pitch, float yaw) {
         this.caster = caster;
-        this.context = new SpellContext(caster, position, pitch, yaw);
+        this.target = caster;
+        this.context = new SpellContext(caster, caster, position, pitch, yaw);
     }
 
     public SpellContext getContext() {
@@ -46,8 +47,12 @@ public class Cast implements Cloneable {
         return caster;
     }
 
-    public Cast setCaster(LivingEntity caster) {
-        this.caster = caster;
+    public Entity getTarget() {
+        return target;
+    }
+
+    public Cast setTarget(Entity target) {
+        this.target = target;
         return this;
     }
 
@@ -70,15 +75,8 @@ public class Cast implements Cloneable {
     }
 
     public void apply(List<SpellEffect> effects) {
-        ServerWorld serverWorld = (ServerWorld) getCaster().getWorld();
         for (SpellEffect spellEffect : effects) {
-            spellEffect.apply(
-                    serverWorld,
-                    getCaster(),
-                    position.getPosition(getContext()),
-                    rotation.getPitch(getContext()),
-                    rotation.getYaw(getContext())
-            );
+            spellEffect.apply(getContext());
         }
     }
 
@@ -86,10 +84,11 @@ public class Cast implements Cloneable {
     public Cast clone() {
         try {
             Cast clone = (Cast) super.clone();
-            clone.setCaster(caster);
-            clone.setDelay(delay);
-            clone.setPosition(position);
-            clone.setRotation(rotation);
+            clone.caster = caster;
+            clone.target = target;
+            clone.delay = delay;
+            clone.position = position;
+            clone.rotation = rotation;
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();

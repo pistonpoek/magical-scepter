@@ -31,15 +31,15 @@ public record LineCastTransformer(PositionSource position,
         for (int i = 0; i <= amount; i++) {
             Cast pointCast = cast.clone();
             pointCast.setDelay(cast.getDelay() + i * stepDelay);
-            pointCast.setPosition(
-                    new AbsolutePositionSource(startPos.add(lineVector.multiply(((double)i) / (amount - 1)))));
+            pointCast.setPosition(AbsolutePositionSource.builder(
+                    startPos.add(lineVector.multiply(((double)i) / (amount - 1)))).build());
             casts.add(pointCast);
         }
         return casts;
     }
 
-    public static LineCastTransformer.Builder builder(int amount, PositionSource position) {
-        return new LineCastTransformer.Builder(position, amount);
+    public static Builder builder(int amount, PositionSource position) {
+        return new Builder(position, amount);
     }
 
     public static class Builder {
@@ -53,7 +53,7 @@ public record LineCastTransformer(PositionSource position,
             this.amount = amount;
         }
 
-        public LineCastTransformer.Builder stepDelay(int stepDelay) {
+        public Builder stepDelay(int stepDelay) {
             this.stepDelay = stepDelay;
             return this;
         }
