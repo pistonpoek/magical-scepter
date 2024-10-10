@@ -2,8 +2,8 @@ package net.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import java.util.Optional;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -11,11 +11,10 @@ import net.minecraft.registry.RegistryCodecs;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
+import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
 
 public record ApplyMobEffectSpellEffect(
         RegistryEntryList<StatusEffect> toApply,
@@ -36,14 +35,25 @@ public record ApplyMobEffectSpellEffect(
     );
 
     @Override
-    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
-        Random random = entity.getRandom();
-        Optional<RegistryEntry<StatusEffect>> optional = this.toApply.getRandom(random);
-        if (optional.isPresent()) {
-            int duration = Math.round(MathHelper.nextBetween(random, this.minDuration.get(random), this.maxDuration.get(random)) * 20.0F);
-            int amplifier = Math.max(0, Math.round(MathHelper.nextBetween(random, this.minAmplifier.get(random), this.maxAmplifier.get(random))));
-            entity.addStatusEffect(new StatusEffectInstance((RegistryEntry<StatusEffect>)optional.get(), duration, amplifier));
+    public void apply(SpellContext context) {
+        Random random = context.getRandom();
+        Optional<LivingEntity> target = context.getLivingTarget();
+        if (target.isEmpty()) {
+            return;
         }
+
+        Optional<RegistryEntry<StatusEffect>> optional = this.toApply.getRandom(random);
+        optional.ifPresent(statusEffectRegistryEntry -> target.get().addStatusEffect(
+                new StatusEffectInstance(statusEffectRegistryEntry, getDuration(random), getAmplifier(random))
+        ));
+    }
+
+    private int getDuration(Random random) {
+        return Math.round(MathHelper.nextBetween(random, this.minDuration.get(random), this.maxDuration.get(random)) * 20.0F);
+    }
+
+    private int getAmplifier(Random random) {
+        return Math.max(0, Math.round(MathHelper.nextBetween(random, this.minAmplifier.get(random), this.maxAmplifier.get(random))));
     }
 
     @Override

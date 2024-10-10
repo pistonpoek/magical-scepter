@@ -22,9 +22,9 @@ public interface PositionSource extends MoveCastTransformer.CastMover {
         Registry.register(registry, ModIdentifier.of("relative"), RelativePositionSource.CODEC);
         Registry.register(registry, ModIdentifier.of("list"), ListPositionSource.CODEC);
         Registry.register(registry, ModIdentifier.of("mixed"), MixedPositionSource.CODEC);
-        // TODO ENTITY PROJECTILE ANCHOR
-        // TODO SURFACE POSITION (Allow a position to be used for determining y height, current position and entity target position as evoker does)
-        // TODO RANDOM BOX CAST (Allow scaled bounding box of entity?)
+        Registry.register(registry, ModIdentifier.of("random"), RandomPositionSource.CODEC);
+        // TODO entity projectile anchor?
+        // done? TODO random box cast (Allow scaled bounding box of entity?)
     }
 
     Vec3d getPosition(@NotNull SpellContext context);

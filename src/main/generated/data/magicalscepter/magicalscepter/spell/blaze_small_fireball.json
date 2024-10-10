@@ -18,6 +18,17 @@
           "type": "magicalscepter:shoot_projectile",
           "projectile": "magicalscepter:small_fireball"
         }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
+        }
       ]
     },
     {
@@ -43,6 +54,15 @@
         {
           "type": "magicalscepter:delay",
           "delay": 6
+        },
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
         }
       ]
     },
@@ -69,6 +89,15 @@
         {
           "type": "magicalscepter:delay",
           "delay": 12
+        },
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
         }
       ]
     }

@@ -26,6 +26,7 @@ public record ListRotationSource(List<RotationSource> rotations) implements Rota
         for (RotationSource rotation: rotations) {
             context = new SpellContext(
                     context.caster(),
+                    context.target(),
                     context.position(),
                     rotation.getPitch(context),
                     rotation.getYaw(context));

@@ -30,4 +30,20 @@ public record MoveCastTransformer(PositionSource position) implements CastTransf
     public MapCodec<MoveCastTransformer> getCodec() {
         return CODEC;
     }
+
+    public static Builder builder(PositionSource position) {
+        return new Builder(position);
+    }
+
+    public static class Builder {
+        private final PositionSource position;
+
+        public Builder(PositionSource position) {
+            this.position = position;
+        }
+
+        public MoveCastTransformer build() {
+            return new MoveCastTransformer(position);
+        }
+    }
 }

@@ -15,6 +15,22 @@
           "volume": 1.0
         }
       ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:summon_entity",
+          "entity": "minecraft:ghast"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:target",
+          "range": 48.0,
+          "require": false,
+          "target": "block"
+        }
+      ]
     }
   ],
   "cooldown": 100,

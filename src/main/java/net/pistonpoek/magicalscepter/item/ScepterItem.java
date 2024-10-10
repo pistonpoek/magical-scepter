@@ -33,9 +33,6 @@ public class ScepterItem extends Item {
                 ScepterContentsComponent.getAttackSpell(itemStack) :
                 ScepterContentsComponent.getProtectSpell(itemStack));
 
-        Optional<ScepterContentsComponent> component = ScepterContentsComponent.get(itemStack);
-        component.ifPresent(content -> MagicalScepter.LOGGER.info(content.getAttackSpellName().toString()));
-
         if (optionalSpell.isEmpty()) {
             return TypedActionResult.pass(itemStack);
         }

@@ -26,6 +26,7 @@ public record ListPositionSource(List<PositionSource> positions) implements Posi
         for (PositionSource position: positions) {
             context = new SpellContext(
                     context.caster(),
+                    context.target(),
                     position.getPosition(context),
                     context.pitch(),
                     context.yaw());

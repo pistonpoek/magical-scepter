@@ -37,11 +37,9 @@
                 "type": "magicalscepter:absolute"
               }
             },
-            "value": [
-              0.0,
-              0.0,
-              1.25
-            ]
+            "x": 0.0,
+            "y": 0.0,
+            "z": 1.25
           }
         },
         {
@@ -58,11 +56,9 @@
                 "type": "magicalscepter:absolute"
               }
             },
-            "value": [
-              0.0,
-              0.0,
-              20.0
-            ]
+            "x": 0.0,
+            "y": 0.0,
+            "z": 20.0
           },
           "step_delay": 1
         },
@@ -72,17 +68,17 @@
           "position": {
             "type": "magicalscepter:relative",
             "position": {
-              "type": "magicalscepter:entity",
-              "anchor": "eyes"
-            },
-            "rotation": {
               "type": "magicalscepter:entity"
             },
-            "value": [
-              0.0,
-              0.0,
-              20.0
-            ]
+            "rotation": {
+              "type": "magicalscepter:mixed",
+              "pitch": {
+                "type": "magicalscepter:absolute"
+              }
+            },
+            "x": 0.0,
+            "y": 0.0,
+            "z": 20.0
           }
         },
         {

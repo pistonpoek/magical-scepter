@@ -35,7 +35,8 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
         if (value.isEmpty()) {
             return require ? List.of() : List.of(cast);
         }
-        return List.of(cast.setPosition(new AbsolutePositionSource(value.get())));
+        return List.of(cast.setPosition(AbsolutePositionSource.builder(
+                value.get()).build()));
     }
 
     private Optional<Vec3d> getSurfacePosition(@NotNull Cast cast) {
@@ -84,5 +85,33 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
     @Override
     public MapCodec<SurfaceCastTransformer> getCodec() {
         return CODEC;
+    }
+
+    public static Builder builder(float distance) {
+        return new Builder(distance);
+    }
+
+    public static class Builder {
+        private final float distance;
+        private boolean require = true;
+        private PositionSource position = null;
+
+        public Builder(float distance) {
+            this.distance = distance;
+        }
+
+        public Builder position(PositionSource position) {
+            this.position = position;
+            return this;
+        }
+
+        public Builder require(boolean require) {
+            this.require = require;
+            return this;
+        }
+
+        public SurfaceCastTransformer build() {
+            return new SurfaceCastTransformer(distance, require, Optional.ofNullable(position));
+        }
     }
 }

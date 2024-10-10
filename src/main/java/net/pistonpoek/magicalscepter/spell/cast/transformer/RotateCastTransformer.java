@@ -30,4 +30,20 @@ public record RotateCastTransformer(RotationSource rotation) implements CastTran
     public MapCodec<RotateCastTransformer> getCodec() {
         return CODEC;
     }
+
+    public static Builder builder(RotationSource rotation) {
+        return new Builder(rotation);
+    }
+
+    public static class Builder {
+        private final RotationSource rotation;
+
+        public Builder(RotationSource rotation) {
+            this.rotation = rotation;
+        }
+
+        public RotateCastTransformer build() {
+            return new RotateCastTransformer(rotation);
+        }
+    }
 }

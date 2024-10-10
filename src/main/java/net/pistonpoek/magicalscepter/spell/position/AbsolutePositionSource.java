@@ -1,5 +1,6 @@
 package net.pistonpoek.magicalscepter.spell.position;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.Vec3d;
@@ -7,10 +8,12 @@ import net.pistonpoek.magicalscepter.spell.cast.Cast;
 import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
-public record AbsolutePositionSource(Vec3d value) implements PositionSource {
+public record AbsolutePositionSource(double x, double y, double z) implements PositionSource {
     static MapCodec<AbsolutePositionSource> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Vec3d.CODEC.optionalFieldOf("value", Vec3d.ZERO).forGetter(AbsolutePositionSource::value)
+                    Codec.DOUBLE.fieldOf("x").forGetter(AbsolutePositionSource::x),
+                    Codec.DOUBLE.fieldOf("y").forGetter(AbsolutePositionSource::y),
+                    Codec.DOUBLE.fieldOf("z").forGetter(AbsolutePositionSource::z)
             ).apply(instance, AbsolutePositionSource::new)
     );
 
@@ -21,12 +24,36 @@ public record AbsolutePositionSource(Vec3d value) implements PositionSource {
 
     @Override
     public Vec3d getPosition(@NotNull SpellContext context) {
-        return value;
+        return new Vec3d(x, y, z);
     }
 
     @Override
     public MapCodec<AbsolutePositionSource> getCodec() {
         return CODEC;
+    }
+
+    public static Builder builder(double x, double y, double z) {
+        return new Builder(x, y, z);
+    }
+
+    public static Builder builder(Vec3d vector) {
+        return new Builder(vector.x, vector.y, vector.z);
+    }
+
+    public static class Builder {
+        private final double x;
+        private final double y;
+        private final double z;
+
+        public Builder(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public AbsolutePositionSource build() {
+            return new AbsolutePositionSource(x, y, z);
+        }
     }
 
 }

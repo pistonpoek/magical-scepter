@@ -2,15 +2,13 @@ package net.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
-import net.pistonpoek.magicalscepter.util.RotationVector;
+import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
 
 public record SpawnParticleSpellEffect(
         ParticleEffect particle,
@@ -27,10 +25,12 @@ public record SpawnParticleSpellEffect(
     );
 
     @Override
-    public void apply(ServerWorld world, LivingEntity entity, Vec3d position, float pitch, float yaw) {
-        Random random = entity.getRandom();
-        Vec3d rotation = RotationVector.get(pitch, yaw).normalize();
-        world.spawnParticles(
+    public void apply(SpellContext context) {
+        Random random = context.getRandom();
+        Vec3d rotation = context.getRotationVector().normalize();
+        Vec3d position = context.position();
+
+        context.getWorld().spawnParticles(
                 this.particle,
                 position.getX(),
                 position.getY(),
@@ -39,7 +39,7 @@ public record SpawnParticleSpellEffect(
                 rotation.getX(),
                 rotation.getY(),
                 rotation.getZ(),
-                (double)this.speed.get(random)
+                this.speed.get(random)
         );
     }
 
