@@ -1,16 +1,12 @@
 package net.pistonpoek.magicalscepter.spell.effect.projectile;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.WitherSkullEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
-import net.pistonpoek.magicalscepter.util.RotationVector;
-
-import java.util.Optional;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public class WitherSkullSpellProjectile implements ShootProjectileSpellEffect {
     public static final MapCodec<WitherSkullSpellProjectile> CODEC = MapCodec.unit(WitherSkullSpellProjectile::new);

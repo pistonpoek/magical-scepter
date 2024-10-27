@@ -11,7 +11,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 import java.util.List;
 import java.util.stream.Collectors;

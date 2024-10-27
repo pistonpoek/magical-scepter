@@ -5,8 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record RelativeRotationSource(float pitch, float yaw) implements RotationSource {
@@ -16,10 +16,6 @@ public record RelativeRotationSource(float pitch, float yaw) implements Rotation
                     Codec.FLOAT.optionalFieldOf("yaw", 0.0F).forGetter(RelativeRotationSource::yaw)
             ).apply(instance, RelativeRotationSource::new)
     );
-
-    public RotationSource getSource(@NotNull Cast cast) {
-        return ListRotationSource.combine(cast.getRotationSource(), this);
-    }
 
     public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
         return new Pair<>(

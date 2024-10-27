@@ -2,7 +2,7 @@ package net.pistonpoek.magicalscepter.spell.cast.transformer;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.pistonpoek.magicalscepter.spell.cast.*;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,12 +18,12 @@ public record RotateCastTransformer(RotationSource rotation) implements CastTran
 
     @FunctionalInterface
     public interface CastRotator {
-        RotationSource getSource(@NotNull Cast cast);
+        RotationSource getSource(@NotNull SpellCasting cast);
     }
 
     @Override
-    public Collection<Cast> transform(@NotNull Cast cast) {
-        return List.of(cast.setRotation(rotation.getSource(cast)));
+    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
+        return List.of(cast.addContextSource(rotation));
     }
 
     @Override

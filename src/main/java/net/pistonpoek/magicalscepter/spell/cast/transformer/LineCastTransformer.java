@@ -4,7 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.Vec3d;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.pistonpoek.magicalscepter.spell.position.PositionSource;
 import net.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
 import org.jetbrains.annotations.NotNull;
@@ -24,14 +25,15 @@ public record LineCastTransformer(PositionSource position,
     );
 
     @Override
-    public Collection<Cast> transform(@NotNull Cast cast) {
-        Vec3d startPos = cast.getPositionSource().getPosition(cast.getContext());
-        Vec3d lineVector = position.getPosition(cast.getContext()).subtract(startPos);
-        Collection<Cast> casts = new ArrayList<>();
-        for (int i = 0; i <= amount; i++) {
-            Cast pointCast = cast.clone();
+    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
+        SpellContext context = cast.getContext();
+        Vec3d startPos = context.position();
+        Vec3d lineVector = position.getPosition(context).subtract(startPos);
+        Collection<SpellCasting> casts = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            SpellCasting pointCast = cast.clone();
             pointCast.setDelay(cast.getDelay() + i * stepDelay);
-            pointCast.setPosition(AbsolutePositionSource.builder(
+            pointCast.addContextSource(AbsolutePositionSource.builder(
                     startPos.add(lineVector.multiply(((double)i) / (amount - 1)))).build());
             casts.add(pointCast);
         }

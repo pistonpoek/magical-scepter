@@ -1,0 +1,103 @@
+{
+  "casts": [
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:play_sound",
+          "pitch": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          },
+          "sound": {
+            "sound_id": "minecraft:entity.ender_dragon.growl"
+          },
+          "volume": 1.0
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:summon_entity",
+          "effects": [],
+          "entity": "minecraft:area_effect_cloud",
+          "nbt": {
+            "Duration": 600,
+            "Particle": {
+              "type": "minecraft:dragon_breath"
+            },
+            "Radius": 3,
+            "RadiusPerTick": 0.00666666666,
+            "potion_contents": {
+              "potion": "minecraft:harming"
+            }
+          }
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:target",
+          "range": 8.0,
+          "target": "block"
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:spawn_particles",
+          "particle": {
+            "type": "minecraft:dragon_breath"
+          }
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:repeat",
+          "amount": 6,
+          "step_delay": 4
+        },
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:random",
+            "pitch": 45.0,
+            "yaw": 0.0
+          }
+        },
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:random",
+            "pitch": 0.0,
+            "yaw": 90.0
+          }
+        },
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 8.0
+          }
+        },
+        {
+          "type": "magicalscepter:line",
+          "amount": 12,
+          "position": {
+            "type": "magicalscepter:entity",
+            "anchor": "eyes"
+          },
+          "step_delay": 1
+        }
+      ]
+    }
+  ],
+  "cooldown": 100,
+  "description": {
+    "translate": "spell.magicalscepter.dragon_growl"
+  },
+  "experience_cost": 32
+}

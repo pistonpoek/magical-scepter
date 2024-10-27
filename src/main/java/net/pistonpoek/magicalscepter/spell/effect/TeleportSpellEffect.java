@@ -2,11 +2,13 @@ package net.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 import java.util.Set;
 
@@ -20,26 +22,37 @@ public record TeleportSpellEffect()
         ServerWorld world = context.getWorld();
         Entity target = context.target();
 
-        double x = position.getX();
-        double y = MathHelper.clamp(
+        double positionX = position.getX();
+        double positionY = MathHelper.clamp(
                 position.getY(),
                 world.getBottomY(),
                 world.getBottomY() + world.getLogicalHeight() - 1
         );
-        double z = position.getZ();
+        double positionZ = position.getZ();
+
+        Vec3d targetPos = target.getPos();
+
+        BlockPos blockPos = BlockPos.ofFloored(positionX, positionY, positionZ);
+        target.teleport(world, blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, Set.of(), target.getYaw(), target.getPitch());
+
+        if (!world.isSpaceEmpty(target) || world.containsFluid(target.getBoundingBox())) {
+            target.teleport(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), Set.of(), target.getYaw(), target.getPitch());
+            return;
+        }
 
         if (target.hasVehicle()) {
             target.stopRiding();
         }
 
-        Vec3d vec3d = target.getPos();
-        target.teleport(world, x, y, z, Set.of(), context.pitch(), context.yaw());
-        world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(target));
+        world.emitGameEvent(GameEvent.TELEPORT, blockPos, GameEvent.Emitter.of(target));
         target.onLanding();
+        if (target instanceof PathAwareEntity pathAwareEntity) {
+            pathAwareEntity.getNavigation().stop();
+        }
     }
 
     @Override
-    public MapCodec<? extends SpellEffect> getCodec() {
+    public MapCodec<TeleportSpellEffect> getCodec() {
         return CODEC;
     }
 }

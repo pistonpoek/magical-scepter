@@ -20,6 +20,7 @@
       "effects": [
         {
           "type": "magicalscepter:summon_entity",
+          "effects": [],
           "entity": "minecraft:evoker_fangs"
         }
       ],
@@ -64,22 +65,7 @@
         },
         {
           "type": "magicalscepter:surface",
-          "distance": 1.0,
-          "position": {
-            "type": "magicalscepter:relative",
-            "position": {
-              "type": "magicalscepter:entity"
-            },
-            "rotation": {
-              "type": "magicalscepter:mixed",
-              "pitch": {
-                "type": "magicalscepter:absolute"
-              }
-            },
-            "x": 0.0,
-            "y": 0.0,
-            "z": 20.0
-          }
+          "distance": 8.0
         },
         {
           "type": "magicalscepter:rotate",

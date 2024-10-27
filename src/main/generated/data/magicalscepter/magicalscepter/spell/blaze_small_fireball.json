@@ -21,74 +21,22 @@
       ],
       "transformers": [
         {
-          "type": "magicalscepter:move",
-          "position": {
-            "type": "magicalscepter:relative",
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.8
-          }
-        }
-      ]
-    },
-    {
-      "effects": [
-        {
-          "type": "magicalscepter:play_sound",
-          "pitch": {
-            "type": "minecraft:uniform",
-            "max_exclusive": 1.2,
-            "min_inclusive": 0.8
-          },
-          "sound": {
-            "sound_id": "minecraft:entity.blaze.shoot"
-          },
-          "volume": 1.0
+          "type": "magicalscepter:repeat",
+          "amount": 3,
+          "step_delay": 6
         },
         {
-          "type": "magicalscepter:shoot_projectile",
-          "projectile": "magicalscepter:small_fireball"
-        }
-      ],
-      "transformers": [
-        {
-          "type": "magicalscepter:delay",
-          "delay": 6
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:entity"
+          }
         },
         {
           "type": "magicalscepter:move",
           "position": {
-            "type": "magicalscepter:relative",
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.8
+            "type": "magicalscepter:entity",
+            "anchor": "eyes"
           }
-        }
-      ]
-    },
-    {
-      "effects": [
-        {
-          "type": "magicalscepter:play_sound",
-          "pitch": {
-            "type": "minecraft:uniform",
-            "max_exclusive": 1.2,
-            "min_inclusive": 0.8
-          },
-          "sound": {
-            "sound_id": "minecraft:entity.blaze.shoot"
-          },
-          "volume": 1.0
-        },
-        {
-          "type": "magicalscepter:shoot_projectile",
-          "projectile": "magicalscepter:small_fireball"
-        }
-      ],
-      "transformers": [
-        {
-          "type": "magicalscepter:delay",
-          "delay": 12
         },
         {
           "type": "magicalscepter:move",

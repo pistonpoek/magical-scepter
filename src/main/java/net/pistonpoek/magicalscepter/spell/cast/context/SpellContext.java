@@ -1,4 +1,4 @@
-package net.pistonpoek.magicalscepter.spell.cast;
+package net.pistonpoek.magicalscepter.spell.cast.context;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -6,19 +6,32 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Position;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.pistonpoek.magicalscepter.MagicalScepter;
+import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import net.pistonpoek.magicalscepter.util.RotationVector;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Optional;
 
 public record SpellContext(LivingEntity caster, Entity target, Vec3d position, float pitch, float yaw) implements Position {
-    SpellContext(Cast cast, SpellContext spellContext) {
-        this(cast.getCaster(),
-             cast.getTarget(),
-             cast.getPositionSource().getPosition(spellContext),
-             cast.getRotationSource().getPitch(spellContext),
-             cast.getRotationSource().getYaw(spellContext));
+
+    public SpellContext(LivingEntity caster) {
+        this(caster, caster, caster.getEyePos(), caster.getPitch(), caster.getYaw());
     }
-// TODO replace caster usage by target where it makes sense in transformers.
+
+    public SpellContext(SpellContext context, Vec3d position) {
+        this(context.caster, context.target, position, context.pitch, context.yaw);
+    }
+
+    public SpellContext(SpellContext context, float pitch, float yaw) {
+        this(context.caster, context.target, context.position, pitch, yaw);
+    }
+
+    public SpellContext(SpellContext context, @NotNull Entity target) {
+        this(context.caster, target, context.position, context.pitch, context.yaw);
+    }
+
     @Override
     public double getX() {
         return position.getX();
@@ -51,5 +64,11 @@ public record SpellContext(LivingEntity caster, Entity target, Vec3d position, f
 
     public Vec3d getRotationVector() {
         return RotationVector.get(pitch, yaw);
+    }
+
+    public void apply(List<SpellEffect> effects) {
+        for (SpellEffect effect: effects) {
+            effect.apply(this);
+        }
     }
 }

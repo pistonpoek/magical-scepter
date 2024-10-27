@@ -14,7 +14,7 @@ import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record ApplyMobEffectSpellEffect(
         RegistryEntryList<StatusEffect> toApply,

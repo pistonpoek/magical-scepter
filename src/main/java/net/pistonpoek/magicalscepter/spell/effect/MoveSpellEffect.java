@@ -8,7 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 import java.util.Optional;
 
@@ -38,7 +38,7 @@ public record MoveSpellEffect(FloatProvider power, boolean knockback) implements
     }
 
     @Override
-    public MapCodec<? extends SpellEffect> getCodec() {
+    public MapCodec<MoveSpellEffect> getCodec() {
         return CODEC;
     }
 }
