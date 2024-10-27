@@ -32,6 +32,7 @@ import net.pistonpoek.magicalscepter.spell.cast.transformer.*;
 import net.pistonpoek.magicalscepter.spell.effect.*;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.*;
 import net.pistonpoek.magicalscepter.spell.position.EntityPositionSource;
+import net.pistonpoek.magicalscepter.spell.position.MixedPositionSource;
 import net.pistonpoek.magicalscepter.spell.position.RandomPositionSource;
 import net.pistonpoek.magicalscepter.spell.position.RelativePositionSource;
 import net.pistonpoek.magicalscepter.spell.rotation.*;
@@ -72,7 +73,6 @@ public class Spells {
         RegistryEntryLookup<EntityType<?>> entityTypeLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
         Function<EntityType<?>, RegistryEntry.Reference<EntityType<?>>> entityTypeReferenceFunction = entityType ->
                 entityTypeLookup.getOrThrow(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), EntityType.getId(entityType)));
-        RegistryEntryLookup<Potion> potionLookup = registry.getRegistryLookup(RegistryKeys.POTION);
 
         register(registry, MAGICAL_ATTACK_KEY, Spell.builder(100, 32,
                         textOf("magical_attack"))
@@ -147,12 +147,26 @@ public class Spells {
         register(registry, BREEZE_JUMP_KEY, Spell.builder(100, 32,
                         textOf("breeze_jump"))
             .addCast(SpellCast.builder()
-                    .addEffect(new ApplyMobEffectSpellEffect(
-                            RegistryEntryList.of(StatusEffects.JUMP_BOOST),
-                            ConstantFloatProvider.create(1000.0F),
-                            ConstantFloatProvider.create(400.0f),
+                    .addEffect(new PlaySoundSpellEffect(
+                            RegistryEntry.of(SoundEvents.ENTITY_BREEZE_JUMP),
                             ConstantFloatProvider.create(1.0F),
-                            ConstantFloatProvider.create(3.0F))).build())
+                            UniformFloatProvider.create(0.8F, 1.2F))).build())
+            .addCast(SpellCast.builder()
+                    .addTransformer(RotateCastTransformer.builder(
+                            new FacingLocationRotationSource(
+                                    MixedPositionSource.builder()
+                                            .yPosition(RelativePositionSource.builder(0, 0.5, 0)
+                                                    .position(EntityPositionSource.builder(EntityPositionSource.Anchor.EYES).build())
+                                                    .rotation(new AbsoluteRotationSource(0, 0))
+                                                    .build())
+                                            .xPosition(RelativePositionSource.builder(new Vec3d(0, 0, 1)).build())
+                                            .zPosition(RelativePositionSource.builder(new Vec3d(0, 0, 1)).build()).build())
+                            ).build()
+                    ) // TODO add target filter to require the target to be on the ground
+                    .addEffect(new MoveSpellEffect(
+                            ConstantFloatProvider.create(3.0F),
+                            false
+                    )).build())
         );
 
         register(registry, DRAGON_FIREBALL_KEY, Spell.builder(100, 32,

@@ -3,12 +3,60 @@
     {
       "effects": [
         {
-          "type": "magicalscepter:apply_mob_effect",
-          "max_amplifier": 3.0,
-          "max_duration": 400.0,
-          "min_amplifier": 1.0,
-          "min_duration": 1000.0,
-          "to_apply": "minecraft:jump_boost"
+          "type": "magicalscepter:play_sound",
+          "pitch": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          },
+          "sound": {
+            "sound_id": "minecraft:entity.breeze.jump"
+          },
+          "volume": 1.0
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:move",
+          "power": 3.0
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:facing",
+            "position": {
+              "type": "magicalscepter:mixed",
+              "x": {
+                "type": "magicalscepter:relative",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0
+              },
+              "y": {
+                "type": "magicalscepter:relative",
+                "position": {
+                  "type": "magicalscepter:entity",
+                  "anchor": "eyes"
+                },
+                "rotation": {
+                  "type": "magicalscepter:absolute"
+                },
+                "x": 0.0,
+                "y": 0.5,
+                "z": 0.0
+              },
+              "z": {
+                "type": "magicalscepter:relative",
+                "x": 0.0,
+                "y": 0.0,
+                "z": 1.0
+              }
+            }
+          }
         }
       ]
     }
