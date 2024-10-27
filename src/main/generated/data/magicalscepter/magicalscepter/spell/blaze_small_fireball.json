@@ -50,7 +50,7 @@
       ]
     }
   ],
-  "cooldown": 100,
+  "cooldown": 62,
   "description": {
     "translate": "spell.magicalscepter.small_fireballs"
   },

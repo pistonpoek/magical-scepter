@@ -21,7 +21,7 @@
       ]
     }
   ],
-  "cooldown": 100,
+  "cooldown": 50,
   "description": {
     "translate": "spell.magicalscepter.magical_attack"
   },
