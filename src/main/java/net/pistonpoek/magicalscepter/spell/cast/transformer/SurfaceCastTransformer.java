@@ -9,7 +9,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
 import net.pistonpoek.magicalscepter.spell.position.PositionSource;
 import org.jetbrains.annotations.NotNull;
@@ -29,19 +29,19 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
     );
 
     @Override
-    public Collection<Cast> transform(@NotNull Cast cast) {
+    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
         Optional<Vec3d> value = getSurfacePosition(cast);
 
         if (value.isEmpty()) {
             return require ? List.of() : List.of(cast);
         }
-        return List.of(cast.setPosition(AbsolutePositionSource.builder(
+        return List.of(cast.addContextSource(AbsolutePositionSource.builder(
                 value.get()).build()));
     }
 
-    private Optional<Vec3d> getSurfacePosition(@NotNull Cast cast) {
+    private Optional<Vec3d> getSurfacePosition(@NotNull SpellCasting cast) {
         World world = cast.getCaster().getWorld();
-        Vec3d castPosition = cast.getPositionSource().getPosition(cast.getContext());
+        Vec3d castPosition = cast.getContext().position();
 
         // Compute the top and bottom search positions.
         double top, bottom;

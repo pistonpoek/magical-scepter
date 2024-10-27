@@ -6,7 +6,7 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public class FireballSpellProjectile implements ShootProjectileSpellEffect {
     public static final MapCodec<FireballSpellProjectile> CODEC = MapCodec.unit(FireballSpellProjectile::new);

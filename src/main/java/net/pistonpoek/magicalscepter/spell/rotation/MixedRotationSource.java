@@ -4,8 +4,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -17,11 +17,6 @@ public record MixedRotationSource(Optional<RotationSource> pitch, Optional<Rotat
                     RotationSource.CODEC.optionalFieldOf("yaw").forGetter(MixedRotationSource::yaw)
             ).apply(instance, MixedRotationSource::new)
     );
-
-    @Override
-    public RotationSource getSource(@NotNull Cast cast) {
-        return ListRotationSource.combine(cast.getRotationSource(), this);
-    }
 
     @Override
     public Pair<Float, Float> getRotation(@NotNull SpellContext context) {

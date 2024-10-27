@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.StringIdentifiable;
@@ -13,8 +12,10 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.RaycastContext;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
+import net.pistonpoek.magicalscepter.spell.target.AbsoluteTargetSource;
+import net.pistonpoek.magicalscepter.spell.target.TargetSource;
 import net.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
 import net.pistonpoek.magicalscepter.util.RotationVector;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +51,7 @@ public record TargetCastTransformer(Target target, double range, boolean require
     }
 
     @Override
-    public Collection<Cast> transform(@NotNull Cast cast) {
+    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
         SpellContext context = cast.getContext();
         Vec3d rotationVector = RotationVector.get(context.pitch(), context.yaw()).normalize();
         Vec3d endPosition = context.position().add(
@@ -67,15 +68,14 @@ public record TargetCastTransformer(Target target, double range, boolean require
                     return List.of();
                 }
 
-                cast.setPosition(AbsolutePositionSource.builder(hitResult.getPos()).build());
+                cast.addContextSource(AbsolutePositionSource.builder(hitResult.getPos()).build());
             }
             case ENTITY -> {
                 Optional<EntityHitResult> entityHitResult = entityRayCast(range, context.caster(), context.position(), endPosition);
                 if (entityHitResult.isEmpty()) {
                     return List.of();
                 }
-
-                cast.setTarget(entityHitResult.get().getEntity());
+                cast.addContextSource(new AbsoluteTargetSource(entityHitResult.get().getEntity().getUuid()));
             }
         }
 

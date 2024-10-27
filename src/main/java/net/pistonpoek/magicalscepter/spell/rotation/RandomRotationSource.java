@@ -5,8 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.random.Random;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record RandomRotationSource(float pitch, float yaw) implements RotationSource {
@@ -16,12 +16,6 @@ public record RandomRotationSource(float pitch, float yaw) implements RotationSo
                     Codec.FLOAT.optionalFieldOf("yaw", 360.0F).forGetter(RandomRotationSource::yaw)
             ).apply(instance, RandomRotationSource::new)
     );
-
-    @Override
-    public RotationSource getSource(@NotNull Cast cast) {
-        Random random = cast.getCaster().getRandom();
-        return getRandomRotationSource(random);
-    }
 
     @Override
     public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
@@ -38,7 +32,7 @@ public record RandomRotationSource(float pitch, float yaw) implements RotationSo
     }
 
     @Override
-    public MapCodec<? extends RotationSource> getCodec() {
+    public MapCodec<RandomRotationSource> getCodec() {
         return CODEC;
     }
 }

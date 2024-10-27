@@ -72,7 +72,7 @@ public class Scepters {
                         0xB823F5,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_FIREBALL_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_PROTECT_KEY))
+                        spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_GROWL_KEY))
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()

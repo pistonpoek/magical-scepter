@@ -3,7 +3,7 @@ package net.pistonpoek.magicalscepter.spell.cast.transformer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -17,7 +17,7 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
     );
 
     @Override
-    public Collection<Cast> transform(@NotNull Cast cast) {
+    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
         return List.of(cast.setDelay(delay));
     }
 

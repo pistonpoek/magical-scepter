@@ -5,11 +5,13 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.spell.Spell;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
 import net.pistonpoek.magicalscepter.spell.effect.projectile.ShootProjectileSpellEffect;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import net.pistonpoek.magicalscepter.spell.position.PositionSource;
 import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
+import net.pistonpoek.magicalscepter.spell.target.TargetSource;
 
 public class ModRegistryKeys {
     public static final RegistryKey<Registry<Scepter>> SCEPTER = of("scepter");
@@ -24,6 +26,10 @@ public class ModRegistryKeys {
             of("cast_position_source_type");
     public static final RegistryKey<Registry<MapCodec<? extends RotationSource>>> CAST_ROTATION_SOURCE_TYPE =
             of("cast_rotation_source_type");
+    public static final RegistryKey<Registry<MapCodec<? extends TargetSource>>> CAST_TARGET_SOURCE_TYPE =
+            of("cast_target_source_type");
+    public static final RegistryKey<Registry<MapCodec<? extends SpellContextSource>>> CAST_CONTEXT_SOURCE_TYPE =
+            of("cast_context_source_type");
 
     private static <T> RegistryKey<Registry<T>> of(String id) {
         return RegistryKey.ofRegistry(ModIdentifier.of(id));

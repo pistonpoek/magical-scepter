@@ -2,7 +2,7 @@ package net.pistonpoek.magicalscepter.spell.cast.transformer;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.pistonpoek.magicalscepter.spell.cast.*;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.pistonpoek.magicalscepter.spell.position.PositionSource;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,14 +16,9 @@ public record MoveCastTransformer(PositionSource position) implements CastTransf
             ).apply(instance, MoveCastTransformer::new)
     );
 
-    @FunctionalInterface
-    public interface CastMover {
-        PositionSource getSource(@NotNull Cast cast);
-    }
-
     @Override
-    public Collection<Cast> transform(@NotNull Cast cast) {
-        return List.of(cast.setPosition(position.getSource(cast)));
+    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
+        return List.of(cast.addContextSource(position));
     }
 
     @Override

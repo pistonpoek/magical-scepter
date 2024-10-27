@@ -5,8 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.Vec3d;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record EntityPositionSource(Anchor anchor) implements PositionSource {
@@ -15,11 +15,6 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
                     Anchor.CODEC.optionalFieldOf("anchor", Anchor.FEET).forGetter(EntityPositionSource::anchor)
             ).apply(instance, EntityPositionSource::new)
     );
-
-    @Override
-    public PositionSource getSource(@NotNull Cast cast) {
-        return this;
-    }
 
     @Override
     public Vec3d getPosition(@NotNull SpellContext context) {

@@ -1,7 +1,7 @@
 package net.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record RotateSpellEffect() implements SpellEffect {
     public static final MapCodec<RotateSpellEffect> CODEC = MapCodec.unit(new RotateSpellEffect());
@@ -13,7 +13,7 @@ public record RotateSpellEffect() implements SpellEffect {
     }
 
     @Override
-    public MapCodec<? extends SpellEffect> getCodec() {
+    public MapCodec<RotateSpellEffect> getCodec() {
         return CODEC;
     }
 }

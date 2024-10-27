@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.Vec3d;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record AbsolutePositionSource(double x, double y, double z) implements PositionSource {
@@ -16,11 +16,6 @@ public record AbsolutePositionSource(double x, double y, double z) implements Po
                     Codec.DOUBLE.fieldOf("z").forGetter(AbsolutePositionSource::z)
             ).apply(instance, AbsolutePositionSource::new)
     );
-
-    @Override
-    public PositionSource getSource(@NotNull Cast cast) {
-        return this;
-    }
 
     @Override
     public Vec3d getPosition(@NotNull SpellContext context) {

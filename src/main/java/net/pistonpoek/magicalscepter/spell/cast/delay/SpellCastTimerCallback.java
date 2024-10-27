@@ -12,33 +12,22 @@ import net.minecraft.world.timer.Timer;
 import net.minecraft.world.timer.TimerCallback;
 import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.position.PositionSource;
-import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.UUID;
 
 public record SpellCastTimerCallback(List<SpellEffect> effects,
-                                     UUID entityUUID,
-                                     PositionSource position,
-                                     RotationSource rotation) implements TimerCallback<MinecraftServer> {
+                                     UUID casterUUID,
+                                     SpellContextSource contextSource) implements TimerCallback<MinecraftServer> {
 
     @Override
-    public void call(MinecraftServer server, Timer<MinecraftServer> events, long time) {
-        Entity entity = null;
-        for (ServerWorld world : server.getWorlds()) {
-            entity = world.getEntity(entityUUID);
-            if (entity != null) {
-                break;
-            }
-        }
-        if (entity == null || !entity.isAlive()) {
-            MagicalScepter.LOGGER.info("Spell cast is missing an entity.");
-            return;
-        }
-        new Cast((LivingEntity) entity).setPosition(position).setRotation(rotation).apply(effects);
+    public void call(MinecraftServer minecraftServer, Timer<MinecraftServer> events, long time) {
+        new SpellCasting(loadCaster(minecraftServer))
+                .addContextSource(contextSource).apply(effects);
     }
 
     public static class Serializer extends TimerCallback.Serializer<MinecraftServer, SpellCastTimerCallback> {
@@ -50,25 +39,37 @@ public record SpellCastTimerCallback(List<SpellEffect> effects,
             final DataResult<NbtElement> encodedEffects = SpellEffect.CODEC.listOf()
                     .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.effects);
             nbtCompound.put("effects", encodedEffects.getOrThrow());
-            nbtCompound.putUuid("entity", spellCastTimerCallback.entityUUID);
-            final DataResult<NbtElement> encodedPositionSource = PositionSource.CODEC
-                    .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.position);
-            nbtCompound.put("position", encodedPositionSource.getOrThrow());
-            final DataResult<NbtElement> encodedRotationSource = RotationSource.CODEC
-                    .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.rotation);
-            nbtCompound.put("rotation", encodedRotationSource.getOrThrow());
+            nbtCompound.putUuid("caster", spellCastTimerCallback.casterUUID);
+            final DataResult<NbtElement> encodedContextSource = SpellContextSource.CODEC
+                    .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.contextSource);
+            nbtCompound.put("context", encodedContextSource.getOrThrow());
         }
 
         public SpellCastTimerCallback deserialize(NbtCompound nbtCompound) {
             List<SpellEffect> effects = SpellEffect.CODEC.listOf()
                     .decode(NbtOps.INSTANCE, nbtCompound.get("effects")).getOrThrow().getFirst();
-            UUID entityUUID = nbtCompound.getUuid("entity");
-            PositionSource position = PositionSource.CODEC
-                    .decode(NbtOps.INSTANCE, nbtCompound.get("position")).getOrThrow().getFirst();
-            RotationSource rotation = RotationSource.CODEC
-                    .decode(NbtOps.INSTANCE, nbtCompound.get("rotation")).getOrThrow().getFirst();
+            UUID casterUUID = nbtCompound.getUuid("caster");
+            UUID targetUUID = nbtCompound.getUuid("target");
+            SpellContextSource contextSource = SpellContextSource.CODEC
+                    .decode(NbtOps.INSTANCE, nbtCompound.get("context")).getOrThrow().getFirst();
 
-            return new SpellCastTimerCallback(effects, entityUUID, position, rotation);
+            return new SpellCastTimerCallback(effects, casterUUID, contextSource);
         }
     }
+
+    public LivingEntity loadCaster(@NotNull MinecraftServer minecraftServer) {
+        Entity caster = null;
+        for (ServerWorld world : minecraftServer.getWorlds()) {
+            caster = world.getEntity(casterUUID);
+            if (caster != null) {
+                break;
+            }
+        }
+        if (caster == null || !caster.isAlive()) {
+            MagicalScepter.LOGGER.info("Spell cast is missing caster entity.");
+            return null;
+        }
+        return (LivingEntity) caster;
+    }
+
 }

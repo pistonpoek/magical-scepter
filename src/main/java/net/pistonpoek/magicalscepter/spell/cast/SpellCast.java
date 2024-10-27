@@ -3,6 +3,7 @@ package net.pistonpoek.magicalscepter.spell.cast;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.LivingEntity;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.pistonpoek.magicalscepter.spell.cast.delay.SpellCastScheduler;
 import net.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
 import net.pistonpoek.magicalscepter.spell.effect.SpellEffect;
@@ -30,13 +31,13 @@ public record SpellCast(List<SpellEffect> effects, List<CastTransformer> transfo
      * @return Duration that the cast will take.
      */
     public int apply(@NotNull LivingEntity caster) {
-        Collection<Cast> casts = List.of(new Cast(caster));
+        Collection<SpellCasting> casts = List.of(new SpellCasting(caster));
         for (CastTransformer transformer: transformers) {
             casts = casts.stream().flatMap(cast -> transformer.transform(cast).stream())
                     .collect(Collectors.toList());
         }
         int duration = 0;
-        for (Cast cast: casts) {
+        for (SpellCasting cast: casts) {
             SpellCastScheduler.schedule(cast, effects);
             duration = Math.max(duration, cast.getDelay());
         }

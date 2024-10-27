@@ -15,6 +15,94 @@
           "volume": 1.0
         }
       ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:summon_entity",
+          "effects": [],
+          "entity": "minecraft:evoker_fangs"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:entity"
+          }
+        },
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:mixed",
+            "pitch": {
+              "type": "magicalscepter:absolute"
+            }
+          }
+        },
+        {
+          "type": "magicalscepter:circle",
+          "amount": 5,
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 1.5
+          }
+        },
+        {
+          "type": "magicalscepter:surface",
+          "distance": 8.0
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:summon_entity",
+          "effects": [],
+          "entity": "minecraft:evoker_fangs"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:delay",
+          "delay": 3
+        },
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:entity"
+          }
+        },
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:mixed",
+            "pitch": {
+              "type": "magicalscepter:absolute"
+            },
+            "yaw": {
+              "type": "magicalscepter:relative",
+              "yaw": 72.0
+            }
+          }
+        },
+        {
+          "type": "magicalscepter:circle",
+          "amount": 8,
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 2.5
+          }
+        },
+        {
+          "type": "magicalscepter:surface",
+          "distance": 8.0
+        }
+      ]
     }
   ],
   "cooldown": 100,

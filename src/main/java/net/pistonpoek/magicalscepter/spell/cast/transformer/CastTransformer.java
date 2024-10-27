@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.registry.Registry;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistries;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -21,12 +21,13 @@ public interface CastTransformer {
         Registry.register(registry, ModIdentifier.of("rotate"), RotateCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("surface"), SurfaceCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("target"), TargetCastTransformer.CODEC);
-        // TODO Add circle transformer
+        Registry.register(registry, ModIdentifier.of("circle"), CircleCastTransformer.CODEC);
+        Registry.register(registry, ModIdentifier.of("repeat"), RepeatCastTransformer.CODEC);
 
         // TODO condition transformer??
     }
 
-    Collection<Cast> transform(@NotNull Cast cast);
+    Collection<SpellCasting> transform(@NotNull SpellCasting cast);
 
     MapCodec<? extends CastTransformer> getCodec();
 }

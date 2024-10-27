@@ -24,13 +24,21 @@
       ],
       "transformers": [
         {
+          "type": "magicalscepter:repeat",
+          "amount": 64
+        },
+        {
           "type": "magicalscepter:move",
           "position": {
             "type": "magicalscepter:random",
-            "dx": 16.0,
-            "dy": 16.0,
-            "dz": 16.0
+            "dx": 8.0,
+            "dy": 4.0,
+            "dz": 8.0
           }
+        },
+        {
+          "type": "magicalscepter:surface",
+          "distance": 4.0
         }
       ]
     }

@@ -5,8 +5,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.pistonpoek.magicalscepter.spell.cast.Cast;
-import net.pistonpoek.magicalscepter.spell.cast.SpellContext;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,12 +24,6 @@ public record RandomPositionSource(double dx, double dy, double dz,
                     RotationSource.CODEC.optionalFieldOf("rotation").forGetter(RandomPositionSource::rotation)
             ).apply(instance, RandomPositionSource::new)
     );
-
-    @Override
-    public PositionSource getSource(@NotNull Cast cast) {
-        Random random = cast.getCaster().getRandom();
-        return getRandomPositionSource(random);
-    }
 
     @Override
     public Vec3d getPosition(@NotNull SpellContext context) {
