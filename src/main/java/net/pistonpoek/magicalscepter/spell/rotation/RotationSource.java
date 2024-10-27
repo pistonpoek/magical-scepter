@@ -23,8 +23,8 @@ public interface RotationSource extends SpellContextSource {
         Registry.register(registry, ModIdentifier.of("entity"), EntityRotationSource.CODEC);
         Registry.register(registry, ModIdentifier.of("mixed"), MixedRotationSource.CODEC);
         Registry.register(registry, ModIdentifier.of("random"), RandomRotationSource.CODEC);
+        Registry.register(registry, ModIdentifier.of("facing"), FacingLocationRotationSource.CODEC);
         // TODO Movement (entity.getMovement() form vector to pitch yaw??)
-        // TODO facing location (position)
         // TODO facing target
     }
 

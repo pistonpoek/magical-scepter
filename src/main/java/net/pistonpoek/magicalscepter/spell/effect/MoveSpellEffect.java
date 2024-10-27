@@ -5,9 +5,11 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
+import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 import java.util.Optional;
@@ -31,6 +33,9 @@ public record MoveSpellEffect(FloatProvider power, boolean knockback) implements
         } else {
             Entity entityTarget = context.target();
             entityTarget.velocityDirty = true;
+            if (entityTarget instanceof PlayerEntity) {
+                entityTarget.velocityModified = true;
+            }
             Vec3d force = rotation.multiply(power.get(random));
             Vec3d velocity = entityTarget.getVelocity().add(force);
             entityTarget.setVelocity(velocity);
