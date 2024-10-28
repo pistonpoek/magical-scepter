@@ -5,13 +5,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.spell.Spell;
 import net.pistonpoek.magicalscepter.util.PlayerExperience;
@@ -29,7 +27,7 @@ public class ScepterItem extends Item {
 
         ItemStack itemStack = user.getStackInHand(hand);
 
-        Optional<RegistryEntry<Spell>> optionalSpell = (!user.isSneaking() ?
+        Optional<Spell> optionalSpell = (!user.isSneaking() ?
                 ScepterContentsComponent.getAttackSpell(itemStack) :
                 ScepterContentsComponent.getProtectSpell(itemStack));
 
@@ -37,7 +35,7 @@ public class ScepterItem extends Item {
             return TypedActionResult.pass(itemStack);
         }
 
-        Spell spell = optionalSpell.get().value();
+        Spell spell = optionalSpell.get();
 
         if (!user.getAbilities().creativeMode) {
             if (PlayerExperience.getTotalExperience(user) < spell.getExperienceCost()) {

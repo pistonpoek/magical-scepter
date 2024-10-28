@@ -1,5 +1,6 @@
 {
   "effect.magicalscepter.stability" : "Stability",
+  "entity.magicalscepter.refractor" : "Refractor",
   "item.magicalscepter.scepter" : "Scepter",
   "item.magicalscepter.scepter.magical" : "Magical Scepter",
   "item.magicalscepter.scepter.blaze" : "Blaze Scepter",
@@ -11,6 +12,7 @@
   "item.magicalscepter.scepter.shulker" : "Shulker Scepter",
   "item.magicalscepter.scepter.warden" : "Warden Scepter",
   "item.magicalscepter.scepter.wither" : "Wither Scepter",
+  "item.magicalscepter.refractor_spawn_egg" : "Refractor Spawn Egg",
   "magicalscepter.scepter.on_cast_attack" : "On Attack:",
   "magicalscepter.scepter.on_cast_protect" : "On Protect:",
   "magicalscepter.scepter.empty_spell" : "No Spell",

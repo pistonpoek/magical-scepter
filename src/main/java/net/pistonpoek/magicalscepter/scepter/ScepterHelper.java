@@ -1,8 +1,11 @@
 package net.pistonpoek.magicalscepter.scepter;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.item.ModItems;
@@ -26,6 +29,11 @@ public class ScepterHelper {
      */
     public static final Predicate<ItemStack> IS_INFUSABLE_SCEPTER = itemStack -> IS_SCEPTER.test(itemStack) &&
             ScepterContentsComponent.isInfusable(itemStack);
+    /**
+     * Predicate to check if an item stack is a scepter with a spell.
+     */
+    public static final Predicate<ItemStack> IS_SCEPTER_WITH_SPELL = itemStack -> IS_SCEPTER.test(itemStack) &&
+            ScepterContentsComponent.hasSpell(itemStack);
 
     public static ItemStack createScepter(RegistryEntry<Scepter> scepter) {
         return ScepterContentsComponent.setScepter(ModItems.SCEPTER.getDefaultStack(), scepter);
