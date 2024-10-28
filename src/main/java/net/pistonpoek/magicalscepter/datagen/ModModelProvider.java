@@ -8,8 +8,6 @@ import net.pistonpoek.magicalscepter.item.ModItems;
 
 import java.util.Optional;
 
-import static net.minecraft.data.client.Models.HANDHELD_ROD;
-
 public class ModModelProvider extends FabricModelProvider {
     public ModModelProvider(FabricDataOutput output) {
         super(output);
@@ -21,11 +19,16 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        // Add scepter item model
-        Identifier scepterId = ModelIds.getItemModelId(ModItems.SCEPTER);
         Model HANDHELD_ROD_TWO_LAYERS =
                 new Model(Optional.of(Identifier.ofVanilla("item/handheld")),
                         Optional.empty(), TextureKey.LAYER0, TextureKey.LAYER1);
+
+        Identifier scepterId = ModelIds.getItemModelId(ModItems.SCEPTER);
         HANDHELD_ROD_TWO_LAYERS.upload(scepterId, TextureMap.layered(scepterId.withSuffixedPath("_overlay"), scepterId), itemModelGenerator.writer);
+
+        Model SPAWN_EGG = new Model(Optional.of(ModelIds.getMinecraftNamespacedItem("template_spawn_egg")), Optional.empty());
+
+        Identifier refractorSpawnEggId = ModelIds.getItemModelId(ModItems.REFRACTOR_SPAWN_EGG);
+        SPAWN_EGG.upload(refractorSpawnEggId, new TextureMap(), itemModelGenerator.writer);
     }
 }

@@ -24,13 +24,13 @@ public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
         RegistryEntryLookup<Scepter> scepterLookup = lookup.createRegistryLookup().getOrThrow(ModRegistryKeys.SCEPTER);
 
         for (RegistryKey<Scepter> scepterKey: Scepters.SCEPTER_KEYS) {
-            addSpell(provider, scepterLookup, scepterKey);
+            addScepter(provider, scepterLookup, scepterKey);
         }
     }
 
-    private static void addSpell(BiConsumer<Identifier, Scepter> provider,
-                                 RegistryEntryLookup<Scepter> lookup,
-                                 RegistryKey<Scepter> key) {
+    private static void addScepter(BiConsumer<Identifier, Scepter> provider,
+                                   RegistryEntryLookup<Scepter> lookup,
+                                   RegistryKey<Scepter> key) {
         provider.accept(key.getValue(), lookup.getOrThrow(key).value());
     }
 

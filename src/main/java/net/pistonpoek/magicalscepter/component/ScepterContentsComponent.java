@@ -169,20 +169,30 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                         .map(key -> key.getValue().getPath().replace("/", ".")));
     }
 
+    public static boolean hasSpell(ItemStack stack) {
+        return get(stack).map(ScepterContentsComponent::hasSpell).orElse(false);
+    }
+
+    public boolean hasSpell() {
+        return customAttackSpell.isPresent() || customProtectSpell.isPresent() ||
+                getScepterValue().map(Scepter::getAttackSpell).isPresent() ||
+                getScepterValue().map(Scepter::getProtectSpell).isPresent();
+    }
+
     /**
      * Get attack spell value for an item stack.
      *
      * @param stack Item stack to get attack spell value for.
      * @return Attack spell value from the item stack.
      */
-    public static Optional<RegistryEntry<Spell>> getAttackSpell(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::getAttackSpell);
+    public static Optional<Spell> getAttackSpell(ItemStack stack) {
+        return get(stack).flatMap(ScepterContentsComponent::getAttackSpell).map(RegistryEntry::value);
     }
 
     /**
-     * Get attack spell value for scepter contents.
+     * Get attack spell entry for scepter contents.
      *
-     * @return Attack spell value from scepter contents.
+     * @return Attack spell entry from scepter contents.
      */
     public Optional<RegistryEntry<Spell>> getAttackSpell() {
         return customAttackSpell
@@ -195,14 +205,14 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @param stack Item stack to get protect spell value for.
      * @return Protect spell value from the item stack.
      */
-    public static Optional<RegistryEntry<Spell>> getProtectSpell(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::getProtectSpell);
+    public static Optional<Spell> getProtectSpell(ItemStack stack) {
+        return get(stack).flatMap(ScepterContentsComponent::getProtectSpell).map(RegistryEntry::value);
     }
 
     /**
-     * Get protect spell value for scepter contents.
+     * Get protect spell entry for scepter contents.
      *
-     * @return Protect spell value from scepter contents.
+     * @return Protect spell entry from scepter contents.
      */
     public Optional<RegistryEntry<Spell>> getProtectSpell() {
         return customProtectSpell

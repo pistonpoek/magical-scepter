@@ -9,6 +9,7 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Rarity;
 import net.pistonpoek.magicalscepter.MagicalScepter;
+import net.pistonpoek.magicalscepter.entity.ModEntityType;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
@@ -21,8 +22,11 @@ import java.util.function.Predicate;
 public class ModItems {
     public static final Item SCEPTER = registerItem("scepter",
             new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)));
+
     private static final Predicate<RegistryEntry.Reference<Scepter>> DEFAULT_SCEPTER =
             entry -> entry.matchesKey(Scepters.DEFAULT_KEY);
+    public static final Item REFRACTOR_SPAWN_EGG = registerItem("refractor_spawn_egg",
+            new SpawnEggItem(ModEntityType.REFRACTOR, 9804699, 6307420, new Item.Settings()));
 
     private static void addScepters(FabricItemGroupEntries entries, RegistryWrapper<Scepter> registryWrapper, ItemGroup.StackVisibility visibility) {
         Set<ItemStack> scepters = ItemStackSet.create();
@@ -45,6 +49,10 @@ public class ModItems {
         entries.addAfter(Items.BOWL, SCEPTER);
     }
 
+    private static void addItemsToSpawnEggsGroup(FabricItemGroupEntries entries) {
+        entries.addAfter(Items.RAVAGER_SPAWN_EGG, REFRACTOR_SPAWN_EGG);
+    }
+
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, ModIdentifier.of(name), item);
     }
@@ -54,6 +62,7 @@ public class ModItems {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(ModItems::addItemsToCombatItemGroup);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(ModItems::addItemsToIngredientsGroup);
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(ModItems::addItemsToSpawnEggsGroup);
     }
 
 }
