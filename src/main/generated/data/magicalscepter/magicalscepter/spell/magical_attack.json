@@ -13,10 +13,56 @@
             "sound_id": "minecraft:entity.illusioner.cast_spell"
           },
           "volume": 1.0
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:damage",
+          "amount": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 3.0,
+            "min_inclusive": 1.0
+          },
+          "damage_type": "minecraft:magic"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:target",
+          "range": 16.0,
+          "target": "entity"
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:spawn_particles",
+          "particle": {
+            "type": "minecraft:witch"
+          },
+          "speed": 1.0
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 16.0
+          }
         },
         {
-          "type": "magicalscepter:shoot_projectile",
-          "projectile": "magicalscepter:dragon_fireball"
+          "type": "magicalscepter:line",
+          "amount": 24,
+          "position": {
+            "type": "magicalscepter:entity",
+            "anchor": "eyes"
+          }
         }
       ]
     }

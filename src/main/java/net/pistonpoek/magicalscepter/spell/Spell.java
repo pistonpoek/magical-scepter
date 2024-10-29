@@ -92,8 +92,8 @@ public record Spell(List<SpellCast> casts, int cooldown, int experienceCost, Tex
             this.description = description;
         }
 
-        public Spell.Builder addCast(SpellCast cast) {
-            casts.add(cast);
+        public Spell.Builder addCast(SpellCast.Builder cast) {
+            casts.add(cast.build());
             return this;
         }
 
