@@ -36,7 +36,6 @@ public class RefractorEntity extends IllagerEntity {
 
     public RefractorEntity(EntityType<? extends RefractorEntity> entityType, World world) {
         super(entityType, world);
-        this.experiencePoints = 5;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class RefractorEntity extends IllagerEntity {
     public static DefaultAttributeContainer.Builder createRefractorAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5)
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 18.0)
+                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 12.0)
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 32.0);
     }
 
