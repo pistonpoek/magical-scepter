@@ -25,7 +25,6 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
 
     public boolean matches(CraftingRecipeInput craftingRecipeInput, World world) {
         boolean containsLapisLazuli = false;
-        boolean containsRedMushroom = false;
         boolean containsBrownMushroom = false;
         boolean containsEmptyScepter = false;
 
@@ -34,8 +33,6 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
             if (!itemStack.isEmpty()) {
                 if (itemStack.isOf(Blocks.BROWN_MUSHROOM.asItem()) && !containsBrownMushroom) {
                     containsBrownMushroom = true;
-                } else if (itemStack.isOf(Blocks.RED_MUSHROOM.asItem()) && !containsRedMushroom) {
-                    containsRedMushroom = true;
                 } else if (itemStack.isOf(Items.LAPIS_LAZULI) && !containsLapisLazuli) {
                     containsLapisLazuli = true;
                 } else if (ScepterHelper.IS_EMPTY_SCEPTER.test(itemStack) && !containsEmptyScepter) {
@@ -45,7 +42,7 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
                 }
             }
         }
-        return containsLapisLazuli && containsBrownMushroom && containsRedMushroom && containsEmptyScepter;
+        return containsLapisLazuli && containsBrownMushroom && containsEmptyScepter;
     }
 
     public ItemStack craft(CraftingRecipeInput craftingRecipeInput, RegistryWrapper.WrapperLookup wrapperLookup) {
@@ -66,7 +63,6 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
 
     public DefaultedList<Ingredient> getIngredients() {
         DefaultedList<Ingredient> ingredients = DefaultedList.of();
-        ingredients.add(Ingredient.ofItems(Items.RED_MUSHROOM));
         ingredients.add(Ingredient.ofItems(Items.BROWN_MUSHROOM));
         ingredients.add(Ingredient.ofItems(Items.LAPIS_LAZULI));
         ingredients.add(Ingredient.ofItems(ModItems.SCEPTER));

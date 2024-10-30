@@ -1,0 +1,18 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "exclusion_zone": {
+      "chunk_count": 10,
+      "other_set": "minecraft:villages"
+    },
+    "salt": 1685961,
+    "separation": 8,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "magicalscepter:old_growth_taiga_hut",
+      "weight": 1
+    }
+  ]
+}

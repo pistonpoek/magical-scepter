@@ -10,7 +10,7 @@ import net.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 public class ModEntityType {
-    public static void registerModEntities() {
+    public static void init() {
         MagicalScepter.LOGGER.info("Registering Entities for " + ModIdentifier.MOD_ID);
     }
 
