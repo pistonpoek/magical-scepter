@@ -10,6 +10,7 @@ import net.pistonpoek.magicalscepter.entity.ModEntityType;
 import net.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import net.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
 import net.pistonpoek.magicalscepter.item.ModItems;
+import net.pistonpoek.magicalscepter.loot.function.ModLootFunctionTypes;
 import net.pistonpoek.magicalscepter.recipe.ModRecipeSerializer;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistries;
@@ -29,11 +30,13 @@ public class MagicalScepter implements ModInitializer {
 		ModRecipeSerializer.init();
 		ModStatusEffects.init();
 		ModDataComponentTypes.init();
+		ModEntityType.init();
+		ModLootFunctionTypes.init();
+
 		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastScheduler::afterDeath);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
-		TimerCallbackSerializer.INSTANCE.registerSerializer(new SpellCastTimerCallback.Serializer());
 
-		ModEntityType.registerModEntities();
+		TimerCallbackSerializer.INSTANCE.registerSerializer(new SpellCastTimerCallback.Serializer());
 		FabricDefaultAttributeRegistry.register(ModEntityType.REFRACTOR, RefractorEntity.createRefractorAttributes());
 	}
 }

@@ -13,14 +13,10 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
-import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.pistonpoek.magicalscepter.spell.Spell;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -33,6 +29,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                                        Optional<String> customName,
                                        Optional<RegistryEntry<Spell>> customAttackSpell,
                                        Optional<RegistryEntry<Spell>> customProtectSpell) {
+    public static final ScepterContentsComponent DEFAULT = new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+    public static final int EMPTY_COLOR = 0;
     public static final Codec<ScepterContentsComponent> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Scepter.ENTRY_CODEC.optionalFieldOf("scepter").forGetter(ScepterContentsComponent::scepter),
@@ -46,7 +44,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     );
 
     public static final Codec<ScepterContentsComponent> CODEC = Codec.withAlternative(BASE_CODEC,
-            Scepter.ENTRY_CODEC, ScepterContentsComponent::with);
+            Scepter.ENTRY_CODEC, ScepterContentsComponent::new);
     public static final PacketCodec<RegistryByteBuf, ScepterContentsComponent> PACKET_CODEC = PacketCodec.tuple(
             Scepter.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
             ScepterContentsComponent::scepter,
@@ -62,6 +60,11 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
             ScepterContentsComponent::customProtectSpell,
             ScepterContentsComponent::new
     );
+
+    public ScepterContentsComponent(RegistryEntry<Scepter> scepter) {
+        this(Optional.of(scepter), Optional.empty(), Optional.empty(),
+                Optional.empty(), Optional.empty(), Optional.empty());
+    }
 
     /**
      * Get the scepter contents component for an item stack.
@@ -100,7 +103,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Specified item stack updated with the scepter in the scepter contents component.
      */
     public static ItemStack setScepter(ItemStack stack, RegistryEntry<Scepter> scepter) {
-        stack.set(SCEPTER_CONTENTS, ScepterContentsComponent.with(scepter));
+        stack.apply(SCEPTER_CONTENTS, DEFAULT, scepter, ScepterContentsComponent::with);
         return stack;
     }
 
@@ -133,7 +136,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      */
     public static int getColor(ItemStack stack) {
         return get(stack).flatMap(ScepterContentsComponent::getColor)
-                .orElse(ColorHelper.Argb.getArgb(0, 0, 0, 0));
+                .orElse(EMPTY_COLOR);
+                //.orElse(ColorHelper.Argb.getArgb(0, 0, 0, 0)); TODO check if 0 works.
     }
 
     /**
@@ -219,15 +223,9 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                 .or(() -> getScepterValue().map(Scepter::getProtectSpell));
     }
 
-    /**
-     * Create a scepter contents component with the specified scepter.
-     *
-     * @param scepter Scepter to create the contents component with.
-     * @return Scepter contents component made with the scepter.
-     */
-    public static ScepterContentsComponent with(RegistryEntry<Scepter> scepter) {
-        return new ScepterContentsComponent(Optional.of(scepter), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty());
+    public ScepterContentsComponent with(RegistryEntry<Scepter> scepter) {
+        return new ScepterContentsComponent(Optional.of(scepter), this.infusable, this.customColor,
+                this.customName, this.customAttackSpell, this.customProtectSpell);
     }
 
     private static final Formatting ATTACK_SPELL_FORMATTING = Formatting.DARK_GREEN;
