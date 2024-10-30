@@ -1,6 +1,6 @@
 {
   "type": "minecraft:jigsaw",
-  "biomes": "#magicalscepter:has_structure/old_growth_taiga_hut",
+  "biomes": "#magicalscepter:has_structure/old_taiga_cabin",
   "max_distance_from_center": 80,
   "project_start_to_heightmap": "WORLD_SURFACE_WG",
   "size": 1,
@@ -20,7 +20,7 @@
   "start_height": {
     "absolute": 0
   },
-  "start_pool": "magicalscepter:old_growth_taiga_hut",
+  "start_pool": "magicalscepter:old_taiga_cabin",
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",
   "use_expansion_hack": false
