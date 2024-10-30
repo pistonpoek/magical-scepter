@@ -3,7 +3,7 @@
     {
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "magicalscepter:old_growth_taiga_hut",
+        "location": "magicalscepter:old_taiga_cabin",
         "processors": "minecraft:mossify_70_percent",
         "projection": "rigid"
       },

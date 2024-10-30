@@ -6,7 +6,7 @@ import net.minecraft.world.biome.Biome;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 public class ModBiomeTags {
-    public static final TagKey<Biome> OLD_GROWTH_TAIGA_HUT_HAS_STRUCTURE = of("has_structure/old_growth_taiga_hut");
+    public static final TagKey<Biome> OLD_TAIGA_CABIN_HAS_STRUCTURE = of("has_structure/old_taiga_cabin");
 
     private ModBiomeTags() {
     }

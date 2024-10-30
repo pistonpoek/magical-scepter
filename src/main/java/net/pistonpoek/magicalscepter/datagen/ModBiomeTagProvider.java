@@ -17,7 +17,7 @@ public class ModBiomeTagProvider extends FabricTagProvider<Biome> {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-        this.getOrCreateTagBuilder(ModBiomeTags.OLD_GROWTH_TAIGA_HUT_HAS_STRUCTURE)
+        this.getOrCreateTagBuilder(ModBiomeTags.OLD_TAIGA_CABIN_HAS_STRUCTURE)
                 .add(BiomeKeys.OLD_GROWTH_PINE_TAIGA)
                 .add(BiomeKeys.OLD_GROWTH_SPRUCE_TAIGA);
     }
