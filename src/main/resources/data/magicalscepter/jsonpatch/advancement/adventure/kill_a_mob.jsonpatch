@@ -1,0 +1,19 @@
+@version "1";
+@target "minecraft:advancement/adventure/kill_a_mob.json";
+
+$criteria["magicalscepter:refractor"] = {
+    "conditions": {
+    "entity": [
+        {
+        "condition": "minecraft:entity_properties",
+        "entity": "this",
+        "predicate": {
+            "type": "magicalscepter:refractor"
+        }
+        }
+    ]
+    },
+    "trigger": "minecraft:player_killed_entity"
+};
+
+$requirements[0] += ["magicalscepter:refractor"];

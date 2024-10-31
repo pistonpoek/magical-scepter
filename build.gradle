@@ -3,7 +3,7 @@ plugins {
 	id 'maven-publish'
 }
 
-version = project.mod_version
+version project.mod_version + "+mc.$minecraft_version"
 group = project.maven_group
 
 base {
@@ -16,6 +16,10 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
+	maven {
+		name 'JitPack'
+		url 'https://jitpack.io'
+	}
 }
 
 loom {
@@ -42,7 +46,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
+	// JsonPatcher for modifying vanilla json files in mod compatible way.
+	modImplementation(include("com.github.mattidragon:jsonpatcher:${project.jsonpatcher_version}"))
 }
 
 processResources {
