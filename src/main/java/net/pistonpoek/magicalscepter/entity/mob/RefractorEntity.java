@@ -102,42 +102,4 @@ public class RefractorEntity extends IllagerEntity {
     public RefractorEntity.State getState() {
         return this.isAttacking() ? IllagerEntity.State.NEUTRAL : IllagerEntity.State.CROSSED;
     }
-
-    @Override
-    public boolean canLead() {
-        return false;
-    }
-
-    protected class LookAtTargetGoal extends Goal {
-        public LookAtTargetGoal() {
-            this.setControls(EnumSet.of(Goal.Control.LOOK));
-        }
-
-        @Override
-        public boolean canStart() {
-            return RefractorEntity.this.isAttacking();
-        }
-
-        @Override
-        public void start() {
-            super.start();
-        }
-
-        @Override
-        public void stop() {
-            super.stop();
-        }
-
-        @Override
-        public void tick() {
-            if (RefractorEntity.this.getTarget() != null) {
-                RefractorEntity.this.getLookControl()
-                        .lookAt(
-                                RefractorEntity.this.getTarget(),
-                                (float)RefractorEntity.this.getMaxHeadRotation(),
-                                (float)RefractorEntity.this.getMaxLookPitchChange()
-                        );
-            }
-        }
-    }
 }
