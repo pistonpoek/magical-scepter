@@ -49,7 +49,6 @@ public record SpellCastTimerCallback(List<SpellEffect> effects,
             List<SpellEffect> effects = SpellEffect.CODEC.listOf()
                     .decode(NbtOps.INSTANCE, nbtCompound.get("effects")).getOrThrow().getFirst();
             UUID casterUUID = nbtCompound.getUuid("caster");
-            UUID targetUUID = nbtCompound.getUuid("target");
             SpellContextSource contextSource = SpellContextSource.CODEC
                     .decode(NbtOps.INSTANCE, nbtCompound.get("context")).getOrThrow().getFirst();
 

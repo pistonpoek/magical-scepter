@@ -26,17 +26,15 @@ import static net.pistonpoek.magicalscepter.component.ModDataComponentTypes.SCEP
 public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                                        Optional<Boolean> infusable,
                                        Optional<Integer> customColor,
-                                       Optional<String> customName,
                                        Optional<RegistryEntry<Spell>> customAttackSpell,
                                        Optional<RegistryEntry<Spell>> customProtectSpell) {
-    public static final ScepterContentsComponent DEFAULT = new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+    public static final ScepterContentsComponent DEFAULT = new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
     public static final int EMPTY_COLOR = 0;
     public static final Codec<ScepterContentsComponent> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Scepter.ENTRY_CODEC.optionalFieldOf("scepter").forGetter(ScepterContentsComponent::scepter),
                             Codec.BOOL.optionalFieldOf("infusable").forGetter(ScepterContentsComponent::infusable),
                             Codec.INT.optionalFieldOf("custom_color").forGetter(ScepterContentsComponent::customColor),
-                            Codec.STRING.optionalFieldOf("custom_name").forGetter(ScepterContentsComponent::customName),
                             Spell.ENTRY_CODEC.optionalFieldOf("custom_attack_spell").forGetter(ScepterContentsComponent::customAttackSpell),
                             Spell.ENTRY_CODEC.optionalFieldOf("custom_protect_spell").forGetter(ScepterContentsComponent::customProtectSpell)
                     )
@@ -52,8 +50,6 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
             ScepterContentsComponent::infusable,
             PacketCodecs.INTEGER.collect(PacketCodecs::optional),
             ScepterContentsComponent::customColor,
-            PacketCodecs.STRING.collect(PacketCodecs::optional),
-            ScepterContentsComponent::customName,
             Spell.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
             ScepterContentsComponent::customAttackSpell,
             Spell.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
@@ -63,7 +59,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
 
     public ScepterContentsComponent(RegistryEntry<Scepter> scepter) {
         this(Optional.of(scepter), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty(), Optional.empty());
+                Optional.empty(), Optional.empty());
     }
 
     /**
@@ -168,9 +164,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Name value from scepter contents.
      */
     public Optional<String> getTranslationKey() {
-        return customName
-                .or(() -> scepter.flatMap(RegistryEntry::getKey)
-                        .map(key -> key.getValue().getPath().replace("/", ".")));
+        return scepter.flatMap(RegistryEntry::getKey)
+                .map(key -> key.getValue().getPath().replace("/", "."));
     }
 
     public static boolean hasSpell(ItemStack stack) {
@@ -224,8 +219,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     }
 
     public ScepterContentsComponent with(RegistryEntry<Scepter> scepter) {
-        return new ScepterContentsComponent(Optional.of(scepter), this.infusable, this.customColor,
-                this.customName, this.customAttackSpell, this.customProtectSpell);
+        return new ScepterContentsComponent(Optional.of(scepter), this.infusable,
+                this.customColor, this.customAttackSpell, this.customProtectSpell);
     }
 
     private static final Formatting ATTACK_SPELL_FORMATTING = Formatting.DARK_GREEN;

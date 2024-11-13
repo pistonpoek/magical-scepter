@@ -34,7 +34,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
 
     @Override
     public boolean canStart() {
-        return this.actor.getTarget() != null && this.isHoldingScepterWithSpell();
+        return this.actor.getTarget() != null && this.isHoldingScepterWithSpell(); // TODO check if target is alive? && this.actor.getTarget().isAlive()
     }
 
     protected boolean isHoldingScepterWithSpell() {

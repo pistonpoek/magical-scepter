@@ -12,6 +12,7 @@ import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.item.ModItems;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
@@ -47,7 +48,15 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
 
     public ItemStack craft(CraftingRecipeInput craftingRecipeInput, RegistryWrapper.WrapperLookup wrapperLookup) {
         RegistryEntryLookup<Scepter> scepterLookup = wrapperLookup.createRegistryLookup().getOrThrow(ModRegistryKeys.SCEPTER);
-        return ScepterHelper.createScepter(scepterLookup.getOrThrow(Scepters.MAGICAL_KEY));
+        ItemStack inputScepter = ModItems.SCEPTER.getDefaultStack();
+        for (int i = 0; i < craftingRecipeInput.getSize(); i++) {
+            ItemStack itemStack = craftingRecipeInput.getStackInSlot(i);
+            if (ScepterHelper.IS_EMPTY_SCEPTER.test(itemStack)) {
+                inputScepter = itemStack;
+                break;
+            }
+        }
+        return ScepterContentsComponent.setScepter(inputScepter, scepterLookup.getOrThrow(Scepters.MAGICAL_KEY));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.pistonpoek.magicalscepter.scepter;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -8,6 +9,7 @@ import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.item.ModItems;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class ScepterHelper {
@@ -38,5 +40,16 @@ public class ScepterHelper {
 
     public static Registry<Scepter> getScepterRegistry(World world) {
         return world.getRegistryManager().get(ModRegistryKeys.SCEPTER);
+    }
+
+    public static Optional<ScepterContentsComponent> getScepterContentsComponent(PlayerEntity player) {
+        if (IS_SCEPTER_WITH_SPELL.test(player.getMainHandStack())) {
+            return ScepterContentsComponent.get(player.getMainHandStack());
+        } else if (IS_SCEPTER_WITH_SPELL.test(player.getOffHandStack())) {
+            return ScepterContentsComponent.get(player.getOffHandStack());
+        } else {
+            return ScepterContentsComponent.get(player.getMainHandStack())
+                    .or(() -> ScepterContentsComponent.get(player.getOffHandStack()));
+        }
     }
 }

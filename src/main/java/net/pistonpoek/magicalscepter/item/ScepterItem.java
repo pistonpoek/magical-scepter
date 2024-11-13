@@ -10,9 +10,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import net.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.spell.Spell;
-import net.pistonpoek.magicalscepter.util.PlayerExperience;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +24,6 @@ public class ScepterItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-
         ItemStack itemStack = user.getStackInHand(hand);
 
         Optional<Spell> optionalSpell = (!user.isSneaking() ?
@@ -38,7 +37,7 @@ public class ScepterItem extends Item {
         Spell spell = optionalSpell.get();
 
         if (!user.getAbilities().creativeMode) {
-            if (PlayerExperience.getTotalExperience(user) < spell.getExperienceCost()) {
+            if (!spell.hasEnoughExperience(user)) {
                 return TypedActionResult.fail(itemStack);
             }
 
@@ -51,7 +50,17 @@ public class ScepterItem extends Item {
 
         if (!world.isClient()) {
             int castDuration = spell.castSpell(user);
-            ItemStack damagedItemStack = itemStack.damage(1, ModItems.SCEPTER, user, LivingEntity.getSlotForHand(hand));
+
+            ItemStack damagedItemStack = itemStack;
+            itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
+            if (itemStack.isEmpty()) {
+                damagedItemStack = ModItems.SCEPTER.getDefaultStack();
+                damagedItemStack.applyChanges(itemStack.getComponentChanges());
+                damagedItemStack.remove(ModDataComponentTypes.SCEPTER_CONTENTS);
+                if (itemStack.isDamageable()) {
+                    itemStack.setDamage(0);
+                }
+            }
 
             // Correct spell duration cooldown, increase cooldown for non-creative and decrease for creative players.
             if (user.getAbilities().creativeMode ^ castDuration + 10 >= spell.getCooldown()) {
@@ -60,7 +69,7 @@ public class ScepterItem extends Item {
 
             return TypedActionResult.success(damagedItemStack, !user.isSneaking());
         }
-        return TypedActionResult.pass(itemStack);
+        return TypedActionResult.pass(itemStack); // TODO fix using scepter allows items in offhand to also be used.
     }
 
     @Override
