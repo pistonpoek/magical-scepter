@@ -28,7 +28,6 @@ public class Scepters {
     public static final RegistryKey<Scepter> SHULKER_KEY = of("shulker");
     public static final RegistryKey<Scepter> WARDEN_KEY = of("warden");
     public static final RegistryKey<Scepter> WITHER_KEY = of("wither");
-    public static final RegistryKey<Scepter> DEFAULT_KEY = MAGICAL_KEY;
 
     private static RegistryKey<Scepter> of(String id) {
         return RegistryKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(id));

@@ -23,14 +23,14 @@ public class ModItems {
     public static final Item SCEPTER = registerItem("scepter",
             new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)));
 
-    private static final Predicate<RegistryEntry.Reference<Scepter>> DEFAULT_SCEPTER =
-            entry -> entry.matchesKey(Scepters.DEFAULT_KEY);
+    private static final Predicate<RegistryEntry.Reference<Scepter>> MAGICAL_SCEPTER =
+            entry -> entry.matchesKey(Scepters.MAGICAL_KEY);
     public static final Item REFRACTOR_SPAWN_EGG = registerItem("refractor_spawn_egg",
             new SpawnEggItem(ModEntityType.REFRACTOR, 9804699, 6307420, new Item.Settings()));
 
     private static void addScepters(FabricItemGroupEntries entries, RegistryWrapper<Scepter> registryWrapper, ItemGroup.StackVisibility visibility) {
         Set<ItemStack> scepters = ItemStackSet.create();
-        registryWrapper.streamEntries().filter(DEFAULT_SCEPTER.negate())
+        registryWrapper.streamEntries().filter(MAGICAL_SCEPTER.negate())
                 .map(ScepterHelper::createScepter)
                 .forEach(scepters::add);
         entries.addAfter(Items.WIND_CHARGE, scepters, visibility);
@@ -38,7 +38,7 @@ public class ModItems {
 
     private static void addItemsToCombatItemGroup(FabricItemGroupEntries entries) {
         entries.getContext().lookup().getOptionalWrapper(ModRegistryKeys.SCEPTER).ifPresent(registryWrapper -> {
-            registryWrapper.streamEntries().filter(DEFAULT_SCEPTER).forEach(entry -> {
+            registryWrapper.streamEntries().filter(MAGICAL_SCEPTER).forEach(entry -> {
                     entries.addAfter(Items.TRIDENT, ScepterHelper.createScepter(entry));
             });
             addScepters(entries, registryWrapper, ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS);

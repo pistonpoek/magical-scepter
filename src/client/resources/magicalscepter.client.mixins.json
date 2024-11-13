@@ -1,11 +1,13 @@
 {
-	"required": true,
-	"package": "net.pistonpoek.magicalscepter.mixin.client",
-	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"ExampleClientMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "package": "net.pistonpoek.magicalscepter.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ExampleClientMixin",
+    "gui.hud.InGameHudMixin",
+    "render.entity.model.BipedEntityModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

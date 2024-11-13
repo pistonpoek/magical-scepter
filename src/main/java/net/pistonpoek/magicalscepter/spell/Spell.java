@@ -3,6 +3,7 @@ package net.pistonpoek.magicalscepter.spell;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -11,6 +12,7 @@ import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.text.*;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.cast.SpellCast;
+import net.pistonpoek.magicalscepter.util.PlayerExperience;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -66,6 +68,10 @@ public record Spell(List<SpellCast> casts, int cooldown, int experienceCost, Tex
 
     public int getExperienceCost() {
         return experienceCost;
+    }
+
+    public boolean hasEnoughExperience(PlayerEntity player) {
+        return PlayerExperience.getTotalExperience(player) >= getExperienceCost();
     }
 
     public String toString() {

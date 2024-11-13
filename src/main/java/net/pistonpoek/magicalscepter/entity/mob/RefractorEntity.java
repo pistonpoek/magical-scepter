@@ -64,7 +64,7 @@ public class RefractorEntity extends IllagerEntity {
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty,
                                  SpawnReason spawnReason, @Nullable EntityData entityData) {
         RegistryEntry<Scepter> defaultScepter = world.getRegistryManager().get(ModRegistryKeys.SCEPTER)
-                .getEntry(Scepters.DEFAULT_KEY).orElseThrow();
+                .getEntry(Scepters.MAGICAL_KEY).orElseThrow();
         this.equipStack(EquipmentSlot.MAINHAND, ScepterHelper.createScepter(defaultScepter));
         return super.initialize(world, difficulty, spawnReason, entityData);
     }
