@@ -8,7 +8,11 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
+import net.pistonpoek.magicalscepter.item.SwingHandLivingEntity;
+import net.pistonpoek.magicalscepter.item.SwingType;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.pistonpoek.magicalscepter.spell.Spell;
 import net.pistonpoek.magicalscepter.util.LivingEntityHand;
@@ -50,6 +54,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
     public void start() {
         super.start();
         this.actor.setAttacking(true);
+        // TODO maybe play sound that the refractor takes of their hood.
     }
 
     @Override
@@ -134,7 +139,13 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
                 }
 
                 this.cooldown = this.attackInterval;
-                scepterSpell.ifPresent(spell -> cooldown += spell.castSpell(this.actor));
+
+                scepterSpell.ifPresent(spell -> {
+                    cooldown += spell.castSpell(this.actor);
+
+                    SwingType swingType = (scepterSpell == attackSpell) ? SwingType.HIT : SwingType.PROTECT;
+                    ((SwingHandLivingEntity)this.actor).swingHand(Hand.MAIN_HAND, swingType);
+                });
             }
         }
     }
