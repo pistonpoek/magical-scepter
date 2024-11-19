@@ -17,16 +17,31 @@ import net.pistonpoek.magicalscepter.spell.Spell;
 import java.util.List;
 import java.util.Optional;
 
-public class ScepterItem extends Item {
+public class ScepterItem extends Item implements AttackItem {
     public ScepterItem(Settings settings) {
         super(settings);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        return use(world, user, hand, false);
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> attack(World world, PlayerEntity user) {
+        return use(world, user, Hand.MAIN_HAND, true);
+    }
+
+    @Override
+    public boolean preventAttack(PlayerEntity user) {
+        ItemStack itemStack = user.getStackInHand(Hand.MAIN_HAND);
+        return ScepterContentsComponent.getScepter(itemStack).isPresent();
+    }
+
+    private TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean attack) {
         ItemStack itemStack = user.getStackInHand(hand);
 
-        Optional<Spell> optionalSpell = (!user.isSneaking() ?
+        Optional<Spell> optionalSpell = (attack ?
                 ScepterContentsComponent.getAttackSpell(itemStack) :
                 ScepterContentsComponent.getProtectSpell(itemStack));
 
@@ -38,6 +53,7 @@ public class ScepterItem extends Item {
 
         if (!user.getAbilities().creativeMode) {
             if (!spell.hasEnoughExperience(user)) {
+                // TODO maybe play sound effect that there is not enough xp to cast the spell.
                 return TypedActionResult.fail(itemStack);
             }
 
@@ -50,26 +66,31 @@ public class ScepterItem extends Item {
 
         if (!world.isClient()) {
             int castDuration = spell.castSpell(user);
-
-            ItemStack damagedItemStack = itemStack;
-            itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
-            if (itemStack.isEmpty()) {
-                damagedItemStack = ModItems.SCEPTER.getDefaultStack();
-                damagedItemStack.applyChanges(itemStack.getComponentChanges());
-                damagedItemStack.remove(ModDataComponentTypes.SCEPTER_CONTENTS);
-                if (itemStack.isDamageable()) {
-                    itemStack.setDamage(0);
-                }
-            }
-
             // Correct spell duration cooldown, increase cooldown for non-creative and decrease for creative players.
             if (user.getAbilities().creativeMode ^ castDuration + 10 >= spell.getCooldown()) {
                 user.getItemCooldownManager().set(this, castDuration + 10);
             }
 
-            return TypedActionResult.success(damagedItemStack, !user.isSneaking());
+            itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
+            if (itemStack.isEmpty()) {
+                itemStack = createEmptyScepter(itemStack);
+            }
         }
-        return TypedActionResult.pass(itemStack); // TODO fix using scepter allows items in offhand to also be used.
+
+        SwingType swingType = attack ? SwingType.HIT : SwingType.PROTECT;
+        ((SwingHandLivingEntity)user).swingHand(Hand.MAIN_HAND, swingType);
+
+        return TypedActionResult.success(itemStack, false);
+    }
+
+    public ItemStack createEmptyScepter(ItemStack stack) {
+        ItemStack scepterStack = ModItems.SCEPTER.getDefaultStack();
+        scepterStack.applyChanges(stack.getComponentChanges());
+        scepterStack.remove(ModDataComponentTypes.SCEPTER_CONTENTS);
+        if (scepterStack.isDamageable()) {
+            scepterStack.setDamage(0);
+        }
+        return scepterStack;
     }
 
     @Override

@@ -30,8 +30,6 @@ import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.pistonpoek.magicalscepter.scepter.Scepters;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumSet;
-
 public class RefractorEntity extends IllagerEntity {
 
     public RefractorEntity(EntityType<? extends RefractorEntity> entityType, World world) {
@@ -63,9 +61,9 @@ public class RefractorEntity extends IllagerEntity {
     @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty,
                                  SpawnReason spawnReason, @Nullable EntityData entityData) {
-        RegistryEntry<Scepter> defaultScepter = world.getRegistryManager().get(ModRegistryKeys.SCEPTER)
+        RegistryEntry<Scepter> magicalScepter = world.getRegistryManager().get(ModRegistryKeys.SCEPTER)
                 .getEntry(Scepters.MAGICAL_KEY).orElseThrow();
-        this.equipStack(EquipmentSlot.MAINHAND, ScepterHelper.createScepter(defaultScepter));
+        this.equipStack(EquipmentSlot.MAINHAND, ScepterHelper.createScepter(magicalScepter));
         return super.initialize(world, difficulty, spawnReason, entityData);
     }
 

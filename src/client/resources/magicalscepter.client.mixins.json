@@ -5,7 +5,8 @@
   "client": [
     "ExampleClientMixin",
     "gui.hud.InGameHudMixin",
-    "render.entity.model.BipedEntityModelMixin"
+    "render.entity.model.BipedEntityModelMixin",
+    "render.entity.model.IllagerEntityModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
