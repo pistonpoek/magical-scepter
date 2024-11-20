@@ -24,6 +24,5 @@
   "cooldown": 50,
   "description": {
     "translate": "spell.magicalscepter.fireball"
-  },
-  "experience_cost": 32
+  }
 }

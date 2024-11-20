@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -33,17 +34,19 @@ public class ScepterItem extends Item implements AttackItem {
     }
 
     @Override
-    public boolean preventAttack(PlayerEntity user) {
+    public boolean preventAttack(PlayerEntity user) { // TODO rename method to be more clear
         ItemStack itemStack = user.getStackInHand(Hand.MAIN_HAND);
         return ScepterContentsComponent.getScepter(itemStack).isPresent();
     }
 
     private TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean attack) {
         ItemStack itemStack = user.getStackInHand(hand);
+        ScepterContentsComponent scepterContent =
+                ScepterContentsComponent.get(itemStack).orElse(ScepterContentsComponent.DEFAULT);
 
         Optional<Spell> optionalSpell = (attack ?
-                ScepterContentsComponent.getAttackSpell(itemStack) :
-                ScepterContentsComponent.getProtectSpell(itemStack));
+                scepterContent.getAttackSpell() :
+                scepterContent.getProtectSpell()).map(RegistryEntry::value);
 
         if (optionalSpell.isEmpty()) {
             return TypedActionResult.pass(itemStack);
@@ -52,13 +55,14 @@ public class ScepterItem extends Item implements AttackItem {
         Spell spell = optionalSpell.get();
 
         if (!user.getAbilities().creativeMode) {
-            if (!spell.hasEnoughExperience(user)) {
+            if (!scepterContent.hasEnoughExperience(user)) {
                 // TODO maybe play sound effect that there is not enough xp to cast the spell.
                 return TypedActionResult.fail(itemStack);
             }
 
-            user.addExperience(-spell.getExperienceCost());
-            user.addScore(spell.getExperienceCost()); // Compensating for lost score in adding experience cost.
+            int experienceCost = scepterContent.getExperienceCost();
+            user.addExperience(-experienceCost);
+            user.addScore(experienceCost); // Compensating for lost score in adding experience cost.
         }
         user.getItemCooldownManager().set(this, spell.getCooldown());
 

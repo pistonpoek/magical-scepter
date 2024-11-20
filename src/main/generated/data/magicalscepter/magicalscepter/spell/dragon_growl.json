@@ -98,6 +98,5 @@
   "cooldown": 100,
   "description": {
     "translate": "spell.magicalscepter.dragon_growl"
-  },
-  "experience_cost": 32
+  }
 }

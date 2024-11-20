@@ -16,6 +16,5 @@
   "cooldown": 50,
   "description": {
     "translate": "effect.minecraft.regeneration"
-  },
-  "experience_cost": 32
+  }
 }

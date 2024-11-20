@@ -16,6 +16,5 @@
   "cooldown": 50,
   "description": {
     "translate": "effect.magicalscepter.stability"
-  },
-  "experience_cost": 32
+  }
 }

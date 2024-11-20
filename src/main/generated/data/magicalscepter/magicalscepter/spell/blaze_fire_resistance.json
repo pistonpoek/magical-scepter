@@ -16,6 +16,5 @@
   "cooldown": 50,
   "description": {
     "translate": "effect.minecraft.fire_resistance"
-  },
-  "experience_cost": 32
+  }
 }
