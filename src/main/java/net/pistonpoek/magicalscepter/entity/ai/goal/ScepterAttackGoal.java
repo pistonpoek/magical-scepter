@@ -9,7 +9,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import net.pistonpoek.magicalscepter.MagicalScepter;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.item.SwingHandLivingEntity;
 import net.pistonpoek.magicalscepter.item.SwingType;
@@ -38,7 +37,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
 
     @Override
     public boolean canStart() {
-        return this.actor.getTarget() != null && this.isHoldingScepterWithSpell(); // TODO check if target is alive? && this.actor.getTarget().isAlive()
+        return hasAliveTarget() && this.isHoldingScepterWithSpell();
     }
 
     protected boolean isHoldingScepterWithSpell() {
@@ -47,7 +46,11 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
 
     @Override
     public boolean shouldContinue() {
-        return (this.canStart() || !this.actor.getNavigation().isIdle()) && this.isHoldingScepterWithSpell();
+        return hasAliveTarget() && (this.canStart() || !this.actor.getNavigation().isIdle()) && this.isHoldingScepterWithSpell();
+    }
+
+    private boolean hasAliveTarget() {
+        return this.actor.getTarget() != null && this.actor.getTarget().isAlive();
     }
 
     @Override
@@ -61,6 +64,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
     public void stop() {
         super.stop();
         this.actor.setAttacking(false);
+        this.actor.setTarget(null);
         this.targetSeeingTicker = 0;
     }
 

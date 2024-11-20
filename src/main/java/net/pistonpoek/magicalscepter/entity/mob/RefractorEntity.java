@@ -15,10 +15,13 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.raid.RaiderEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -61,10 +64,16 @@ public class RefractorEntity extends IllagerEntity {
     @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty,
                                  SpawnReason spawnReason, @Nullable EntityData entityData) {
-        RegistryEntry<Scepter> magicalScepter = world.getRegistryManager().get(ModRegistryKeys.SCEPTER)
+        Random random = world.getRandom();
+        this.initEquipment(random, difficulty);
+        return super.initialize(world, difficulty, spawnReason, entityData);
+    }
+
+    @Override
+    protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
+        RegistryEntry<Scepter> magicalScepter = this.getRegistryManager().get(ModRegistryKeys.SCEPTER)
                 .getEntry(Scepters.MAGICAL_KEY).orElseThrow();
         this.equipStack(EquipmentSlot.MAINHAND, ScepterHelper.createScepter(magicalScepter));
-        return super.initialize(world, difficulty, spawnReason, entityData);
     }
 
     @Override
