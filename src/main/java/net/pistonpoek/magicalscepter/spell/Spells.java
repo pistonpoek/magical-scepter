@@ -71,7 +71,7 @@ public class Spells {
                 entityTypeLookup.getOrThrow(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), EntityType.getId(entityType)));
 
         // TODO maybe the color 13533238 (orangy) for attack?
-        register(registry, MAGICAL_ATTACK_KEY, Spell.builder(50, 32,
+        register(registry, MAGICAL_ATTACK_KEY, Spell.builder(50,
                         textOf("magical_attack"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -103,7 +103,7 @@ public class Spells {
                     )
             )
         );
-        register(registry, MAGICAL_RESISTANCE_KEY, Spell.builder(50, 32,
+        register(registry, MAGICAL_RESISTANCE_KEY, Spell.builder(50,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("resistance"))))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -119,7 +119,7 @@ public class Spells {
             )
         );
 
-        register(registry, BLAZE_SMALL_FIREBALL_KEY, Spell.builder(62, 32,
+        register(registry, BLAZE_SMALL_FIREBALL_KEY, Spell.builder(62,
                         textOf("small_fireballs"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -145,7 +145,7 @@ public class Spells {
                     )
             )
         );
-        register(registry, BLAZE_FIRE_RESISTANCE_KEY, Spell.builder(50, 32,
+        register(registry, BLAZE_FIRE_RESISTANCE_KEY, Spell.builder(50,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("fire_resistance"))))
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
@@ -157,7 +157,7 @@ public class Spells {
             )
         );
 
-        register(registry, BREEZE_WIND_CHARGE_KEY, Spell.builder(50, 32,
+        register(registry, BREEZE_WIND_CHARGE_KEY, Spell.builder(50,
                         textOf("wind_charge"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -167,7 +167,7 @@ public class Spells {
                     .addEffect(new WindChargeSpellProjectile())
             )
         );
-        register(registry, BREEZE_JUMP_KEY, Spell.builder(50, 32,
+        register(registry, BREEZE_JUMP_KEY, Spell.builder(50,
                         textOf("breeze_jump"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -194,7 +194,7 @@ public class Spells {
             )
         );
 
-        register(registry, DRAGON_FIREBALL_KEY, Spell.builder(50, 32,
+        register(registry, DRAGON_FIREBALL_KEY, Spell.builder(50,
                         textOf("dragon_fireball"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -211,7 +211,7 @@ public class Spells {
         NbtElement nbtElement = PotionContentsComponent.CODEC.encodeStart(NbtOps.INSTANCE, new PotionContentsComponent(Potions.HARMING)).getOrThrow();
         areaEffectCloudNbtCompound.put("potion_contents", nbtElement);
         areaEffectCloudNbtCompound.put("Particle", ParticleTypes.TYPE_CODEC.encodeStart(NbtOps.INSTANCE, ParticleTypes.DRAGON_BREATH).getOrThrow());
-        register(registry, DRAGON_GROWL_KEY, Spell.builder(100, 32,
+        register(registry, DRAGON_GROWL_KEY, Spell.builder(100,
                         textOf("dragon_growl"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -262,7 +262,7 @@ public class Spells {
             )
         );
 
-        register(registry, EVOKER_FANG_LINE_KEY, Spell.builder(66, 32,
+        register(registry, EVOKER_FANG_LINE_KEY, Spell.builder(66,
                         textOf("fang_line"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -303,7 +303,7 @@ public class Spells {
                     )
             )
         );
-        register(registry, EVOKER_FANG_CIRCLE_KEY, Spell.builder(53, 32,
+        register(registry, EVOKER_FANG_CIRCLE_KEY, Spell.builder(53,
                         textOf("fang_circle"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -361,7 +361,7 @@ public class Spells {
             )
         );
 
-        register(registry, GHAST_FIREBALL_KEY, Spell.builder(50, 32,
+        register(registry, GHAST_FIREBALL_KEY, Spell.builder(50,
                         textOf("fireball"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -371,7 +371,7 @@ public class Spells {
                     .addEffect(new FireballSpellProjectile())
             )
         );
-        register(registry, GHAST_REGENERATION_KEY, Spell.builder(50, 32,
+        register(registry, GHAST_REGENERATION_KEY, Spell.builder(50,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("regeneration"))))
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
@@ -383,11 +383,11 @@ public class Spells {
             )
         );
 
-        register(registry, GUARDIAN_BEAM_KEY, Spell.builder(50, 32,
+        register(registry, GUARDIAN_BEAM_KEY, Spell.builder(50,
                         textOf("guardian_beam"))
             .addCast(SpellCast.builder())
         );
-        register(registry, GUARDIAN_HASTE_KEY, Spell.builder(50, 32,
+        register(registry, GUARDIAN_HASTE_KEY, Spell.builder(50,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("haste"))))
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
@@ -399,7 +399,7 @@ public class Spells {
             )
         );
 
-        register(registry, SHULKER_BULLET_KEY, Spell.builder(50, 32,
+        register(registry, SHULKER_BULLET_KEY, Spell.builder(50,
                         textOf("shulker_bullet"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -409,7 +409,7 @@ public class Spells {
                     .addEffect(new ShulkerBulletSpellProjectile())
             )
         );
-        register(registry, SHULKER_TELEPORT_KEY, Spell.builder(50, 32,
+        register(registry, SHULKER_TELEPORT_KEY, Spell.builder(50,
                         textOf("teleport"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -430,7 +430,7 @@ public class Spells {
         );
 
         // TODO add start offset, so we don't target ourselves.
-        register(registry, WARDEN_SONIC_BOOM_KEY, Spell.builder(50, 32,
+        register(registry, WARDEN_SONIC_BOOM_KEY, Spell.builder(50,
                         textOf("sonic_boom"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -464,7 +464,7 @@ public class Spells {
                     )
             )
         );
-        register(registry, WARDEN_STABILITY_KEY, Spell.builder(50, 32,
+        register(registry, WARDEN_STABILITY_KEY, Spell.builder(50,
                         Text.translatable(Util.createTranslationKey("effect", ModIdentifier.of("stability"))))
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
@@ -476,7 +476,7 @@ public class Spells {
             )
         );
 
-        register(registry, WITHER_SKULL_KEY, Spell.builder(50, 32,
+        register(registry, WITHER_SKULL_KEY, Spell.builder(50,
                         textOf("wither_skull"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -486,7 +486,7 @@ public class Spells {
                     .addEffect(new WitherSkullSpellProjectile())
             )
         );
-        register(registry, WITHER_SHIELD_KEY, Spell.builder(50, 32,
+        register(registry, WITHER_SHIELD_KEY, Spell.builder(50,
                         textOf("wither_shield"))
             .addCast(SpellCast.builder())
         );

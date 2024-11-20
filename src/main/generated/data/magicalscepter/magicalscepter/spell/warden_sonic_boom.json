@@ -63,6 +63,5 @@
   "cooldown": 50,
   "description": {
     "translate": "spell.magicalscepter.sonic_boom"
-  },
-  "experience_cost": 32
+  }
 }

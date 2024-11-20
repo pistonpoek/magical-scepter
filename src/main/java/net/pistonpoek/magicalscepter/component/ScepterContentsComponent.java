@@ -2,6 +2,7 @@ package net.pistonpoek.magicalscepter.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -17,6 +18,7 @@ import net.minecraft.util.math.ColorHelper;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.spell.Spell;
+import net.pistonpoek.magicalscepter.util.PlayerExperience;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -24,17 +26,22 @@ import java.util.function.Consumer;
 import static net.pistonpoek.magicalscepter.component.ModDataComponentTypes.SCEPTER_CONTENTS;
 
 public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
-                                       Optional<Boolean> infusable,
                                        Optional<Integer> customColor,
+                                       Optional<Integer> customExperienceCost,
+                                       Optional<Boolean> infusable,
                                        Optional<RegistryEntry<Spell>> customAttackSpell,
                                        Optional<RegistryEntry<Spell>> customProtectSpell) {
-    public static final ScepterContentsComponent DEFAULT = new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+    public static final ScepterContentsComponent DEFAULT =
+            new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(),
+            Optional.empty(), Optional.empty(), Optional.empty());
     public static final int BASE_COLOR = -4424612;
+    public static final int BASE_EXPERIENCE_COST = 0;
     public static final Codec<ScepterContentsComponent> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Scepter.ENTRY_CODEC.optionalFieldOf("scepter").forGetter(ScepterContentsComponent::scepter),
-                            Codec.BOOL.optionalFieldOf("infusable").forGetter(ScepterContentsComponent::infusable),
                             Codec.INT.optionalFieldOf("custom_color").forGetter(ScepterContentsComponent::customColor),
+                            Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("custom_experience_cost").forGetter(ScepterContentsComponent::customExperienceCost),
+                            Codec.BOOL.optionalFieldOf("infusable").forGetter(ScepterContentsComponent::infusable),
                             Spell.ENTRY_CODEC.optionalFieldOf("custom_attack_spell").forGetter(ScepterContentsComponent::customAttackSpell),
                             Spell.ENTRY_CODEC.optionalFieldOf("custom_protect_spell").forGetter(ScepterContentsComponent::customProtectSpell)
                     )
@@ -46,10 +53,12 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     public static final PacketCodec<RegistryByteBuf, ScepterContentsComponent> PACKET_CODEC = PacketCodec.tuple(
             Scepter.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
             ScepterContentsComponent::scepter,
-            PacketCodecs.BOOL.collect(PacketCodecs::optional),
-            ScepterContentsComponent::infusable,
             PacketCodecs.INTEGER.collect(PacketCodecs::optional),
             ScepterContentsComponent::customColor,
+            PacketCodecs.INTEGER.collect(PacketCodecs::optional),
+            ScepterContentsComponent::customExperienceCost,
+            PacketCodecs.BOOL.collect(PacketCodecs::optional),
+            ScepterContentsComponent::infusable,
             Spell.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
             ScepterContentsComponent::customAttackSpell,
             Spell.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
@@ -59,7 +68,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
 
     public ScepterContentsComponent(RegistryEntry<Scepter> scepter) {
         this(Optional.of(scepter), Optional.empty(), Optional.empty(),
-                Optional.empty(), Optional.empty());
+                Optional.empty(), Optional.empty(), Optional.empty());
     }
 
     /**
@@ -104,27 +113,6 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     }
 
     /**
-     * Checks if a scepter item stack is infusable.
-     *
-     * @param stack Item stack to check infusable value for.
-     * @return Truth assignment, if stack is infusable.
-     */
-    public static boolean isInfusable(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::isInfusable)
-                .orElse(true);
-    }
-
-    /**
-     * Checks if scepter contents is infusable.
-     *
-     * @return Truth assignment, if scepter contents is infusable.
-     */
-    public Optional<Boolean> isInfusable() {
-        return infusable
-                .or(() -> getScepterValue().map(Scepter::isInfusable));
-    }
-
-    /**
      * Get color value for an item stack.
      *
      * @param stack Item stack to get color value for.
@@ -144,6 +132,37 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
         return customColor
                 .or(() -> getScepterValue().map(Scepter::getColor))
                 .map(ColorHelper.Argb::fullAlpha);
+    }
+
+    public int getExperienceCost() {
+        return customExperienceCost
+                .or(() -> scepter.map(RegistryEntry::value).map(Scepter::getExperienceCost))
+                .orElse(BASE_EXPERIENCE_COST);
+    }
+
+    public boolean hasEnoughExperience(PlayerEntity player) {
+        return PlayerExperience.getTotalExperience(player) >= getExperienceCost();
+    }
+
+    /**
+     * Checks if a scepter item stack is infusable.
+     *
+     * @param stack Item stack to check infusable value for.
+     * @return Truth assignment, if stack is infusable.
+     */
+    public static boolean isInfusable(ItemStack stack) {
+        return get(stack).flatMap(ScepterContentsComponent::isInfusable)
+                .orElse(true);
+    }
+
+    /**
+     * Checks if scepter contents is infusable.
+     *
+     * @return Truth assignment, if scepter contents is infusable.
+     */
+    public Optional<Boolean> isInfusable() {
+        return infusable
+                .or(() -> getScepterValue().map(Scepter::isInfusable));
     }
 
     /**
@@ -218,8 +237,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     }
 
     public ScepterContentsComponent with(RegistryEntry<Scepter> scepter) {
-        return new ScepterContentsComponent(Optional.of(scepter), this.infusable,
-                this.customColor, this.customAttackSpell, this.customProtectSpell);
+        return new ScepterContentsComponent(Optional.of(scepter), this.customColor, this.customExperienceCost,
+                this.infusable, this.customAttackSpell, this.customProtectSpell);
     }
 
     private static final Formatting ATTACK_SPELL_FORMATTING = Formatting.DARK_GREEN;

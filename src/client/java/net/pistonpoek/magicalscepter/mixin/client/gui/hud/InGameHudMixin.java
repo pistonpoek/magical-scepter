@@ -43,35 +43,26 @@ public abstract class InGameHudMixin {
             return;
         }
 
-        Optional<ScepterContentsComponent> scepterContents =
+        Optional<ScepterContentsComponent> optionalScepterContents =
                 ScepterHelper.getScepterContentsComponent(this.client.player);
-        if (scepterContents.isEmpty()) {
+        if (optionalScepterContents.isEmpty()) {
+            return;
+        }
+        ScepterContentsComponent scepterContents = optionalScepterContents.get();
+
+        if (!scepterContents.hasSpell()) {
             return;
         }
 
-        if (!scepterContents.get().hasSpell()) {
-            return;
-        }
-
-        // TODO figure out how to display two different costs for attack and protect or only one cost per scepter.
-        Optional<Spell> optionalSpell = (!this.client.player.isSneaking() ?
-                scepterContents.get().getAttackSpell().map(RegistryEntry::value) :
-                scepterContents.get().getProtectSpell().map(RegistryEntry::value));
-
-        if (optionalSpell.isEmpty()) {
-            return;
-        }
-
-        Spell spell = optionalSpell.get();
         int y = context.getScaledWindowHeight() - 32 + 3;
         int progress = (int)(this.client.player.experienceProgress * 183.0F);
 
-        if (spell.hasEnoughExperience(this.client.player)) {
-            float use_progress = spell.getExperienceCost() / (float)this.client.player.getNextLevelExperience();
+        if (scepterContents.hasEnoughExperience(this.client.player)) {
+            float use_progress = scepterContents.getExperienceCost() / (float)this.client.player.getNextLevelExperience();
             int use_part = Math.round(use_progress * (EXPERIENCE_BAR_WIDTH + 1));
             renderExperienceBarSection(context, EXPERIENCE_BAR_USE_TEXTURE, x, y, progress - use_part, progress);
         } else {
-            float cost_progress = (spell.getExperienceCost() - PlayerExperience.getTotalExperience(this.client.player))
+            float cost_progress = (scepterContents.getExperienceCost() - PlayerExperience.getTotalExperience(this.client.player))
                     / (float)this.client.player.getNextLevelExperience();
             int cost_part = Math.round(cost_progress * (EXPERIENCE_BAR_WIDTH + 1));
             renderExperienceBarSection(context, EXPERIENCE_BAR_COST_TEXTURE, x, y, progress, progress + cost_part);
