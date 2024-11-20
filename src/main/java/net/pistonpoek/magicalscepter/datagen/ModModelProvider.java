@@ -19,12 +19,17 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        Model HANDHELD_ROD_TWO_LAYERS =
+        Identifier scepterId = ModelIds.getItemModelId(ModItems.SCEPTER);
+        Models.HANDHELD.upload(scepterId, TextureMap.layer0(scepterId), itemModelGenerator.writer);
+
+        Model HANDHELD_TWO_LAYERS =
                 new Model(Optional.of(Identifier.ofVanilla("item/handheld")),
                         Optional.empty(), TextureKey.LAYER0, TextureKey.LAYER1);
 
-        Identifier scepterId = ModelIds.getItemModelId(ModItems.SCEPTER);
-        HANDHELD_ROD_TWO_LAYERS.upload(scepterId, TextureMap.layered(scepterId.withSuffixedPath("_overlay"), scepterId), itemModelGenerator.writer);
+        Identifier magicalScepterId = ModelIds.getItemModelId(ModItems.MAGICAL_SCEPTER);
+        HANDHELD_TWO_LAYERS.upload(magicalScepterId,
+                TextureMap.layered(magicalScepterId.withSuffixedPath("_overlay"), magicalScepterId),
+                itemModelGenerator.writer);
 
         Model SPAWN_EGG = new Model(Optional.of(ModelIds.getMinecraftNamespacedItem("template_spawn_egg")), Optional.empty());
 

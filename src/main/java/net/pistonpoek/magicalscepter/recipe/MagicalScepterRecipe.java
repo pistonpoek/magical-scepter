@@ -27,36 +27,36 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
     public boolean matches(CraftingRecipeInput craftingRecipeInput, World world) {
         boolean containsLapisLazuli = false;
         boolean containsBrownMushroom = false;
-        boolean containsEmptyScepter = false;
+        boolean containsScepter = false;
 
         for (int i = 0; i < craftingRecipeInput.getSize(); i++) {
             ItemStack itemStack = craftingRecipeInput.getStackInSlot(i);
             if (!itemStack.isEmpty()) {
-                if (itemStack.isOf(Blocks.BROWN_MUSHROOM.asItem()) && !containsBrownMushroom) {
+                if (itemStack.isOf(ModItems.SCEPTER) && !containsScepter) {
+                    containsScepter = true;
+                } else if (itemStack.isOf(Blocks.BROWN_MUSHROOM.asItem()) && !containsBrownMushroom) {
                     containsBrownMushroom = true;
                 } else if (itemStack.isOf(Items.LAPIS_LAZULI) && !containsLapisLazuli) {
                     containsLapisLazuli = true;
-                } else if (ScepterHelper.IS_EMPTY_SCEPTER.test(itemStack) && !containsEmptyScepter) {
-                    containsEmptyScepter = true;
                 } else {
                     return false;
                 }
             }
         }
-        return containsLapisLazuli && containsBrownMushroom && containsEmptyScepter;
+        return containsScepter && containsLapisLazuli && containsBrownMushroom;
     }
 
     public ItemStack craft(CraftingRecipeInput craftingRecipeInput, RegistryWrapper.WrapperLookup wrapperLookup) {
         RegistryEntryLookup<Scepter> scepterLookup = wrapperLookup.createRegistryLookup().getOrThrow(ModRegistryKeys.SCEPTER);
-        ItemStack inputScepter = ModItems.SCEPTER.getDefaultStack();
+        ItemStack craftedScepter = ModItems.MAGICAL_SCEPTER.getDefaultStack();
         for (int i = 0; i < craftingRecipeInput.getSize(); i++) {
             ItemStack itemStack = craftingRecipeInput.getStackInSlot(i);
-            if (ScepterHelper.IS_EMPTY_SCEPTER.test(itemStack)) {
-                inputScepter = itemStack;
+            if (itemStack.isOf(ModItems.SCEPTER)) {
+                craftedScepter = itemStack.copyComponentsToNewStack(ModItems.MAGICAL_SCEPTER, 1);
                 break;
             }
         }
-        return ScepterContentsComponent.setScepter(inputScepter, scepterLookup.getOrThrow(Scepters.MAGICAL_KEY));
+        return ScepterContentsComponent.setScepter(craftedScepter, scepterLookup.getOrThrow(Scepters.MAGICAL_KEY));
     }
 
     @Override
@@ -72,9 +72,9 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
 
     public DefaultedList<Ingredient> getIngredients() {
         DefaultedList<Ingredient> ingredients = DefaultedList.of();
+        ingredients.add(Ingredient.ofItems(ModItems.SCEPTER));
         ingredients.add(Ingredient.ofItems(Items.BROWN_MUSHROOM));
         ingredients.add(Ingredient.ofItems(Items.LAPIS_LAZULI));
-        ingredients.add(Ingredient.ofItems(ModItems.SCEPTER));
         return ingredients;
     }
 

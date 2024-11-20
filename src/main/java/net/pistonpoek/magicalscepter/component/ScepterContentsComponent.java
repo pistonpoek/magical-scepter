@@ -29,7 +29,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                                        Optional<RegistryEntry<Spell>> customAttackSpell,
                                        Optional<RegistryEntry<Spell>> customProtectSpell) {
     public static final ScepterContentsComponent DEFAULT = new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
-    public static final int EMPTY_COLOR = 0;
+    public static final int BASE_COLOR = -4424612;
     public static final Codec<ScepterContentsComponent> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Scepter.ENTRY_CODEC.optionalFieldOf("scepter").forGetter(ScepterContentsComponent::scepter),
@@ -111,7 +111,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      */
     public static boolean isInfusable(ItemStack stack) {
         return get(stack).flatMap(ScepterContentsComponent::isInfusable)
-                .orElse(false);
+                .orElse(true);
     }
 
     /**
@@ -132,8 +132,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      */
     public static int getColor(ItemStack stack) {
         return get(stack).flatMap(ScepterContentsComponent::getColor)
-                .orElse(EMPTY_COLOR);
-                //.orElse(ColorHelper.Argb.getArgb(0, 0, 0, 0)); TODO check if 0 works.
+                .orElse(BASE_COLOR);
     }
 
     /**
@@ -155,7 +154,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      */
     public static String getTranslationKey(ItemStack stack) {
         return get(stack).flatMap(ScepterContentsComponent::getTranslationKey)
-                .orElse("");
+                .orElse("empty");
     }
 
     /**
@@ -225,13 +224,13 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
 
     private static final Formatting ATTACK_SPELL_FORMATTING = Formatting.DARK_GREEN;
     private static final Formatting PROTECT_SPELL_FORMATTING = Formatting.BLUE;
-    private static final Text NO_SPELL_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.empty_spell")
+    private static final Text MISSING_SPELL_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.missing_spell")
             .formatted(Formatting.DARK_GRAY);
 
     public Text getAttackSpellName() {
         Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         if (attackSpell.isEmpty()) {
-            return NO_SPELL_TEXT;
+            return MISSING_SPELL_TEXT;
         }
         MutableText mutableText = Spell.getName(attackSpell.get());
         return Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(ATTACK_SPELL_FORMATTING));
@@ -240,31 +239,43 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     public Text getProtectSpellName() {
         Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
         if (protectSpell.isEmpty()) {
-            return NO_SPELL_TEXT;
+            return MISSING_SPELL_TEXT;
         }
         MutableText mutableText = Spell.getName(protectSpell.get());
         return Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(PROTECT_SPELL_FORMATTING));
     }
 
     private static final Formatting TITLE_FORMATTING = Formatting.GRAY;
+    private static final Text NO_SPELLS_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.no_spells")
+            .formatted(TITLE_FORMATTING);
     private static final Text CAST_ATTACK_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.on_cast_attack")
             .formatted(TITLE_FORMATTING);
     private static final Text CAST_PROTECT_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.on_cast_protect")
             .formatted(TITLE_FORMATTING);
 
     public void buildTooltip(Consumer<Text> textConsumer) {
+        Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
+        Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
+
+        if (attackSpell.isEmpty() && protectSpell.isEmpty()) {
+            textConsumer.accept(NO_SPELLS_TEXT);
+            return;
+        }
+
         textConsumer.accept(ScreenTexts.EMPTY);
 
-        Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         if (attackSpell.isPresent()) {
             textConsumer.accept(CAST_ATTACK_TEXT);
             textConsumer.accept(ScreenTexts.space().append(getAttackSpellName()));
         }
 
-        Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
         if (protectSpell.isPresent()) {
             textConsumer.accept(CAST_PROTECT_TEXT);
             textConsumer.accept(ScreenTexts.space().append(getProtectSpellName()));
         }
+    }
+
+    public static void buildTooltip(Consumer<Text> textConsumer, ItemStack stack) {
+        get(stack).orElse(DEFAULT).buildTooltip(textConsumer);
     }
 }
