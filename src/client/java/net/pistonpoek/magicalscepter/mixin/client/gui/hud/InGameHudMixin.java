@@ -39,7 +39,7 @@ public abstract class InGameHudMixin {
     )
     private void injectRenderExperienceBar(DrawContext context, int x, CallbackInfo callbackInfo) {
         assert this.client.player != null;
-        if (!this.client.player.isHolding(ScepterHelper.IS_SCEPTER)) {
+        if (!this.client.player.isHolding(ScepterHelper.IS_MAGICAL_SCEPTER)) {
             return;
         }
 
@@ -53,6 +53,7 @@ public abstract class InGameHudMixin {
             return;
         }
 
+        // TODO figure out how to display two different costs for attack and protect or only one cost per scepter.
         Optional<Spell> optionalSpell = (!this.client.player.isSneaking() ?
                 scepterContents.get().getAttackSpell().map(RegistryEntry::value) :
                 scepterContents.get().getProtectSpell().map(RegistryEntry::value));

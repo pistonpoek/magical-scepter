@@ -21,7 +21,7 @@ public class MagicalScepterClient implements ClientModInitializer {
 
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex > 0 ? -1 :
 				ScepterContentsComponent.getColor(stack),
-				ModItems.SCEPTER);
+				ModItems.MAGICAL_SCEPTER);
 
 		EntityRendererRegistry.register(ModEntityType.REFRACTOR, RefractorEntityRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.REFRACTOR, IllagerEntityModel::getTexturedModelData);

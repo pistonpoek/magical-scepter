@@ -30,7 +30,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         exporter.accept(recipeId,
                 new MagicalScepterRecipe(CraftingRecipeJsonBuilder.toCraftingCategory(category)),
                 exporter.getAdvancementBuilder()
-                        .criterion("has_empty_scepter", conditionsFromPredicates(ItemPredicate.Builder.create().items(ModItems.SCEPTER)))
+                        .criterion("has_scepter", conditionsFromPredicates(ItemPredicate.Builder.create().items(ModItems.SCEPTER)))
                         .criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId))
                         .rewards(AdvancementRewards.Builder.recipe(recipeId))
                         .criteriaMerger(AdvancementRequirements.CriterionMerger.OR)

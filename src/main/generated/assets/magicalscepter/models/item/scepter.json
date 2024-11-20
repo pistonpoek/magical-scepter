@@ -1,7 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "magicalscepter:item/scepter_overlay",
-    "layer1": "magicalscepter:item/scepter"
+    "layer0": "magicalscepter:item/scepter"
   }
 }

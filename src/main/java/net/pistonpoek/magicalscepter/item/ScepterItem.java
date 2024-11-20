@@ -73,7 +73,7 @@ public class ScepterItem extends Item implements AttackItem {
 
             itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
             if (itemStack.isEmpty()) {
-                itemStack = createEmptyScepter(itemStack);
+                itemStack = createScepter(itemStack);
             }
         }
 
@@ -83,20 +83,16 @@ public class ScepterItem extends Item implements AttackItem {
         return TypedActionResult.success(itemStack, false);
     }
 
-    public ItemStack createEmptyScepter(ItemStack stack) {
+    public ItemStack createScepter(ItemStack stack) {
         ItemStack scepterStack = ModItems.SCEPTER.getDefaultStack();
         scepterStack.applyChanges(stack.getComponentChanges());
         scepterStack.remove(ModDataComponentTypes.SCEPTER_CONTENTS);
-        if (scepterStack.isDamageable()) {
-            scepterStack.setDamage(0);
-        }
         return scepterStack;
     }
 
     @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
-        Optional<ScepterContentsComponent> scepterContentsComponent = ScepterContentsComponent.get(stack);
-        scepterContentsComponent.ifPresent(contentsComponent -> contentsComponent.buildTooltip(tooltip::add));
+        ScepterContentsComponent.buildTooltip(tooltip::add, stack);
     }
 
     @Override
