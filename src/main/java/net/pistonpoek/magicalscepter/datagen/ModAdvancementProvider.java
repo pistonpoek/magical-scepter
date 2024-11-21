@@ -45,8 +45,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         true,
                         false
                 )
-                .criterion("cast_spell", CastSpellCriterion.Conditions.create(ModItems.MAGICAL_SCEPTER))
-                .build(consumer, ModIdentifier.name("adventure/cast_spell"));
+                .criterion("cast_scepter", CastSpellCriterion.Conditions.create(ModItems.MAGICAL_SCEPTER))
+                .build(consumer, ModIdentifier.name("adventure/cast_scepter"));
 
         AdvancementEntry allScepterInfusionsAdvancement = requireListedSceptersInfused(
                 Advancement.Builder.create().parent(castScepterAdvancement)

@@ -1,5 +1,5 @@
 {
-  "parent": "magicalscepter:adventure/cast_spell",
+  "parent": "magicalscepter:adventure/cast_scepter",
   "criteria": {
     "magicalscepter:blaze": {
       "conditions": {
