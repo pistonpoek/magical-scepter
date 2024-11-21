@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:adventure/root",
   "criteria": {
-    "cast_spell": {
+    "cast_scepter": {
       "conditions": {
         "item": {
           "items": "magicalscepter:magical_scepter"
@@ -24,7 +24,7 @@
   },
   "requirements": [
     [
-      "cast_spell"
+      "cast_scepter"
     ]
   ],
   "sends_telemetry_event": true
