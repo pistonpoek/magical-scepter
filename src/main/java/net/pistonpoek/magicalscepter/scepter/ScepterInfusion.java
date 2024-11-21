@@ -9,8 +9,10 @@ import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
+import net.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
 import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 
 import java.util.Optional;
@@ -70,6 +72,9 @@ public class ScepterInfusion {
         if (scepter.isPresent()) {
             ItemStack infusedScepter = ScepterContentsComponent.setScepter(itemStack, scepter.get());
             entity.setStackInHand(hand, infusedScepter);
+            if (entity instanceof ServerPlayerEntity serverPlayerEntity) {
+                ModCriteria.INFUSE_SCEPTER.trigger(serverPlayerEntity, scepter.get());
+            }
         }
     }
 

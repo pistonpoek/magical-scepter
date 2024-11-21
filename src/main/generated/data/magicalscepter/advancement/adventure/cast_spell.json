@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "cast_spell": {
+      "conditions": {
+        "item": {
+          "items": "magicalscepter:magical_scepter"
+        }
+      },
+      "trigger": "minecraft:cast_spell"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "magicalscepter.advancements.adventure.cast_scepter.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "magicalscepter:magical_scepter"
+    },
+    "title": {
+      "translate": "magicalscepter.advancements.adventure.cast_scepter.title"
+    }
+  },
+  "requirements": [
+    [
+      "cast_spell"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

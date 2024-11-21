@@ -5,6 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.world.timer.TimerCallbackSerializer;
+import net.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
 import net.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import net.pistonpoek.magicalscepter.entity.ModEntityType;
 import net.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
@@ -34,6 +35,7 @@ public class MagicalScepter implements ModInitializer {
 		ModEntityType.init();
 		ModLootFunctionTypes.init();
 		ModPlayPackets.init();
+		ModCriteria.init();
 
 		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastScheduler::afterDeath);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);

@@ -24,7 +24,12 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
 
         // Filter for attack items.
         Item item = player.getMainHandStack().getItem();
-        if (!(item instanceof AttackItem)) {
+        if (!(item instanceof AttackItem attackItem)) {
+            return false;
+        }
+
+        // Not allowed to use the item if the item is cooling down.
+        if (player.getItemCooldownManager().isCoolingDown(item)) {
             return false;
         }
 
@@ -34,15 +39,10 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
         }
 
         // Return true to only allow attack items to attack with use ability.
-        return ((AttackItem) item).preventAttack(player);
+        return attackItem.preventAttack(player);
     }
 
     private void processAttackItem(MinecraftClient client, ClientPlayerEntity player, Item item) {
-        // Not allowed to use the item if the item is cooling down.
-        if (player.getItemCooldownManager().isCoolingDown(item)) {
-            return;
-        }
-
         // Check the result for the attack item.
         TypedActionResult<ItemStack> result = ((AttackItem) item)
                 .attack(player.getWorld(), player);

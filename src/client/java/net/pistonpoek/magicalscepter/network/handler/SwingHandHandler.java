@@ -12,8 +12,8 @@ public class SwingHandHandler implements ClientPlayNetworking.PlayPayloadHandler
     @Override
     public void receive(SwingHandPayload payload, ClientPlayNetworking.Context context) {
         Entity entity = context.player().getEntityWorld().getEntityById(payload.id());
-        if (entity instanceof SwingHandLivingEntity) {
-            ((SwingHandLivingEntity) entity).swingHand(payload.hand(), payload.swingType());
+        if (entity instanceof SwingHandLivingEntity swingHandLivingEntity) {
+            swingHandLivingEntity.swingHand(payload.hand(), payload.swingType());
         }
     }
 

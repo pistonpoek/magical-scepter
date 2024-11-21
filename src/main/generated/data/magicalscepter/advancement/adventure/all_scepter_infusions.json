@@ -1,0 +1,125 @@
+{
+  "parent": "magicalscepter:adventure/cast_spell",
+  "criteria": {
+    "magicalscepter:blaze": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:blaze"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    },
+    "magicalscepter:breeze": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:breeze"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    },
+    "magicalscepter:dragon": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:dragon"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    },
+    "magicalscepter:evoker": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:evoker"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    },
+    "magicalscepter:ghast": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:ghast"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    },
+    "magicalscepter:guardian": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:guardian"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    },
+    "magicalscepter:shulker": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:shulker"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    },
+    "magicalscepter:warden": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:warden"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    },
+    "magicalscepter:wither": {
+      "conditions": {
+        "scepter": {
+          "scepter": "magicalscepter:wither"
+        }
+      },
+      "trigger": "minecraft:infuse_scepter"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "magicalscepter.advancements.adventure.all_scepter_infusions.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "components": {
+        "magicalscepter:scepter_contents": {
+          "scepter": "magicalscepter:dragon"
+        }
+      },
+      "count": 1,
+      "id": "magicalscepter:magical_scepter"
+    },
+    "title": {
+      "translate": "magicalscepter.advancements.adventure.all_scepter_infusions.title"
+    }
+  },
+  "requirements": [
+    [
+      "magicalscepter:blaze"
+    ],
+    [
+      "magicalscepter:breeze"
+    ],
+    [
+      "magicalscepter:dragon"
+    ],
+    [
+      "magicalscepter:evoker"
+    ],
+    [
+      "magicalscepter:ghast"
+    ],
+    [
+      "magicalscepter:guardian"
+    ],
+    [
+      "magicalscepter:shulker"
+    ],
+    [
+      "magicalscepter:warden"
+    ],
+    [
+      "magicalscepter:wither"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

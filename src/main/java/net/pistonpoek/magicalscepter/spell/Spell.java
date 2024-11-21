@@ -2,13 +2,17 @@ package net.pistonpoek.magicalscepter.spell;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
+import net.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +50,7 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
      * @param caster Living entity to cast the spell for.
      * @return Duration that the spell takes.
      */
-    public int castSpell(@NotNull LivingEntity caster) {
+    public int castSpell(@NotNull LivingEntity caster, ItemStack itemStack) {
         if (caster.getWorld().isClient()) {
             return 0;
         }
@@ -54,6 +58,9 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
         for (SpellCast cast : casts) {
             int castTime = cast.apply(caster);
             duration = Math.max(duration, castTime);
+        }
+        if (caster instanceof ServerPlayerEntity serverPlayerEntity) {
+            ModCriteria.CAST_SPELL.trigger(serverPlayerEntity, itemStack);
         }
         return duration;
     }
