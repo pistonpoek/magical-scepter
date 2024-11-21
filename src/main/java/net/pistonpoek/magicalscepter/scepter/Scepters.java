@@ -19,6 +19,7 @@ import java.util.List;
 public class Scepters {
     public static final List<RegistryKey<Scepter>> SCEPTER_KEYS = new ArrayList<>();
     public static final RegistryKey<Scepter> MAGICAL_KEY = of("magical");
+
     public static final RegistryKey<Scepter> BLAZE_KEY = of("blaze");
     public static final RegistryKey<Scepter> BREEZE_KEY = of("breeze");
     public static final RegistryKey<Scepter> DRAGON_KEY = of("dragon");
@@ -28,6 +29,9 @@ public class Scepters {
     public static final RegistryKey<Scepter> SHULKER_KEY = of("shulker");
     public static final RegistryKey<Scepter> WARDEN_KEY = of("warden");
     public static final RegistryKey<Scepter> WITHER_KEY = of("wither");
+    public static final List<RegistryKey<Scepter>> ALL_INFUSED_SCEPTERS =
+            List.of(BLAZE_KEY, BREEZE_KEY, DRAGON_KEY, EVOKER_KEY,
+                    GHAST_KEY, GUARDIAN_KEY, SHULKER_KEY, WARDEN_KEY, WITHER_KEY);
 
     private static RegistryKey<Scepter> of(String id) {
         return RegistryKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(id));

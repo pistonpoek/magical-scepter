@@ -23,7 +23,7 @@ public class ModTags {
     }
 
     public static class Scepters {
-        public static final TagKey<Scepter> INFUSABLE = createTag("infusable");
+        public static final TagKey<Scepter> INFUSED = createTag("infused");
 
         public static TagKey<Scepter> createTag(String name) {
             return TagKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(name));

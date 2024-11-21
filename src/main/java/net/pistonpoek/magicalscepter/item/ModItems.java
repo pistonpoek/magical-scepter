@@ -14,12 +14,12 @@ import net.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.pistonpoek.magicalscepter.entity.ModEntityType;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import net.pistonpoek.magicalscepter.registry.ModTags;
 import net.pistonpoek.magicalscepter.scepter.Scepter;
 import net.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.pistonpoek.magicalscepter.scepter.Scepters;
 
 import java.util.Set;
-import java.util.function.Predicate;
 
 public class ModItems {
     public static final Item SCEPTER = registerItem("scepter",
@@ -28,14 +28,12 @@ public class ModItems {
             new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT)));
 
-    private static final Predicate<RegistryEntry.Reference<Scepter>> IS_MAGICAL_SCEPTER =
-            entry -> entry.matchesKey(Scepters.MAGICAL_KEY);
     public static final Item REFRACTOR_SPAWN_EGG = registerItem("refractor_spawn_egg",
             new SpawnEggItem(ModEntityType.REFRACTOR, 9804699, 6307420, new Item.Settings()));
 
-    private static void addScepters(FabricItemGroupEntries entries, RegistryWrapper<Scepter> registryWrapper, ItemGroup.StackVisibility visibility) {
+    private static void addInfusedScepters(FabricItemGroupEntries entries, RegistryWrapper<Scepter> registryWrapper, ItemGroup.StackVisibility visibility) {
         Set<ItemStack> scepters = ItemStackSet.create();
-        registryWrapper.streamEntries().filter(IS_MAGICAL_SCEPTER.negate())
+        registryWrapper.getOrThrow(ModTags.Scepters.INFUSED).stream()
                 .map(ScepterHelper::createScepter)
                 .forEach(scepters::add);
         entries.addAfter(Items.WIND_CHARGE, scepters, visibility);
@@ -43,10 +41,9 @@ public class ModItems {
 
     private static void addItemsToCombatItemGroup(FabricItemGroupEntries entries) {
         entries.getContext().lookup().getOptionalWrapper(ModRegistryKeys.SCEPTER).ifPresent(registryWrapper -> {
-            registryWrapper.streamEntries().filter(IS_MAGICAL_SCEPTER).forEach(entry -> {
-                    entries.addAfter(Items.TRIDENT, ScepterHelper.createScepter(entry));
-            });
-            addScepters(entries, registryWrapper, ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS);
+            RegistryEntry<Scepter> magicalScepter = registryWrapper.getOrThrow(Scepters.MAGICAL_KEY);
+                    entries.addAfter(Items.TRIDENT, ScepterHelper.createScepter(magicalScepter));
+            addInfusedScepters(entries, registryWrapper, ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS);
         });
     }
 

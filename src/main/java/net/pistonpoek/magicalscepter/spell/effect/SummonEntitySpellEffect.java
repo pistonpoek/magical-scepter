@@ -81,8 +81,8 @@ public record SummonEntitySpellEffect(
         });
 
         // TODO add custom SpawnReason?
-        if (entity instanceof MobEntity) {
-            ((MobEntity)entity).initialize(world, world.getLocalDifficulty(entity.getBlockPos()), SpawnReason.MOB_SUMMONED, null);
+        if (entity instanceof MobEntity mobEntity) {
+            mobEntity.initialize(world, world.getLocalDifficulty(entity.getBlockPos()), SpawnReason.MOB_SUMMONED, null);
         }
 
         if (!world.spawnNewEntityAndPassengers(entity)) {

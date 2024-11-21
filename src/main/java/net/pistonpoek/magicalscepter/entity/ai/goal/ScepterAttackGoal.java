@@ -145,7 +145,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
                 this.cooldown = this.attackInterval;
 
                 scepterSpell.ifPresent(spell -> {
-                    cooldown += spell.castSpell(this.actor);
+                    cooldown += spell.castSpell(this.actor, scepterStack);
 
                     SwingType swingType = (scepterSpell == attackSpell) ? SwingType.HIT : SwingType.PROTECT;
                     ((SwingHandLivingEntity)this.actor).swingHand(Hand.MAIN_HAND, swingType);

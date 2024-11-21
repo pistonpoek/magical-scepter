@@ -96,7 +96,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      *
      * @return Scepter value from the item stack.
      */
-    public Optional<Scepter> getScepterValue() {
+    private Optional<Scepter> getScepterValue() {
         return scepter.map(RegistryEntry::value);
     }
 
@@ -243,7 +243,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
 
     private static final Formatting ATTACK_SPELL_FORMATTING = Formatting.DARK_GREEN;
     private static final Formatting PROTECT_SPELL_FORMATTING = Formatting.BLUE;
-    private static final Text MISSING_SPELL_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.missing_spell")
+    private static final Text MISSING_SPELL_TEXT = ModIdentifier.translatable("scepter.missing_spell")
             .formatted(Formatting.DARK_GRAY);
 
     public Text getAttackSpellName() {
@@ -265,11 +265,11 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     }
 
     private static final Formatting TITLE_FORMATTING = Formatting.GRAY;
-    private static final Text NO_SPELLS_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.no_spells")
+    private static final Text NO_SPELLS_TEXT = ModIdentifier.translatable("scepter.no_spells")
             .formatted(TITLE_FORMATTING);
-    private static final Text CAST_ATTACK_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.on_cast_attack")
+    private static final Text CAST_ATTACK_TEXT = ModIdentifier.translatable("scepter.on_cast_attack")
             .formatted(TITLE_FORMATTING);
-    private static final Text CAST_PROTECT_TEXT = Text.translatable(ModIdentifier.MOD_ID + ".scepter.on_cast_protect")
+    private static final Text CAST_PROTECT_TEXT = ModIdentifier.translatable("scepter.on_cast_protect")
             .formatted(TITLE_FORMATTING);
 
     public void buildTooltip(Consumer<Text> textConsumer) {

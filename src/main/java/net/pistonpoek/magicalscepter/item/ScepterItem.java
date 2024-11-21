@@ -69,7 +69,7 @@ public class ScepterItem extends Item implements AttackItem {
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
         if (!world.isClient()) {
-            int castDuration = spell.castSpell(user);
+            int castDuration = spell.castSpell(user, itemStack);
             // Correct spell duration cooldown, increase cooldown for non-creative and decrease for creative players.
             if (user.getAbilities().creativeMode ^ castDuration + 10 >= spell.getCooldown()) {
                 user.getItemCooldownManager().set(this, castDuration + 10);

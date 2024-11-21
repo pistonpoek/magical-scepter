@@ -10,6 +10,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 public class ModStatusEffects {
+    // TODO add effect to vanilla furious cocktail advancement.
     public static final RegistryEntry<StatusEffect> STABILITY = ModStatusEffects.register("stability",
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x074857)
                     .addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE,

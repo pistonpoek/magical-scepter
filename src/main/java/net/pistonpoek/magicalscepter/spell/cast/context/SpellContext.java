@@ -56,8 +56,8 @@ public record SpellContext(LivingEntity caster, Entity target, Vec3d position, f
     }
 
     public Optional<LivingEntity> getLivingTarget() {
-        if (target instanceof LivingEntity) {
-            return Optional.of((LivingEntity)target);
+        if (target instanceof LivingEntity livingTarget) {
+            return Optional.of(livingTarget);
         }
         return Optional.empty();
     }

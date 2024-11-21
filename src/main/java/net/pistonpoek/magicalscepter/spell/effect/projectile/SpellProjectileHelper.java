@@ -7,8 +7,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class SpellProjectileHelper {
     public static Vec3d getProjectilePosition(Entity caster) {
-        if (caster instanceof PlayerEntity) {
-            return getProjectilePosition((PlayerEntity)caster);
+        if (caster instanceof PlayerEntity player) {
+            return getProjectilePosition(player);
         } else if (caster instanceof LivingEntity) {
             return getProjectilePosition(caster, caster.getWidth() / 2.0F);
         } else {
