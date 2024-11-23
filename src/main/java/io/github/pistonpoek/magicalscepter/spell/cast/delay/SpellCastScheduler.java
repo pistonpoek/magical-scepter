@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 
+import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.MinecraftServer;
@@ -33,13 +34,24 @@ public interface SpellCastScheduler {
         );
     }
 
-    static void clear(@NotNull LivingEntity caster) {
+    /**
+     * Clear the spell casts for a specified living entity.
+     *
+     * @param caster Living entity to clear currently scheduled spell casts for.
+     * @return Truth assignment, if a scheduled spell cast was cleared.
+     */
+    static boolean clear(@NotNull LivingEntity caster) {
         MinecraftServer minecraftServer = caster.getServer();
         if (minecraftServer == null) {
-            return;
+            return false;
         }
         Timer<MinecraftServer> timer = minecraftServer.getSaveProperties().getMainWorldProperties().getScheduledEvents();
-        getScheduleSpellCasts(caster, minecraftServer).forEach(timer::remove);
+        Collection<String> scheduledSpellCasts = getScheduleSpellCasts(caster, minecraftServer);
+        if (scheduledSpellCasts.isEmpty()) {
+            return false;
+        }
+        scheduledSpellCasts.forEach(timer::remove);
+        return true;
     }
 
     static String createSpellCastEventName(@NotNull LivingEntity caster,

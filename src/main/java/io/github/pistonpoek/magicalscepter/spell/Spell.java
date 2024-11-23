@@ -15,6 +15,7 @@ import io.github.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +48,10 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
      * Cast this spell for a specific living entity.
      *
      * @param caster Living entity to cast the spell for.
+     * @param itemStack Item stack that the spell is cast with.
      * @return Duration that the spell takes.
      */
-    public int castSpell(@NotNull LivingEntity caster, ItemStack itemStack) {
+    public int castSpell(@NotNull LivingEntity caster, @Nullable ItemStack itemStack) {
         if (caster.getWorld().isClient()) {
             return 0;
         }
@@ -58,7 +60,7 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
             int castTime = cast.apply(caster);
             duration = Math.max(duration, castTime);
         }
-        if (caster instanceof ServerPlayerEntity serverPlayerEntity) {
+        if (caster instanceof ServerPlayerEntity serverPlayerEntity && itemStack != null) {
             ModCriteria.CAST_SPELL.trigger(serverPlayerEntity, itemStack);
         }
         return duration;

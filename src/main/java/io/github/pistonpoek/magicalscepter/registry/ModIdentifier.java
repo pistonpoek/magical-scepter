@@ -26,7 +26,7 @@ public class ModIdentifier {
         return MOD_ID + ":" + path;
     }
 
-    public static MutableText translatable(String path) {
-        return Text.translatable(of(path).toTranslationKey());
+    public static MutableText translatable(String path, Object... args) {
+        return Text.translatable(of(path).toTranslationKey(), args);
     }
 }
