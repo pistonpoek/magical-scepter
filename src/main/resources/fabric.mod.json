@@ -9,9 +9,9 @@
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/pistonpoek/magical-scepter"
 	},
-	"license": "CC0-1.0",
+	"license": "",
 	"icon": "assets/magicalscepter/icon.png",
 	"environment": "*",
 	"entrypoints": {
