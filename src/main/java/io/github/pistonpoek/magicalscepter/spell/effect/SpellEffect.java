@@ -23,6 +23,7 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("damage"), DamageSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("move"), MoveSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("rotate"), RotateSpellEffect.CODEC);
+        Registry.register(registry, ModIdentifier.of("run_function"), RunFunctionSpellEffect.CODEC);
 
         // TODO add run_function
         // done? TODO add motion (Rotation rotation, FloatProvider power, bool consider_knockback_resistance)
