@@ -17,7 +17,7 @@
   "item.magicalscepter.refractor_spawn_egg" : "Refractor Spawn Egg",
   "magicalscepter.advancements.adventure.cast_scepter.description" : "Cast a Spell with a Magical Scepter",
   "magicalscepter.advancements.adventure.cast_scepter.title" : "Wizardry",
-  "magicalscepter.advancements.adventure.all_scepter_infusions.description" : "Obtain all Infused Scepter variants",
+  "magicalscepter.advancements.adventure.all_scepter_infusions.description" : "Acquire each Infused Scepter variant by Infusing a Magical Scepter",
   "magicalscepter.advancements.adventure.all_scepter_infusions.title" : "Copycat",
   "magicalscepter.scepter.on_cast_attack" : "On Attack:",
   "magicalscepter.scepter.on_cast_protect" : "On Protect:",
