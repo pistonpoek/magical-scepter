@@ -8,7 +8,7 @@ public class ModIdentifier {
      * Identifier specified for this mod.
      */
     public static final String MOD_ID = "magicalscepter";
-    public static final String MOD_NAME = "Magical Scepter";
+    public static final String MOD_NAME = "Magical-Scepter";
 
     /**
      * Create an identifier for the mod id {@value MOD_ID} with the specified path.
