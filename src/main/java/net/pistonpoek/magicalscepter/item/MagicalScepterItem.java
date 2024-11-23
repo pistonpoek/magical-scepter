@@ -18,8 +18,8 @@ import net.pistonpoek.magicalscepter.spell.Spell;
 import java.util.List;
 import java.util.Optional;
 
-public class ScepterItem extends Item implements AttackItem {
-    public ScepterItem(Settings settings) {
+public class MagicalScepterItem extends Item implements AttackItem {
+    public MagicalScepterItem(Settings settings) {
         super(settings);
     }
 
