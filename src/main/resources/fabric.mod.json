@@ -8,7 +8,7 @@
 		"pistonpoek"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
+		"email": "pistonpoek@gmail.com",
 		"sources": "https://github.com/pistonpoek/magical-scepter"
 	},
 	"license": "",
@@ -16,13 +16,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"net.pistonpoek.magicalscepter.MagicalScepter"
+          "io.github.pistonpoek.magicalscepter.MagicalScepter"
 		],
 		"client": [
-			"net.pistonpoek.magicalscepter.MagicalScepterClient"
+			"io.github.pistonpoek.magicalscepter.MagicalScepterClient"
 		],
 		"fabric-datagen": [
-			"net.pistonpoek.magicalscepter.datagen.MagicalScepterDataGenerator"
+          "io.github.pistonpoek.magicalscepter.datagen.MagicalScepterDataGenerator"
 		]
 	},
 	"mixins": [
