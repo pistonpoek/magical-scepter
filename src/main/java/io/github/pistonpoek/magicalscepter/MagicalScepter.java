@@ -1,7 +1,9 @@
 package io.github.pistonpoek.magicalscepter;
 
+import io.github.pistonpoek.magicalscepter.command.SpellCommand;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.world.timer.TimerCallbackSerializer;
@@ -39,6 +41,7 @@ public class MagicalScepter implements ModInitializer {
 
 		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastScheduler::afterDeath);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
+		CommandRegistrationCallback.EVENT.register(SpellCommand::register);
 
 		TimerCallbackSerializer.INSTANCE.registerSerializer(new SpellCastTimerCallback.Serializer());
 		FabricDefaultAttributeRegistry.register(ModEntityType.REFRACTOR, RefractorEntity.createRefractorAttributes());
