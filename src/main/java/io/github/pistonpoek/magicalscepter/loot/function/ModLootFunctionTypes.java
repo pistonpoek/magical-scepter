@@ -10,7 +10,7 @@ import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 public class ModLootFunctionTypes {
     public static void init() {
-        MagicalScepter.LOGGER.info("Registering Loot Functions for " + ModIdentifier.MOD_ID);
+        MagicalScepter.LOGGER.info("Registering Loot Functions for " + ModIdentifier.MOD_NAME);
     }
 
     public static final LootFunctionType<SetScepterLootFunction> SET_SCEPTER =

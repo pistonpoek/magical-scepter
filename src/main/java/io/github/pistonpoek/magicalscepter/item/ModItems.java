@@ -60,7 +60,7 @@ public class ModItems {
     }
 
     public static void init() {
-        MagicalScepter.LOGGER.info("Registering Mod Items for " + ModIdentifier.MOD_ID);
+        MagicalScepter.LOGGER.info("Registering Mod Items for " + ModIdentifier.MOD_NAME);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(ModItems::addItemsToCombatItemGroup);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(ModItems::addItemsToIngredientsGroup);

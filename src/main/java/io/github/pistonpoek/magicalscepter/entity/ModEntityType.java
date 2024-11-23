@@ -11,7 +11,7 @@ import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 public class ModEntityType {
     public static void init() {
-        MagicalScepter.LOGGER.info("Registering Entities for " + ModIdentifier.MOD_ID);
+        MagicalScepter.LOGGER.info("Registering Entities for " + ModIdentifier.MOD_NAME);
     }
 
     public static final EntityType<RefractorEntity> REFRACTOR = register(
