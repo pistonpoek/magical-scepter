@@ -1,9 +1,8 @@
 {
   "required": true,
-  "package": "net.pistonpoek.magicalscepter.mixin.client",
+  "package": "io.github.pistonpoek.magicalscepter.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "ExampleClientMixin",
     "gui.hud.InGameHudMixin",
     "render.entity.model.BipedEntityModelMixin",
     "render.entity.model.IllagerEntityModelMixin"
