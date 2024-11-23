@@ -3,7 +3,7 @@
 	"id": "magicalscepter",
 	"version": "${version}",
 	"name": "Magical Scepter",
-	"description": "Magical scepter that can be infused with spells of (vanilla) monsters",
+	"description": "Spell casting weapon that can be infused by monsters. The Magical Scepter is wielded by a new Refractor illager who resides in an old taiga cabin.",
 	"authors": [
 		"pistonpoek"
 	],
