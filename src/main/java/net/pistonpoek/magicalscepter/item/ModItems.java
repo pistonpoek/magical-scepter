@@ -25,7 +25,7 @@ public class ModItems {
     public static final Item SCEPTER = registerItem("scepter",
             new Item(new Item.Settings().maxCount(1).rarity(Rarity.RARE)));
     public static final Item MAGICAL_SCEPTER = registerItem("magical_scepter",
-            new ScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)
+            new MagicalScepterItem(new Item.Settings().maxDamage(300).rarity(Rarity.RARE)
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT)));
 
     public static final Item REFRACTOR_SPAWN_EGG = registerItem("refractor_spawn_egg",
