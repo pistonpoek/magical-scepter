@@ -63,7 +63,7 @@ public class Scepters {
 
         register(registry, BREEZE_KEY, Scepter.builder(
                         0xBDC9FF,
-                        32,
+                        8,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_WIND_CHARGE_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_JUMP_KEY))
