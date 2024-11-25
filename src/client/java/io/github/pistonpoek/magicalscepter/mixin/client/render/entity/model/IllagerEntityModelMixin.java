@@ -84,6 +84,7 @@ public abstract class IllagerEntityModelMixin<T extends IllagerEntity> extends S
 //            armModel.roll -= MathHelper.sin(this.handSwingProgress * MathHelper.PI) * 0.8F; // Around arm
         armModel.pitch -= MathHelper.sin(5.0F/3.0F*MathHelper.PI*this.handSwingProgress-1.0F/3.0F*MathHelper.PI)-MathHelper.sin(-1.0F/3.0F*MathHelper.PI);
         //armModel.pitch -= MathHelper.PI/2 - MathHelper.PI/10;
+        // TODO fix yaw moving wrong direction for left hand.
         armModel.yaw -= (MathHelper.sin(g) + 0.9F) * 0.7F;
 //            armModel.yaw -= MathHelper.PI * 1/4;
         //armModel.roll += MathHelper.sin(1.0F-(float)Math.pow(1.1F-2.2F*this.handSwingProgress, 4.0F) *MathHelper.PI)+0.84147F;
