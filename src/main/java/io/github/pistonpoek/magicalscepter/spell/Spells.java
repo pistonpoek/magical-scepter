@@ -76,7 +76,7 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addEffect(
                             new DamageSpellEffect(UniformFloatProvider.create(1.0F, 3.0F),
-                                    damageTypeLookup.getOrThrow(DamageTypes.MAGIC))
+                                    damageTypeLookup.getOrThrow(DamageTypes.INDIRECT_MAGIC))
                     )
                     .addTransformer(
                             TargetCastTransformer.builder(TargetCastTransformer.Target.ENTITY, 16.0).build()

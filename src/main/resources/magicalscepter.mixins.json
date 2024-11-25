@@ -3,7 +3,8 @@
   "package": "io.github.pistonpoek.magicalscepter.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "ParrotEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

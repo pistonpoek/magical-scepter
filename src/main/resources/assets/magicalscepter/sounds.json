@@ -1,4 +1,13 @@
 {
+  "entity.parrot.imitate.refractor" : {
+    "subtitle": "subtitles.magicalscepter.entity.parrot.imitate.refractor",
+    "sounds": [
+      "magicalscepter:refractor_idle1",
+      "magicalscepter:refractor_idle2",
+      "magicalscepter:refractor_idle3",
+      "magicalscepter:refractor_idle4"
+    ]
+  },
   "entity.refractor.ambient": {
     "subtitle": "subtitles.magicalscepter.entity.refractor.ambient",
     "sounds": [

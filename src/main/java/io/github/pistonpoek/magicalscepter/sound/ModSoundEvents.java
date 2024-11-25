@@ -8,6 +8,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
 public class ModSoundEvents {
+    public static final SoundEvent ENTITY_PARROT_IMITATE_REFRACTOR = register("entity.parrot.imitate.refractor");
     public static final SoundEvent ENTITY_REFRACTOR_AMBIENT = register("entity.refractor.ambient");
     public static final SoundEvent ENTITY_REFRACTOR_CELEBRATE = register("entity.refractor.celebrate");
     public static final SoundEvent ENTITY_REFRACTOR_DEATH = register("entity.refractor.death");
