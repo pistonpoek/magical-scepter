@@ -23,8 +23,7 @@ public interface CastTransformer {
         Registry.register(registry, ModIdentifier.of("target"), TargetCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("circle"), CircleCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("repeat"), RepeatCastTransformer.CODEC);
-
-        // TODO condition transformer??
+        Registry.register(registry, ModIdentifier.of("condition"), ConditionCastTransformer.CODEC);
     }
 
     Collection<SpellCasting> transform(@NotNull SpellCasting cast);

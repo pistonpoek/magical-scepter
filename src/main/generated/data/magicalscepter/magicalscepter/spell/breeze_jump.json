@@ -13,17 +13,21 @@
             "sound_id": "minecraft:entity.breeze.jump"
           },
           "volume": 1.0
-        }
-      ]
-    },
-    {
-      "effects": [
+        },
         {
           "type": "magicalscepter:move",
-          "power": 3.0
+          "power": 2.0
         }
       ],
       "transformers": [
+        {
+          "type": "magicalscepter:condition",
+          "condition": {
+            "flags": {
+              "is_on_ground": true
+            }
+          }
+        },
         {
           "type": "magicalscepter:rotate",
           "rotation": {
@@ -59,9 +63,43 @@
           }
         }
       ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:play_sound",
+          "pitch": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          },
+          "sound": {
+            "sound_id": "minecraft:entity.breeze.land"
+          },
+          "volume": 1.0
+        },
+        {
+          "type": "magicalscepter:apply_mob_effect",
+          "max_amplifier": 0.0,
+          "max_duration": 1.2,
+          "min_amplifier": 0.0,
+          "min_duration": 0.8,
+          "to_apply": "minecraft:slow_falling"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:condition",
+          "condition": {
+            "flags": {
+              "is_on_ground": false
+            }
+          }
+        }
+      ]
     }
   ],
-  "cooldown": 50,
+  "cooldown": 24,
   "description": {
     "translate": "spell.magicalscepter.breeze_jump"
   }

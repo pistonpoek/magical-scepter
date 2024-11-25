@@ -21,7 +21,7 @@
       ]
     }
   ],
-  "cooldown": 50,
+  "cooldown": 24,
   "description": {
     "translate": "spell.magicalscepter.wind_charge"
   }

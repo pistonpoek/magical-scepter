@@ -15,6 +15,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.potion.Potions;
+import net.minecraft.predicate.entity.EntityFlagsPredicate;
+import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
@@ -148,7 +150,7 @@ public class Spells {
             )
         );
 
-        register(registry, BREEZE_WIND_CHARGE_KEY, Spell.builder(50,
+        register(registry, BREEZE_WIND_CHARGE_KEY, Spell.builder(24,
                         textOf("wind_charge"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
@@ -158,15 +160,11 @@ public class Spells {
                     .addEffect(new WindChargeSpellProjectile())
             )
         );
-        register(registry, BREEZE_JUMP_KEY, Spell.builder(50,
+        register(registry, BREEZE_JUMP_KEY, Spell.builder(24,
                         textOf("breeze_jump"))
             .addCast(SpellCast.builder()
-                    .addEffect(new PlaySoundSpellEffect(
-                            RegistryEntry.of(SoundEvents.ENTITY_BREEZE_JUMP),
-                            ConstantFloatProvider.create(1.0F),
-                            UniformFloatProvider.create(0.8F, 1.2F)))
-            )
-            .addCast(SpellCast.builder()
+                    .addTransformer(new ConditionCastTransformer(EntityPredicate.Builder.create()
+                            .flags(EntityFlagsPredicate.Builder.create().onGround(true)).build()))
                     .addTransformer(RotateCastTransformer.builder(
                             new FacingLocationRotationSource(
                                     MixedPositionSource.builder()
@@ -177,11 +175,29 @@ public class Spells {
                                             .xPosition(RelativePositionSource.builder(new Vec3d(0, 0, 1)).build())
                                             .zPosition(RelativePositionSource.builder(new Vec3d(0, 0, 1)).build()).build())
                             ).build()
-                    ) // TODO add target filter to require the target to be on the ground
+                    )
+                    .addEffect(new PlaySoundSpellEffect(
+                            RegistryEntry.of(SoundEvents.ENTITY_BREEZE_JUMP),
+                            ConstantFloatProvider.create(1.0F),
+                            UniformFloatProvider.create(0.8F, 1.2F)))
                     .addEffect(new MoveSpellEffect(
-                            ConstantFloatProvider.create(3.0F),
+                            ConstantFloatProvider.create(2.0F),
                             false
                     ))
+            )
+            .addCast(SpellCast.builder()
+                    .addTransformer(new ConditionCastTransformer(EntityPredicate.Builder.create()
+                            .flags(EntityFlagsPredicate.Builder.create().onGround(false)).build()))
+                    .addEffect(new PlaySoundSpellEffect(
+                            RegistryEntry.of(SoundEvents.ENTITY_BREEZE_LAND),
+                            ConstantFloatProvider.create(1.0F),
+                            UniformFloatProvider.create(0.8F, 1.2F)))
+                    .addEffect(new ApplyMobEffectSpellEffect(
+                            RegistryEntryList.of(StatusEffects.SLOW_FALLING),
+                            ConstantFloatProvider.create(0.8F),
+                            ConstantFloatProvider.create(1.2F),
+                            ConstantFloatProvider.create(0.0F),
+                            ConstantFloatProvider.create(0.0F)))
             )
         );
 
