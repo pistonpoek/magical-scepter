@@ -2,7 +2,6 @@ package io.github.pistonpoek.magicalscepter.item;
 
 import io.github.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
-import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -127,6 +126,11 @@ public class MagicalScepterItem extends Item implements AttackItem {
         scepterStack.applyChanges(stack.getComponentChanges());
         scepterStack.remove(ModDataComponentTypes.SCEPTER_CONTENTS);
         return scepterStack;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
     }
 
     @Override
