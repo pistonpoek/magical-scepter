@@ -28,7 +28,7 @@ public interface SpellEffect {
         // TODO add run_function
         // done? TODO add motion (Rotation rotation, FloatProvider power, bool consider_knockback_resistance)
 
-        // TODO add explode (power, ...)
+        // TODO add explode (power, ...) see ExplodeEnchantmentEffect?
         // TODO ignite (duration)
 
         // Alter blocks?

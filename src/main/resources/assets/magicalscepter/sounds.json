@@ -1,0 +1,47 @@
+{
+  "entity.refractor.ambient": {
+    "subtitle": "subtitles.magicalscepter.entity.refractor.ambient",
+    "sounds": [
+      "magicalscepter:refractor_idle1",
+      "magicalscepter:refractor_idle2",
+      "magicalscepter:refractor_idle3",
+      "magicalscepter:refractor_idle4"
+    ]
+  },
+  "entity.refractor.celebrate": {
+    "subtitle": "subtitles.magicalscepter.entity.refractor.celebrate",
+    "sounds": [
+      "magicalscepter:refractor_idle1",
+      "magicalscepter:refractor_idle2",
+      "magicalscepter:refractor_idle3",
+      "magicalscepter:refractor_idle4"
+    ]
+  },
+  "entity.refractor.death": {
+    "subtitle": "subtitles.magicalscepter.entity.refractor.death",
+    "sounds": [
+      "magicalscepter:refractor_death2"
+    ]
+  },
+  "entity.refractor.hurt": {
+    "subtitle": "subtitles.magicalscepter.entity.refractor.hurt",
+    "sounds": [
+      "magicalscepter:refractor_hurt1",
+      "magicalscepter:refractor_hurt2",
+      "magicalscepter:refractor_hurt3"
+    ]
+  },
+  "item.magical_scepter.cast_attack_spell": {
+    "subtitle": "subtitles.magicalscepter.item.magical_scepter.cast_attack_spell",
+    "sounds": [
+      "magicalscepter:magical_scepter_cast1",
+      "magicalscepter:magical_scepter_cast2"
+    ]
+  },
+  "item.magical_scepter.cast_protect_spell": {
+    "subtitle": "subtitles.magicalscepter.item.magical_scepter.cast_protect_spell",
+    "sounds": [
+      "magicalscepter:magical_scepter_shield1"
+    ]
+  }
+}

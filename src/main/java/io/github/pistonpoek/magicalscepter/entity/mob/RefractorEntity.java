@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.entity.mob;
 
+import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -18,7 +19,6 @@ import net.minecraft.entity.raid.RaiderEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -81,22 +81,22 @@ public class RefractorEntity extends IllagerEntity {
 
     @Override
     public SoundEvent getCelebratingSound() {
-        return SoundEvents.ENTITY_ILLUSIONER_AMBIENT;
+        return ModSoundEvents.ENTITY_REFRACTOR_CELEBRATE;
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_ILLUSIONER_AMBIENT;
+        return ModSoundEvents.ENTITY_REFRACTOR_AMBIENT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_ILLUSIONER_DEATH;
+        return ModSoundEvents.ENTITY_REFRACTOR_DEATH;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_ILLUSIONER_HURT;
+        return ModSoundEvents.ENTITY_REFRACTOR_HURT;
     }
 
     @Override

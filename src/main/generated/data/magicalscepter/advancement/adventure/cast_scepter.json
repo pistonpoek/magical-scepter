@@ -7,7 +7,7 @@
           "items": "magicalscepter:magical_scepter"
         }
       },
-      "trigger": "minecraft:cast_spell"
+      "trigger": "minecraft:cast_scepter"
     }
   },
   "display": {

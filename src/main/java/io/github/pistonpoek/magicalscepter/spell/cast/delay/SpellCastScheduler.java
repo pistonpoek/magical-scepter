@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 
-import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.MinecraftServer;
@@ -46,7 +45,7 @@ public interface SpellCastScheduler {
             return false;
         }
         Timer<MinecraftServer> timer = minecraftServer.getSaveProperties().getMainWorldProperties().getScheduledEvents();
-        Collection<String> scheduledSpellCasts = getScheduleSpellCasts(caster, minecraftServer);
+        Collection<String> scheduledSpellCasts = getScheduledSpellCasts(caster, minecraftServer);
         if (scheduledSpellCasts.isEmpty()) {
             return false;
         }
@@ -57,16 +56,16 @@ public interface SpellCastScheduler {
     static String createSpellCastEventName(@NotNull LivingEntity caster,
                                            @NotNull MinecraftServer minecraftServer) {
         String spellCastEventNameFormat = "spell_cast_%d_%s";
-        Collection<String> spellCastEvents = getScheduleSpellCasts(caster, minecraftServer);
+        Collection<String> spellCastEvents = getScheduledSpellCasts(caster, minecraftServer);
         return spellCastEventNameFormat.formatted(spellCastEvents.size(), caster.getUuid().toString());
     }
 
-    static Collection<String> getScheduleSpellCasts(@NotNull LivingEntity caster,
-                                                    @NotNull MinecraftServer minecraftServer) {
+    static Collection<String> getScheduledSpellCasts(@NotNull LivingEntity caster,
+                                                     @NotNull MinecraftServer minecraftServer) {
         Timer<MinecraftServer> timer = minecraftServer.getSaveProperties().getMainWorldProperties().getScheduledEvents();
         Collection<String> spellCastEvents = new HashSet<>();
         for (String eventName : timer.getEventNames()) {
-            if (!eventName.startsWith("spell_cast")) {
+            if (!eventName.startsWith("spell_cast_")) {
                 continue;
             }
 

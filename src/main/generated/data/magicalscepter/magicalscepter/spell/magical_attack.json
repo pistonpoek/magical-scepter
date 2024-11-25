@@ -3,22 +3,6 @@
     {
       "effects": [
         {
-          "type": "magicalscepter:play_sound",
-          "pitch": {
-            "type": "minecraft:uniform",
-            "max_exclusive": 1.2,
-            "min_inclusive": 0.8
-          },
-          "sound": {
-            "sound_id": "minecraft:entity.illusioner.cast_spell"
-          },
-          "volume": 1.0
-        }
-      ]
-    },
-    {
-      "effects": [
-        {
           "type": "magicalscepter:damage",
           "amount": {
             "type": "minecraft:uniform",

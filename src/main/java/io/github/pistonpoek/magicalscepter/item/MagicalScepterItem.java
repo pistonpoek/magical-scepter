@@ -1,11 +1,15 @@
 package io.github.pistonpoek.magicalscepter.item;
 
+import io.github.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
+import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
+import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -14,6 +18,8 @@ import net.minecraft.world.World;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,12 +45,12 @@ public class MagicalScepterItem extends Item implements AttackItem {
         return ScepterContentsComponent.getScepter(itemStack).isPresent();
     }
 
-    private TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean attack) {
+    private TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean attackCast) {
         ItemStack itemStack = user.getStackInHand(hand);
         ScepterContentsComponent scepterContent =
                 ScepterContentsComponent.get(itemStack).orElse(ScepterContentsComponent.DEFAULT);
 
-        Optional<Spell> optionalSpell = (attack ?
+        Optional<Spell> optionalSpell = (attackCast ?
                 scepterContent.getAttackSpell() :
                 scepterContent.getProtectSpell()).map(RegistryEntry::value);
 
@@ -68,8 +74,9 @@ public class MagicalScepterItem extends Item implements AttackItem {
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
+        int castDuration = MagicalScepterItem.castSpell(spell, user, itemStack, attackCast, hand);
+
         if (!world.isClient()) {
-            int castDuration = spell.castSpell(user, itemStack);
             // Correct spell duration cooldown, increase cooldown for non-creative and decrease for creative players.
             if (user.getAbilities().creativeMode ^ castDuration + 10 >= spell.getCooldown()) {
                 user.getItemCooldownManager().set(this, castDuration + 10);
@@ -81,10 +88,38 @@ public class MagicalScepterItem extends Item implements AttackItem {
             }
         }
 
-        SwingType swingType = attack ? SwingType.HIT : SwingType.PROTECT;
-        ((SwingHandLivingEntity)user).swingHand(Hand.MAIN_HAND, swingType);
-
         return TypedActionResult.success(itemStack, false);
+    }
+
+    /**
+     * Cast a specified spell for a specific living entity.
+     *
+     * @param spell Spell to cast.
+     * @param caster Living entity to cast the spell for.
+     * @param itemStack Item stack that the spell is cast with.
+     * @param attackCast Truth assignment, if cast is an attack and not protect.
+     * @param hand Hand being used to cast the spell.
+     * @return Duration that the spell takes.
+     */
+    public static int castSpell(@NotNull Spell spell, @NotNull LivingEntity caster,
+                                @Nullable ItemStack itemStack,
+                                boolean attackCast, Hand hand) {
+        caster.playSound(attackCast ?
+                ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_ATTACK_SPELL :
+                ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL);
+
+        SwingType swingType = attackCast ? SwingType.HIT : SwingType.PROTECT;
+        ((SwingHandLivingEntity)caster).swingHand(hand, swingType);
+
+        if (caster.getWorld().isClient()) {
+            return 0;
+        }
+
+        if (caster instanceof ServerPlayerEntity serverPlayerEntity && itemStack != null) {
+            ModCriteria.CAST_SCEPTER.trigger(serverPlayerEntity, itemStack);
+        }
+
+        return spell.castSpell(caster);
     }
 
     public ItemStack createScepter(ItemStack stack) {

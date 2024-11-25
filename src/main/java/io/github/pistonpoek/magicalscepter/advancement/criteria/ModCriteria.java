@@ -5,7 +5,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
 public class ModCriteria {
-    public static final CastSpellCriterion CAST_SPELL = register("cast_spell", new CastSpellCriterion());
+    public static final CastSpellCriterion CAST_SCEPTER = register("cast_scepter", new CastSpellCriterion());
     public static final InfuseScepterCriterion INFUSE_SCEPTER = register("infuse_scepter", new InfuseScepterCriterion());
 
     public static void init() {
