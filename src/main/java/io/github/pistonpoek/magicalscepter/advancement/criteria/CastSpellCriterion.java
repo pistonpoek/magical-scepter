@@ -32,11 +32,11 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
         );
 
         public static AdvancementCriterion<CastSpellCriterion.Conditions> create(Optional<ItemPredicate> item) {
-            return ModCriteria.CAST_SPELL.create(new CastSpellCriterion.Conditions(Optional.empty(), item));
+            return ModCriteria.CAST_SCEPTER.create(new CastSpellCriterion.Conditions(Optional.empty(), item));
         }
 
         public static AdvancementCriterion<CastSpellCriterion.Conditions> create(ItemConvertible item) {
-            return ModCriteria.CAST_SPELL
+            return ModCriteria.CAST_SCEPTER
                     .create(new CastSpellCriterion.Conditions(Optional.empty(), Optional.of(ItemPredicate.Builder.create().items(item).build())));
         }
 

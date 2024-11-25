@@ -74,11 +74,6 @@ public class Spells {
         register(registry, MAGICAL_ATTACK_KEY, Spell.builder(50,
                         textOf("magical_attack"))
             .addCast(SpellCast.builder()
-                    .addEffect(new PlaySoundSpellEffect(
-                            RegistryEntry.of(SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL),
-                            ConstantFloatProvider.create(1.0F),
-                            UniformFloatProvider.create(0.8F, 1.2F))))
-            .addCast(SpellCast.builder()
                     .addEffect(
                             new DamageSpellEffect(UniformFloatProvider.create(1.0F, 3.0F),
                                     damageTypeLookup.getOrThrow(DamageTypes.MAGIC))
@@ -106,10 +101,6 @@ public class Spells {
         register(registry, MAGICAL_RESISTANCE_KEY, Spell.builder(50,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("resistance"))))
             .addCast(SpellCast.builder()
-                    .addEffect(new PlaySoundSpellEffect(
-                            RegistryEntry.of(SoundEvents.ENTITY_ILLUSIONER_CAST_SPELL),
-                            ConstantFloatProvider.create(1.0F),
-                            UniformFloatProvider.create(0.8F, 1.2F)))
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.RESISTANCE),
                             ConstantFloatProvider.create(10.0F),

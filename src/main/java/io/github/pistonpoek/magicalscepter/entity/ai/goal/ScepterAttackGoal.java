@@ -3,6 +3,8 @@ package io.github.pistonpoek.magicalscepter.entity.ai.goal;
 import java.util.EnumSet;
 import java.util.Optional;
 
+import io.github.pistonpoek.magicalscepter.item.MagicalScepterItem;
+import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.mob.HostileEntity;
@@ -135,20 +137,21 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
                 Optional<Spell> protectSpell = ScepterContentsComponent.getProtectSpell(scepterStack);
 
                 Optional<Spell> scepterSpell;
+                final boolean attackCast;
                 if ((this.actor.age - this.actor.getLastAttackedTime() <= 20 ||
                     squaredDistance < squaredRange * 0.50F) && this.actor.getRandom().nextBoolean()) {
+                    attackCast = protectSpell.isEmpty();
                     scepterSpell = protectSpell.or(() -> attackSpell);
                 } else {
+                    attackCast = attackSpell.isPresent();
                     scepterSpell = attackSpell.or(() -> protectSpell);
                 }
 
                 this.cooldown = this.attackInterval;
 
                 scepterSpell.ifPresent(spell -> {
-                    cooldown += spell.castSpell(this.actor, scepterStack);
-
-                    SwingType swingType = (scepterSpell == attackSpell) ? SwingType.HIT : SwingType.PROTECT;
-                    ((SwingHandLivingEntity)this.actor).swingHand(Hand.MAIN_HAND, swingType);
+                    cooldown += MagicalScepterItem.castSpell(spell, this.actor,
+                            scepterStack, attackCast, Hand.MAIN_HAND);
                 });
             }
         }

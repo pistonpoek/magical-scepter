@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import io.github.pistonpoek.magicalscepter.item.MagicalScepterItem;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
@@ -75,7 +76,7 @@ public class SpellCommand {
 
         for (Entity entity : targets) {
             if (entity instanceof LivingEntity livingEntity) {
-                spellInstance.castSpell(livingEntity, null);
+                spellInstance.castSpell(livingEntity);
                 successes++;
             }
         }

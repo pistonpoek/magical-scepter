@@ -3,18 +3,6 @@
     {
       "effects": [
         {
-          "type": "magicalscepter:play_sound",
-          "pitch": {
-            "type": "minecraft:uniform",
-            "max_exclusive": 1.2,
-            "min_inclusive": 0.8
-          },
-          "sound": {
-            "sound_id": "minecraft:entity.illusioner.cast_spell"
-          },
-          "volume": 1.0
-        },
-        {
           "type": "magicalscepter:apply_mob_effect",
           "max_amplifier": 0.0,
           "max_duration": 12.5,
