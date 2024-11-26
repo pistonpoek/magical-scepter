@@ -2,6 +2,7 @@ package io.github.pistonpoek.magicalscepter;
 
 import io.github.pistonpoek.magicalscepter.command.SpellCommand;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
+import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -39,6 +40,7 @@ public class MagicalScepter implements ModInitializer {
 		ModLootFunctionTypes.init();
 		ModPlayPackets.init();
 		ModCriteria.init();
+		ModGameEvent.init();
 		ModSoundEvents.init();
 
 		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastScheduler::afterDeath);

@@ -2,16 +2,14 @@ package io.github.pistonpoek.magicalscepter.spell;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.*;
-import io.github.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +57,8 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
             int castTime = cast.apply(caster);
             duration = Math.max(duration, castTime);
         }
+
+        caster.emitGameEvent(ModGameEvent.SPELL_CAST);
 
         return duration;
     }
