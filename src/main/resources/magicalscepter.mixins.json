@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "LivingEntityMixin",
-    "ParrotEntityMixin"
+    "ParrotEntityMixin",
+    "VibrationsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

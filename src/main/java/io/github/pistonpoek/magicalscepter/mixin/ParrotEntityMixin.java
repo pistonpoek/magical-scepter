@@ -8,6 +8,9 @@ import net.minecraft.sound.SoundEvent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
@@ -17,7 +20,8 @@ public class ParrotEntityMixin {
     @Final
     static Map<EntityType<?>, SoundEvent> MOB_SOUNDS;
 
-    static {
+    @Inject(method = "<clinit>", at = @At("TAIL"))
+    private static void addMobSounds(CallbackInfo ci) {
         MOB_SOUNDS.put(ModEntityType.REFRACTOR, ModSoundEvents.ENTITY_PARROT_IMITATE_REFRACTOR);
     }
 }
