@@ -38,12 +38,6 @@ public class MagicalScepterItem extends Item implements AttackItem {
         return use(world, user, Hand.MAIN_HAND, true);
     }
 
-    @Override
-    public boolean preventAttack(PlayerEntity user) { // TODO rename method to be more clear
-        ItemStack itemStack = user.getStackInHand(Hand.MAIN_HAND);
-        return ScepterContentsComponent.getScepter(itemStack).isPresent();
-    }
-
     private TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean attackCast) {
         ItemStack itemStack = user.getStackInHand(hand);
         ScepterContentsComponent scepterContent =
@@ -61,7 +55,6 @@ public class MagicalScepterItem extends Item implements AttackItem {
 
         if (!user.getAbilities().creativeMode) {
             if (!scepterContent.hasEnoughExperience(user)) {
-                // TODO maybe play sound effect that there is not enough xp to cast the spell.
                 return TypedActionResult.fail(itemStack);
             }
 

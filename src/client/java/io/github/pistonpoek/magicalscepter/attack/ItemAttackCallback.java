@@ -38,8 +38,8 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
             processAttackItem(client, player, item);
         }
 
-        // Return true to only allow attack items to attack with use ability.
-        return attackItem.preventAttack(player);
+        // Return true to prevent other attack actions from happening.
+        return true;
     }
 
     private void processAttackItem(MinecraftClient client, ClientPlayerEntity player, Item item) {

@@ -22,8 +22,6 @@ public interface ShootProjectileSpellEffect extends SpellEffect {
         Registry.register(registry, ModIdentifier.of("wither_skull"), WitherSkullSpellProjectile.CODEC);
     }
 
-    // TODO add owner option to summoning?
-
     MapCodec<? extends ShootProjectileSpellEffect> getProjectileCodec();
 
     default MapCodec<? extends SpellEffect> getCodec() {

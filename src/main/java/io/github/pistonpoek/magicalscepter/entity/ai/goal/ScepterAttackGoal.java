@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import java.util.Optional;
 
 import io.github.pistonpoek.magicalscepter.item.MagicalScepterItem;
-import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.mob.HostileEntity;
@@ -12,8 +11,6 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.item.SwingHandLivingEntity;
-import io.github.pistonpoek.magicalscepter.item.SwingType;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.util.LivingEntityHand;
@@ -59,7 +56,6 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
     public void start() {
         super.start();
         this.actor.setAttacking(true);
-        // TODO maybe play sound that the refractor takes of their hood.
     }
 
     @Override
