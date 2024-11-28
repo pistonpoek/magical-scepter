@@ -72,7 +72,6 @@ public class Spells {
         Function<EntityType<?>, RegistryEntry.Reference<EntityType<?>>> entityTypeReferenceFunction = entityType ->
                 entityTypeLookup.getOrThrow(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), EntityType.getId(entityType)));
 
-        // TODO maybe the color 13533238 (orangy) for attack?
         register(registry, MAGICAL_ATTACK_KEY, Spell.builder(50,
                         textOf("magical_attack"))
             .addCast(SpellCast.builder()
@@ -436,7 +435,6 @@ public class Spells {
             )
         );
 
-        // TODO add start offset, so we don't target ourselves.
         register(registry, WARDEN_SONIC_BOOM_KEY, Spell.builder(50,
                         textOf("sonic_boom"))
             .addCast(SpellCast.builder()

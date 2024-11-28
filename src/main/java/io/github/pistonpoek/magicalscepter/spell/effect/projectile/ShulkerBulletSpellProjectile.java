@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.spell.effect.projectile;
 
 import com.mojang.serialization.MapCodec;
+import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -9,7 +10,6 @@ import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
@@ -21,16 +21,12 @@ public class ShulkerBulletSpellProjectile implements ShootProjectileSpellEffect 
 
     @Override
     public void apply(SpellContext context) {
-        Vec3d rotation = context.getRotationVector();
         ServerWorld world = context.getWorld();
         Vec3d position = context.position();
         LivingEntity caster = context.caster();
         Entity target = context.target();
 
-        Direction.Axis axis = Direction.Axis.X;
-        if (MathHelper.abs((float) rotation.getX()) < MathHelper.abs((float) rotation.getZ())) {
-            axis = Direction.Axis.Z;
-        }
+        Direction.Axis axis = RotationSource.getDirection(context).getAxis();
 
         ShulkerBulletEntity projectile = new ShulkerBulletEntity(world, caster,
                 getTarget(caster, target), axis);

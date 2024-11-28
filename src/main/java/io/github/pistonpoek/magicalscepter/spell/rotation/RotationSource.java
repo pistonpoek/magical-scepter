@@ -8,6 +8,7 @@ import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
+import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -24,16 +25,14 @@ public interface RotationSource extends SpellContextSource {
         Registry.register(registry, ModIdentifier.of("mixed"), MixedRotationSource.CODEC);
         Registry.register(registry, ModIdentifier.of("random"), RandomRotationSource.CODEC);
         Registry.register(registry, ModIdentifier.of("facing"), FacingLocationRotationSource.CODEC);
-        // TODO Movement (entity.getMovement() form vector to pitch yaw??)
-        // TODO facing target
     }
 
     Pair<Float, Float> getRotation(@NotNull SpellContext context);
 
     @Override
-    default SpellContext getContext(@NotNull SpellContext spellContext) {
-        Pair<Float, Float> rotationPair = getRotation(spellContext);
-        return new SpellContext(spellContext, rotationPair.getLeft(), rotationPair.getRight());
+    default SpellContext getContext(@NotNull SpellContext context) {
+        Pair<Float, Float> rotationPair = getRotation(context);
+        return new SpellContext(context, rotationPair.getLeft(), rotationPair.getRight());
     }
 
     default float getPitch(@NotNull SpellContext context) {
@@ -42,6 +41,10 @@ public interface RotationSource extends SpellContextSource {
 
     default float getYaw(@NotNull SpellContext context) {
         return getRotation(context).getRight();
+    }
+
+    static Direction getDirection(@NotNull SpellContext context) {
+        return Direction.getFacing(context.getRotationVector());
     }
 
     MapCodec<? extends RotationSource> getCodec();

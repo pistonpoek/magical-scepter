@@ -24,13 +24,6 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("move"), MoveSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("rotate"), RotateSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("run_function"), RunFunctionSpellEffect.CODEC);
-
-        // done? TODO add motion (Rotation rotation, FloatProvider power, bool consider_knockback_resistance)
-
-        // TODO add explode (power, ...) see ExplodeEnchantmentEffect?
-        // TODO ignite (duration)
-
-        // TODO Alter blocks?
     }
 
     void apply(SpellContext context);

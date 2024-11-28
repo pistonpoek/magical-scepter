@@ -23,8 +23,6 @@ public interface PositionSource extends SpellContextSource {
         Registry.register(registry, ModIdentifier.of("relative"), RelativePositionSource.CODEC);
         Registry.register(registry, ModIdentifier.of("mixed"), MixedPositionSource.CODEC);
         Registry.register(registry, ModIdentifier.of("random"), RandomPositionSource.CODEC);
-        // TODO entity projectile anchor?
-        // done? TODO random box cast (Allow scaled bounding box of entity?)
     }
 
     Vec3d getPosition(@NotNull SpellContext context);

@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.EvokerFangsEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.VexEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryCodecs;
@@ -39,7 +41,7 @@ public record SummonEntitySpellEffect(
                             SpellEffect.CODEC.listOf().fieldOf("effects").forGetter(SummonEntitySpellEffect::effects),
                             NbtCompound.CODEC.optionalFieldOf("nbt").forGetter(SummonEntitySpellEffect::nbt)
                     ).apply(instance, SummonEntitySpellEffect::new)
-    ); // TODO add validation that there is at least one entity type.
+    );
 
     @Override
     public void apply(SpellContext context) {
@@ -80,7 +82,6 @@ public record SummonEntitySpellEffect(
             return summonedEntity;
         });
 
-        // TODO add custom SpawnReason?
         if (entity instanceof MobEntity mobEntity) {
             mobEntity.initialize(world, world.getLocalDifficulty(entity.getBlockPos()), SpawnReason.MOB_SUMMONED, null);
         }
@@ -96,17 +97,17 @@ public record SummonEntitySpellEffect(
             }
 
             LivingEntity caster = context.caster();
-            if (entity instanceof ProjectileEntity) {
-                ((ProjectileEntity)entity).setOwner(caster);
+            if (entity instanceof ProjectileEntity projectileEntity) {
+                projectileEntity.setOwner(caster);
             }
-            if (entity instanceof AreaEffectCloudEntity) {
-                ((AreaEffectCloudEntity)entity).setOwner(caster);
+            if (entity instanceof AreaEffectCloudEntity areaEffectCloudEntity) {
+                areaEffectCloudEntity.setOwner(caster);
             }
-            if (entity instanceof EvokerFangsEntity) {
-                ((EvokerFangsEntity)entity).setOwner(caster);
+            if (entity instanceof EvokerFangsEntity evokerFangsEntity) {
+                evokerFangsEntity.setOwner(caster);
             }
-            if (entity instanceof VexEntity && caster instanceof MobEntity) {
-                ((VexEntity)entity).setOwner((MobEntity)caster);
+            if (entity instanceof VexEntity vexEntity && caster instanceof MobEntity mobCaster) {
+                vexEntity.setOwner(mobCaster);
             }
 
             SpellContext summonedContext = new SpellContext(context, entity);
