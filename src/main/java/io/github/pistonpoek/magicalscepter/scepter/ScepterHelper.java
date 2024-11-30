@@ -34,7 +34,7 @@ public class ScepterHelper {
     }
 
     public static Registry<Scepter> getScepterRegistry(World world) {
-        return world.getRegistryManager().get(ModRegistryKeys.SCEPTER);
+        return world.getRegistryManager().getOrThrow(ModRegistryKeys.SCEPTER);
     }
 
     public static Optional<ScepterContentsComponent> getScepterContentsComponent(PlayerEntity player) {

@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.AdvancementFrame;
-import net.minecraft.data.server.advancement.AdvancementTabGenerator;
+import net.minecraft.data.advancement.AdvancementTabGenerator;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
@@ -30,7 +30,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
     @Override
     public void generateAdvancement(RegistryWrapper.WrapperLookup registryLookup, Consumer<AdvancementEntry> consumer) {
-        RegistryEntryLookup<Scepter> scepterRegistryLookup = registryLookup.createRegistryLookup().getOrThrow(ModRegistryKeys.SCEPTER);
+        RegistryEntryLookup<Scepter> scepterRegistryLookup = registryLookup.getOrThrow(ModRegistryKeys.SCEPTER);
 
         AdvancementEntry adventureRootAdvancementReference = AdvancementTabGenerator.reference("adventure/root");
         AdvancementEntry castScepterAdvancement = Advancement.Builder.create().parent(adventureRootAdvancementReference)
@@ -67,7 +67,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
     protected static Advancement.Builder requireListedSceptersInfused(
             Advancement.Builder builder, RegistryWrapper.WrapperLookup registryLookup, List<RegistryKey<Scepter>> scepters
     ) {
-        RegistryEntryLookup<Scepter> scepterRegistryLookup = registryLookup.getWrapperOrThrow(ModRegistryKeys.SCEPTER);
+        RegistryEntryLookup<Scepter> scepterRegistryLookup = registryLookup.getOrThrow(ModRegistryKeys.SCEPTER);
         for (RegistryKey<Scepter> registryKey : scepters) {
             builder.criterion(
                     registryKey.getValue().toString(),

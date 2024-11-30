@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Conditions> {
@@ -37,7 +38,7 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
 
         public static AdvancementCriterion<CastSpellCriterion.Conditions> create(ItemConvertible item) {
             return ModCriteria.CAST_SCEPTER
-                    .create(new CastSpellCriterion.Conditions(Optional.empty(), Optional.of(ItemPredicate.Builder.create().items(item).build())));
+                    .create(new CastSpellCriterion.Conditions(Optional.empty(), Optional.of(ItemPredicate.Builder.create().items(Registries.ITEM, item).build())));
         }
 
         public boolean matches(ItemStack stack) {

@@ -31,11 +31,35 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
+	runs {
+		create("datagen") {
+			client()
 
+			name "Mod Data Generation"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${project.file("src/main/generated")}"
+			vmArg "-Dfabric-api.datagen.modid=magicalscepter"
+			vmArg "-Dporting_lib.datagen.existing_resources=${project.file("src/main/resources")}"
+
+			environmentVariable("DATAGEN", "TRUE")
+		}
+	}
 }
 
 fabricApi {
-	configureDataGeneration()
+	configureDataGeneration {
+		createRunConfiguration = false
+	}
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDirs += [
+					project.file("src/main/generated")
+			]
+		}
+	}
 }
 
 dependencies {
@@ -48,7 +72,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// JsonPatcher for modifying vanilla json files in mod compatible way.
-	modImplementation(include("com.github.mattidragon:jsonpatcher:${project.jsonpatcher_version}"))
+//	modImplementation(include("com.github.mattidragon:jsonpatcher:${project.jsonpatcher_version}"))
 }
 
 processResources {

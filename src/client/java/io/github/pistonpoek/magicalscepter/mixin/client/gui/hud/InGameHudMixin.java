@@ -6,13 +6,16 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -22,12 +25,17 @@ import java.util.Optional;
 @Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
+    @Final
     @Shadow private MinecraftClient client;
 
-    private static final Identifier EXPERIENCE_BAR_COST_TEXTURE = ModIdentifier.of("hud/experience_bar_cost");
-    private static final Identifier EXPERIENCE_BAR_USE_TEXTURE = ModIdentifier.of("hud/experience_bar_use");
-    private static final int EXPERIENCE_BAR_WIDTH = 182;
-    private static final int EXPERIENCE_BAR_HEIGHT = 5;
+    @Unique
+    private static final Identifier magical_scepter$EXPERIENCE_BAR_COST_TEXTURE = ModIdentifier.of("hud/experience_bar_cost");
+    @Unique
+    private static final Identifier magical_scepter$EXPERIENCE_BAR_USE_TEXTURE = ModIdentifier.of("hud/experience_bar_use");
+    @Unique
+    private static final int magical_scepter$EXPERIENCE_BAR_WIDTH = 182;
+    @Unique
+    private static final int magical_scepter$EXPERIENCE_BAR_HEIGHT = 5;
 
     @Inject(method = "renderExperienceBar(Lnet/minecraft/client/gui/DrawContext;I)V",
             at = @At(
@@ -57,23 +65,24 @@ public abstract class InGameHudMixin {
 
         if (scepterContents.hasEnoughExperience(this.client.player)) {
             float use_progress = scepterContents.getExperienceCost() / (float)this.client.player.getNextLevelExperience();
-            int use_part = Math.round(use_progress * (EXPERIENCE_BAR_WIDTH + 1));
-            renderExperienceBarSection(context, EXPERIENCE_BAR_USE_TEXTURE, x, y, progress - use_part, progress);
+            int use_part = Math.round(use_progress * (magical_scepter$EXPERIENCE_BAR_WIDTH + 1));
+            magical_scepter$renderExperienceBarSection(context, magical_scepter$EXPERIENCE_BAR_USE_TEXTURE, x, y, progress - use_part, progress);
         } else {
             float cost_progress = (scepterContents.getExperienceCost() - PlayerExperience.getTotalExperience(this.client.player))
                     / (float)this.client.player.getNextLevelExperience();
-            int cost_part = Math.round(cost_progress * (EXPERIENCE_BAR_WIDTH + 1));
-            renderExperienceBarSection(context, EXPERIENCE_BAR_COST_TEXTURE, x, y, progress, progress + cost_part);
+            int cost_part = Math.round(cost_progress * (magical_scepter$EXPERIENCE_BAR_WIDTH + 1));
+            magical_scepter$renderExperienceBarSection(context, magical_scepter$EXPERIENCE_BAR_COST_TEXTURE, x, y, progress, progress + cost_part);
         }
     }
 
-    private void renderExperienceBarSection(DrawContext context, Identifier texture,
+    @Unique
+    private void magical_scepter$renderExperienceBarSection(DrawContext context, Identifier texture,
                                             int x, int y, int start, int end) {
-        int startX = Math.clamp(start, 0, EXPERIENCE_BAR_WIDTH);
-        int width = Math.clamp(end - startX, 0, EXPERIENCE_BAR_WIDTH);
+        int startX = Math.clamp(start, 0, magical_scepter$EXPERIENCE_BAR_WIDTH);
+        int width = Math.clamp(end - startX, 0, magical_scepter$EXPERIENCE_BAR_WIDTH);
         RenderSystem.enableBlend();
-        context.drawGuiTexture(texture, EXPERIENCE_BAR_WIDTH, EXPERIENCE_BAR_HEIGHT,
-                startX, 0, x + startX, y, width, EXPERIENCE_BAR_HEIGHT);
+        context.drawGuiTexture(RenderLayer::getGuiTextured, texture, magical_scepter$EXPERIENCE_BAR_WIDTH, magical_scepter$EXPERIENCE_BAR_HEIGHT,
+                startX, 0, x + startX, y, width, magical_scepter$EXPERIENCE_BAR_HEIGHT);
         RenderSystem.disableBlend();
     }
 }

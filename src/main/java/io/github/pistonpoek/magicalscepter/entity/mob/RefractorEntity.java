@@ -16,6 +16,7 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.raid.RaiderEntity;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -54,9 +55,9 @@ public class RefractorEntity extends IllagerEntity {
 
     public static DefaultAttributeContainer.Builder createRefractorAttributes() {
         return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5)
-                .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 12.0)
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 32.0);
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.5)
+                .add(EntityAttributes.FOLLOW_RANGE, 12.0)
+                .add(EntityAttributes.MAX_HEALTH, 32.0);
     }
 
     @Override
@@ -69,8 +70,8 @@ public class RefractorEntity extends IllagerEntity {
 
     @Override
     protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
-        RegistryEntry<Scepter> magicalScepter = this.getRegistryManager().get(ModRegistryKeys.SCEPTER)
-                .getEntry(Scepters.MAGICAL_KEY).orElseThrow();
+        Registry<Scepter> scepterRegistry = this.getRegistryManager().getOrThrow(ModRegistryKeys.SCEPTER);
+        RegistryEntry<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
         this.equipStack(EquipmentSlot.MAINHAND, ScepterHelper.createScepter(magicalScepter));
     }
 

@@ -20,8 +20,8 @@ public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
     }
 
     @Override
-    protected void configure(BiConsumer<Identifier, Scepter> provider, RegistryWrapper.WrapperLookup lookup) {
-        RegistryEntryLookup<Scepter> scepterLookup = lookup.createRegistryLookup().getOrThrow(ModRegistryKeys.SCEPTER);
+    protected void configure(BiConsumer<Identifier, Scepter> provider, RegistryWrapper.WrapperLookup registries) {
+        RegistryEntryLookup<Scepter> scepterLookup = registries.getOrThrow(ModRegistryKeys.SCEPTER);
 
         for (RegistryKey<Scepter> scepterKey: Scepters.SCEPTER_KEYS) {
             addScepter(provider, scepterLookup, scepterKey);

@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "magicalscepter:item/magical_scepter",
+    "tints": [
+      {
+        "type": "magicalscepter:scepter",
+        "default": -4424612
+      }
+    ]
+  }
+}

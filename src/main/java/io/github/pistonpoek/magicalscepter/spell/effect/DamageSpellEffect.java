@@ -20,8 +20,10 @@ public record DamageSpellEffect(FloatProvider amount, RegistryEntry<DamageType> 
 
     @Override
     public void apply(SpellContext context) {
-        MagicalScepter.LOGGER.info("Damaging effect applied to " + context.target().toString());
-        context.target().damage(new DamageSource(damageType, context.caster()), amount.get(context.getRandom()));
+        MagicalScepter.LOGGER.info("Damaging effect applied to {}", context.target().toString());
+        context.target().damage(context.getWorld(),
+                new DamageSource(damageType, context.caster()),
+                amount.get(context.getRandom()));
     }
 
     @Override

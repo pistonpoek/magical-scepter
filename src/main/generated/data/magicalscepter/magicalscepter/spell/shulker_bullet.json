@@ -18,6 +18,13 @@
           "type": "magicalscepter:shoot_projectile",
           "projectile": "magicalscepter:shulker_bullet"
         }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:target",
+          "range": 16.0,
+          "target": "entity"
+        }
       ]
     }
   ],

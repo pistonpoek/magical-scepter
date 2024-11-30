@@ -12,7 +12,7 @@ import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 public class ModStatusEffects {
     public static final RegistryEntry<StatusEffect> STABILITY = ModStatusEffects.register("stability",
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x074857)
-                    .addAttributeModifier(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE,
+                    .addAttributeModifier(EntityAttributes.KNOCKBACK_RESISTANCE,
                         ModIdentifier.of("stability"),
                         0.1f, EntityAttributeModifier.Operation.ADD_VALUE));
 

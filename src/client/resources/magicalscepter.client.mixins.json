@@ -3,9 +3,11 @@
   "package": "io.github.pistonpoek.magicalscepter.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "data.ItemModelGeneratorMixin",
     "gui.hud.InGameHudMixin",
     "render.entity.model.BipedEntityModelMixin",
-    "render.entity.model.IllagerEntityModelMixin"
+    "render.entity.model.IllagerEntityModelMixin",
+    "render.item.tint.TintSourceTypesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

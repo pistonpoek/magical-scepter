@@ -33,10 +33,10 @@ public record TeleportSpellEffect()
         Vec3d targetPos = target.getPos();
 
         BlockPos blockPos = BlockPos.ofFloored(positionX, positionY, positionZ);
-        target.teleport(world, blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, Set.of(), target.getYaw(), target.getPitch());
+        target.teleport(world, blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, Set.of(), target.getYaw(), target.getPitch(), true);
 
         if (!world.isSpaceEmpty(target) || world.containsFluid(target.getBoundingBox())) {
-            target.teleport(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), Set.of(), target.getYaw(), target.getPitch());
+            target.teleport(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), Set.of(), target.getYaw(), target.getPitch(), true);
             return;
         }
 

@@ -1,4 +1,5 @@
 {
-  "type": "magicalscepter:crafting_special_magical_scepter",
-  "category": "equipment"
+  "type": "magicalscepter:crafting_magical_scepter",
+  "category": "equipment",
+  "scepter": "magicalscepter:magical"
 }
