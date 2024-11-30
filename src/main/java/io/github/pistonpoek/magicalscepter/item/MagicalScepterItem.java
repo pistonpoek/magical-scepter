@@ -11,8 +11,8 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
@@ -29,16 +29,16 @@ public class MagicalScepterItem extends Item implements AttackItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         return use(world, user, hand, false);
     }
 
     @Override
-    public TypedActionResult<ItemStack> attack(World world, PlayerEntity user) {
+    public ActionResult attack(World world, PlayerEntity user) {
         return use(world, user, Hand.MAIN_HAND, true);
     }
 
-    private TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand, boolean attackCast) {
+    private ActionResult use(World world, PlayerEntity user, Hand hand, boolean attackCast) {
         ItemStack itemStack = user.getStackInHand(hand);
         ScepterContentsComponent scepterContent =
                 ScepterContentsComponent.get(itemStack).orElse(ScepterContentsComponent.DEFAULT);
@@ -48,21 +48,21 @@ public class MagicalScepterItem extends Item implements AttackItem {
                 scepterContent.getProtectSpell()).map(RegistryEntry::value);
 
         if (optionalSpell.isEmpty()) {
-            return TypedActionResult.pass(itemStack);
+            return ActionResult.PASS;
         }
 
         Spell spell = optionalSpell.get();
 
         if (!user.getAbilities().creativeMode) {
             if (!scepterContent.hasEnoughExperience(user)) {
-                return TypedActionResult.fail(itemStack);
+                return ActionResult.FAIL;
             }
 
             int experienceCost = scepterContent.getExperienceCost();
             user.addExperience(-experienceCost);
             user.addScore(experienceCost); // Compensating for lost score in adding experience cost.
         }
-        user.getItemCooldownManager().set(this, spell.getCooldown());
+        user.getItemCooldownManager().set(itemStack, spell.getCooldown());
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
@@ -71,7 +71,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
         if (!world.isClient()) {
             // Correct spell duration cooldown, increase cooldown for non-creative and decrease for creative players.
             if (user.getAbilities().creativeMode ^ castDuration + 10 >= spell.getCooldown()) {
-                user.getItemCooldownManager().set(this, castDuration + 10);
+                user.getItemCooldownManager().set(itemStack, castDuration + 10);
             }
 
             itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
@@ -80,7 +80,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
             }
         }
 
-        return TypedActionResult.success(itemStack, false);
+        return ActionResult.SUCCESS.withNewHandStack(itemStack);
     }
 
     /**
@@ -122,22 +122,14 @@ public class MagicalScepterItem extends Item implements AttackItem {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
         ScepterContentsComponent.buildTooltip(tooltip::add, stack);
     }
 
     @Override
-    public String getTranslationKey(ItemStack stack) {
-        String key = ScepterContentsComponent.getTranslationKey(stack);
-        if (key.equals("")) {
-            return this.getTranslationKey();
-        }
-        return String.join(".", this.getTranslationKey(), key);
+    public Text getName(ItemStack stack) {
+        ScepterContentsComponent scepterContentsComponent = stack.get(ModDataComponentTypes.SCEPTER_CONTENTS);
+        return scepterContentsComponent != null ?
+                scepterContentsComponent.getName(this.translationKey + ".") : super.getName(stack);
     }
-
 }

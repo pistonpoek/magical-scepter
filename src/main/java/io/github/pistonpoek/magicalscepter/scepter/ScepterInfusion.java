@@ -4,9 +4,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.loot.context.LootWorldContext;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -86,13 +86,13 @@ public class ScepterInfusion {
      * @return Loot context constructed with values from the entity and damage source.
      */
     private static LootContext getLootContext(LivingEntity entity, DamageSource damageSource) {
-        LootContextParameterSet.Builder builder = new LootContextParameterSet.Builder((ServerWorld)entity.getWorld())
+        LootWorldContext.Builder builder = new LootWorldContext.Builder((ServerWorld)entity.getWorld())
                 .add(LootContextParameters.THIS_ENTITY, entity)
                 .add(LootContextParameters.ORIGIN, entity.getPos())
                 .add(LootContextParameters.DAMAGE_SOURCE, damageSource)
                 .addOptional(LootContextParameters.ATTACKING_ENTITY, damageSource.getAttacker())
                 .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, damageSource.getSource());
-        LootContextParameterSet lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
+        LootWorldContext lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
         return new LootContext.Builder(lootContextParameterSet).build(Optional.empty());
     }
 }

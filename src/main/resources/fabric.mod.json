@@ -16,13 +16,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-          "io.github.pistonpoek.magicalscepter.MagicalScepter"
+          	"io.github.pistonpoek.magicalscepter.MagicalScepter"
 		],
 		"client": [
 			"io.github.pistonpoek.magicalscepter.MagicalScepterClient"
 		],
 		"fabric-datagen": [
-          "io.github.pistonpoek.magicalscepter.datagen.MagicalScepterDataGenerator"
+			"io.github.pistonpoek.magicalscepter.datagen.MagicalScepterDataGeneratorClient"
 		]
 	},
 	"mixins": [
@@ -33,8 +33,8 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.5",
-		"minecraft": "~1.21.1",
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.21.4-1.21.5",
 		"java": ">=21",
 		"fabric-api": "*"
 	},

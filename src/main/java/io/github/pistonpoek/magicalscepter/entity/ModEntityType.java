@@ -8,6 +8,8 @@ import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 
 public class ModEntityType {
     public static void init() {
@@ -24,6 +26,7 @@ public class ModEntityType {
         );
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
-        return Registry.register(Registries.ENTITY_TYPE, ModIdentifier.of(id), type.build(id));
+        return Registry.register(Registries.ENTITY_TYPE, ModIdentifier.of(id),
+                type.build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, ModIdentifier.of(id))));
     }
 }

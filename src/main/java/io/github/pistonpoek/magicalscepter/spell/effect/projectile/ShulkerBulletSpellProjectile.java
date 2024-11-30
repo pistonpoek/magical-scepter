@@ -4,17 +4,12 @@ import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ShulkerBulletSpellProjectile implements ShootProjectileSpellEffect {
     public static final MapCodec<ShulkerBulletSpellProjectile> CODEC = MapCodec.unit(ShulkerBulletSpellProjectile::new);
@@ -39,13 +34,7 @@ public class ShulkerBulletSpellProjectile implements ShootProjectileSpellEffect 
             target = caster.getLastAttacker();
         }
         if (target == null || !EntityPredicates.VALID_ENTITY.test(target)) {
-            List<LivingEntity> targets = caster.getEntityWorld().getOtherEntities(caster,
-                    Box.of(caster.getEyePos(), 64, 64, 64),
-                    entity -> entity instanceof LivingEntity).stream()
-                    .map(entity -> (LivingEntity)entity).collect(Collectors.toList());
-
-            return caster.getEntityWorld().getClosestEntity(targets, TargetPredicate.createAttackable(),
-                    caster, caster.getX(), caster.getY(), caster.getZ());
+            return null; // TODO figure out way to get proper target for shulker.
         }
 
         return target;

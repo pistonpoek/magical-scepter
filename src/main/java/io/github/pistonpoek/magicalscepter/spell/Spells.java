@@ -408,6 +408,8 @@ public class Spells {
         register(registry, SHULKER_BULLET_KEY, Spell.builder(50,
                         textOf("shulker_bullet"))
             .addCast(SpellCast.builder()
+                    .addTransformer(TargetCastTransformer.builder(
+                            TargetCastTransformer.Target.ENTITY, 16.0).require(true).build())
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_SHULKER_SHOOT),
                             ConstantFloatProvider.create(1.0F),

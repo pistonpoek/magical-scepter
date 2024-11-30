@@ -62,7 +62,7 @@ public record SummonEntitySpellEffect(
             return;
         }
 
-        Registry<EntityType<?>> entityTypeRegistry = world.getRegistryManager().get(RegistryKeys.ENTITY_TYPE);
+        Registry<EntityType<?>> entityTypeRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENTITY_TYPE);
         EntityType<?> entityType = optionalEntityType.get().value();
         if (!entityType.isSummonable()) {
             MagicalScepter.LOGGER.info("Failed to summon entity spell effect as entity type is not summonable");
@@ -77,7 +77,7 @@ public record SummonEntitySpellEffect(
 
         NbtCompound nbtCompound = nbt.orElse(new NbtCompound());
         nbtCompound.putString("id", entityTypeIdentifier.toString());
-        Entity entity = EntityType.loadEntityWithPassengers(nbtCompound, world, summonedEntity -> {
+        Entity entity = EntityType.loadEntityWithPassengers(nbtCompound, world, SpawnReason.MOB_SUMMONED, summonedEntity -> {
             summonedEntity.refreshPositionAndAngles(position.x, position.y, position.z, context.yaw(), context.pitch());
             return summonedEntity;
         });

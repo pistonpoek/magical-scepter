@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.MathHelper;
 import io.github.pistonpoek.magicalscepter.item.AttackItem;
 import io.github.pistonpoek.magicalscepter.network.packet.AttackItemPayload;
@@ -32,7 +31,8 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         }
 
         ActionResult actionResult = attackWithItem(player);
-        if (actionResult.shouldSwingHand()) {
+        // TODO SUCCESS SERVER should also swing hand.
+        if (actionResult instanceof ActionResult.Success) {
             player.swingHand(Hand.MAIN_HAND, true);
         }
 
@@ -44,7 +44,7 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
 
         if (player.isSpectator()) {
             return ActionResult.PASS;
-        } else if (player.getItemCooldownManager().isCoolingDown(stack.getItem())) {
+        } else if (player.getItemCooldownManager().isCoolingDown(stack)) {
             return ActionResult.PASS;
         } else if (!(stack.getItem() instanceof AttackItem)) {
             return ActionResult.PASS;
@@ -53,16 +53,16 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         int stackCount = stack.getCount();
         int stackDamage = stack.getDamage();
 
-        TypedActionResult<ItemStack> typedActionResult =
+        ActionResult result =
                 ((AttackItem)stack.getItem()).attack(player.getWorld(), player);
-        ItemStack resultStack = typedActionResult.getValue();
+        ItemStack resultStack = result instanceof ActionResult.Success success ? success.getNewHandStack() : stack;
 
         if (resultStack == stack && resultStack.getCount() == stackCount &&
                 resultStack.getMaxUseTime(player) <= 0 && resultStack.getDamage() == stackDamage) {
-            return typedActionResult.getResult();
-        } else if (typedActionResult.getResult() == ActionResult.FAIL &&
+            return result;
+        } else if (result == ActionResult.FAIL &&
                 resultStack.getMaxUseTime(player) > 0 && !player.isUsingItem()) {
-            return typedActionResult.getResult();
+            return result;
         }
 
         if (stack != resultStack) {
@@ -77,6 +77,6 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
             player.playerScreenHandler.syncState();
         }
 
-        return typedActionResult.getResult();
+        return result;
     }
 }

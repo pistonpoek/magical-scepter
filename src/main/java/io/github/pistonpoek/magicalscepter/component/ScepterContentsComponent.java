@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.potion.Potion;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.MutableText;
@@ -57,7 +58,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
             ScepterContentsComponent::customColor,
             PacketCodecs.INTEGER.collect(PacketCodecs::optional),
             ScepterContentsComponent::customExperienceCost,
-            PacketCodecs.BOOL.collect(PacketCodecs::optional),
+            PacketCodecs.BOOLEAN.collect(PacketCodecs::optional),
             ScepterContentsComponent::infusable,
             Spell.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
             ScepterContentsComponent::customAttackSpell,
@@ -112,15 +113,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
         return stack;
     }
 
-    /**
-     * Get color value for an item stack.
-     *
-     * @param stack Item stack to get color value for.
-     * @return Color value from the item stack.
-     */
-    public static int getColor(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::getColor)
-                .orElse(BASE_COLOR);
+    public int getColor(int defaultColor) {
+        return this.customColor.orElseGet(() -> getScepterValue().map(Scepter::getColor).orElse(defaultColor));
     }
 
     /**
@@ -128,10 +122,10 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      *
      * @return Color value from the scepter contents.
      */
-    public Optional<Integer> getColor() {
-        return customColor
+    public int getColor() {
+        return this.customColor
                 .or(() -> getScepterValue().map(Scepter::getColor))
-                .map(ColorHelper.Argb::fullAlpha);
+                .map(ColorHelper::fullAlpha).orElse(BASE_COLOR);
     }
 
     public int getExperienceCost() {
@@ -165,25 +159,11 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                 .or(() -> getScepterValue().map(Scepter::isInfusable));
     }
 
-    /**
-     * Get name value for an item stack.
-     *
-     * @param stack Item stack to get name value for.
-     * @return Name value from the item stack.
-     */
-    public static String getTranslationKey(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::getTranslationKey)
+    public Text getName(String prefix) {
+        String name = scepter.flatMap(RegistryEntry::getKey)
+                .map(key -> key.getValue().getPath().replace("/", "."))
                 .orElse("empty");
-    }
-
-    /**
-     * Get name value for scepter contents.
-     *
-     * @return Name value from scepter contents.
-     */
-    public Optional<String> getTranslationKey() {
-        return scepter.flatMap(RegistryEntry::getKey)
-                .map(key -> key.getValue().getPath().replace("/", "."));
+        return ModIdentifier.translatable(prefix + name);
     }
 
     public static boolean hasSpell(ItemStack stack) {

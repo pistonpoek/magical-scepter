@@ -1,17 +1,14 @@
 package io.github.pistonpoek.magicalscepter;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.minecraft.client.render.entity.model.IllagerEntityModel;
 import io.github.pistonpoek.magicalscepter.attack.ItemAttackCallback;
-import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityModelLayers;
 import io.github.pistonpoek.magicalscepter.entity.RefractorEntityRenderer;
-import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.network.ModClientPlayPackets;
 
 public class MagicalScepterClient implements ClientModInitializer {
@@ -19,12 +16,9 @@ public class MagicalScepterClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ModClientPlayPackets.init();
 
-		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex > 0 ? -1 :
-				ScepterContentsComponent.getColor(stack),
-				ModItems.MAGICAL_SCEPTER);
-
 		EntityRendererRegistry.register(ModEntityType.REFRACTOR, RefractorEntityRenderer::new);
-		EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.REFRACTOR, IllagerEntityModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.REFRACTOR,
+				IllagerEntityModel::getTexturedModelData);
 		ClientPreAttackCallback.EVENT.register(new ItemAttackCallback());
 	}
 }

@@ -2,13 +2,13 @@ package io.github.pistonpoek.magicalscepter.recipe;
 
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 public interface ModRecipeSerializer {
-    RecipeSerializer<MagicalScepterRecipe> MAGICAL_SCEPTER = register("crafting_special_magical_scepter", new SpecialRecipeSerializer<>(MagicalScepterRecipe::new));
+    RecipeSerializer<MagicalScepterRecipe> MAGICAL_SCEPTER = register("crafting_magical_scepter",
+            new MagicalScepterRecipeSerializer());
 
     static void init() {
 

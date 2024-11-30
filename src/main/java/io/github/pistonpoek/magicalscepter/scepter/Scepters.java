@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
 import net.minecraft.predicate.entity.DamageSourcePredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.EntityTypePredicate;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
@@ -12,6 +13,7 @@ import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.Spells;
+import net.minecraft.registry.RegistryKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class Scepters {
 
     public static void bootstrap(Registerable<Scepter> registry) {
         RegistryEntryLookup<Spell> spellRegistryEntryLookup = registry.getRegistryLookup(ModRegistryKeys.SPELL);
+        RegistryEntryLookup<EntityType<?>> entityTypeRegistryEntryLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
         register(registry, MAGICAL_KEY, Scepter.builder(
                 0xBC7C5C,
                 32,
@@ -56,7 +59,9 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.BLAZE))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.BLAZE)))
                         ).build()
                 ))
         );
@@ -70,7 +75,9 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.BREEZE))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.BREEZE)))
                         ).build()
                 ))
         );
@@ -84,7 +91,9 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.ENDER_DRAGON))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.ENDER_DRAGON)))
                         ).build()
                 ))
         );
@@ -98,8 +107,12 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.EVOKER))
-                                        .directEntity(EntityPredicate.Builder.create().type(EntityType.EVOKER_FANGS))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.EVOKER)))
+                                        .directEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.EVOKER_FANGS)))
                         ).build()
                 ))
         );
@@ -113,7 +126,9 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.GHAST))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.GHAST)))
                         ).build()
                 ))
         );
@@ -127,7 +142,9 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.ELDER_GUARDIAN))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.ELDER_GUARDIAN)))
                         ).build()
                 ))
         );
@@ -141,7 +158,9 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.SHULKER))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.SHULKER)))
                         ).build()
                 ))
         );
@@ -155,7 +174,9 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.WARDEN))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.WARDEN)))
                         ).build()
                 ))
         );
@@ -169,7 +190,9 @@ public class Scepters {
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
-                                        .sourceEntity(EntityPredicate.Builder.create().type(EntityType.WITHER))
+                                        .sourceEntity(EntityPredicate.Builder.create()
+                                                .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                        EntityType.WITHER)))
                         ).build()
                 ))
         );

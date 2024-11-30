@@ -19,6 +19,7 @@ public class ModTags {
 
         public static TagKey<Item> createTag(String name) {
             return TagKey.of(RegistryKeys.ITEM, ModIdentifier.of(name));
+            // TODO add Refractor Preffered Weapons Tag, for picking up scepter?
         }
     }
 

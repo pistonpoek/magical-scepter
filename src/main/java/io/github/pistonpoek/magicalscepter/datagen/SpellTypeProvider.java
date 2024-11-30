@@ -20,8 +20,8 @@ public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
     }
 
     @Override
-    protected void configure(BiConsumer<Identifier, Spell> provider, RegistryWrapper.WrapperLookup lookup) {
-        RegistryEntryLookup<Spell> spellLookup = lookup.createRegistryLookup().getOrThrow(ModRegistryKeys.SPELL);
+    protected void configure(BiConsumer<Identifier, Spell> provider, RegistryWrapper.WrapperLookup registries) {
+        RegistryEntryLookup<Spell> spellLookup = registries.getOrThrow(ModRegistryKeys.SPELL);
 
         for (RegistryKey<Spell> spellKey: Spells.SPELL_KEYS) {
             addSpell(provider, spellLookup, spellKey);
