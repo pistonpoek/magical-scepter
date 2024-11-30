@@ -65,12 +65,12 @@ public abstract class InGameHudMixin {
 
         if (scepterContents.hasEnoughExperience(this.client.player)) {
             float use_progress = scepterContents.getExperienceCost() / (float)this.client.player.getNextLevelExperience();
-            int use_part = Math.round(use_progress * (magical_scepter$EXPERIENCE_BAR_WIDTH + 1));
+            int use_part = Math.round(use_progress * (magical_scepter$EXPERIENCE_BAR_WIDTH + 1.0F));
             magical_scepter$renderExperienceBarSection(context, magical_scepter$EXPERIENCE_BAR_USE_TEXTURE, x, y, progress - use_part, progress);
         } else {
             float cost_progress = (scepterContents.getExperienceCost() - PlayerExperience.getTotalExperience(this.client.player))
                     / (float)this.client.player.getNextLevelExperience();
-            int cost_part = Math.round(cost_progress * (magical_scepter$EXPERIENCE_BAR_WIDTH + 1));
+            int cost_part = Math.round(cost_progress * (magical_scepter$EXPERIENCE_BAR_WIDTH + 1.0F));
             magical_scepter$renderExperienceBarSection(context, magical_scepter$EXPERIENCE_BAR_COST_TEXTURE, x, y, progress, progress + cost_part);
         }
     }
@@ -79,7 +79,7 @@ public abstract class InGameHudMixin {
     private void magical_scepter$renderExperienceBarSection(DrawContext context, Identifier texture,
                                             int x, int y, int start, int end) {
         int startX = Math.clamp(start, 0, magical_scepter$EXPERIENCE_BAR_WIDTH);
-        int width = Math.clamp(end - startX, 0, magical_scepter$EXPERIENCE_BAR_WIDTH);
+        int width = Math.clamp(end - startX, 0, magical_scepter$EXPERIENCE_BAR_WIDTH - startX);
         RenderSystem.enableBlend();
         context.drawGuiTexture(RenderLayer::getGuiTextured, texture, magical_scepter$EXPERIENCE_BAR_WIDTH, magical_scepter$EXPERIENCE_BAR_HEIGHT,
                 startX, 0, x + startX, y, width, magical_scepter$EXPERIENCE_BAR_HEIGHT);
