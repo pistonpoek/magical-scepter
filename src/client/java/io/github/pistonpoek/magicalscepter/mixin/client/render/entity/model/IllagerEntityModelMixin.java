@@ -48,6 +48,6 @@ public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState
 
     @Inject(method = "setAngles*", at = @At("TAIL"))
     public void setAngles(T renderState, CallbackInfo info) {
-        this.magical_scepter$swingArm(renderState);
+        this.magical_scepter$swingArm(renderState, renderState.illagerMainArm);
     }
 }
