@@ -57,7 +57,7 @@ public class RefractorEntity extends IllagerEntity {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.5)
                 .add(EntityAttributes.FOLLOW_RANGE, 12.0)
-                .add(EntityAttributes.MAX_HEALTH, 32.0);
+                .add(EntityAttributes.MAX_HEALTH, 24.0);
     }
 
     @Override

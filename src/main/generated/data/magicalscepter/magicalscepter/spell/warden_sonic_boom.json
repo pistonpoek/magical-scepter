@@ -41,11 +41,6 @@
     {
       "effects": [
         {
-          "type": "magicalscepter:move",
-          "knockback": true,
-          "power": 2.0
-        },
-        {
           "type": "magicalscepter:damage",
           "amount": 10.0,
           "damage_type": "minecraft:sonic_boom"
@@ -58,9 +53,60 @@
           "target": "entity"
         }
       ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:move",
+          "knockback": true,
+          "power": 0.5
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:target",
+          "range": 20.0,
+          "target": "entity"
+        },
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:mixed",
+            "yaw": {
+              "type": "magicalscepter:absolute",
+              "yaw": -90.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:move",
+          "knockback": true,
+          "power": 2.5
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:target",
+          "range": 20.0,
+          "target": "entity"
+        },
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:mixed",
+            "pitch": {
+              "type": "magicalscepter:absolute"
+            }
+          }
+        }
+      ]
     }
   ],
-  "cooldown": 50,
+  "cooldown": 60,
   "description": {
     "translate": "spell.magicalscepter.sonic_boom"
   }

@@ -21,7 +21,7 @@
       ]
     }
   ],
-  "cooldown": 50,
+  "cooldown": 40,
   "description": {
     "translate": "spell.magicalscepter.wither_skull"
   }

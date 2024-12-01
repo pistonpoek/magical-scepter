@@ -135,7 +135,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
                 Optional<Spell> scepterSpell;
                 final boolean attackCast;
                 if ((this.actor.age - this.actor.getLastAttackedTime() <= 20 ||
-                    squaredDistance < squaredRange * 0.50F) && this.actor.getRandom().nextBoolean()) {
+                    squaredDistance < squaredRange * 0.3F) && this.actor.getRandom().nextFloat() <= 0.3F) {
                     attackCast = protectSpell.isEmpty();
                     scepterSpell = protectSpell.or(() -> attackSpell);
                 } else {

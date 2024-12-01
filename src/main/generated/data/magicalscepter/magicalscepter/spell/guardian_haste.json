@@ -13,7 +13,7 @@
       ]
     }
   ],
-  "cooldown": 50,
+  "cooldown": 40,
   "description": {
     "translate": "effect.minecraft.haste"
   }

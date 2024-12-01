@@ -31,7 +31,7 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         }
 
         ActionResult actionResult = attackWithItem(player);
-        // TODO SUCCESS SERVER should also swing hand.
+        // TODO SUCCESS SERVER should also swing hand?
         if (actionResult instanceof ActionResult.Success) {
             player.swingHand(Hand.MAIN_HAND, true);
         }

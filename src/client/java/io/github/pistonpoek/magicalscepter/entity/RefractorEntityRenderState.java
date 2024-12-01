@@ -6,7 +6,7 @@ import net.minecraft.client.render.entity.state.IllagerEntityRenderState;
 
 @Environment(EnvType.CLIENT)
 public class RefractorEntityRenderState extends IllagerEntityRenderState {
-    public boolean wearingHat;
+    public boolean hatVisible;
 
     public RefractorEntityRenderState() {
     }

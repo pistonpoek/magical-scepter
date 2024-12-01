@@ -4,16 +4,16 @@
       "effects": [
         {
           "type": "magicalscepter:apply_mob_effect",
-          "max_amplifier": 0.0,
-          "max_duration": 12.5,
-          "min_amplifier": 0.0,
-          "min_duration": 10.0,
+          "max_amplifier": 1.0,
+          "max_duration": 25.0,
+          "min_amplifier": 1.0,
+          "min_duration": 20.0,
           "to_apply": "magicalscepter:stability"
         }
       ]
     }
   ],
-  "cooldown": 50,
+  "cooldown": 40,
   "description": {
     "translate": "effect.magicalscepter.stability"
   }

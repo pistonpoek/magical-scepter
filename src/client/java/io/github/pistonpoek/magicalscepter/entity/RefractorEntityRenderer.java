@@ -21,7 +21,7 @@ public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEnti
         this.addFeature(new HeldItemFeatureRenderer<>(this) {
             public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i,
                                RefractorEntityRenderState renderState, float f, float g) {
-                this.getContextModel().getHat().visible = renderState.wearingHat;
+                this.getContextModel().getHat().visible = renderState.hatVisible;
                 if (renderState.attacking) {
                     super.render(matrixStack, vertexConsumerProvider, i, renderState, f, g);
                 }
@@ -39,7 +39,7 @@ public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEnti
                                   RefractorEntityRenderState renderState,
                                   float tickDelta) {
         super.updateRenderState(refractorEntity, renderState, tickDelta);
-        renderState.wearingHat = !refractorEntity.isAttacking();
+        renderState.hatVisible = !refractorEntity.isAttacking();
     }
 
     @Override

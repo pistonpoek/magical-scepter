@@ -14,7 +14,7 @@ public class ModStatusEffects {
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x074857)
                     .addAttributeModifier(EntityAttributes.KNOCKBACK_RESISTANCE,
                         ModIdentifier.of("stability"),
-                        0.1f, EntityAttributeModifier.Operation.ADD_VALUE));
+                        0.3f, EntityAttributeModifier.Operation.ADD_VALUE));
 
     public static void init() {
 

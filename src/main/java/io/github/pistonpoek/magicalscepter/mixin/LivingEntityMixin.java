@@ -14,6 +14,7 @@ import io.github.pistonpoek.magicalscepter.item.SwingType;
 import io.github.pistonpoek.magicalscepter.network.packet.SwingHandPayload;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -22,9 +23,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class LivingEntityMixin extends Entity implements SwingHandLivingEntity {
     @Shadow public boolean handSwinging;
     @Shadow public int handSwingTicks;
-    @Shadow abstract int getHandSwingDuration();
+    @Shadow protected abstract int getHandSwingDuration();
     @Shadow public Hand preferredHand;
-    public SwingType swingType = SwingType.HIT;
+    @Unique
+    public SwingType magical_scepter$swingType = SwingType.HIT;
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -35,18 +37,18 @@ public abstract class LivingEntityMixin extends Entity implements SwingHandLivin
         if (this.handSwinging && this.handSwingTicks < this.getHandSwingDuration() / 2 && this.handSwingTicks >= 0) {
             return;
         }
-        setSwingType(SwingType.HIT);
+        magical_scepter$setSwingType(SwingType.HIT);
     }
 
     @Override
-    public void swingHand(Hand hand, SwingType swingType) {
+    public void magical_scepter$swingHand(Hand hand, SwingType swingType) {
         if (this.handSwinging && this.handSwingTicks < this.getHandSwingDuration() / 2 && this.handSwingTicks >= 0) {
             return;
         }
         this.handSwingTicks = -1;
         this.handSwinging = true;
         this.preferredHand = hand;
-        this.swingType = swingType;
+        magical_scepter$setSwingType(swingType);
 
         if (this.getWorld() instanceof ServerWorld) {
             SwingHandPayload swingHandPayload = new SwingHandPayload(this.getId(), hand, swingType);
@@ -57,12 +59,12 @@ public abstract class LivingEntityMixin extends Entity implements SwingHandLivin
     }
 
     @Override
-    public SwingType getSwingType() {
-        return swingType;
+    public SwingType magical_scepter$getSwingType() {
+        return magical_scepter$swingType;
     }
 
     @Override
-    public void setSwingType(SwingType swingType) {
-        this.swingType = swingType;
+    public void magical_scepter$setSwingType(SwingType swingType) {
+        this.magical_scepter$swingType = swingType;
     }
 }
