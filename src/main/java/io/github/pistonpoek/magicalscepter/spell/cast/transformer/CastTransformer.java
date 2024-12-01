@@ -24,6 +24,7 @@ public interface CastTransformer {
         Registry.register(registry, ModIdentifier.of("circle"), CircleCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("repeat"), RepeatCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("condition"), ConditionCastTransformer.CODEC);
+        // TODO add compound casts transformer, so transformers can be shared between casts.
     }
 
     Collection<SpellCasting> transform(@NotNull SpellCasting cast);

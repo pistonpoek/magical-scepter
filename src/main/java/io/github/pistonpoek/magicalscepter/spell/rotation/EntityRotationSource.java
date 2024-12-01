@@ -19,8 +19,9 @@ public record EntityRotationSource(float pitch, float yaw) implements RotationSo
     @Override
     public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
         return new Pair<>(
-                MathHelper.wrapDegrees(context.target().getPitch()) + pitch,
-                MathHelper.wrapDegrees(context.target().getYaw() + yaw));
+                MathHelper.wrapDegrees(context.target().getPitch() + pitch),
+                MathHelper.wrapDegrees(context.target().getYaw() + yaw)
+        );
     }
 
     @Override

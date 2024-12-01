@@ -13,10 +13,27 @@
             "sound_id": "minecraft:entity.blaze.shoot"
           },
           "volume": 1.0
-        },
+        }
+      ],
+      "transformers": [
         {
-          "type": "magicalscepter:shoot_projectile",
-          "projectile": "magicalscepter:small_fireball"
+          "type": "magicalscepter:repeat",
+          "amount": 3,
+          "step_delay": 6
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:summon_entity",
+          "effects": [
+            {
+              "type": "magicalscepter:move",
+              "power": 1.0
+            }
+          ],
+          "entity": "minecraft:small_fireball"
         }
       ],
       "transformers": [
@@ -45,6 +62,22 @@
             "x": 0.0,
             "y": 0.0,
             "z": 0.8
+          }
+        },
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:random",
+            "pitch": 0.0,
+            "yaw": 12.0
+          }
+        },
+        {
+          "type": "magicalscepter:rotate",
+          "rotation": {
+            "type": "magicalscepter:random",
+            "pitch": 0.0,
+            "yaw": -12.0
           }
         }
       ]
