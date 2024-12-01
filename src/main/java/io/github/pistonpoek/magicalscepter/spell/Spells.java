@@ -26,6 +26,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
+import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
@@ -70,7 +71,7 @@ public class Spells {
         RegistryEntryLookup<DamageType> damageTypeLookup = registry.getRegistryLookup(RegistryKeys.DAMAGE_TYPE);
         RegistryEntryLookup<EntityType<?>> entityTypeLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
         Function<EntityType<?>, RegistryEntry.Reference<EntityType<?>>> entityTypeReferenceFunction = entityType ->
-                entityTypeLookup.getOrThrow(RegistryKey.of(Registries.ENTITY_TYPE.getKey(), EntityType.getId(entityType)));
+                entityTypeLookup.getOrThrow(RegistryKey.of(RegistryKeys.ENTITY_TYPE, EntityType.getId(entityType)));
 
         register(registry, MAGICAL_ATTACK_KEY, Spell.builder(30,
                         textOf("magical_attack"))
@@ -82,12 +83,17 @@ public class Spells {
                             )
                     )
                     .addTransformer(
-                            TargetCastTransformer.builder(TargetCastTransformer.Target.ENTITY, 16.0).build()
+                            TargetCastTransformer.builder(
+                                    TargetCastTransformer.Target.ENTITY, 16.0
+                            ).build()
                     )
             )
             .addCast(SpellCast.builder()
                     .addEffect(
-                            new SpawnParticleSpellEffect(ParticleTypes.WITCH, ConstantFloatProvider.create(1.0F))
+                            new SpawnParticleSpellEffect(
+                                    ParticleTypes.WITCH,
+                                    ConstantFloatProvider.create(1.0F)
+                            )
                     )
                     .addTransformer(
                             MoveCastTransformer.builder(
@@ -96,8 +102,10 @@ public class Spells {
                     )
                     .addTransformer(
                             LineCastTransformer.builder(24,
-                                    EntityPositionSource.builder(EntityPositionSource.Anchor.EYES).build()
+                                    EntityPositionSource.builder(
+                                            EntityPositionSource.Anchor.EYES
                                     ).build()
+                            ).build()
                     )
             )
         );
@@ -116,11 +124,14 @@ public class Spells {
         register(registry, BLAZE_SMALL_FIREBALL_KEY, Spell.builder(40,
                         textOf("small_fireballs"))
             .addCast(SpellCast.builder()
+                    .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6).build())
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_BLAZE_SHOOT),
                             ConstantFloatProvider.create(1.0F),
-                            UniformFloatProvider.create(0.8F, 1.2F)))
-                    .addEffect(new SmallFireballSpellProjectile())
+                            UniformFloatProvider.create(0.8F, 1.2F))
+                    )
+            )
+            .addCast(SpellCast.builder()
                     .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6).build())
                     .addTransformer(
                             RotateCastTransformer.builder(
@@ -129,12 +140,31 @@ public class Spells {
                     )
                     .addTransformer(
                             MoveCastTransformer.builder(
-                                EntityPositionSource.builder(EntityPositionSource.Anchor.EYES).build()
+                                    EntityPositionSource.builder(
+                                            EntityPositionSource.Anchor.EYES
+                                    ).build()
                             ).build()
                     )
                     .addTransformer(
                             MoveCastTransformer.builder(
                                     RelativePositionSource.builder(0, 0, 0.8).build()
+                            ).build()
+                    )
+                    .addTransformer(
+                            RotateCastTransformer.builder(
+                                    new RandomRotationSource(0.0F, 12.0F)
+                            ).build()
+                    )
+                    .addTransformer(
+                            RotateCastTransformer.builder(
+                                    new RandomRotationSource(0.0F, -12.0F)
+                            ).build()
+                    )
+                    .addEffect(
+                            new SummonEntitySpellEffect.Builder(
+                                    entityTypeReferenceFunction.apply(EntityType.SMALL_FIREBALL)
+                            ).addEffect(
+                                    new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
                             ).build()
                     )
             )
