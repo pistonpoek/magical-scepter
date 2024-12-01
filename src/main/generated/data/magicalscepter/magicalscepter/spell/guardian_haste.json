@@ -5,9 +5,9 @@
         {
           "type": "magicalscepter:apply_mob_effect",
           "max_amplifier": 1.0,
-          "max_duration": 12.5,
+          "max_duration": 25.0,
           "min_amplifier": 1.0,
-          "min_duration": 10.0,
+          "min_duration": 20.0,
           "to_apply": "minecraft:haste"
         }
       ]
