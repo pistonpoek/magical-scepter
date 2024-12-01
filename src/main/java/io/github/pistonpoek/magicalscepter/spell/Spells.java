@@ -400,8 +400,8 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.HASTE),
-                            ConstantFloatProvider.create(10.0F),
-                            ConstantFloatProvider.create(12.5F),
+                            ConstantFloatProvider.create(20.0F),
+                            ConstantFloatProvider.create(25.0F),
                             ConstantFloatProvider.create(1.0F),
                             ConstantFloatProvider.create(1.0F)))
             )
