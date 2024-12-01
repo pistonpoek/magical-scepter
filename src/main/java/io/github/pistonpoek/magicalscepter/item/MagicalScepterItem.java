@@ -80,7 +80,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
             }
         }
 
-        return ActionResult.SUCCESS.withNewHandStack(itemStack);
+        return ActionResult.CONSUME.withNewHandStack(itemStack);
     }
 
     /**
@@ -101,7 +101,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL);
 
         SwingType swingType = attackCast ? SwingType.HIT : SwingType.PROTECT;
-        ((SwingHandLivingEntity)caster).swingHand(hand, swingType);
+        ((SwingHandLivingEntity)caster).magical_scepter$swingHand(hand, swingType);
 
         if (caster.getWorld().isClient()) {
             return 0;

@@ -105,7 +105,7 @@
       ]
     }
   ],
-  "cooldown": 53,
+  "cooldown": 40,
   "description": {
     "translate": "spell.magicalscepter.fang_circle"
   }

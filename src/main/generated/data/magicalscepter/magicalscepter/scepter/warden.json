@@ -1,6 +1,6 @@
 {
   "color": 2941931,
-  "experience_cost": 32,
+  "experience_cost": 16,
   "infusion": [
     {
       "condition": "minecraft:damage_source_properties",

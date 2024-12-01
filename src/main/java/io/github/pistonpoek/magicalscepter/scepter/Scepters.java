@@ -44,7 +44,7 @@ public class Scepters {
         RegistryEntryLookup<EntityType<?>> entityTypeRegistryEntryLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
         register(registry, MAGICAL_KEY, Scepter.builder(
                 0xBC7C5C,
-                32,
+                12,
                 true,
                 spellRegistryEntryLookup.getOrThrow(Spells.MAGICAL_ATTACK_KEY),
                 spellRegistryEntryLookup.getOrThrow(Spells.MAGICAL_RESISTANCE_KEY))
@@ -52,7 +52,7 @@ public class Scepters {
 
         register(registry, BLAZE_KEY, Scepter.builder(
                         0xFF9900,
-                        32,
+                        12,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_SMALL_FIREBALL_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_FIRE_RESISTANCE_KEY))
@@ -68,7 +68,7 @@ public class Scepters {
 
         register(registry, BREEZE_KEY, Scepter.builder(
                         0xBDC9FF,
-                        8,
+                        12,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_WIND_CHARGE_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_JUMP_KEY))
@@ -84,7 +84,7 @@ public class Scepters {
 
         register(registry, DRAGON_KEY, Scepter.builder(
                         0xB823F5,
-                        32,
+                        20,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_FIREBALL_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_GROWL_KEY))
@@ -100,7 +100,7 @@ public class Scepters {
 
         register(registry, EVOKER_KEY, Scepter.builder(
                         0x959B9B,
-                        32,
+                        12,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.EVOKER_FANG_LINE_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.EVOKER_FANG_CIRCLE_KEY))
@@ -119,7 +119,7 @@ public class Scepters {
 
         register(registry, GHAST_KEY, Scepter.builder(
                         0xCD5CAB,
-                        32,
+                        12,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.GHAST_FIREBALL_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.GHAST_REGENERATION_KEY))
@@ -135,7 +135,7 @@ public class Scepters {
 
         register(registry, GUARDIAN_KEY, Scepter.builder(
                         0x4f7d8c,
-                        32,
+                        12,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_BEAM_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_HASTE_KEY))
@@ -151,7 +151,7 @@ public class Scepters {
 
         register(registry, SHULKER_KEY, Scepter.builder(
                         0xCEFFFF,
-                        32,
+                        12,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.SHULKER_BULLET_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.SHULKER_TELEPORT_KEY))
@@ -167,7 +167,7 @@ public class Scepters {
 
         register(registry, WARDEN_KEY, Scepter.builder(
                         0x2ce3eb,
-                        32,
+                        16,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.WARDEN_SONIC_BOOM_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.WARDEN_STABILITY_KEY))
@@ -183,7 +183,7 @@ public class Scepters {
 
         register(registry, WITHER_KEY, Scepter.builder(
                         0x736156,
-                        32,
+                        16,
                         false,
                         spellRegistryEntryLookup.getOrThrow(Spells.WITHER_SKULL_KEY),
                         spellRegistryEntryLookup.getOrThrow(Spells.WITHER_SHIELD_KEY))

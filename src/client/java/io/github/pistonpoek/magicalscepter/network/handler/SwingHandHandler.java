@@ -13,7 +13,7 @@ public class SwingHandHandler implements ClientPlayNetworking.PlayPayloadHandler
     public void receive(SwingHandPayload payload, ClientPlayNetworking.Context context) {
         Entity entity = context.player().getEntityWorld().getEntityById(payload.id());
         if (entity instanceof SwingHandLivingEntity swingHandLivingEntity) {
-            swingHandLivingEntity.swingHand(payload.hand(), payload.swingType());
+            swingHandLivingEntity.magical_scepter$swingHand(payload.hand(), payload.swingType());
         }
     }
 
