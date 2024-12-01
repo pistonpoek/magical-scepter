@@ -25,6 +25,7 @@ public abstract class LivingEntityMixin extends Entity implements SwingHandLivin
     @Shadow public int handSwingTicks;
     @Shadow protected abstract int getHandSwingDuration();
     @Shadow public Hand preferredHand;
+
     @Unique
     public SwingType magical_scepter$swingType = SwingType.HIT;
 

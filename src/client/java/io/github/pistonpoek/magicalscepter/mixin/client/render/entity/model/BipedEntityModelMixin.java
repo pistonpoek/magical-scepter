@@ -47,10 +47,9 @@ public abstract class BipedEntityModelMixin<T extends BipedEntityRenderState & A
         }
 
         // Swing the arm for the current render state.
-        this.magical_scepter$swingArm(renderState);
+        this.magical_scepter$swingArm(renderState, renderState.preferredArm);
 
         // Cancel the vanilla hand swing attack animation.
         callbackInfo.cancel();
     }
-
 }

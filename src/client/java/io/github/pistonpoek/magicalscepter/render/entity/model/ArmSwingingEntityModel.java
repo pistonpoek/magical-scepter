@@ -24,20 +24,18 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
      * 
      * @param renderState Render state used to swing arm for.
      */
-    default void magical_scepter$swingArm(T renderState) {
-
+    default void magical_scepter$swingArm(T renderState, Arm arm) {
         if (renderState.magical_scepter$getHandSwingProgress() <= 0.0F) {
             return;
         }
 
         switch(renderState.magical_scepter$getSwingType()) {
-            case HIT -> magical_scepter$swingHandAttack(renderState);
-            case PROTECT -> magical_scepter$swingHandProtect(renderState);
+            case HIT -> magical_scepter$swingHandAttack(renderState, arm);
+            case PROTECT -> magical_scepter$swingHandProtect(renderState, arm);
         };
     }
 
-    default void magical_scepter$swingHandAttack(T renderState) {
-        Arm arm = renderState.mainArm;
+    default void magical_scepter$swingHandAttack(T renderState, Arm arm) {
         ModelPart armModel = magical_scepter$getArm(arm);
         ModelPart bodyModel = magical_scepter$getBody();
         ModelPart headModel = getHead();
@@ -71,22 +69,17 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
         armModel.roll += MathHelper.sin(handSwingProgress * MathHelper.PI) * -0.4F;
     }
 
-    default void magical_scepter$swingHandProtect(T renderState) {
-        Arm arm = renderState.mainArm;
+    default void magical_scepter$swingHandProtect(T renderState, Arm arm) {
         ModelPart armModel = magical_scepter$getArm(arm);
         ModelPart bodyModel = magical_scepter$getBody();
         ModelPart headModel = getHead();
         ModelPart leftArmModel = magical_scepter$getArm(Arm.LEFT);
         ModelPart rightArmModel = magical_scepter$getArm(Arm.RIGHT);
         float handSwingProgress = renderState.magical_scepter$getHandSwingProgress();
-        
-        float yawMovement = MathHelper.sin(MathHelper.sqrt(handSwingProgress) * MathHelper.TAU) * 0.2F;
-        if (arm == Arm.LEFT) {
-            yawMovement *= -1.0F;
-        }
+        float leftMirror = arm == Arm.LEFT ? -1.0F : 1.0F;
 
         // Move the body and arm pivots with it
-        bodyModel.yaw = yawMovement;
+        bodyModel.yaw = leftMirror * MathHelper.sin(MathHelper.sqrt(handSwingProgress) * MathHelper.TAU) * 0.2F;
         rightArmModel.pivotZ = MathHelper.sin(bodyModel.yaw) * 5.0F;
         rightArmModel.pivotX = -MathHelper.cos(bodyModel.yaw) * 5.0F;
         leftArmModel.pivotZ = -MathHelper.sin(bodyModel.yaw) * 5.0F;
@@ -106,8 +99,7 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
 //            armModel.roll -= MathHelper.sin(this.handSwingProgress * MathHelper.PI) * 0.8F; // Around arm
         armModel.pitch -= MathHelper.sin(5.0F/3.0F*MathHelper.PI*handSwingProgress-1.0F/3.0F*MathHelper.PI)-MathHelper.sin(-1.0F/3.0F*MathHelper.PI);
         //armModel.pitch -= MathHelper.PI/2 - MathHelper.PI/10;
-        // TODO fix yaw moving wrong direction for left hand.
-        armModel.yaw -= (MathHelper.sin(g) + 0.9F) * 0.7F;
+        armModel.yaw -= leftMirror * (MathHelper.sin(g) + 0.9F) * 0.7F;
 //            armModel.yaw -= MathHelper.PI * 1/4;
         //armModel.roll += MathHelper.sin(1.0F-(float)Math.pow(1.1F-2.2F*this.handSwingProgress, 4.0F) *MathHelper.PI)+0.84147F;
     }
