@@ -3,7 +3,6 @@ package io.github.pistonpoek.magicalscepter.spell;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.*;
 import io.github.pistonpoek.magicalscepter.spell.effect.*;
-import io.github.pistonpoek.magicalscepter.spell.effect.projectile.*;
 import io.github.pistonpoek.magicalscepter.spell.rotation.*;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.EntityType;
@@ -26,7 +25,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
-import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
@@ -188,7 +186,20 @@ public class Spells {
                             RegistryEntry.of(SoundEvents.ENTITY_BREEZE_SHOOT),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F)))
-                    .addEffect(new WindChargeSpellProjectile())
+            )
+            .addCast(SpellCast.builder()
+                    .addTransformer(
+                            MoveCastTransformer.builder(
+                                    RelativePositionSource.builder(0, 0, 0.8).build()
+                            ).build()
+                    )
+                    .addEffect(
+                            new SummonEntitySpellEffect.Builder(
+                                    entityTypeReferenceFunction.apply(EntityType.WIND_CHARGE)
+                            ).addEffect(
+                                    new MoveSpellEffect(ConstantFloatProvider.create(1.5F), false)
+                            ).build()
+                    )
             )
         );
         register(registry, BREEZE_JUMP_KEY, Spell.builder(24,
@@ -239,7 +250,20 @@ public class Spells {
                             RegistryEntry.of(SoundEvents.ENTITY_ENDER_DRAGON_SHOOT),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F)))
-                    .addEffect(new DragonFireballSpellProjectile())
+            )
+            .addCast(SpellCast.builder()
+                    .addTransformer(
+                            MoveCastTransformer.builder(
+                                    RelativePositionSource.builder(0, 0, 0.8).build()
+                            ).build()
+                    )
+                    .addEffect(
+                            new SummonEntitySpellEffect.Builder(
+                                    entityTypeReferenceFunction.apply(EntityType.DRAGON_FIREBALL)
+                            ).addEffect(
+                                    new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
+                            ).build()
+                    )
             )
         );
         NbtCompound areaEffectCloudNbtCompound = new NbtCompound();
@@ -406,7 +430,20 @@ public class Spells {
                             RegistryEntry.of(SoundEvents.ENTITY_GHAST_SHOOT),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F)))
-                    .addEffect(new FireballSpellProjectile())
+            )
+            .addCast(SpellCast.builder()
+                    .addTransformer(
+                            MoveCastTransformer.builder(
+                                    RelativePositionSource.builder(0, 0, 0.8).build()
+                            ).build()
+                    )
+                    .addEffect(
+                            new SummonEntitySpellEffect.Builder(
+                                    entityTypeReferenceFunction.apply(EntityType.FIREBALL)
+                            ).addEffect(
+                                    new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
+                            ).build()
+                    )
             )
         );
         register(registry, GHAST_REGENERATION_KEY, Spell.builder(40,
@@ -440,13 +477,34 @@ public class Spells {
         register(registry, SHULKER_BULLET_KEY, Spell.builder(40,
                         textOf("shulker_bullet"))
             .addCast(SpellCast.builder()
-                    .addTransformer(TargetCastTransformer.builder(
-                            TargetCastTransformer.Target.ENTITY, 16.0).require(true).build())
+                    .addTransformer(
+                            TargetCastTransformer.builder(
+                                    TargetCastTransformer.Target.ENTITY, 16.0
+                            ).require(true)
+                            .build()
+                    )
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_SHULKER_SHOOT),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F)))
-                    .addEffect(new ShulkerBulletSpellProjectile())
+            )
+            .addCast(SpellCast.builder()
+                    .addTransformer(
+                            TargetCastTransformer.builder(
+                                TargetCastTransformer.Target.ENTITY, 16.0
+                            ).require(true)
+                            .build()
+                    )
+                    .addTransformer(
+                            MoveCastTransformer.builder(
+                                    RelativePositionSource.builder(0, 0, 0.8).build()
+                            ).build()
+                    )
+                    .addEffect(
+                            new SummonEntitySpellEffect.Builder(
+                                    entityTypeReferenceFunction.apply(EntityType.SHULKER_BULLET)
+                            ).build()
+                    )
             )
         );
         register(registry, SHULKER_TELEPORT_KEY, Spell.builder(40,
@@ -480,15 +538,20 @@ public class Spells {
                     )
             )
             .addCast(SpellCast.builder()
-                    .addEffect(
-                            new SpawnParticleSpellEffect(
-                                    ParticleTypes.SONIC_BOOM, ConstantFloatProvider.ZERO
-                            )
+                    .addTransformer(
+                            MoveCastTransformer.builder(
+                                    RelativePositionSource.builder(0, 0, 0.8).build()
+                            ).build()
                     )
                     .addTransformer(
                             LineCastTransformer.builder(15,
                                     RelativePositionSource.builder(0, 0, SONIC_BOOM_RANGE).build()
                             ).build()
+                    )
+                    .addEffect(
+                            new SpawnParticleSpellEffect(
+                                    ParticleTypes.SONIC_BOOM, ConstantFloatProvider.ZERO
+                            )
                     )
             )
             .addCast(SpellCast.builder()
@@ -561,7 +624,20 @@ public class Spells {
                             RegistryEntry.of(SoundEvents.ENTITY_WITHER_SHOOT),
                             ConstantFloatProvider.create(1.0F),
                             UniformFloatProvider.create(0.8F, 1.2F)))
-                    .addEffect(new WitherSkullSpellProjectile())
+            )
+            .addCast(SpellCast.builder()
+                    .addTransformer(
+                            MoveCastTransformer.builder(
+                                    RelativePositionSource.builder(0, 0, 0.8).build()
+                            ).build()
+                    )
+                    .addEffect(
+                            new SummonEntitySpellEffect.Builder(
+                                    entityTypeReferenceFunction.apply(EntityType.WITHER_SKULL)
+                            ).addEffect(
+                                    new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
+                            ).build()
+                    )
             )
         );
         register(registry, WITHER_SHIELD_KEY, Spell.builder(40,

@@ -27,6 +27,15 @@
       ],
       "transformers": [
         {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
+        },
+        {
           "type": "magicalscepter:line",
           "amount": 15,
           "position": {

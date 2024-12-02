@@ -13,10 +13,31 @@
             "sound_id": "minecraft:entity.breeze.shoot"
           },
           "volume": 1.0
-        },
+        }
+      ]
+    },
+    {
+      "effects": [
         {
-          "type": "magicalscepter:shoot_projectile",
-          "projectile": "magicalscepter:wind_charge"
+          "type": "magicalscepter:summon_entity",
+          "effects": [
+            {
+              "type": "magicalscepter:move",
+              "power": 1.5
+            }
+          ],
+          "entity": "minecraft:wind_charge"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
         }
       ]
     }
