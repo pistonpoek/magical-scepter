@@ -87,12 +87,6 @@ public class Spells {
                     )
             )
             .addCast(SpellCast.builder()
-                    .addEffect(
-                            new SpawnParticleSpellEffect(
-                                    ParticleTypes.WITCH,
-                                    ConstantFloatProvider.create(1.0F)
-                            )
-                    )
                     .addTransformer(
                             MoveCastTransformer.builder(
                                     RelativePositionSource.builder(new Vec3d(0, 0, 16.0F)).build()
@@ -100,10 +94,18 @@ public class Spells {
                     )
                     .addTransformer(
                             LineCastTransformer.builder(24,
-                                    EntityPositionSource.builder(
-                                            EntityPositionSource.Anchor.EYES
+                                    RelativePositionSource.builder(0, 0, 0.8).position(
+                                            EntityPositionSource.builder(
+                                                    EntityPositionSource.Anchor.EYES
+                                            ).build()
                                     ).build()
                             ).build()
+                    )
+                    .addEffect(
+                            new SpawnParticleSpellEffect(
+                                    ParticleTypes.WITCH,
+                                    ConstantFloatProvider.create(1.0F)
+                            )
                     )
             )
         );
