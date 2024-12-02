@@ -13,10 +13,31 @@
             "sound_id": "minecraft:entity.ender_dragon.shoot"
           },
           "volume": 1.0
-        },
+        }
+      ]
+    },
+    {
+      "effects": [
         {
-          "type": "magicalscepter:shoot_projectile",
-          "projectile": "magicalscepter:dragon_fireball"
+          "type": "magicalscepter:summon_entity",
+          "effects": [
+            {
+              "type": "magicalscepter:move",
+              "power": 1.0
+            }
+          ],
+          "entity": "minecraft:dragon_fireball"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
         }
       ]
     }

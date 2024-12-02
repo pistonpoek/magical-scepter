@@ -24,6 +24,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
@@ -49,6 +50,7 @@ public record SummonEntitySpellEffect(
         Random random = context.getRandom();
         ServerWorld world = context.getWorld();
         Entity target = context.target();
+        LivingEntity caster = context.caster();
 
         BlockPos blockPos = BlockPos.ofFloored(position);
         if (!World.isValid(blockPos)) {
@@ -76,7 +78,12 @@ public record SummonEntitySpellEffect(
         }
 
         NbtCompound nbtCompound = nbt.orElse(new NbtCompound());
+
         nbtCompound.putString("id", entityTypeIdentifier.toString());
+        if (entityType == EntityType.SHULKER_BULLET) {
+            initializeShulkerBulletNbtCompound(nbtCompound, context);
+        }
+
         Entity entity = EntityType.loadEntityWithPassengers(nbtCompound, world, SpawnReason.MOB_SUMMONED, summonedEntity -> {
             summonedEntity.refreshPositionAndAngles(position.x, position.y, position.z, context.yaw(), context.pitch());
             return summonedEntity;
@@ -96,7 +103,6 @@ public record SummonEntitySpellEffect(
                 lightningEntity.setChanneler(serverPlayerEntity);
             }
 
-            LivingEntity caster = context.caster();
             if (entity instanceof ProjectileEntity projectileEntity) {
                 projectileEntity.setOwner(caster);
             }
@@ -118,6 +124,23 @@ public record SummonEntitySpellEffect(
     @Override
     public MapCodec<SummonEntitySpellEffect> getCodec() {
         return CODEC;
+    }
+
+    private static void initializeShulkerBulletNbtCompound(NbtCompound nbtCompound, SpellContext context) {
+        Entity target = context.target();
+        LivingEntity caster = context.caster();
+
+        nbtCompound.putUuid("Target", target.getUuid());
+        Direction direction = RotationSource.getDirection(context);
+        nbtCompound.putInt("Dir", direction.getId());
+        nbtCompound.putInt("Steps",  10 + caster.getRandom().nextInt(5) * 10);
+        double xOffset = direction.getOffsetX();
+        double yOffset = direction.getOffsetY();
+        double zOffset = direction.getOffsetZ();
+        double distance = Math.sqrt(xOffset * xOffset + yOffset * yOffset + zOffset * zOffset);
+        nbtCompound.putDouble("TXD", xOffset / distance * 0.15);
+        nbtCompound.putDouble("TYD", yOffset / distance * 0.15);
+        nbtCompound.putDouble("TZD", zOffset / distance * 0.15);
     }
 
     public static Builder builder(RegistryEntry.Reference<EntityType<?>> entityType) {

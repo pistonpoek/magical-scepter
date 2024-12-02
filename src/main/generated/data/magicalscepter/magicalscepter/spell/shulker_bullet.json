@@ -13,10 +13,6 @@
             "sound_id": "minecraft:entity.shulker.shoot"
           },
           "volume": 1.0
-        },
-        {
-          "type": "magicalscepter:shoot_projectile",
-          "projectile": "magicalscepter:shulker_bullet"
         }
       ],
       "transformers": [
@@ -24,6 +20,31 @@
           "type": "magicalscepter:target",
           "range": 16.0,
           "target": "entity"
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:summon_entity",
+          "effects": [],
+          "entity": "minecraft:shulker_bullet"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:target",
+          "range": 16.0,
+          "target": "entity"
+        },
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
         }
       ]
     }
