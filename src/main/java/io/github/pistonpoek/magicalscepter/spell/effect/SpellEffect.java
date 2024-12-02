@@ -6,7 +6,6 @@ import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import io.github.pistonpoek.magicalscepter.spell.effect.projectile.ShootProjectileSpellEffect;
 
 import java.util.function.Function;
 
@@ -18,7 +17,6 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("spawn_particles"), SpawnParticleSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("apply_mob_effect"), ApplyMobEffectSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("summon_entity"), SummonEntitySpellEffect.CODEC);
-        Registry.register(registry, ModIdentifier.of("shoot_projectile"), ShootProjectileSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("teleport"), TeleportSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("damage"), DamageSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("move"), MoveSpellEffect.CODEC);
