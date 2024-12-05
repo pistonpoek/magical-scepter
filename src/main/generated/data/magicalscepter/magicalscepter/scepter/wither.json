@@ -11,6 +11,5 @@
       }
     }
   ],
-  "spell_attack": "magicalscepter:wither_skull",
-  "spell_protect": "magicalscepter:wither_shield"
+  "spell_attack": "magicalscepter:wither_skull"
 }

@@ -460,10 +460,10 @@ public class Spells {
             )
         );
 
-        register(registry, GUARDIAN_BEAM_KEY, Spell.builder(40,
-                        textOf("guardian_beam"))
-            .addCast(SpellCast.builder())
-        );
+//        register(registry, GUARDIAN_BEAM_KEY, Spell.builder(40,
+//                        textOf("guardian_beam"))
+//            .addCast(SpellCast.builder())
+//        );
         register(registry, GUARDIAN_HASTE_KEY, Spell.builder(40,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("haste"))))
             .addCast(SpellCast.builder()
@@ -642,10 +642,10 @@ public class Spells {
                     )
             )
         );
-        register(registry, WITHER_SHIELD_KEY, Spell.builder(40,
-                        textOf("wither_shield"))
-            .addCast(SpellCast.builder())
-        );
+//        register(registry, WITHER_SHIELD_KEY, Spell.builder(40,
+//                        textOf("wither_shield"))
+//            .addCast(SpellCast.builder())
+//        );
     }
 
     private static void register(Registerable<Spell> registry, RegistryKey<Spell> key, Spell.Builder builder) {

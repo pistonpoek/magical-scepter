@@ -43,19 +43,29 @@ public class Scepters {
         RegistryEntryLookup<Spell> spellRegistryEntryLookup = registry.getRegistryLookup(ModRegistryKeys.SPELL);
         RegistryEntryLookup<EntityType<?>> entityTypeRegistryEntryLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
         register(registry, MAGICAL_KEY, Scepter.builder(
-                0xBC7C5C,
-                12,
-                true,
-                spellRegistryEntryLookup.getOrThrow(Spells.MAGICAL_ATTACK_KEY),
-                spellRegistryEntryLookup.getOrThrow(Spells.MAGICAL_RESISTANCE_KEY))
+                        0xBC7C5C,
+                        12,
+                        true
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.MAGICAL_ATTACK_KEY)
+                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.MAGICAL_RESISTANCE_KEY)
+                )
         );
 
         register(registry, BLAZE_KEY, Scepter.builder(
                         0xFF9900,
                         12,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_SMALL_FIREBALL_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_FIRE_RESISTANCE_KEY))
+                        false
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_SMALL_FIREBALL_KEY)
+                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_FIRE_RESISTANCE_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
@@ -69,9 +79,14 @@ public class Scepters {
         register(registry, BREEZE_KEY, Scepter.builder(
                         0xBDC9FF,
                         12,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_WIND_CHARGE_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_JUMP_KEY))
+                        false
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_WIND_CHARGE_KEY)
+                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_JUMP_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
@@ -85,9 +100,14 @@ public class Scepters {
         register(registry, DRAGON_KEY, Scepter.builder(
                         0xB823F5,
                         20,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_FIREBALL_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_GROWL_KEY))
+                        false
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_FIREBALL_KEY)
+                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_GROWL_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
@@ -101,9 +121,14 @@ public class Scepters {
         register(registry, EVOKER_KEY, Scepter.builder(
                         0x959B9B,
                         12,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.EVOKER_FANG_LINE_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.EVOKER_FANG_CIRCLE_KEY))
+                        false
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.EVOKER_FANG_LINE_KEY)
+                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.EVOKER_FANG_CIRCLE_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
@@ -120,9 +145,14 @@ public class Scepters {
         register(registry, GHAST_KEY, Scepter.builder(
                         0xCD5CAB,
                         12,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.GHAST_FIREBALL_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.GHAST_REGENERATION_KEY))
+                        false
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.GHAST_FIREBALL_KEY)
+                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.GHAST_REGENERATION_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
@@ -136,9 +166,14 @@ public class Scepters {
         register(registry, GUARDIAN_KEY, Scepter.builder(
                         0x4f7d8c,
                         12,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_BEAM_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_HASTE_KEY))
+                        false
+                )
+//                .attackSpell(
+//                        spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_BEAM_KEY)
+//                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_HASTE_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
@@ -152,9 +187,14 @@ public class Scepters {
         register(registry, SHULKER_KEY, Scepter.builder(
                         0xCEFFFF,
                         12,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.SHULKER_BULLET_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.SHULKER_TELEPORT_KEY))
+                        false
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.SHULKER_BULLET_KEY)
+                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.SHULKER_TELEPORT_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
@@ -168,9 +208,14 @@ public class Scepters {
         register(registry, WARDEN_KEY, Scepter.builder(
                         0x2ce3eb,
                         16,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.WARDEN_SONIC_BOOM_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.WARDEN_STABILITY_KEY))
+                        false
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.WARDEN_SONIC_BOOM_KEY)
+                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.WARDEN_STABILITY_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
@@ -184,9 +229,14 @@ public class Scepters {
         register(registry, WITHER_KEY, Scepter.builder(
                         0x736156,
                         16,
-                        false,
-                        spellRegistryEntryLookup.getOrThrow(Spells.WITHER_SKULL_KEY),
-                        spellRegistryEntryLookup.getOrThrow(Spells.WITHER_SHIELD_KEY))
+                        false
+                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.WITHER_SKULL_KEY)
+                )
+//                .protectSpell(
+//                        spellRegistryEntryLookup.getOrThrow(Spells.WITHER_SHIELD_KEY)
+//                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()

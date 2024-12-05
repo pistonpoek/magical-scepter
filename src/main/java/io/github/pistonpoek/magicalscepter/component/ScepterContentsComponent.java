@@ -193,7 +193,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      */
     public Optional<RegistryEntry<Spell>> getAttackSpell() {
         return customAttackSpell
-                .or(() -> getScepterValue().map(Scepter::getAttackSpell));
+                .or(() -> getScepterValue().flatMap(Scepter::getAttackSpell));
     }
 
     /**
@@ -213,7 +213,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      */
     public Optional<RegistryEntry<Spell>> getProtectSpell() {
         return customProtectSpell
-                .or(() -> getScepterValue().map(Scepter::getProtectSpell));
+                .or(() -> getScepterValue().flatMap(Scepter::getProtectSpell));
     }
 
     public ScepterContentsComponent with(RegistryEntry<Scepter> scepter) {
