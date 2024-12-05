@@ -31,19 +31,22 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
 
         // Not allowed to use the item if the item is cooling down.
         if (player.getItemCooldownManager().isCoolingDown(stack)) {
-            return false;
+            return false; // Allow other attack actions to happen.
         }
 
         // Process attack item when clicked and not when held.
         if (clickCount != 0) {
-            processAttackItem(client, player, item);
+            ActionResult result = processAttackItem(client, player, item);
+
+            // Cancel other attack actions if result is not pass.
+            return result != ActionResult.PASS;
         }
 
-        // Return true to prevent other attack actions from happening.
-        return true;
+        // Return false to allow other attack actions from happening.
+        return false;
     }
 
-    private void processAttackItem(MinecraftClient client, ClientPlayerEntity player, Item item) {
+    private ActionResult processAttackItem(MinecraftClient client, ClientPlayerEntity player, Item item) {
         // Check the result for the attack item.
         ActionResult result = ((AttackItem) item)
                 .attack(player.getWorld(), player);
@@ -57,6 +60,7 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
             // Send an attack item packet to invoke the server for it.
             ClientPlayNetworking.send(new AttackItemPayload(player.getYaw(), player.getPitch()));
         }
+        return result;
     }
 
     private void renderAttackUse(MinecraftClient client, ClientPlayerEntity player, boolean shouldSwingHand) {
