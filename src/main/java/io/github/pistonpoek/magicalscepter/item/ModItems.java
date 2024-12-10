@@ -40,7 +40,7 @@ public class ModItems {
     private static void addItemsToCombatItemGroup(FabricItemGroupEntries entries) {
         entries.getContext().lookup().getOptional(ModRegistryKeys.SCEPTER).ifPresent(registryWrapper -> {
             RegistryEntry<Scepter> magicalScepter = registryWrapper.getOrThrow(Scepters.MAGICAL_KEY);
-                    entries.addAfter(Items.TRIDENT, ScepterHelper.createScepter(magicalScepter));
+                    entries.addAfter(Items.MACE, ScepterHelper.createScepter(magicalScepter));
             addInfusedScepters(entries, registryWrapper, ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS);
         });
     }
