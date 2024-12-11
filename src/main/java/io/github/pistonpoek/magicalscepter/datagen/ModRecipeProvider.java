@@ -38,7 +38,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             public void generate() {
                 Identifier recipeId = ModIdentifier.of("magical_scepter");
                 RegistryKey<Recipe<?>> recipeRegistryKey = RegistryKey.of(RegistryKeys.RECIPE, recipeId);
-                MagicalScepter.LOGGER.info(recipeRegistryKey.toString()); // TODO remove this log?
                 RecipeCategory category = RecipeCategory.COMBAT;
 
                 RegistryWrapper<Scepter> scepterRegistry = registries.getOrThrow(ModRegistryKeys.SCEPTER);
