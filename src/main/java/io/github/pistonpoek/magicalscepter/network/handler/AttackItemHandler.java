@@ -22,6 +22,7 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         }
 
         player.updateLastActionTime();
+        player.resetLastAttackedTicks();
 
         // Update player rotation before attacking with item.
         float yaw = MathHelper.wrapDegrees(payload.yaw());
@@ -31,11 +32,9 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         }
 
         ActionResult actionResult = attackWithItem(player);
-        // TODO SUCCESS SERVER should also swing hand?
-        if (actionResult instanceof ActionResult.Success) {
+        if (actionResult == ActionResult.SUCCESS || actionResult == ActionResult.SUCCESS_SERVER) {
             player.swingHand(Hand.MAIN_HAND, true);
         }
-
     }
 
     private ActionResult attackWithItem(ServerPlayerEntity player) {

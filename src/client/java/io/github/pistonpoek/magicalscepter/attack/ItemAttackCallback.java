@@ -25,7 +25,7 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
         // Filter for attack items.
         ItemStack stack = player.getMainHandStack();
         Item item = stack.getItem();
-        if (!(item instanceof AttackItem attackItem)) {
+        if (!(item instanceof AttackItem)) {
             return false;
         }
 
@@ -51,11 +51,9 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
         ActionResult result = ((AttackItem) item)
                 .attack(player.getWorld(), player);
 
-        // TODO improve method see ItemStack use() and ServerPlayerInteractionManager interactItem().
-
         // Render attack use if attack item use is accepted.
         if (result.isAccepted()) {
-            renderAttackUse(client, player, true);
+            renderAttackUse(client, player, result == ActionResult.SUCCESS);
 
             // Send an attack item packet to invoke the server for it.
             ClientPlayNetworking.send(new AttackItemPayload(player.getYaw(), player.getPitch()));
