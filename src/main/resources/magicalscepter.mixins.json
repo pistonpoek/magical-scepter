@@ -3,6 +3,7 @@
   "package": "io.github.pistonpoek.magicalscepter.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "AllayEntityMixin",
     "LivingEntityMixin",
     "ParrotEntityMixin",
     "VibrationsMixin"
