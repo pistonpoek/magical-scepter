@@ -9,6 +9,7 @@
 	],
 	"contact": {
 		"email": "pistonpoek@gmail.com",
+		"homepage": "https://modrinth.com/mod/magical-scepter",
 		"sources": "https://github.com/pistonpoek/magical-scepter"
 	},
 	"license": "",
@@ -39,6 +40,5 @@
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"another-mod": "*"
 	}
 }
