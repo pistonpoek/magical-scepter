@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.entity;
 
+import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -16,7 +17,7 @@ public class ModEntityType {
         MagicalScepter.LOGGER.info("Registering Entities for " + ModIdentifier.MOD_NAME);
     }
 
-    public static final EntityType<RefractorEntity> REFRACTOR = register(
+    public static final EntityType<RefractorEntity> REFRACTOR = registerMob(
         "refractor",
         EntityType.Builder.create(RefractorEntity::new, SpawnGroup.MONSTER)
                 .dimensions(0.6F, 1.95F)
@@ -24,6 +25,12 @@ public class ModEntityType {
                 .vehicleAttachment(-0.6F)
                 .maxTrackingRange(8)
         );
+
+    private static <T extends Entity> EntityType<T> registerMob(String id, EntityType.Builder<T> type) {
+        EntityType<T> entityType = register(id, type);
+        MixsonEvents.registerMobModification(ModIdentifier.of(id));
+        return entityType;
+    }
 
     private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
         return Registry.register(Registries.ENTITY_TYPE, ModIdentifier.of(id),

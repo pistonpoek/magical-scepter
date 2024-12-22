@@ -1,4 +1,0 @@
-@version "1";
-@target "minecraft:advancement/nether/all_effects.json";
-
-$criteria.all_effects.conditions.effects["magicalscepter:stability"] = {};
