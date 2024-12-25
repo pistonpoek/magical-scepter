@@ -62,8 +62,8 @@ public class MagicalScepterItem extends Item implements AttackItem {
             user.addExperience(-experienceCost);
             user.addScore(experienceCost); // Compensating for lost score in adding experience cost.
         }
+        user.setCurrentHand(hand);
         user.getItemCooldownManager().set(itemStack, spell.getCooldown());
-
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
         int castDuration = MagicalScepterItem.castSpell(spell, user, itemStack, attackCast, hand);
