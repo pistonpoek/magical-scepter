@@ -16,15 +16,14 @@ public interface CastTransformer {
 
     static void register(Registry<MapCodec<? extends CastTransformer>> registry) {
         Registry.register(registry, ModIdentifier.of("line"), LineCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("move"), MoveCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("delay"), DelayCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("rotate"), RotateCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("surface"), SurfaceCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("target"), TargetCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("circle"), CircleCastTransformer.CODEC);
+        Registry.register(registry, ModIdentifier.of("surface"), SurfaceCastTransformer.CODEC);
+        Registry.register(registry, ModIdentifier.of("move"), MoveCastTransformer.CODEC);
+        Registry.register(registry, ModIdentifier.of("rotate"), RotateCastTransformer.CODEC);
+        Registry.register(registry, ModIdentifier.of("delay"), DelayCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("repeat"), RepeatCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("condition"), ConditionCastTransformer.CODEC);
-        // TODO add compound casts transformer, so transformers can be shared between casts.
+        Registry.register(registry, ModIdentifier.of("target"), TargetCastTransformer.CODEC);
+        Registry.register(registry, ModIdentifier.of("filter"), FilterCastTransformer.CODEC);
     }
 
     Collection<SpellCasting> transform(@NotNull SpellCasting cast);

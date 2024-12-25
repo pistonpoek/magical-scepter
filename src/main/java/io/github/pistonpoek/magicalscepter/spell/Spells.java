@@ -9,6 +9,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.loot.condition.EntityPropertiesLootCondition;
+import net.minecraft.loot.context.LootContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -16,6 +18,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.potion.Potions;
 import net.minecraft.predicate.entity.EntityFlagsPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
@@ -74,16 +77,16 @@ public class Spells {
         register(registry, MAGICAL_ATTACK_KEY, Spell.builder(30,
                         textOf("magical_attack"))
             .addCast(SpellCast.builder()
+                    .addTransformer(
+                            TargetCastTransformer.builder(
+                                    TargetCastTransformer.Target.ENTITY, 16.0
+                            ).build()
+                    )
                     .addEffect(
                             new DamageSpellEffect(
                                     UniformFloatProvider.create(4.0F, 6.0F),
                                     damageTypeLookup.getOrThrow(DamageTypes.INDIRECT_MAGIC)
                             )
-                    )
-                    .addTransformer(
-                            TargetCastTransformer.builder(
-                                    TargetCastTransformer.Target.ENTITY, 16.0
-                            ).build()
                     )
             )
             .addCast(SpellCast.builder()
@@ -207,8 +210,16 @@ public class Spells {
         register(registry, BREEZE_JUMP_KEY, Spell.builder(24,
                         textOf("breeze_jump"))
             .addCast(SpellCast.builder()
-                    .addTransformer(new ConditionCastTransformer(EntityPredicate.Builder.create()
-                            .flags(EntityFlagsPredicate.Builder.create().onGround(true)).build()))
+                    .addTransformer(new FilterCastTransformer(
+                            LootContextPredicate.create(
+                                    EntityPropertiesLootCondition.builder(
+                                            LootContext.EntityTarget.THIS,
+                                            EntityPredicate.Builder.create()
+                                                    .flags(EntityFlagsPredicate.Builder.create()
+                                                            .onGround(true))
+                                    ).build()
+                            )
+                    ))
                     .addTransformer(RotateCastTransformer.builder(
                             new FacingLocationRotationSource(
                                     MixedPositionSource.builder()
@@ -230,18 +241,28 @@ public class Spells {
                     ))
             )
             .addCast(SpellCast.builder()
-                    .addTransformer(new ConditionCastTransformer(EntityPredicate.Builder.create()
-                            .flags(EntityFlagsPredicate.Builder.create().onGround(false)).build()))
+                    .addTransformer(new FilterCastTransformer(
+                            LootContextPredicate.create(
+                                    EntityPropertiesLootCondition.builder(
+                                            LootContext.EntityTarget.THIS,
+                                            EntityPredicate.Builder.create()
+                                                    .flags(EntityFlagsPredicate.Builder.create()
+                                                            .onGround(false))
+                                    ).build()
+                            )
+                    ))
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_BREEZE_LAND),
                             ConstantFloatProvider.create(1.0F),
-                            UniformFloatProvider.create(0.8F, 1.2F)))
+                            UniformFloatProvider.create(0.8F, 1.2F)
+                    ))
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.SLOW_FALLING),
                             ConstantFloatProvider.create(0.8F),
                             ConstantFloatProvider.create(1.2F),
                             ConstantFloatProvider.create(0.0F),
-                            ConstantFloatProvider.create(0.0F)))
+                            ConstantFloatProvider.create(0.0F)
+                    ))
             )
         );
 

@@ -21,12 +21,18 @@
       ],
       "transformers": [
         {
-          "type": "magicalscepter:condition",
-          "condition": {
-            "flags": {
-              "is_on_ground": true
+          "type": "magicalscepter:filter",
+          "filters": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "flags": {
+                  "is_on_ground": true
+                }
+              }
             }
-          }
+          ]
         },
         {
           "type": "magicalscepter:rotate",
@@ -89,12 +95,18 @@
       ],
       "transformers": [
         {
-          "type": "magicalscepter:condition",
-          "condition": {
-            "flags": {
-              "is_on_ground": false
+          "type": "magicalscepter:filter",
+          "filters": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "flags": {
+                  "is_on_ground": false
+                }
+              }
             }
-          }
+          ]
         }
       ]
     }

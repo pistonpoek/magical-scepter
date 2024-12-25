@@ -5,6 +5,7 @@
   "mixins": [
     "AllayEntityMixin",
     "LivingEntityMixin",
+    "LootContextTypesMixin",
     "ParrotEntityMixin",
     "VibrationsMixin"
   ],

@@ -122,7 +122,7 @@ public record TargetCastTransformer(Target target, double range, boolean require
     }
 
     @Override
-    public MapCodec<? extends CastTransformer> getCodec() {
+    public MapCodec<TargetCastTransformer> getCodec() {
         return CODEC;
     }
 

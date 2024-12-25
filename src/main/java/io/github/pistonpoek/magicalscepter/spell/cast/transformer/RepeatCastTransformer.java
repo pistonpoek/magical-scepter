@@ -36,7 +36,7 @@ public record RepeatCastTransformer(int amount, int stepDelay) implements CastTr
     }
 
     @Override
-    public MapCodec<? extends CastTransformer> getCodec() {
+    public MapCodec<RepeatCastTransformer> getCodec() {
         return CODEC;
     }
 

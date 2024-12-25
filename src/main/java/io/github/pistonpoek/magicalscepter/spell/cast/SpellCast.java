@@ -2,6 +2,7 @@ package io.github.pistonpoek.magicalscepter.spell.cast;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import net.minecraft.entity.LivingEntity;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastScheduler;
@@ -34,7 +35,7 @@ public record SpellCast(List<SpellEffect> effects, List<CastTransformer> transfo
         Collection<SpellCasting> casts = List.of(new SpellCasting(caster));
         for (CastTransformer transformer: transformers) {
             casts = casts.stream().flatMap(cast -> transformer.transform(cast).stream())
-                    .collect(Collectors.toList());
+                    .toList();
         }
         int duration = 0;
         for (SpellCasting cast: casts) {
