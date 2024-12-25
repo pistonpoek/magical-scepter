@@ -21,6 +21,8 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("damage"), DamageSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("move"), MoveSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("rotate"), RotateSpellEffect.CODEC);
+        Registry.register(registry, ModIdentifier.of("ignite"), IgniteSpellEffect.CODEC);
+        Registry.register(registry, ModIdentifier.of("explore"), ExplodeSpellEffect.CODEC);
         Registry.register(registry, ModIdentifier.of("run_function"), RunFunctionSpellEffect.CODEC);
     }
 
