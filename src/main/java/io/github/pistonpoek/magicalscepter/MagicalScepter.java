@@ -46,6 +46,7 @@ public class MagicalScepter implements ModInitializer {
 		MixsonEvents.init();
 
 		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastScheduler::afterDeath);
+		ServerLivingEntityEvents.ALLOW_DAMAGE.register(ModStatusEffects::allowDamage);
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
 		CommandRegistrationCallback.EVENT.register(SpellCommand::register);
 

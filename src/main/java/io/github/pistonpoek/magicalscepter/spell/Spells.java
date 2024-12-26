@@ -62,7 +62,7 @@ public class Spells {
     public static final RegistryKey<Spell> WARDEN_SONIC_BOOM_KEY = of("warden_sonic_boom");
     public static final RegistryKey<Spell> WARDEN_STABILITY_KEY = of("warden_stability");
     public static final RegistryKey<Spell> WITHER_SKULL_KEY = of("wither_skull");
-    public static final RegistryKey<Spell> WITHER_SHIELD_KEY = of("wither_shield");
+    public static final RegistryKey<Spell> WITHER_REPULSION_KEY = of("wither_repulsion");
 
     private static RegistryKey<Spell> of(String id) {
         return RegistryKey.of(ModRegistryKeys.SPELL, ModIdentifier.of(id));
@@ -663,10 +663,17 @@ public class Spells {
                     )
             )
         );
-//        register(registry, WITHER_SHIELD_KEY, Spell.builder(40,
-//                        textOf("wither_shield"))
-//            .addCast(SpellCast.builder())
-//        );
+        register(registry, WITHER_REPULSION_KEY, Spell.builder(40,
+                        Text.translatable(Util.createTranslationKey("effect", ModIdentifier.of("repulsion"))))
+                .addCast(SpellCast.builder()
+                        .addEffect(new ApplyMobEffectSpellEffect(
+                                RegistryEntryList.of(ModStatusEffects.REPULSION),
+                                ConstantFloatProvider.create(10.0F),
+                                ConstantFloatProvider.create(12.0F),
+                                ConstantFloatProvider.create(0.0F),
+                                ConstantFloatProvider.create(0.0F)))
+                )
+        );
     }
 
     private static void register(Registerable<Spell> registry, RegistryKey<Spell> key, Spell.Builder builder) {

@@ -234,9 +234,9 @@ public class Scepters {
                 .attackSpell(
                         spellRegistryEntryLookup.getOrThrow(Spells.WITHER_SKULL_KEY)
                 )
-//                .protectSpell(
-//                        spellRegistryEntryLookup.getOrThrow(Spells.WITHER_SHIELD_KEY)
-//                )
+                .protectSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.WITHER_REPULSION_KEY)
+                )
                 .infusion(LootContextPredicate.create(
                         DamageSourcePropertiesLootCondition.builder(
                                 DamageSourcePredicate.Builder.create()
