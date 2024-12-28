@@ -2,6 +2,7 @@ package io.github.pistonpoek.magicalscepter.spell.cast.context;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
@@ -14,9 +15,10 @@ import java.util.function.Function;
 
 public interface SpellContextSource {
     Codec<SpellContextSource> CODEC = ModRegistries.CAST_CONTEXT_SOURCE_TYPE.getCodec()
-                    .dispatch("source", SpellContextSource::getCodec, Function.identity());
+                    .dispatch("source", SpellContextSource::getSourceCodec, Function.identity());
 
     static void register(Registry<MapCodec<? extends SpellContextSource>> registry) {
+        Registry.register(registry, ModIdentifier.of("list"), ContextSourceList.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("position"), PositionSource.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("rotation"), RotationSource.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("target"), TargetSource.MAP_CODEC);
@@ -24,5 +26,5 @@ public interface SpellContextSource {
 
     SpellContext getContext(@NotNull SpellContext spellContext);
 
-    MapCodec<? extends SpellContextSource> getCodec();
+    MapCodec<? extends SpellContextSource> getSourceCodec();
 }

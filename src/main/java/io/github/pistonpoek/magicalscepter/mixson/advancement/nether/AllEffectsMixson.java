@@ -2,7 +2,6 @@ package io.github.pistonpoek.magicalscepter.mixson.advancement.nether;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonModification;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.minecraft.util.Identifier;
@@ -19,7 +18,6 @@ public record AllEffectsMixson(Identifier effectIdentifier) implements MixsonMod
         root.getAsJsonObject("criteria").getAsJsonObject("all_effects")
                 .getAsJsonObject("conditions").getAsJsonObject("effects")
                 .add(effectReference, new JsonObject());
-        MagicalScepter.LOGGER.info(root.toString());
         return root;
     }
 

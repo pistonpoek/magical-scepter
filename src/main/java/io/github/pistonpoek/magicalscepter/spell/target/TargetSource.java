@@ -28,5 +28,10 @@ public interface TargetSource extends SpellContextSource {
         return new SpellContext(spellContext, getTarget(spellContext));
     }
 
+    @Override
+    default MapCodec<TargetSource> getSourceCodec() {
+        return MAP_CODEC;
+    }
+
     MapCodec<? extends TargetSource> getCodec();
 }

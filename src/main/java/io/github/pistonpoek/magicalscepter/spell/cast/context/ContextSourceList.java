@@ -1,22 +1,22 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.context;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public record ContextSourceList(List<SpellContextSource> contextSources) implements SpellContextSource {
-    static MapCodec<ContextSourceList> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> instance.group(
-                    SpellContextSource.CODEC.listOf().fieldOf("contextSources")
-                            .forGetter(ContextSourceList::contextSources)
-            ).apply(instance, ContextSourceList::new)
-    );
+public record ContextSourceList(List<SpellContextSource> sources) implements SpellContextSource {
+    public static final MapCodec<ContextSourceList> MAP_CODEC =
+            SpellContextSource.CODEC.listOf().xmap(
+                    ContextSourceList::new,
+                    ContextSourceList::sources
+            ).fieldOf("sources");
+    public static final Codec<ContextSourceList> CODEC = MAP_CODEC.codec();
 
     @Override
     public SpellContext getContext(@NotNull SpellContext spellContext) {
-        for (SpellContextSource contextSource: contextSources) {
+        for (SpellContextSource contextSource: sources) {
             spellContext = contextSource.getContext(spellContext);
         }
         return spellContext;
@@ -24,17 +24,17 @@ public record ContextSourceList(List<SpellContextSource> contextSources) impleme
 
     public ContextSourceList append(SpellContextSource contextSource) {
         if (contextSource instanceof ContextSourceList) {
-            for (SpellContextSource contextSourceElement: ((ContextSourceList)contextSource).contextSources) {
+            for (SpellContextSource contextSourceElement: ((ContextSourceList)contextSource).sources) {
                 this.append(contextSourceElement);
             }
             return this;
         }
-        contextSources.add(contextSource);
+        sources.add(contextSource);
         return this;
     }
 
     @Override
-    public MapCodec<ContextSourceList> getCodec() {
-        return CODEC;
+    public MapCodec<ContextSourceList> getSourceCodec() {
+        return MAP_CODEC;
     }
 }

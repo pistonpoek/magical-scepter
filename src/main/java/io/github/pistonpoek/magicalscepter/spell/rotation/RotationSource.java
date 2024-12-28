@@ -47,5 +47,10 @@ public interface RotationSource extends SpellContextSource {
         return Direction.getFacing(context.getRotationVector());
     }
 
+    @Override
+    default MapCodec<RotationSource> getSourceCodec() {
+        return MAP_CODEC;
+    }
+
     MapCodec<? extends RotationSource> getCodec();
 }

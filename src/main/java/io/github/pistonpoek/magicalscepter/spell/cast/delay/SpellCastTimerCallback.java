@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 
 import com.mojang.serialization.DataResult;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -13,7 +14,6 @@ import net.minecraft.world.timer.TimerCallback;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import org.jetbrains.annotations.NotNull;
 

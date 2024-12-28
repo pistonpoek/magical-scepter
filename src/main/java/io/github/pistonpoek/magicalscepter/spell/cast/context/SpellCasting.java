@@ -34,7 +34,7 @@ public class SpellCasting implements Cloneable {
         return caster;
     }
 
-    public SpellContextSource getContextSource() {
+    public ContextSourceList getContextSource() {
         return contextSourceList;
     }
 
@@ -52,7 +52,7 @@ public class SpellCasting implements Cloneable {
     public SpellCasting clone() {
         try {
             SpellCasting clone = (SpellCasting) super.clone();
-            clone.contextSourceList = new ContextSourceList(new ArrayList<>(contextSourceList.contextSources()));
+            clone.contextSourceList = new ContextSourceList(new ArrayList<>(contextSourceList.sources()));
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();

@@ -44,5 +44,10 @@ public interface PositionSource extends SpellContextSource {
         return getPosition(context).getZ();
     }
 
+    @Override
+    default MapCodec<PositionSource> getSourceCodec() {
+        return MAP_CODEC;
+    }
+
     MapCodec<? extends PositionSource> getCodec();
 }
