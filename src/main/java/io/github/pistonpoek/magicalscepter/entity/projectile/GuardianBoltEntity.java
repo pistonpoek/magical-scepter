@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.entity.projectile;
 
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -125,8 +124,6 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
             float damageMultiplier = (progress * progress);
             float projectileDamage = 6.0F * damageMultiplier;
             float magicDamage = damageMultiplier > 1 ? 3.0F : damageMultiplier == 1 ? 1.0F : 0.0F;
-
-            MagicalScepter.LOGGER.info("Guardian bolt dealt {} projectile and {} magic damage", projectileDamage, magicDamage);
 
             DamageSource projectileDamageSource = this.getDamageSources().mobProjectile(this, owner);
             DamageSource magicDamageSource = this.getDamageSources().indirectMagic(this, owner);
