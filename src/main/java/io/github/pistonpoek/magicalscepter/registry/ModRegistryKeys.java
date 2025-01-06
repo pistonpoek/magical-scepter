@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.registry;
 
 import com.mojang.serialization.MapCodec;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
@@ -11,6 +12,8 @@ import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import io.github.pistonpoek.magicalscepter.spell.target.TargetSource;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.Identifier;
 
 public class ModRegistryKeys {
     public static final RegistryKey<Registry<Scepter>> SCEPTER = of("scepter");
@@ -30,5 +33,12 @@ public class ModRegistryKeys {
 
     private static <T> RegistryKey<Registry<T>> of(String id) {
         return RegistryKey.ofRegistry(ModIdentifier.of(id));
+    }
+
+    public static String directory(RegistryKey<?> registryKey) {
+        Identifier identifier = registryKey.getValue();
+        return identifier.getNamespace().equals(Identifier.DEFAULT_NAMESPACE) ?
+                identifier.getPath() :
+                String.join("/", identifier.getNamespace(), identifier.getPath());
     }
 }

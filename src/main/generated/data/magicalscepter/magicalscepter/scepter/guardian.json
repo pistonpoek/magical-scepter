@@ -11,5 +11,6 @@
       }
     }
   ],
+  "spell_attack": "magicalscepter:guardian_bolt",
   "spell_protect": "magicalscepter:guardian_haste"
 }

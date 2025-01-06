@@ -1,14 +1,18 @@
-package io.github.pistonpoek.magicalscepter.entity;
+package io.github.pistonpoek.magicalscepter.render.entity.model;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Environment(EnvType.CLIENT)
 public class ModEntityModelLayers {
     private static final Set<EntityModelLayer> LAYERS = new HashSet<>();
     public static final EntityModelLayer REFRACTOR = registerMain("refractor");
+    public static final EntityModelLayer GUARDIAN_BOLT = registerMain("guardian_bolt");
 
     private static EntityModelLayer registerMain(String id) {
         return register(id, "main");

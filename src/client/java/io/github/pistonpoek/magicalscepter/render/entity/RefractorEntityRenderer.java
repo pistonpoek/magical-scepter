@@ -1,5 +1,6 @@
-package io.github.pistonpoek.magicalscepter.entity;
+package io.github.pistonpoek.magicalscepter.render.entity;
 
+import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;

@@ -1,9 +1,11 @@
 package io.github.pistonpoek.magicalscepter.entity;
 
+import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.projectile.WindChargeEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
@@ -24,7 +26,16 @@ public class ModEntityType {
                 .passengerAttachments(2.0F)
                 .vehicleAttachment(-0.6F)
                 .maxTrackingRange(8)
-        );
+    );
+    public static final EntityType<GuardianBoltEntity> GUARDIAN_BOLT = register(
+            "guardian_bolt",
+            EntityType.Builder.create(GuardianBoltEntity::new, SpawnGroup.MISC)
+                    .dropsNothing()
+                    .dimensions(0.3125F, 0.3125F)
+                    .eyeHeight(0.0F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(10)
+    );
 
     private static <T extends Entity> EntityType<T> registerMob(String id, EntityType.Builder<T> type) {
         EntityType<T> entityType = register(id, type);

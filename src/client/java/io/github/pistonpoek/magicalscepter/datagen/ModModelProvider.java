@@ -2,6 +2,8 @@ package io.github.pistonpoek.magicalscepter.datagen;
 
 import io.github.pistonpoek.magicalscepter.mixin.client.data.ItemModelGeneratorMixin;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterTintSource;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.*;
@@ -11,6 +13,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
+@Environment(EnvType.CLIENT)
 public class ModModelProvider extends FabricModelProvider {
     public static final Model HANDHELD_SCEPTER = new Model(
             Optional.of(Identifier.ofVanilla("item/handheld")),

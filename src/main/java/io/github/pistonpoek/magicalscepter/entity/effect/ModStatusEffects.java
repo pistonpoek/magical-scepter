@@ -15,7 +15,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 public class ModStatusEffects {
-    public static final RegistryEntry<StatusEffect> STABILITY = ModStatusEffects.registerEffect("stability",
+    public static final RegistryEntry<StatusEffect> STABILITY = registerEffect("stability",
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x074857)
                     .addAttributeModifier(EntityAttributes.KNOCKBACK_RESISTANCE,
                         ModIdentifier.of("effect.stability"),
@@ -23,7 +23,7 @@ public class ModStatusEffects {
                     .addAttributeModifier(EntityAttributes.EXPLOSION_KNOCKBACK_RESISTANCE,
                         ModIdentifier.of("effect.stability"),
                         0.3f, EntityAttributeModifier.Operation.ADD_VALUE));
-    public static final RegistryEntry<StatusEffect> REPULSION = ModStatusEffects.registerEffect("repulsion",
+    public static final RegistryEntry<StatusEffect> REPULSION = registerEffect("repulsion",
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0xB2B27F));
 
     public static void init() {

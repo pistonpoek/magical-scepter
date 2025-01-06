@@ -1,5 +1,7 @@
 package io.github.pistonpoek.magicalscepter.spell;
 
+import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.damage.ModDamageTypes;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.*;
 import io.github.pistonpoek.magicalscepter.spell.effect.*;
@@ -55,7 +57,7 @@ public class Spells {
     public static final RegistryKey<Spell> EVOKER_FANG_CIRCLE_KEY = of("evoker_fang_circle");
     public static final RegistryKey<Spell> GHAST_FIREBALL_KEY = of("ghast_fireball");
     public static final RegistryKey<Spell> GHAST_REGENERATION_KEY = of("ghast_regeneration");
-    public static final RegistryKey<Spell> GUARDIAN_BEAM_KEY = of("guardian_beam");
+    public static final RegistryKey<Spell> GUARDIAN_BOLT_KEY = of("guardian_bolt");
     public static final RegistryKey<Spell> GUARDIAN_HASTE_KEY = of("guardian_haste");
     public static final RegistryKey<Spell> SHULKER_BULLET_KEY = of("shulker_bullet");
     public static final RegistryKey<Spell> SHULKER_TELEPORT_KEY = of("shulker_teleport");
@@ -105,10 +107,9 @@ public class Spells {
                             ).build()
                     )
                     .addEffect(
-                            new SpawnParticleSpellEffect(
-                                    ParticleTypes.WITCH,
-                                    ConstantFloatProvider.create(1.0F)
-                            )
+                            SpawnParticleSpellEffect.builder(ParticleTypes.WITCH)
+                                    .speed(ConstantFloatProvider.create(1.0F))
+                                    .build()
                     )
             )
         );
@@ -164,7 +165,7 @@ public class Spells {
                             ).build()
                     )
                     .addEffect(
-                            new SummonEntitySpellEffect.Builder(
+                            SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.SMALL_FIREBALL)
                             ).addEffect(
                                     new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
@@ -199,7 +200,7 @@ public class Spells {
                             ).build()
                     )
                     .addEffect(
-                            new SummonEntitySpellEffect.Builder(
+                            SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.WIND_CHARGE)
                             ).addEffect(
                                     new MoveSpellEffect(ConstantFloatProvider.create(1.5F), false)
@@ -281,7 +282,7 @@ public class Spells {
                             ).build()
                     )
                     .addEffect(
-                            new SummonEntitySpellEffect.Builder(
+                            SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.DRAGON_FIREBALL)
                             ).addEffect(
                                     new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
@@ -319,7 +320,9 @@ public class Spells {
             )
             .addCast(SpellCast.builder()
                     .addEffect(
-                            new SpawnParticleSpellEffect(ParticleTypes.DRAGON_BREATH, ConstantFloatProvider.ZERO)
+                            SpawnParticleSpellEffect.builder(ParticleTypes.DRAGON_BREATH)
+                                    .speed(ConstantFloatProvider.ZERO)
+                                    .build()
                     )
                     .addTransformer(
                             RepeatCastTransformer.builder(6).stepDelay(4).build()
@@ -461,7 +464,7 @@ public class Spells {
                             ).build()
                     )
                     .addEffect(
-                            new SummonEntitySpellEffect.Builder(
+                            SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.FIREBALL)
                             ).addEffect(
                                     new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
@@ -481,10 +484,31 @@ public class Spells {
             )
         );
 
-//        register(registry, GUARDIAN_BEAM_KEY, Spell.builder(40,
-//                        textOf("guardian_beam"))
-//            .addCast(SpellCast.builder())
-//        );
+        register(registry, GUARDIAN_BOLT_KEY, Spell.builder(40,
+                        textOf("guardian_bolt"))
+            .addCast(SpellCast.builder()
+                    .addEffect(new PlaySoundSpellEffect(
+                            RegistryEntry.of(SoundEvents.ENTITY_GUARDIAN_ATTACK),
+                            ConstantFloatProvider.create(1.0F),
+                            UniformFloatProvider.create(0.8F, 1.2F))
+                    )
+            )
+            .addCast(SpellCast.builder()
+                    .addTransformer(
+                            MoveCastTransformer.builder(
+                                    RelativePositionSource.builder(0, 0, 0.8).build()
+                            ).build()
+                    )
+                    .addEffect(
+                            SummonEntitySpellEffect.builder(
+                                    entityTypeReferenceFunction.apply(ModEntityType.GUARDIAN_BOLT))
+                            .addEffect(
+                                    new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
+                            )
+                            .build()
+                    )
+            )
+        );
         register(registry, GUARDIAN_HASTE_KEY, Spell.builder(40,
                         Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("haste"))))
             .addCast(SpellCast.builder()
@@ -524,7 +548,7 @@ public class Spells {
                             ).build()
                     )
                     .addEffect(
-                            new SummonEntitySpellEffect.Builder(
+                            SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.SHULKER_BULLET)
                             ).build()
                     )
@@ -572,9 +596,8 @@ public class Spells {
                             ).build()
                     )
                     .addEffect(
-                            new SpawnParticleSpellEffect(
-                                    ParticleTypes.SONIC_BOOM, ConstantFloatProvider.ZERO
-                            )
+                            SpawnParticleSpellEffect.builder(ParticleTypes.SONIC_BOOM)
+                                    .build()
                     )
             )
             .addCast(SpellCast.builder()
@@ -655,7 +678,7 @@ public class Spells {
                             ).build()
                     )
                     .addEffect(
-                            new SummonEntitySpellEffect.Builder(
+                            SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.WITHER_SKULL)
                             ).addEffect(
                                     new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)

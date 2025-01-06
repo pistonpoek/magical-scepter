@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
+import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.data.DataOutput;
@@ -16,7 +17,8 @@ import java.util.function.BiConsumer;
 
 public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
     public ScepterTypeProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(dataOutput, registriesFuture, DataOutput.OutputType.DATA_PACK, ModRegistryKeys.SCEPTER.getValue().toString().replace(":","/"), Scepter.CODEC);
+        super(dataOutput, registriesFuture, DataOutput.OutputType.DATA_PACK,
+                ModRegistryKeys.directory(ModRegistryKeys.SCEPTER), Scepter.CODEC);
     }
 
     @Override

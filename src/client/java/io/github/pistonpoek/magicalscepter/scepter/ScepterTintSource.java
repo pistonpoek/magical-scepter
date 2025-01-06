@@ -4,6 +4,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.item.tint.TintSource;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -12,6 +14,7 @@ import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.ColorHelper;
 import org.jetbrains.annotations.Nullable;
 
+@Environment(EnvType.CLIENT)
 public record ScepterTintSource(int defaultColor) implements TintSource {
     public static final MapCodec<ScepterTintSource> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(

@@ -1,0 +1,49 @@
+{
+  "casts": [
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:play_sound",
+          "pitch": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          },
+          "sound": {
+            "sound_id": "minecraft:entity.guardian.attack"
+          },
+          "volume": 1.0
+        }
+      ]
+    },
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:summon_entity",
+          "effects": [
+            {
+              "type": "magicalscepter:move",
+              "power": 1.0
+            }
+          ],
+          "entity": "magicalscepter:guardian_bolt"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:move",
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
+        }
+      ]
+    }
+  ],
+  "cooldown": 40,
+  "description": {
+    "translate": "spell.magicalscepter.guardian_bolt"
+  }
+}

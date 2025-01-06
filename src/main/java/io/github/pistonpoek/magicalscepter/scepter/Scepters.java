@@ -168,9 +168,9 @@ public class Scepters {
                         12,
                         false
                 )
-//                .attackSpell(
-//                        spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_BEAM_KEY)
-//                )
+                .attackSpell(
+                        spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_BOLT_KEY)
+                )
                 .protectSpell(
                         spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_HASTE_KEY)
                 )
