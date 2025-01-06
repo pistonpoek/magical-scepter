@@ -12,6 +12,7 @@ import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -23,8 +24,7 @@ import org.jetbrains.annotations.Nullable;
 public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     private static final TrackedData<Integer> AGE = DataTracker.registerData(GuardianBoltEntity.class,
             TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Integer> DURATION = DataTracker.registerData(GuardianBoltEntity.class,
-            TrackedDataHandlerRegistry.INTEGER);
+    private static final int DURATION = 12;
 
     public GuardianBoltEntity(EntityType<GuardianBoltEntity> entityType, World world) {
         super(entityType, world);
@@ -40,22 +40,11 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
         }
     }
 
-    public int getDuration() {
-        return this.getDataTracker().get(DURATION);
-    }
-
-    public void setDuration(int duration) {
-        if (!this.getWorld().isClient) {
-            this.getDataTracker().set(DURATION, Math.max(duration, 0));
-        }
-    }
-
     @Override
     public void tick() {
-        setDuration(12);
         setAge(this.age);
         if (!this.getWorld().isClient &&
-                (getAge() > getDuration() + 1 || this.getBlockY() > this.getWorld().getTopYInclusive() + 30)) {
+                (getAge() > DURATION + 1 || this.getBlockY() > this.getWorld().getTopYInclusive() + 30)) {
             this.discard();
         } else {
             super.tick();
@@ -65,7 +54,6 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         builder.add(AGE, 0);
-        builder.add(DURATION, 12);
     }
 
     @Override
@@ -80,14 +68,12 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
         super.readCustomDataFromNbt(nbt);
         this.age = nbt.getInt("Age");
         setAge(this.age);
-        setDuration(nbt.getInt("Duration"));
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("Age", this.age);
-        nbt.putInt("Duration", getDuration());
     }
 
     @Override
@@ -95,7 +81,6 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
         super.copyFrom(original);
         if (original instanceof GuardianBoltEntity guardianBoltEntity) {
             setAge(guardianBoltEntity.getAge());
-            setDuration(guardianBoltEntity.getDuration());
         }
     }
 
@@ -120,7 +105,7 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
                 owner.onAttacking(entity);
             }
 
-            float progress = (float) getAge() / getDuration();
+            float progress = getProgress(0.0F);
             float damageMultiplier = (progress * progress);
             float projectileDamage = 6.0F * damageMultiplier;
             float magicDamage = damageMultiplier > 1 ? 3.0F : damageMultiplier == 1 ? 1.0F : 0.0F;
@@ -174,4 +159,15 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
         return null;
     }
 
+    public float getProgress(float tickDelta) {
+        return (this.getAge() + tickDelta) / DURATION;
+    }
+
+    @Override
+    public SoundCategory getSoundCategory() {
+        if (getOwner() != null) {
+            return getOwner().getSoundCategory();
+        }
+        return super.getSoundCategory();
+    }
 }

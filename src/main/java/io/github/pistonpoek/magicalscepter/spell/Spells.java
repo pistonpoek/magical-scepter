@@ -487,13 +487,6 @@ public class Spells {
         register(registry, GUARDIAN_BOLT_KEY, Spell.builder(40,
                         textOf("guardian_bolt"))
             .addCast(SpellCast.builder()
-                    .addEffect(new PlaySoundSpellEffect(
-                            RegistryEntry.of(SoundEvents.ENTITY_GUARDIAN_ATTACK),
-                            ConstantFloatProvider.create(1.0F),
-                            UniformFloatProvider.create(0.8F, 1.2F))
-                    )
-            )
-            .addCast(SpellCast.builder()
                     .addTransformer(
                             MoveCastTransformer.builder(
                                     RelativePositionSource.builder(0, 0, 0.8).build()
@@ -503,7 +496,7 @@ public class Spells {
                             SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(ModEntityType.GUARDIAN_BOLT))
                             .addEffect(
-                                    new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
+                                    new MoveSpellEffect(ConstantFloatProvider.create(0.2F), false)
                             )
                             .build()
                     )

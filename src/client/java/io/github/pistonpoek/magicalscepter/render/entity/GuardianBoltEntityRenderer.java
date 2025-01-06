@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.render.entity;
 
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.render.ModRenderLayer;
@@ -52,15 +51,10 @@ public class GuardianBoltEntityRenderer extends EntityRenderer<GuardianBoltEntit
         super.updateRenderState(guardianBoltEntity, renderState, tickDelta);
         renderState.yaw = guardianBoltEntity.getLerpedYaw(tickDelta);
         renderState.pitch = guardianBoltEntity.getLerpedPitch(tickDelta);
-        renderState.color = getColor(guardianBoltEntity.getAge() + tickDelta, guardianBoltEntity.getDuration());
+        renderState.color = getColor(guardianBoltEntity.getProgress(tickDelta));
     }
 
-    public static int getColor(float age, int duration) {
-        float progress = age / duration;
-        return getGuardianBeamColor(progress);
-    }
-
-    private static int getGuardianBeamColor(float progress) {
+    private static int getColor(float progress) {
         float transition = progress * progress;
         int red = 64 + (int)(transition * 191.0F);
         int green = 32 + (int)(transition * 191.0F);
