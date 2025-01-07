@@ -9,6 +9,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
@@ -105,17 +106,18 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
                 owner.onAttacking(entity);
             }
 
-            float progress = getProgress(0.0F);
-            float damageMultiplier = (progress * progress);
-            float projectileDamage = 6.0F * damageMultiplier;
-            float magicDamage = damageMultiplier > 1 ? 3.0F : damageMultiplier == 1 ? 1.0F : 0.0F;
+            if (entity instanceof LivingEntity attacked) {
+                float progress = getProgress(0.0F);
+                float magicDamage = progress >= 1 ? 3.0F : 0.0F;
+                float damageMultiplier = Math.clamp(progress * progress, 0.0F, 1.0F);
+                float attackDamage = 7.0F * damageMultiplier;
 
-            DamageSource projectileDamageSource = this.getDamageSources().mobProjectile(this, owner);
-            DamageSource magicDamageSource = this.getDamageSources().indirectMagic(this, owner);
-            if (entity.damage(serverWorld, projectileDamageSource, projectileDamage) && entity instanceof LivingEntity attacked) {
-                EnchantmentHelper.onTargetDamaged(serverWorld, attacked, projectileDamageSource);
-            }
-            if (entity.damage(serverWorld, magicDamageSource, magicDamage) && entity instanceof LivingEntity attacked) {
+                DamageSource magicDamageSource = this.getDamageSources().indirectMagic(this, owner);
+                DamageSource attackDamageSource = this.getDamageSources().mobAttack(owner);
+
+                magicDamage += EnchantmentHelper.getDamage(serverWorld, ItemStack.EMPTY,
+                        attacked, attackDamageSource, attackDamage);
+                attacked.damage(serverWorld, magicDamageSource, magicDamage);
                 EnchantmentHelper.onTargetDamaged(serverWorld, attacked, magicDamageSource);
             }
 

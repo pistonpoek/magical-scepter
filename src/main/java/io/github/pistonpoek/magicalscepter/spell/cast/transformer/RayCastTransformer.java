@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public record TargetCastTransformer(Target target, double range, boolean require) implements CastTransformer {
-    public static final MapCodec<TargetCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
+public record RayCastTransformer(Target target, double range, boolean require) implements CastTransformer {
+    public static final MapCodec<RayCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Target.CODEC.fieldOf("target").forGetter(TargetCastTransformer::target),
-                    Codec.DOUBLE.fieldOf("range").forGetter(TargetCastTransformer::range),
-                    Codec.BOOL.optionalFieldOf("require", true).forGetter(TargetCastTransformer::require)
-            ).apply(instance, TargetCastTransformer::new)
+                    Target.CODEC.fieldOf("target").forGetter(RayCastTransformer::target),
+                    Codec.DOUBLE.fieldOf("range").forGetter(RayCastTransformer::range),
+                    Codec.BOOL.optionalFieldOf("require", true).forGetter(RayCastTransformer::require)
+            ).apply(instance, RayCastTransformer::new)
     );
 
     public enum Target implements StringIdentifiable {
@@ -122,7 +122,7 @@ public record TargetCastTransformer(Target target, double range, boolean require
     }
 
     @Override
-    public MapCodec<TargetCastTransformer> getCodec() {
+    public MapCodec<RayCastTransformer> getCodec() {
         return CODEC;
     }
 
@@ -145,8 +145,8 @@ public record TargetCastTransformer(Target target, double range, boolean require
             return this;
         }
 
-        public TargetCastTransformer build() {
-            return new TargetCastTransformer(target, range, require);
+        public RayCastTransformer build() {
+            return new RayCastTransformer(target, range, require);
         }
     }
 }

@@ -22,7 +22,7 @@ public interface CastTransformer {
         Registry.register(registry, ModIdentifier.of("rotate"), RotateCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("delay"), DelayCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("repeat"), RepeatCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("target"), TargetCastTransformer.CODEC);
+        Registry.register(registry, ModIdentifier.of("ray"), RayCastTransformer.CODEC);
         Registry.register(registry, ModIdentifier.of("filter"), FilterCastTransformer.CODEC);
     }
 

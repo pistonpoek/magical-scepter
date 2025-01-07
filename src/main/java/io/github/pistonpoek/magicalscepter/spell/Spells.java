@@ -1,7 +1,6 @@
 package io.github.pistonpoek.magicalscepter.spell;
 
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
-import io.github.pistonpoek.magicalscepter.entity.damage.ModDamageTypes;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.*;
 import io.github.pistonpoek.magicalscepter.spell.effect.*;
@@ -80,8 +79,8 @@ public class Spells {
                         textOf("magical_attack"))
             .addCast(SpellCast.builder()
                     .addTransformer(
-                            TargetCastTransformer.builder(
-                                    TargetCastTransformer.Target.ENTITY, 16.0
+                            RayCastTransformer.builder(
+                                    RayCastTransformer.Target.ENTITY, 16.0
                             ).build()
                     )
                     .addEffect(
@@ -313,7 +312,7 @@ public class Spells {
                             ).nbt(areaEffectCloudNbtCompound).build()
                     )
                     .addTransformer(
-                            TargetCastTransformer.builder(TargetCastTransformer.Target.BLOCK, 8)
+                            RayCastTransformer.builder(RayCastTransformer.Target.BLOCK, 8)
                                     .require(true)
                                     .build()
                     )
@@ -518,8 +517,8 @@ public class Spells {
                         textOf("shulker_bullet"))
             .addCast(SpellCast.builder()
                     .addTransformer(
-                            TargetCastTransformer.builder(
-                                    TargetCastTransformer.Target.ENTITY, 16.0
+                            RayCastTransformer.builder(
+                                    RayCastTransformer.Target.ENTITY, 16.0
                             ).require(true)
                             .build()
                     )
@@ -530,8 +529,8 @@ public class Spells {
             )
             .addCast(SpellCast.builder()
                     .addTransformer(
-                            TargetCastTransformer.builder(
-                                TargetCastTransformer.Target.ENTITY, 16.0
+                            RayCastTransformer.builder(
+                                RayCastTransformer.Target.ENTITY, 16.0
                             ).require(true)
                             .build()
                     )
@@ -595,8 +594,8 @@ public class Spells {
             )
             .addCast(SpellCast.builder()
                     .addTransformer(
-                            TargetCastTransformer.builder(
-                                    TargetCastTransformer.Target.ENTITY,
+                            RayCastTransformer.builder(
+                                    RayCastTransformer.Target.ENTITY,
                                     SONIC_BOOM_RANGE
                             ).build()
                     )
@@ -607,8 +606,8 @@ public class Spells {
             )
             .addCast(SpellCast.builder()
                     .addTransformer(
-                            TargetCastTransformer.builder(
-                                    TargetCastTransformer.Target.ENTITY,
+                            RayCastTransformer.builder(
+                                    RayCastTransformer.Target.ENTITY,
                                     SONIC_BOOM_RANGE
                             ).build()
                     )
@@ -626,8 +625,8 @@ public class Spells {
             )
             .addCast(SpellCast.builder()
                     .addTransformer(
-                            TargetCastTransformer.builder(
-                                    TargetCastTransformer.Target.ENTITY,
+                            RayCastTransformer.builder(
+                                    RayCastTransformer.Target.ENTITY,
                                     SONIC_BOOM_RANGE
                             ).build()
                     )

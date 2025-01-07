@@ -55,6 +55,9 @@ public class GuardianBoltEntityRenderer extends EntityRenderer<GuardianBoltEntit
     }
 
     private static int getColor(float progress) {
+        if (progress > 1) {
+            return ColorHelper.getArgb(0, 224, 64);
+        }
         float transition = progress * progress;
         int red = 64 + (int)(transition * 191.0F);
         int green = 32 + (int)(transition * 191.0F);
