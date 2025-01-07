@@ -26,7 +26,7 @@ public interface CastTransformer {
         Registry.register(registry, ModIdentifier.of("filter"), FilterCastTransformer.CODEC);
     }
 
-    Collection<SpellCasting> transform(@NotNull SpellCasting cast);
+    Collection<SpellCasting> transform(@NotNull SpellCasting casting);
 
     MapCodec<? extends CastTransformer> getCodec();
 }

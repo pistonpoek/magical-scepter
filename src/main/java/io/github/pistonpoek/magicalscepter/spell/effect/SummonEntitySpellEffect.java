@@ -36,7 +36,7 @@ public record SummonEntitySpellEffect(
         List<SpellEffect> effects,
         Optional<NbtCompound> nbt
 ) implements SpellEffect {
-    public static final MapCodec<SummonEntitySpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<SummonEntitySpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             RegistryEntryListCodec.create(RegistryKeys.ENTITY_TYPE,
                                             Registries.ENTITY_TYPE.getEntryCodec(), false)
@@ -125,7 +125,7 @@ public record SummonEntitySpellEffect(
 
     @Override
     public MapCodec<SummonEntitySpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     private static void initializeShulkerBulletNbtCompound(NbtCompound nbtCompound, SpellContext context) {

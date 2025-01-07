@@ -3,6 +3,7 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -15,8 +16,7 @@ import org.slf4j.Logger;
 import java.util.Optional;
 
 public record RunFunctionSpellEffect(Identifier function) implements SpellEffect {
-    private static final Logger LOGGER = LogUtils.getLogger();
-    public static final MapCodec<RunFunctionSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<RunFunctionSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(Identifier.CODEC.fieldOf("function").forGetter(RunFunctionSpellEffect::function))
                     .apply(instance, RunFunctionSpellEffect::new)
     );
@@ -28,7 +28,7 @@ public record RunFunctionSpellEffect(Identifier function) implements SpellEffect
         Optional<CommandFunction<ServerCommandSource>> optional = commandFunctionManager.getFunction(this.function);
 
         if (optional.isEmpty()) {
-            LOGGER.error("Spell run_function effect failed for non-existent function {}", this.function);
+            MagicalScepter.LOGGER.error("Spell run_function effect failed for non-existent function {}", this.function);
             return;
         }
 
@@ -44,6 +44,6 @@ public record RunFunctionSpellEffect(Identifier function) implements SpellEffect
 
     @Override
     public MapCodec<RunFunctionSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

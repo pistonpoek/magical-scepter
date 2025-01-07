@@ -1,8 +1,8 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
@@ -19,21 +19,20 @@ public record LineCastTransformer(PositionSource position,
     public static final MapCodec<LineCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(LineCastTransformer::position),
-                    Codec.INT.fieldOf("amount").forGetter(LineCastTransformer::amount),
-                    Codec.INT.optionalFieldOf("step_delay", 0).forGetter(LineCastTransformer::stepDelay)
+                    Codecs.NON_NEGATIVE_INT.fieldOf("amount").forGetter(LineCastTransformer::amount),
+                    Codecs.NON_NEGATIVE_INT.optionalFieldOf("step_delay", 0).forGetter(LineCastTransformer::stepDelay)
             ).apply(instance, LineCastTransformer::new)
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
-        SpellContext context = cast.getContext();
+    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+        SpellContext context = casting.getContext();
         Vec3d startPos = context.position();
         Vec3d lineVector = position.getPosition(context).subtract(startPos);
         Collection<SpellCasting> casts = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            SpellCasting pointCast = cast.clone();
-            pointCast.setDelay(cast.getDelay() + i * stepDelay);
-            pointCast.addContextSource(AbsolutePositionSource.builder(
+            SpellCasting pointCast = DelayCastTransformer.delay(casting, i * stepDelay);
+            pointCast.addContext(AbsolutePositionSource.builder(
                     startPos.add(lineVector.multiply(((double)i) / (amount - 1)))).build());
             casts.add(pointCast);
         }

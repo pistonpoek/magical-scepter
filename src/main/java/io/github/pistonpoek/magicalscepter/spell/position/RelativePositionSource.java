@@ -15,7 +15,7 @@ import java.util.Optional;
 public record RelativePositionSource(double x, double y, double z,
                                      Optional<PositionSource> position,
                                      Optional<RotationSource> rotation) implements PositionSource {
-    static MapCodec<RelativePositionSource> CODEC = RecordCodecBuilder.mapCodec(
+    static MapCodec<RelativePositionSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.DOUBLE.fieldOf("x").forGetter(RelativePositionSource::x),
                     Codec.DOUBLE.fieldOf("y").forGetter(RelativePositionSource::y),
@@ -42,7 +42,7 @@ public record RelativePositionSource(double x, double y, double z,
 
     @Override
     public MapCodec<RelativePositionSource> getCodec() {
-        return RelativePositionSource.CODEC;
+        return RelativePositionSource.MAP_CODEC;
     }
 
     public static Builder builder(double x, double y, double z) {

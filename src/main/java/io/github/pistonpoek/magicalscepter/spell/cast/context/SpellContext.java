@@ -8,7 +8,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import io.github.pistonpoek.magicalscepter.util.RotationVector;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +26,7 @@ public record SpellContext(LivingEntity caster, Entity target, Vec3d position, f
         this(context.caster, context.target, context.position, pitch, yaw);
     }
 
-    public SpellContext(SpellContext context, @NotNull Entity target) {
+    public SpellContext(SpellContext context, Entity target) {
         this(context.caster, target, context.position, context.pitch, context.yaw);
     }
 

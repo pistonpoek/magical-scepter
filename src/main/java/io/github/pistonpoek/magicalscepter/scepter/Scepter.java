@@ -11,6 +11,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
+import net.minecraft.util.dynamic.Codecs;
 
 import java.util.*;
 
@@ -20,8 +21,8 @@ public record Scepter(int color, int experienceCost, boolean infusable,
                       Optional<LootContextPredicate> infusion) {
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                            Codec.INT.fieldOf("color").forGetter(Scepter::color),
-                            Codec.INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
+                            Codecs.RGB.fieldOf("color").forGetter(Scepter::color),
+                            Codecs.NON_NEGATIVE_INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
                             Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
                             Spell.ENTRY_CODEC.optionalFieldOf("spell_attack").forGetter(Scepter::attackSpell),
                             Spell.ENTRY_CODEC.optionalFieldOf("spell_protect").forGetter(Scepter::protectSpell),
@@ -30,8 +31,8 @@ public record Scepter(int color, int experienceCost, boolean infusable,
     );
     public static final Codec<Scepter> NETWORK_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    Codec.INT.fieldOf("color").forGetter(Scepter::color),
-                    Codec.INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
+                    Codecs.RGB.fieldOf("color").forGetter(Scepter::color),
+                    Codecs.NON_NEGATIVE_INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
                     Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_attack").forGetter(Scepter::attackSpell),
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_protect").forGetter(Scepter::protectSpell)

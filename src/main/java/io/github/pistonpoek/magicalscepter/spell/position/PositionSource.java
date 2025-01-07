@@ -18,11 +18,11 @@ public interface PositionSource extends SpellContextSource {
     Codec<PositionSource> CODEC = MAP_CODEC.codec();
 
     static void register(Registry<MapCodec<? extends PositionSource>> registry) {
-        Registry.register(registry, ModIdentifier.of("absolute"), AbsolutePositionSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("entity"), EntityPositionSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("relative"), RelativePositionSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("mixed"), MixedPositionSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("random"), RandomPositionSource.CODEC);
+        Registry.register(registry, ModIdentifier.of("absolute"), AbsolutePositionSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("entity"), EntityPositionSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("relative"), RelativePositionSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("mixed"), MixedPositionSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("random"), RandomPositionSource.MAP_CODEC);
     }
 
     Vec3d getPosition(@NotNull SpellContext context);

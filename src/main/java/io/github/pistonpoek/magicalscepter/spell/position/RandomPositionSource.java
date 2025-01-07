@@ -14,7 +14,7 @@ import java.util.Optional;
 public record RandomPositionSource(double dx, double dy, double dz,
                                    Optional<PositionSource> position,
                                    Optional<RotationSource> rotation) implements PositionSource {
-    static MapCodec<RandomPositionSource> CODEC = RecordCodecBuilder.mapCodec(
+    static MapCodec<RandomPositionSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.DOUBLE.fieldOf("dx").forGetter(RandomPositionSource::dx),
                     Codec.DOUBLE.fieldOf("dy").forGetter(RandomPositionSource::dy),
@@ -45,7 +45,7 @@ public record RandomPositionSource(double dx, double dy, double dz,
 
     @Override
     public MapCodec<? extends PositionSource> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder(double x, double y, double z) {

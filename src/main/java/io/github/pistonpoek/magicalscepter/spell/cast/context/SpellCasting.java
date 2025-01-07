@@ -1,58 +1,69 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.context;
 
+import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
+import io.github.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
 import net.minecraft.entity.LivingEntity;
-import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SpellCasting implements Cloneable {
-    private ContextSourceList contextSourceList = new ContextSourceList(new ArrayList<>());
-    private int delay = 0;
-    private final LivingEntity caster;
+    protected final SpellCast spellCast;
+    protected final LivingEntity caster;
+    private ContextSourceList contextSource = new ContextSourceList(new ArrayList<>());
     private SpellContext context;
 
-    public SpellCasting(LivingEntity caster) {
+    public SpellCasting(SpellCast spellCast, LivingEntity caster) {
+        this.spellCast = spellCast;
         this.caster = caster;
         this.context = new SpellContext(caster);
     }
 
-    public SpellContext getContext() {
-        return context;
+    public SpellCasting(SpellCast spellCast, LivingEntity caster, SpellContextSource contextSource) {
+        this(spellCast, caster);
+        addContext(contextSource);
     }
 
-    public int getDelay() {
-        return delay;
-    }
-
-    public SpellCasting setDelay(int delay) {
-        this.delay = delay;
-        return this;
+    public SpellCast getSpellCast() {
+        return spellCast;
     }
 
     public LivingEntity getCaster() {
         return caster;
     }
 
-    public ContextSourceList getContextSource() {
-        return contextSourceList;
+    public SpellContext getContext() {
+        return context;
     }
 
-    public SpellCasting addContextSource(SpellContextSource contextSource) {
-        this.contextSourceList.append(contextSource);
+    public SpellContextSource getContextSource() {
+        return contextSource;
+    }
+
+    public SpellCasting addContext(SpellContextSource contextSource) {
+        this.contextSource.append(contextSource);
         context = contextSource.getContext(context);
         return this;
     }
 
-    public void apply(List<SpellEffect> effects) {
-        getContext().apply(effects);
+    public void invoke() {
+        SpellCast spellCast = getSpellCast();
+        List<CastTransformer> transformers = spellCast.transformers();
+        if (!transformers.isEmpty()) {
+            transformers.getFirst().transform(new SpellCasting(
+                    new SpellCast(spellCast.effects(), transformers.stream().skip(1).toList()),
+                    getCaster(),
+                    getContextSource())).forEach(SpellCasting::invoke);
+        } else {
+            getContext().apply(spellCast.effects());
+        }
     }
 
     @Override
     public SpellCasting clone() {
         try {
             SpellCasting clone = (SpellCasting) super.clone();
-            clone.contextSourceList = new ContextSourceList(new ArrayList<>(contextSourceList.sources()));
+            clone.contextSource = new ContextSourceList(new ArrayList<>(contextSource.sources()));
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();

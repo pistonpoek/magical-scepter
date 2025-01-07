@@ -29,14 +29,18 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
-        Optional<Vec3d> value = getSurfacePosition(cast);
+    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+        Optional<Vec3d> value = getSurfacePosition(casting);
 
         if (value.isEmpty()) {
-            return require ? List.of() : List.of(cast);
+            return require ? List.of() : List.of(casting);
         }
-        return List.of(cast.addContextSource(AbsolutePositionSource.builder(
-                value.get()).build()));
+
+        // Update the context source to use the found position.
+        casting.addContext(AbsolutePositionSource.builder(
+                value.get()).build());
+
+        return List.of(casting);
     }
 
     private Optional<Vec3d> getSurfacePosition(@NotNull SpellCasting cast) {

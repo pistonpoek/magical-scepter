@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public record AbsoluteTargetSource(UUID targetUUID) implements TargetSource {
-    public static MapCodec<AbsoluteTargetSource> CODEC = RecordCodecBuilder.mapCodec(
+    public static MapCodec<AbsoluteTargetSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Codec.STRING.fieldOf("targetUUID").forGetter(value -> value.targetUUID.toString())
+                    Codec.STRING.fieldOf("target").forGetter(value -> value.targetUUID.toString())
             ).apply(instance, value -> new AbsoluteTargetSource(UUID.fromString(value)))
     );
 
@@ -41,6 +41,6 @@ public record AbsoluteTargetSource(UUID targetUUID) implements TargetSource {
 
     @Override
     public MapCodec<AbsoluteTargetSource> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public record MixedRotationSource(Optional<RotationSource> pitch, Optional<RotationSource> yaw) implements RotationSource {
-    static MapCodec<MixedRotationSource> CODEC = RecordCodecBuilder.mapCodec(
+    static MapCodec<MixedRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     RotationSource.CODEC.optionalFieldOf("pitch").forGetter(MixedRotationSource::pitch),
                     RotationSource.CODEC.optionalFieldOf("yaw").forGetter(MixedRotationSource::yaw)
@@ -26,7 +26,7 @@ public record MixedRotationSource(Optional<RotationSource> pitch, Optional<Rotat
 
     @Override
     public MapCodec<MixedRotationSource> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder() {

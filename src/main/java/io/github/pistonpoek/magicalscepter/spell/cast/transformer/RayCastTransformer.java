@@ -50,8 +50,8 @@ public record RayCastTransformer(Target target, double range, boolean require) i
     }
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
-        SpellContext context = cast.getContext();
+    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+        SpellContext context = casting.getContext();
         Vec3d rotationVector = RotationVector.get(context.pitch(), context.yaw()).normalize();
         Vec3d endPosition = context.position().add(
                 rotationVector.x * range,
@@ -67,18 +67,18 @@ public record RayCastTransformer(Target target, double range, boolean require) i
                     return List.of();
                 }
 
-                cast.addContextSource(AbsolutePositionSource.builder(hitResult.getPos()).build());
+                casting.addContext(AbsolutePositionSource.builder(hitResult.getPos()).build());
             }
             case ENTITY -> {
                 Optional<EntityHitResult> entityHitResult = entityRayCast(range, context.caster(), context.position(), endPosition);
                 if (entityHitResult.isEmpty()) {
                     return List.of();
                 }
-                cast.addContextSource(new AbsoluteTargetSource(entityHitResult.get().getEntity().getUuid()));
+                casting.addContext(new AbsoluteTargetSource(entityHitResult.get().getEntity().getUuid()));
             }
         }
 
-        return List.of(cast);
+        return List.of(casting);
     }
 
     private static BlockHitResult blockRaycast(double range, Entity target, Vec3d position, Vec3d endPosition) {

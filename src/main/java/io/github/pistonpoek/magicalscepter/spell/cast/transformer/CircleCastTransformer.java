@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Pair;
+import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
@@ -24,14 +25,14 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
                     PositionSource.CODEC.fieldOf("position").forGetter(CircleCastTransformer::position),
                     Codec.floatRange(180.0f, -180.0f).optionalFieldOf("direction", 0.0f).forGetter(CircleCastTransformer::direction),
                     Codec.FLOAT.optionalFieldOf("arc", 360.0f).forGetter(CircleCastTransformer::arc),
-                    Codec.INT.fieldOf("amount").forGetter(CircleCastTransformer::amount),
-                    Codec.INT.optionalFieldOf("step_delay", 0).forGetter(CircleCastTransformer::stepDelay)
+                    Codecs.NON_NEGATIVE_INT.fieldOf("amount").forGetter(CircleCastTransformer::amount),
+                    Codecs.NON_NEGATIVE_INT.optionalFieldOf("step_delay", 0).forGetter(CircleCastTransformer::stepDelay)
             ).apply(instance, CircleCastTransformer::new)
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
-        SpellContext context = cast.getContext();
+    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+        SpellContext context = casting.getContext();
         RotationSource rotation = new FacingLocationRotationSource(position);
         Vec3d centerPos = context.position();
         double radius = position.getPosition(context).subtract(centerPos).length();
@@ -41,8 +42,7 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
         Collection<SpellCasting> casts = new ArrayList<>();
         double radianStep = Math.toRadians(arc) / amount;
         for (int i = 0; i < amount; i++) {
-            SpellCasting pointCast = cast.clone();
-            pointCast.setDelay(cast.getDelay() + i * stepDelay);
+            SpellCasting pointCast = DelayCastTransformer.delay(casting, i * stepDelay);
             double angle = radianStep * i;
 
             Vec3d relativePosition = new Vec3d(
@@ -54,11 +54,11 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
             PositionSource absolutePosition = AbsolutePositionSource.builder(
                     RelativePositionSource.builder(relativePosition)
                     .rotation(rotation).build().getPosition(context)).build();
-            pointCast.addContextSource(absolutePosition);
+            pointCast.addContext(absolutePosition);
 
             Pair<Float, Float> pointRotation = new FacingLocationRotationSource(absolutePosition).getRotation(context);
             RotationSource absoluteRotation = new AbsoluteRotationSource(pointRotation.getLeft(), pointRotation.getRight());
-            pointCast.addContextSource(absoluteRotation);
+            pointCast.addContext(absoluteRotation);
             casts.add(pointCast);
         }
         return casts;

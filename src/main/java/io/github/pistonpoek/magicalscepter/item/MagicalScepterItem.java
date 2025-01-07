@@ -63,17 +63,15 @@ public class MagicalScepterItem extends Item implements AttackItem {
             user.addScore(experienceCost); // Compensating for lost score in adding experience cost.
         }
         user.setCurrentHand(hand);
-        user.getItemCooldownManager().set(itemStack, spell.getCooldown());
+        user.getItemCooldownManager().set(itemStack,
+                user.getAbilities().creativeMode ?
+                    10 : spell.getCooldown()
+        );
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
-        int castDuration = MagicalScepterItem.castSpell(spell, user, itemStack, attackCast, hand);
+        MagicalScepterItem.castSpell(spell, user, itemStack, attackCast, hand);
 
         if (!world.isClient()) {
-            // Correct spell duration cooldown, increase cooldown for non-creative and decrease for creative players.
-            if (user.getAbilities().creativeMode ^ castDuration + 10 >= spell.getCooldown()) {
-                user.getItemCooldownManager().set(itemStack, castDuration + 10);
-            }
-
             itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
             if (itemStack.isEmpty()) {
                 itemStack = createScepter(itemStack);
@@ -91,9 +89,8 @@ public class MagicalScepterItem extends Item implements AttackItem {
      * @param itemStack Item stack that the spell is cast with.
      * @param attackCast Truth assignment, if cast is an attack and not protect.
      * @param hand Hand being used to cast the spell.
-     * @return Duration that the spell takes.
      */
-    public static int castSpell(@NotNull Spell spell, @NotNull LivingEntity caster,
+    public static void castSpell(@NotNull Spell spell, @NotNull LivingEntity caster,
                                 @Nullable ItemStack itemStack,
                                 boolean attackCast, Hand hand) {
         caster.playSound(attackCast ?
@@ -104,14 +101,14 @@ public class MagicalScepterItem extends Item implements AttackItem {
         ((SwingHandLivingEntity)caster).magical_scepter$swingHand(hand, swingType);
 
         if (caster.getWorld().isClient()) {
-            return 0;
+            return;
         }
 
         if (caster instanceof ServerPlayerEntity serverPlayerEntity && itemStack != null) {
             ModCriteria.CAST_SCEPTER.trigger(serverPlayerEntity, itemStack);
         }
 
-        return spell.castSpell(caster);
+        spell.castSpell(caster);
     }
 
     public ItemStack createScepter(ItemStack stack) {

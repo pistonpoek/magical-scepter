@@ -14,7 +14,7 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import java.util.Optional;
 
 public record MoveSpellEffect(FloatProvider power, boolean knockback) implements SpellEffect {
-    public static final MapCodec<MoveSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<MoveSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             FloatProvider.VALUE_CODEC.fieldOf("power").forGetter(MoveSpellEffect::power),
                             Codec.BOOL.optionalFieldOf("knockback", false).forGetter(MoveSpellEffect::knockback)
@@ -43,6 +43,6 @@ public record MoveSpellEffect(FloatProvider power, boolean knockback) implements
 
     @Override
     public MapCodec<MoveSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

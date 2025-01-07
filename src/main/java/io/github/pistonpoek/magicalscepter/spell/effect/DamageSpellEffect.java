@@ -10,7 +10,7 @@ import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record DamageSpellEffect(FloatProvider amount, RegistryEntry<DamageType> damageType) implements SpellEffect {
-    public static final MapCodec<DamageSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<DamageSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             FloatProvider.VALUE_CODEC.fieldOf("amount").forGetter(DamageSpellEffect::amount),
                             DamageType.ENTRY_CODEC.fieldOf("damage_type").forGetter(DamageSpellEffect::damageType)
@@ -28,6 +28,6 @@ public record DamageSpellEffect(FloatProvider amount, RegistryEntry<DamageType> 
 
     @Override
     public MapCodec<DamageSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

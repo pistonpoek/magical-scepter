@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 
 import com.mojang.serialization.DataResult;
+import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -14,31 +15,31 @@ import net.minecraft.world.timer.TimerCallback;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
-import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.UUID;
 
-public record SpellCastTimerCallback(List<SpellEffect> effects,
+public record SpellCastTimerCallback(SpellCast spellCast,
                                      UUID casterUUID,
                                      SpellContextSource contextSource) implements TimerCallback<MinecraftServer> {
 
     @Override
     public void call(MinecraftServer minecraftServer, Timer<MinecraftServer> events, long time) {
-        new SpellCasting(loadCaster(minecraftServer))
-                .addContextSource(contextSource).apply(effects);
+        LivingEntity caster = loadCaster(minecraftServer);
+        if (caster != null) {
+            new SpellCasting(spellCast, caster, contextSource).invoke();
+        }
     }
 
     public static class Serializer extends TimerCallback.Serializer<MinecraftServer, SpellCastTimerCallback> {
         public Serializer() {
-            super(ModIdentifier.of("spell_cast"), SpellCastTimerCallback.class);
+            super(ModIdentifier.of("spell_casting"), SpellCastTimerCallback.class);
         }
 
         public void serialize(NbtCompound nbtCompound, SpellCastTimerCallback spellCastTimerCallback) {
-            final DataResult<NbtElement> encodedEffects = SpellEffect.CODEC.listOf()
-                    .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.effects);
-            nbtCompound.put("effects", encodedEffects.getOrThrow());
+            final DataResult<NbtElement> encodedSpellCast = SpellCast.CODEC
+                    .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.spellCast());
+            nbtCompound.put("spell_cast", encodedSpellCast.getOrThrow());
             nbtCompound.putUuid("caster", spellCastTimerCallback.casterUUID);
             final DataResult<NbtElement> encodedContextSource = SpellContextSource.CODEC
                     .encodeStart(NbtOps.INSTANCE, spellCastTimerCallback.contextSource);
@@ -46,13 +47,13 @@ public record SpellCastTimerCallback(List<SpellEffect> effects,
         }
 
         public SpellCastTimerCallback deserialize(NbtCompound nbtCompound) {
-            List<SpellEffect> effects = SpellEffect.CODEC.listOf()
-                    .decode(NbtOps.INSTANCE, nbtCompound.get("effects")).getOrThrow().getFirst();
+            SpellCast spellCast = SpellCast.CODEC
+                    .decode(NbtOps.INSTANCE, nbtCompound.get("spell_cast")).getOrThrow().getFirst();
             UUID casterUUID = nbtCompound.getUuid("caster");
             SpellContextSource contextSource = SpellContextSource.CODEC
                     .decode(NbtOps.INSTANCE, nbtCompound.get("context")).getOrThrow().getFirst();
 
-            return new SpellCastTimerCallback(effects, casterUUID, contextSource);
+            return new SpellCastTimerCallback(spellCast, casterUUID, contextSource);
         }
     }
 

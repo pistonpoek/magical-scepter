@@ -17,8 +17,8 @@ public record MoveCastTransformer(PositionSource position) implements CastTransf
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
-        return List.of(cast.addContextSource(position));
+    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+        return List.of(casting.addContext(position));
     }
 
     @Override

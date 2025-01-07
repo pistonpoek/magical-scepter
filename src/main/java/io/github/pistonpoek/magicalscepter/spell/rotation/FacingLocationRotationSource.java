@@ -9,7 +9,7 @@ import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import org.jetbrains.annotations.NotNull;
 
 public record FacingLocationRotationSource(PositionSource position) implements RotationSource {
-    static MapCodec<FacingLocationRotationSource> CODEC = RecordCodecBuilder.mapCodec(
+    static MapCodec<FacingLocationRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(FacingLocationRotationSource::position)
             ).apply(instance, FacingLocationRotationSource::new)
@@ -38,6 +38,6 @@ public record FacingLocationRotationSource(PositionSource position) implements R
 
     @Override
     public MapCodec<FacingLocationRotationSource> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

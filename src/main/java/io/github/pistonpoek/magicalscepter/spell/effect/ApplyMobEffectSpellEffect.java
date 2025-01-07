@@ -23,7 +23,7 @@ public record ApplyMobEffectSpellEffect(
         FloatProvider minAmplifier,
         FloatProvider maxAmplifier
 ) implements SpellEffect {
-    public static final MapCodec<ApplyMobEffectSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<ApplyMobEffectSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             RegistryCodecs.entryList(RegistryKeys.STATUS_EFFECT).fieldOf("to_apply").forGetter(ApplyMobEffectSpellEffect::toApply),
                             FloatProvider.VALUE_CODEC.fieldOf("min_duration").forGetter(ApplyMobEffectSpellEffect::minDuration),
@@ -58,7 +58,7 @@ public record ApplyMobEffectSpellEffect(
 
     @Override
     public MapCodec<ApplyMobEffectSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }
 

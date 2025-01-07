@@ -4,32 +4,32 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.timer.Timer;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
-import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 public interface SpellCastScheduler {
 
-    static void schedule(@NotNull SpellCasting cast, List<SpellEffect> effects) {
-        LivingEntity caster = cast.getCaster();
+    /**
+     * Schedule a spell cast callback after a specified delay for a specified caster.
+     *
+     * @param caster Living entity for whom the callback should be scheduled.
+     * @param callback Spell cast timer callback to schedule.
+     * @param delay Time delay to set for the callback in ticks.
+     */
+    static void schedule(@NotNull LivingEntity caster, @NotNull SpellCastTimerCallback callback, int delay) {
         MinecraftServer minecraftServer = caster.getServer();
         if (minecraftServer == null) {
             return;
         }
-        if (cast.getDelay() <= 0) {
-            cast.apply(effects);
-            return;
+        if (delay <= 0) {
+            throw new IllegalArgumentException("Delay is %d when trying to schedule spell cast".formatted(delay));
         }
         Timer<MinecraftServer> timer = minecraftServer.getSaveProperties().getMainWorldProperties().getScheduledEvents();
-        long cast_time = caster.getWorld().getTime() + (long) cast.getDelay();
-        timer.setEvent(createSpellCastEventName(caster, minecraftServer), cast_time,
-                new SpellCastTimerCallback(
-                        effects,
-                        caster.getUuid(),
-                        cast.getContextSource()
-                )
+        long cast_time = caster.getWorld().getTime() + (long) delay;
+        timer.setEvent(createSpellCastEventName(caster, minecraftServer),
+                cast_time,
+                callback
         );
     }
 

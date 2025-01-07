@@ -16,14 +16,9 @@ public record RotateCastTransformer(RotationSource rotation) implements CastTran
             ).apply(instance, RotateCastTransformer::new)
     );
 
-    @FunctionalInterface
-    public interface CastRotator {
-        RotationSource getSource(@NotNull SpellCasting cast);
-    }
-
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
-        return List.of(cast.addContextSource(rotation));
+    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+        return List.of(casting.addContext(rotation));
     }
 
     @Override

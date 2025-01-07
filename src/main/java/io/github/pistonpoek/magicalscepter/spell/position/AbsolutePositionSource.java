@@ -8,13 +8,17 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record AbsolutePositionSource(double x, double y, double z) implements PositionSource {
-    static MapCodec<AbsolutePositionSource> CODEC = RecordCodecBuilder.mapCodec(
+    public static MapCodec<AbsolutePositionSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.DOUBLE.fieldOf("x").forGetter(AbsolutePositionSource::x),
                     Codec.DOUBLE.fieldOf("y").forGetter(AbsolutePositionSource::y),
                     Codec.DOUBLE.fieldOf("z").forGetter(AbsolutePositionSource::z)
             ).apply(instance, AbsolutePositionSource::new)
     );
+
+    public AbsolutePositionSource(Vec3d position) {
+        this(position.x, position.y, position.z);
+    }
 
     @Override
     public Vec3d getPosition(@NotNull SpellContext context) {
@@ -23,7 +27,7 @@ public record AbsolutePositionSource(double x, double y, double z) implements Po
 
     @Override
     public MapCodec<AbsolutePositionSource> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder(double x, double y, double z) {

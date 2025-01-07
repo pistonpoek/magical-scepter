@@ -146,7 +146,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
                 this.cooldown = this.attackInterval;
 
                 scepterSpell.ifPresent(spell -> {
-                    cooldown += MagicalScepterItem.castSpell(spell, this.actor,
+                    MagicalScepterItem.castSpell(spell, this.actor,
                             scepterStack, attackCast, Hand.MAIN_HAND);
                 });
             }

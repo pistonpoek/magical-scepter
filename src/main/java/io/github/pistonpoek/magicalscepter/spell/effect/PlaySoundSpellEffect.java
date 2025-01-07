@@ -13,7 +13,7 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record PlaySoundSpellEffect(RegistryEntry<SoundEvent> soundEvent, FloatProvider volume, FloatProvider pitch)
         implements SpellEffect {
-    public static final MapCodec<PlaySoundSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<PlaySoundSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             SoundEvent.ENTRY_CODEC.fieldOf("sound").forGetter(PlaySoundSpellEffect::soundEvent),
                             FloatProvider.createValidatedCodec(1.0E-5F, 10.0F).fieldOf("volume").forGetter(PlaySoundSpellEffect::volume),
@@ -37,6 +37,6 @@ public record PlaySoundSpellEffect(RegistryEntry<SoundEvent> soundEvent, FloatPr
 
     @Override
     public MapCodec<PlaySoundSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

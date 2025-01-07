@@ -6,7 +6,7 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.math.intprovider.IntProvider;
 
 public record IgniteSpellEffect(IntProvider duration) implements SpellEffect {
-    public static final MapCodec<IgniteSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<IgniteSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             IntProvider.VALUE_CODEC.fieldOf("duration").forGetter(IgniteSpellEffect::duration)
                     )
@@ -20,6 +20,6 @@ public record IgniteSpellEffect(IntProvider duration) implements SpellEffect {
 
     @Override
     public MapCodec<IgniteSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

@@ -18,7 +18,7 @@ public interface TargetSource extends SpellContextSource {
     Codec<TargetSource> CODEC = MAP_CODEC.codec();
 
     static void register(Registry<MapCodec<? extends TargetSource>> registry) {
-        Registry.register(registry, ModIdentifier.of("absolute"), AbsoluteTargetSource.CODEC);
+        Registry.register(registry, ModIdentifier.of("absolute"), AbsoluteTargetSource.MAP_CODEC);
     }
 
     Entity getTarget(@NotNull SpellContext spellContext);

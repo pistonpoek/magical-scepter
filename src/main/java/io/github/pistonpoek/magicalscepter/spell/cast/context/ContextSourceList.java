@@ -2,6 +2,9 @@ package io.github.pistonpoek.magicalscepter.spell.cast.context;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
+import io.github.pistonpoek.magicalscepter.spell.rotation.AbsoluteRotationSource;
+import io.github.pistonpoek.magicalscepter.spell.target.AbsoluteTargetSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -31,6 +34,15 @@ public record ContextSourceList(List<SpellContextSource> sources) implements Spe
         }
         sources.add(contextSource);
         return this;
+    }
+
+    public ContextSourceList(SpellContext context) {
+        this(List.of(
+                new AbsoluteTargetSource(context.target().getUuid()),
+                new AbsolutePositionSource(context.position()),
+                new AbsoluteRotationSource(context.pitch(), context.yaw())
+            )
+        );
     }
 
     @Override

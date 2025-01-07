@@ -19,12 +19,12 @@ public interface RotationSource extends SpellContextSource {
     Codec<RotationSource> CODEC = MAP_CODEC.codec();
 
     static void register(Registry<MapCodec<? extends RotationSource>> registry) {
-        Registry.register(registry, ModIdentifier.of("absolute"), AbsoluteRotationSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("relative"), RelativeRotationSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("entity"), EntityRotationSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("mixed"), MixedRotationSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("random"), RandomRotationSource.CODEC);
-        Registry.register(registry, ModIdentifier.of("facing"), FacingLocationRotationSource.CODEC);
+        Registry.register(registry, ModIdentifier.of("absolute"), AbsoluteRotationSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("relative"), RelativeRotationSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("entity"), EntityRotationSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("mixed"), MixedRotationSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("random"), RandomRotationSource.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("facing"), FacingLocationRotationSource.MAP_CODEC);
     }
 
     Pair<Float, Float> getRotation(@NotNull SpellContext context);

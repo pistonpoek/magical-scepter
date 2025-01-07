@@ -1,13 +1,10 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.Vec3d;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.ContextSourceList;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
-import io.github.pistonpoek.magicalscepter.spell.rotation.AbsoluteRotationSource;
+import net.minecraft.util.dynamic.Codecs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -16,21 +13,18 @@ import java.util.Collection;
 public record RepeatCastTransformer(int amount, int stepDelay) implements CastTransformer {
     public static final MapCodec<RepeatCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Codec.INT.fieldOf("amount").forGetter(RepeatCastTransformer::amount),
-                    Codec.INT.optionalFieldOf("step_delay", 0).forGetter(RepeatCastTransformer::stepDelay)
+                    Codecs.NON_NEGATIVE_INT.fieldOf("amount").forGetter(RepeatCastTransformer::amount),
+                    Codecs.NON_NEGATIVE_INT.optionalFieldOf("step_delay", 0).forGetter(RepeatCastTransformer::stepDelay)
             ).apply(instance, RepeatCastTransformer::new)
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
-        SpellContext context = cast.getContext();
-        Vec3d position = context.position();
-        cast.addContextSource(new AbsolutePositionSource(position.x, position.y, position.z));
-        cast.addContextSource(new AbsoluteRotationSource(context.pitch(), context.yaw()));
+    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+        casting.addContext(new ContextSourceList(casting.getContext()));
 
         Collection<SpellCasting> casts = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            casts.add(cast.clone().setDelay(cast.getDelay() + i * stepDelay));
+            casts.add(DelayCastTransformer.delay(casting, i * stepDelay));
         }
         return casts;
     }

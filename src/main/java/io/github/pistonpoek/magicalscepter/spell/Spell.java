@@ -12,6 +12,7 @@ import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.text.*;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
+import net.minecraft.util.dynamic.Codecs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
     public static final Codec<Spell> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             SpellCast.CODEC.listOf().fieldOf("casts").forGetter(Spell::casts),
-                            Codec.INT.fieldOf("cooldown").forGetter(Spell::cooldown),
+                            Codecs.NON_NEGATIVE_INT.fieldOf("cooldown").forGetter(Spell::cooldown),
                             TextCodecs.CODEC.fieldOf("description").forGetter(Spell::description)
                     )
                     .apply(instance, Spell::new)
@@ -45,22 +46,17 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
      * Cast this spell for a specific living entity.
      *
      * @param caster Living entity to cast the spell for.
-     * @return Duration that the spell takes.
      */
-    public int castSpell(@NotNull LivingEntity caster) {
+    public void castSpell(@NotNull LivingEntity caster) {
         if (caster.getWorld().isClient()) {
-            return 0;
+            return;
         }
 
-        int duration = 0;
         for (SpellCast cast : casts) {
-            int castTime = cast.apply(caster);
-            duration = Math.max(duration, castTime);
+            cast.invoke(caster);
         }
 
         caster.emitGameEvent(ModGameEvent.SPELL_CAST);
-
-        return duration;
     }
 
     public int getCooldown() {

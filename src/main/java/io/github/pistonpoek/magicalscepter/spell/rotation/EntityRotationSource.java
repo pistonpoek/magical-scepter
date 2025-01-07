@@ -9,7 +9,7 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record EntityRotationSource(float pitch, float yaw) implements RotationSource {
-    static MapCodec<EntityRotationSource> CODEC = RecordCodecBuilder.mapCodec(
+    static MapCodec<EntityRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.FLOAT.optionalFieldOf("pitch", 0.0F).forGetter(EntityRotationSource::pitch),
                     Codec.FLOAT.optionalFieldOf("yaw", 0.0F).forGetter(EntityRotationSource::yaw)
@@ -26,7 +26,7 @@ public record EntityRotationSource(float pitch, float yaw) implements RotationSo
 
     @Override
     public MapCodec<EntityRotationSource> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
 }

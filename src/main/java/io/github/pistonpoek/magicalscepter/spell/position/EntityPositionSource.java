@@ -9,7 +9,7 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record EntityPositionSource(Anchor anchor) implements PositionSource {
-    static MapCodec<EntityPositionSource> CODEC = RecordCodecBuilder.mapCodec(
+    static MapCodec<EntityPositionSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Anchor.CODEC.optionalFieldOf("anchor", Anchor.FEET).forGetter(EntityPositionSource::anchor)
             ).apply(instance, EntityPositionSource::new)
@@ -41,7 +41,7 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
 
     @Override
     public MapCodec<EntityPositionSource> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder(Anchor anchor) {

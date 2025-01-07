@@ -11,7 +11,7 @@ import java.util.Optional;
 public record MixedPositionSource(Optional<PositionSource> x,
                                   Optional<PositionSource> y,
                                   Optional<PositionSource> z) implements PositionSource {
-    static MapCodec<MixedPositionSource> CODEC = RecordCodecBuilder.mapCodec(
+    static MapCodec<MixedPositionSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.optionalFieldOf("x").forGetter(MixedPositionSource::x),
                     PositionSource.CODEC.optionalFieldOf("y").forGetter(MixedPositionSource::y),
@@ -29,7 +29,7 @@ public record MixedPositionSource(Optional<PositionSource> x,
 
     @Override
     public MapCodec<MixedPositionSource> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder() {

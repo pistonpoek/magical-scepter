@@ -36,7 +36,7 @@ public record ExplodeSpellEffect(
         ParticleEffect largeParticle,
         RegistryEntry<SoundEvent> sound
 ) implements SpellEffect {
-    public static final MapCodec<ExplodeSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<ExplodeSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             Codec.BOOL.optionalFieldOf("attribute_to_user", false).forGetter(ExplodeSpellEffect::attributeToUser),
                             DamageType.ENTRY_CODEC.optionalFieldOf("damage_type").forGetter(ExplodeSpellEffect::damageType),
@@ -86,6 +86,6 @@ public record ExplodeSpellEffect(
 
     @Override
     public MapCodec<ExplodeSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

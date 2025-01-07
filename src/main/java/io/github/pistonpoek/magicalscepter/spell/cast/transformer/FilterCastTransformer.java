@@ -28,8 +28,8 @@ public record FilterCastTransformer(LootContextPredicate filters) implements Cas
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting cast) {
-        SpellContext context = cast.getContext();
+    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+        SpellContext context = casting.getContext();
         ServerWorld serverWorld = context.getWorld();
         Vec3d position = context.position();
         ItemStack stack = context.caster().getActiveItem();
@@ -42,7 +42,7 @@ public record FilterCastTransformer(LootContextPredicate filters) implements Cas
                 .build(ModLootContextTypes.SPELL_CAST);
         LootContext lootContext = new LootContext.Builder(lootWorldContext).build(Optional.empty());
         if (filters.test(lootContext)) {
-            return List.of(cast);
+            return List.of(casting);
         }
 
         return List.of();

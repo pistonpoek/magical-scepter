@@ -14,7 +14,7 @@ import java.util.Set;
 
 public record TeleportSpellEffect()
         implements SpellEffect {
-    public static final MapCodec<TeleportSpellEffect> CODEC = MapCodec.unit(new TeleportSpellEffect());
+    public static final MapCodec<TeleportSpellEffect> MAP_CODEC = MapCodec.unit(new TeleportSpellEffect());
 
     @Override
     public void apply(SpellContext context) {
@@ -53,6 +53,6 @@ public record TeleportSpellEffect()
 
     @Override
     public MapCodec<TeleportSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

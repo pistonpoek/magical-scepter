@@ -15,7 +15,7 @@ public record SpawnParticleSpellEffect(
         Vec3d delta,
         FloatProvider speed
 ) implements SpellEffect {
-    public static final MapCodec<SpawnParticleSpellEffect> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<SpawnParticleSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             ParticleTypes.TYPE_CODEC.fieldOf("particle")
                                     .forGetter(SpawnParticleSpellEffect::particle),
@@ -47,7 +47,7 @@ public record SpawnParticleSpellEffect(
 
     @Override
     public MapCodec<SpawnParticleSpellEffect> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static SpawnParticleSpellEffect.Builder builder(ParticleEffect particleEffect) {
