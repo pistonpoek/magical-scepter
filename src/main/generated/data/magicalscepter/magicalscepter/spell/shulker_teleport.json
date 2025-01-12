@@ -24,6 +24,9 @@
       ],
       "transformers": [
         {
+          "type": "magicalscepter:anchor"
+        },
+        {
           "type": "magicalscepter:repeat",
           "amount": 64
         },

@@ -5,7 +5,6 @@ import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.projectile.WindChargeEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;

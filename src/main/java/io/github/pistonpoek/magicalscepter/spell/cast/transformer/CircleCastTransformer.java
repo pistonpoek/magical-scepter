@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public record CircleCastTransformer(PositionSource position, float direction, float arc, int amount, int stepDelay) implements CastTransformer {
-    public static final MapCodec<CircleCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<CircleCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(CircleCastTransformer::position),
                     Codec.floatRange(180.0f, -180.0f).optionalFieldOf("direction", 0.0f).forGetter(CircleCastTransformer::direction),
@@ -66,7 +66,7 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
 
     @Override
     public MapCodec<CircleCastTransformer> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder(PositionSource position, int amount) {

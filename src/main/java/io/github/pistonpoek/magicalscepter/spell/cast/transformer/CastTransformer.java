@@ -15,15 +15,16 @@ public interface CastTransformer {
     Codec<CastTransformer> CODEC = ModRegistries.CAST_TRANSFORMER_TYPE.getCodec().dispatch(CastTransformer::getCodec, Function.identity());
 
     static void register(Registry<MapCodec<? extends CastTransformer>> registry) {
-        Registry.register(registry, ModIdentifier.of("line"), LineCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("circle"), CircleCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("surface"), SurfaceCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("move"), MoveCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("rotate"), RotateCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("delay"), DelayCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("repeat"), RepeatCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("ray"), RayCastTransformer.CODEC);
-        Registry.register(registry, ModIdentifier.of("filter"), FilterCastTransformer.CODEC);
+        Registry.register(registry, ModIdentifier.of("anchor"), AnchorCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("line"), LineCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("circle"), CircleCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("surface"), SurfaceCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("move"), MoveCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("rotate"), RotateCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("delay"), DelayCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("repeat"), RepeatCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("ray"), RayCastTransformer.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("filter"), FilterCastTransformer.MAP_CODEC);
     }
 
     Collection<SpellCasting> transform(@NotNull SpellCasting casting);

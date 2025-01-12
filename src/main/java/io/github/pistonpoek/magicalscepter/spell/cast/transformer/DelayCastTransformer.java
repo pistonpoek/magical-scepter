@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 public record DelayCastTransformer(int delay) implements CastTransformer {
-    public static final MapCodec<DelayCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<DelayCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codecs.POSITIVE_INT.fieldOf("delay").forGetter(DelayCastTransformer::delay)
             ).apply(instance, DelayCastTransformer::new)
@@ -38,7 +38,7 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
 
     @Override
     public MapCodec<DelayCastTransformer> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder(int delay) {

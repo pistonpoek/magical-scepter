@@ -23,19 +23,24 @@
           "effects": [],
           "entity": "minecraft:area_effect_cloud",
           "nbt": {
-            "Duration": 600,
+            "Duration": 60,
             "Particle": {
               "type": "minecraft:dragon_breath"
             },
-            "Radius": 3,
-            "RadiusPerTick": 0.00666666666,
+            "Radius": 1.2,
+            "RadiusPerTick": -0.01,
             "potion_contents": {
-              "potion": "minecraft:harming"
+              "potion": "minecraft:strong_harming"
             }
           }
         }
       ],
       "transformers": [
+        {
+          "type": "magicalscepter:repeat",
+          "amount": 4,
+          "step_delay": 4
+        },
         {
           "type": "magicalscepter:ray",
           "range": 8.0,
@@ -55,24 +60,13 @@
       "transformers": [
         {
           "type": "magicalscepter:repeat",
-          "amount": 6,
+          "amount": 4,
           "step_delay": 4
         },
         {
-          "type": "magicalscepter:rotate",
-          "rotation": {
-            "type": "magicalscepter:random",
-            "pitch": 45.0,
-            "yaw": 0.0
-          }
-        },
-        {
-          "type": "magicalscepter:rotate",
-          "rotation": {
-            "type": "magicalscepter:random",
-            "pitch": 0.0,
-            "yaw": 90.0
-          }
+          "type": "magicalscepter:ray",
+          "range": 8.0,
+          "target": "block"
         },
         {
           "type": "magicalscepter:move",

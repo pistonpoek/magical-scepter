@@ -45,28 +45,6 @@
         {
           "type": "magicalscepter:rotate",
           "rotation": {
-            "type": "magicalscepter:entity"
-          }
-        },
-        {
-          "type": "magicalscepter:move",
-          "position": {
-            "type": "magicalscepter:entity",
-            "anchor": "eyes"
-          }
-        },
-        {
-          "type": "magicalscepter:move",
-          "position": {
-            "type": "magicalscepter:relative",
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.8
-          }
-        },
-        {
-          "type": "magicalscepter:rotate",
-          "rotation": {
             "type": "magicalscepter:random",
             "pitch": 0.0,
             "yaw": 12.0

@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 public record MoveCastTransformer(PositionSource position) implements CastTransformer {
-    public static final MapCodec<MoveCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<MoveCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(MoveCastTransformer::position)
             ).apply(instance, MoveCastTransformer::new)
@@ -23,7 +23,7 @@ public record MoveCastTransformer(PositionSource position) implements CastTransf
 
     @Override
     public MapCodec<MoveCastTransformer> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder(PositionSource position) {

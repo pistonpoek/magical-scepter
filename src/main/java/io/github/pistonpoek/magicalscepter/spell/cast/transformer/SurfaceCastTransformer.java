@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public record SurfaceCastTransformer(float distance, boolean require, Optional<PositionSource> position)
         implements CastTransformer {
-    public static final MapCodec<SurfaceCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<SurfaceCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
         instance -> instance.group(
                 Codec.FLOAT.fieldOf("distance").forGetter(SurfaceCastTransformer::distance),
                 Codec.BOOL.optionalFieldOf("require", true).forGetter(SurfaceCastTransformer::require),
@@ -88,7 +88,7 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
 
     @Override
     public MapCodec<SurfaceCastTransformer> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder(float distance) {

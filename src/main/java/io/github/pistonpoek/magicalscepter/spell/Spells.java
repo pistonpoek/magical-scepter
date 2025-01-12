@@ -138,23 +138,6 @@ public class Spells {
                     .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6).build())
                     .addTransformer(
                             RotateCastTransformer.builder(
-                                    new EntityRotationSource(0, 0)
-                            ).build()
-                    )
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    EntityPositionSource.builder(
-                                            EntityPositionSource.Anchor.EYES
-                                    ).build()
-                            ).build()
-                    )
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 0.8).build()
-                            ).build()
-                    )
-                    .addTransformer(
-                            RotateCastTransformer.builder(
                                     new RandomRotationSource(0.0F, 12.0F)
                             ).build()
                     )
@@ -290,10 +273,10 @@ public class Spells {
             )
         );
         NbtCompound areaEffectCloudNbtCompound = new NbtCompound();
-        areaEffectCloudNbtCompound.putInt("Duration", 600);
-        areaEffectCloudNbtCompound.putInt("Radius", 3);
-        areaEffectCloudNbtCompound.putDouble("RadiusPerTick", 0.00666666666);
-        NbtElement nbtElement = PotionContentsComponent.CODEC.encodeStart(NbtOps.INSTANCE, new PotionContentsComponent(Potions.HARMING)).getOrThrow();
+        areaEffectCloudNbtCompound.putInt("Duration", 60);
+        areaEffectCloudNbtCompound.putFloat("Radius", 1.2F);
+        areaEffectCloudNbtCompound.putDouble("RadiusPerTick", -0.01);
+        NbtElement nbtElement = PotionContentsComponent.CODEC.encodeStart(NbtOps.INSTANCE, new PotionContentsComponent(Potions.STRONG_HARMING)).getOrThrow();
         areaEffectCloudNbtCompound.put("potion_contents", nbtElement);
         areaEffectCloudNbtCompound.put("Particle", ParticleTypes.TYPE_CODEC.encodeStart(NbtOps.INSTANCE, ParticleTypes.DRAGON_BREATH).getOrThrow());
         register(registry, DRAGON_GROWL_KEY, Spell.builder(100,
@@ -312,6 +295,9 @@ public class Spells {
                             ).nbt(areaEffectCloudNbtCompound).build()
                     )
                     .addTransformer(
+                            RepeatCastTransformer.builder(4).stepDelay(4).build()
+                    )
+                    .addTransformer(
                             RayCastTransformer.builder(RayCastTransformer.Target.BLOCK, 8)
                                     .require(true)
                                     .build()
@@ -324,17 +310,12 @@ public class Spells {
                                     .build()
                     )
                     .addTransformer(
-                            RepeatCastTransformer.builder(6).stepDelay(4).build()
+                            RepeatCastTransformer.builder(4).stepDelay(4).build()
                     )
                     .addTransformer(
-                            RotateCastTransformer.builder(
-                                    new RandomRotationSource(45, 0)
-                            ).build()
-                    )
-                    .addTransformer(
-                            RotateCastTransformer.builder(
-                                    new RandomRotationSource(0, 90)
-                            ).build()
+                            RayCastTransformer.builder(RayCastTransformer.Target.BLOCK, 8)
+                                    .require(true)
+                                    .build()
                     )
                     .addTransformer(
                             MoveCastTransformer.builder(
@@ -557,12 +538,13 @@ public class Spells {
             )
             .addCast(SpellCast.builder()
                     .addEffect(new TeleportSpellEffect())
+                    .addTransformer(new AnchorCastTransformer())
                     .addTransformer(RepeatCastTransformer.builder(64).build())
                     .addTransformer(MoveCastTransformer.builder(
                             RandomPositionSource.builder(8, 4, 8).build()
                         ).build()
                     )
-                    .addTransformer(SurfaceCastTransformer.builder(4).build())
+                    .addTransformer(SurfaceCastTransformer.builder(4).require(true).build())
             )
         );
 

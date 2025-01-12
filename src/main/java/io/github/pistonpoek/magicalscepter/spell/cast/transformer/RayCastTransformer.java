@@ -25,7 +25,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public record RayCastTransformer(Target target, double range, boolean require) implements CastTransformer {
-    public static final MapCodec<RayCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<RayCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Target.CODEC.fieldOf("target").forGetter(RayCastTransformer::target),
                     Codec.DOUBLE.fieldOf("range").forGetter(RayCastTransformer::range),
@@ -123,7 +123,7 @@ public record RayCastTransformer(Target target, double range, boolean require) i
 
     @Override
     public MapCodec<RayCastTransformer> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 
     public static Builder builder(Target target, double range) {

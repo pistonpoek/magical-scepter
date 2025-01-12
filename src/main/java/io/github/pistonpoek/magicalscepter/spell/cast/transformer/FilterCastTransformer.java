@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record FilterCastTransformer(LootContextPredicate filters) implements CastTransformer {
-    public static final MapCodec<FilterCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<FilterCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     LootContextPredicate.CODEC.fieldOf("filters").forGetter(FilterCastTransformer::filters)
             ).apply(instance, FilterCastTransformer::new)
@@ -50,6 +50,6 @@ public record FilterCastTransformer(LootContextPredicate filters) implements Cas
 
     @Override
     public MapCodec<FilterCastTransformer> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }

@@ -16,7 +16,7 @@ import java.util.Collection;
 public record LineCastTransformer(PositionSource position,
                                   int amount,
                                   int stepDelay) implements CastTransformer {
-    public static final MapCodec<LineCastTransformer> CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<LineCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(LineCastTransformer::position),
                     Codecs.NON_NEGATIVE_INT.fieldOf("amount").forGetter(LineCastTransformer::amount),
@@ -66,7 +66,7 @@ public record LineCastTransformer(PositionSource position,
 
     @Override
     public MapCodec<LineCastTransformer> getCodec() {
-        return CODEC;
+        return MAP_CODEC;
     }
 }
 
