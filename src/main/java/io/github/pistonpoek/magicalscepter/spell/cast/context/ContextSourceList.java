@@ -27,9 +27,7 @@ public record ContextSourceList(List<SpellContextSource> sources) implements Spe
 
     public ContextSourceList append(SpellContextSource contextSource) {
         if (contextSource instanceof ContextSourceList) {
-            for (SpellContextSource contextSourceElement: ((ContextSourceList)contextSource).sources) {
-                this.append(contextSourceElement);
-            }
+            ((ContextSourceList)contextSource).sources.forEach(this::append);
             return this;
         }
         sources.add(contextSource);
