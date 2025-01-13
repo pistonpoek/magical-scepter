@@ -18,8 +18,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.registry.entry.RegistryEntryListCodec;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -32,17 +30,19 @@ import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record SummonEntitySpellEffect(
-        RegistryEntryList<EntityType<?>> entityTypes,
+        RegistryEntry<EntityType<?>> entityType,
         List<SpellEffect> effects,
         Optional<NbtCompound> nbt
 ) implements SpellEffect {
     public static final MapCodec<SummonEntitySpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            RegistryEntryListCodec.create(RegistryKeys.ENTITY_TYPE,
-                                            Registries.ENTITY_TYPE.getEntryCodec(), false)
-                                .fieldOf("entity").forGetter(SummonEntitySpellEffect::entityTypes),
-                            SpellEffect.CODEC.listOf().fieldOf("effects").forGetter(SummonEntitySpellEffect::effects),
-                            NbtCompound.CODEC.optionalFieldOf("nbt").forGetter(SummonEntitySpellEffect::nbt)
+                            // TODO fix deserialization issue spell cast timer callback.
+                            Registries.ENTITY_TYPE.getEntryCodec().fieldOf("entity")
+                                    .forGetter(SummonEntitySpellEffect::entityType),
+                            SpellEffect.CODEC.listOf().fieldOf("effects")
+                                    .forGetter(SummonEntitySpellEffect::effects),
+                            NbtCompound.CODEC.optionalFieldOf("nbt")
+                                    .forGetter(SummonEntitySpellEffect::nbt)
                     ).apply(instance, SummonEntitySpellEffect::new)
     );
 
@@ -60,14 +60,8 @@ public record SummonEntitySpellEffect(
             return;
         }
 
-        Optional<RegistryEntry<EntityType<?>>> optionalEntityType = entityTypes.getRandom(random);
-        if (optionalEntityType.isEmpty()) {
-            MagicalScepter.LOGGER.info("Failed to summon entity spell effect as entity type is missing");
-            return;
-        }
-
         Registry<EntityType<?>> entityTypeRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENTITY_TYPE);
-        EntityType<?> entityType = optionalEntityType.get().value();
+        EntityType<?> entityType = entityType().value();
         if (!entityType.isSummonable()) {
             MagicalScepter.LOGGER.info("Failed to summon entity spell effect as entity type is not summonable");
             return;
@@ -150,17 +144,12 @@ public record SummonEntitySpellEffect(
     }
 
     public static class Builder {
-        private final List<RegistryEntry.Reference<EntityType<?>>> entityTypes = new ArrayList<>();
+        private final RegistryEntry.Reference<EntityType<?>> entityType;
         private final List<SpellEffect> effects = new ArrayList<>();
         private NbtCompound nbt = null;
 
         public Builder(RegistryEntry.Reference<EntityType<?>> entityType) {
-            entityTypes.add(entityType);
-        }
-
-        public Builder addEntityType(RegistryEntry.Reference<EntityType<?>> entityType) {
-            entityTypes.add(entityType);
-            return this;
+            this.entityType = entityType;
         }
 
         public Builder addEffect(SpellEffect effect) {
@@ -174,7 +163,7 @@ public record SummonEntitySpellEffect(
         }
 
         public SummonEntitySpellEffect build() {
-            return new SummonEntitySpellEffect(RegistryEntryList.of(entityTypes), effects, Optional.ofNullable(nbt));
+            return new SummonEntitySpellEffect(entityType, effects, Optional.ofNullable(nbt));
         }
 
     }
