@@ -41,6 +41,10 @@
           "type": "magicalscepter:move",
           "position": {
             "type": "magicalscepter:relative",
+            "position": {
+              "type": "magicalscepter:entity",
+              "anchor": "eyes"
+            },
             "x": 0.0,
             "y": 0.0,
             "z": 0.8

@@ -4,6 +4,7 @@ import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.*;
 import io.github.pistonpoek.magicalscepter.spell.effect.*;
+import io.github.pistonpoek.magicalscepter.spell.position.*;
 import io.github.pistonpoek.magicalscepter.spell.rotation.*;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.EntityType;
@@ -33,10 +34,6 @@ import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
-import io.github.pistonpoek.magicalscepter.spell.position.EntityPositionSource;
-import io.github.pistonpoek.magicalscepter.spell.position.MixedPositionSource;
-import io.github.pistonpoek.magicalscepter.spell.position.RandomPositionSource;
-import io.github.pistonpoek.magicalscepter.spell.position.RelativePositionSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +61,13 @@ public class Spells {
     public static final RegistryKey<Spell> WARDEN_STABILITY_KEY = of("warden_stability");
     public static final RegistryKey<Spell> WITHER_SKULL_KEY = of("wither_skull");
     public static final RegistryKey<Spell> WITHER_REPULSION_KEY = of("wither_repulsion");
+
+    private static final PositionSource PROJECTILE_BASE =
+            RelativePositionSource.builder(0, 0, 0.8).position(
+                    EntityPositionSource.builder(
+                            EntityPositionSource.Anchor.EYES
+                    ).build()
+            ).build();
 
     private static RegistryKey<Spell> of(String id) {
         return RegistryKey.of(ModRegistryKeys.SPELL, ModIdentifier.of(id));
@@ -97,13 +101,7 @@ public class Spells {
                             ).build()
                     )
                     .addTransformer(
-                            LineCastTransformer.builder(24,
-                                    RelativePositionSource.builder(0, 0, 0.8).position(
-                                            EntityPositionSource.builder(
-                                                    EntityPositionSource.Anchor.EYES
-                                            ).build()
-                                    ).build()
-                            ).build()
+                            LineCastTransformer.builder(24, PROJECTILE_BASE).build()
                     )
                     .addEffect(
                             SpawnParticleSpellEffect.builder(ParticleTypes.WITCH)
@@ -135,6 +133,7 @@ public class Spells {
                     )
             )
             .addCast(SpellCast.builder()
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6).build())
                     .addTransformer(
                             RotateCastTransformer.builder(
@@ -176,11 +175,7 @@ public class Spells {
                             UniformFloatProvider.create(0.8F, 1.2F)))
             )
             .addCast(SpellCast.builder()
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 0.8).build()
-                            ).build()
-                    )
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addEffect(
                             SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.WIND_CHARGE)
@@ -258,11 +253,7 @@ public class Spells {
                             UniformFloatProvider.create(0.8F, 1.2F)))
             )
             .addCast(SpellCast.builder()
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 0.8).build()
-                            ).build()
-                    )
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addEffect(
                             SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.DRAGON_FIREBALL)
@@ -438,11 +429,7 @@ public class Spells {
                             UniformFloatProvider.create(0.8F, 1.2F)))
             )
             .addCast(SpellCast.builder()
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 0.8).build()
-                            ).build()
-                    )
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addEffect(
                             SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.FIREBALL)
@@ -467,11 +454,7 @@ public class Spells {
         register(registry, GUARDIAN_BOLT_KEY, Spell.builder(40,
                         textOf("guardian_bolt"))
             .addCast(SpellCast.builder()
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 0.8).build()
-                            ).build()
-                    )
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addEffect(
                             SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(ModEntityType.GUARDIAN_BOLT))
@@ -515,11 +498,7 @@ public class Spells {
                             ).require(true)
                             .build()
                     )
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 0.8).build()
-                            ).build()
-                    )
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addEffect(
                             SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.SHULKER_BULLET)
@@ -559,11 +538,7 @@ public class Spells {
                     )
             )
             .addCast(SpellCast.builder()
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 0.8).build()
-                            ).build()
-                    )
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addTransformer(
                             LineCastTransformer.builder(15,
                                     RelativePositionSource.builder(0, 0, SONIC_BOOM_RANGE).build()
@@ -646,11 +621,7 @@ public class Spells {
                             UniformFloatProvider.create(0.8F, 1.2F)))
             )
             .addCast(SpellCast.builder()
-                    .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 0.8).build()
-                            ).build()
-                    )
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addEffect(
                             SummonEntitySpellEffect.builder(
                                     entityTypeReferenceFunction.apply(EntityType.WITHER_SKULL)
