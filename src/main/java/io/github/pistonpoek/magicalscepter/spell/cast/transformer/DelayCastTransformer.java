@@ -26,9 +26,9 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
      */
     public static SpellCasting delay(@NotNull SpellCasting casting, int delay) {
         if (delay <= 0) {
-            return casting;
+            return casting.clone();
         }
-        return new DelayedSpellCasting(casting, delay);
+        return new DelayedSpellCasting(casting.clone(), delay);
     }
 
     @Override
