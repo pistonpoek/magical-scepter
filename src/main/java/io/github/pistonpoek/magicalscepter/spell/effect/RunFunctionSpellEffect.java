@@ -35,7 +35,7 @@ public record RunFunctionSpellEffect(Identifier function) implements SpellEffect
         ServerCommandSource serverCommandSource = minecraftServer.getCommandSource()
                 .withLevel(2)
                 .withSilent()
-                .withEntity(context.caster())
+                .withEntity(context.target())
                 .withWorld(context.getWorld())
                 .withPosition(context.position())
                 .withRotation(new Vec2f(context.pitch(), context.yaw()));

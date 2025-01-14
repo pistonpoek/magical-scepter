@@ -36,7 +36,6 @@ public record SummonEntitySpellEffect(
 ) implements SpellEffect {
     public static final MapCodec<SummonEntitySpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            // TODO fix deserialization issue spell cast timer callback.
                             Registries.ENTITY_TYPE.getEntryCodec().fieldOf("entity")
                                     .forGetter(SummonEntitySpellEffect::entityType),
                             SpellEffect.CODEC.listOf().fieldOf("effects")
