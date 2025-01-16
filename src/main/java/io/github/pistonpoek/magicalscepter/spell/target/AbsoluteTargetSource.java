@@ -7,36 +7,39 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
+import net.minecraft.util.Uuids;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public record AbsoluteTargetSource(UUID targetUUID) implements TargetSource {
     public static MapCodec<AbsoluteTargetSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Codec.STRING.fieldOf("target").forGetter(value -> value.targetUUID.toString())
-            ).apply(instance, value -> new AbsoluteTargetSource(UUID.fromString(value)))
+                    Uuids.CODEC.fieldOf("target").forGetter(AbsoluteTargetSource::targetUUID)
+            ).apply(instance, AbsoluteTargetSource::new)
     );
 
     @Override
     public Entity getTarget(@NotNull SpellContext spellContext) {
-        MinecraftServer minecraftServer = spellContext.caster().getServer();
-        if (minecraftServer == null) {
+        MinecraftServer server = spellContext.caster().getServer();
+        if (server == null) {
             return spellContext.target();
         }
 
+        return load(server).orElse(spellContext.target());
+    }
+
+    public Optional<Entity> load(@NotNull MinecraftServer server) {
         Entity target = null;
-        for (ServerWorld world : minecraftServer.getWorlds()) {
+        for (ServerWorld world : server.getWorlds()) {
             target = world.getEntity(targetUUID);
             if (target != null) {
                 break;
             }
         }
-        if (target == null) {
-            return spellContext.target();
-        }
 
-        return target;
+        return Optional.ofNullable(target);
     }
 
     @Override

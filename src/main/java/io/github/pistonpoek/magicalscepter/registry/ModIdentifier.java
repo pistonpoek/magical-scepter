@@ -26,6 +26,10 @@ public class ModIdentifier {
         return MOD_ID + ":" + path;
     }
 
+    public static String id(String id) {
+        return MOD_ID + "_" + id;
+    }
+
     public static MutableText translatable(String path, Object... args) {
         return Text.translatable(of(path).toTranslationKey(), args);
     }
