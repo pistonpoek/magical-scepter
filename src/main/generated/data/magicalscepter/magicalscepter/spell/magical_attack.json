@@ -14,8 +14,15 @@
       ],
       "transformers": [
         {
+          "type": "magicalscepter:anchor"
+        },
+        {
+          "type": "magicalscepter:delay",
+          "delay": 4
+        },
+        {
           "type": "magicalscepter:ray",
-          "range": 16.0,
+          "range": 8.0,
           "target": "entity"
         }
       ]
@@ -35,16 +42,6 @@
           "type": "magicalscepter:move",
           "position": {
             "type": "magicalscepter:relative",
-            "x": 0.0,
-            "y": 0.0,
-            "z": 16.0
-          }
-        },
-        {
-          "type": "magicalscepter:line",
-          "amount": 24,
-          "position": {
-            "type": "magicalscepter:relative",
             "position": {
               "type": "magicalscepter:entity",
               "anchor": "eyes"
@@ -53,6 +50,17 @@
             "y": 0.0,
             "z": 0.8
           }
+        },
+        {
+          "type": "magicalscepter:line",
+          "amount": 16,
+          "position": {
+            "type": "magicalscepter:relative",
+            "x": 0.0,
+            "y": 0.0,
+            "z": 8.0
+          },
+          "step_delay": 0.5
         }
       ]
     }

@@ -39,7 +39,7 @@
         {
           "type": "magicalscepter:repeat",
           "amount": 4,
-          "step_delay": 4
+          "step_delay": 4.0
         },
         {
           "type": "magicalscepter:ray",
@@ -61,7 +61,7 @@
         {
           "type": "magicalscepter:repeat",
           "amount": 4,
-          "step_delay": 4
+          "step_delay": 4.0
         },
         {
           "type": "magicalscepter:ray",
@@ -84,7 +84,7 @@
             "type": "magicalscepter:entity",
             "anchor": "eyes"
           },
-          "step_delay": 1
+          "step_delay": 1.0
         }
       ]
     }

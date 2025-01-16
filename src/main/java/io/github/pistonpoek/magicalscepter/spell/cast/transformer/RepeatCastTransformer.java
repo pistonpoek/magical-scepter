@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public record RepeatCastTransformer(int amount, int stepDelay) implements CastTransformer {
+public record RepeatCastTransformer(int amount, float stepDelay) implements CastTransformer {
     public static final MapCodec<RepeatCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codecs.NON_NEGATIVE_INT.fieldOf("amount").forGetter(RepeatCastTransformer::amount),
-                    Codecs.NON_NEGATIVE_INT.optionalFieldOf("step_delay", 0).forGetter(RepeatCastTransformer::stepDelay)
+                    Codecs.NON_NEGATIVE_FLOAT.optionalFieldOf("step_delay", 0.0F).forGetter(RepeatCastTransformer::stepDelay)
             ).apply(instance, RepeatCastTransformer::new)
     );
 
@@ -21,7 +21,7 @@ public record RepeatCastTransformer(int amount, int stepDelay) implements CastTr
     public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
         Collection<SpellCasting> casts = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            casts.add(DelayCastTransformer.delay(casting, i * stepDelay));
+            casts.add(DelayCastTransformer.delay(casting, (int) (i * stepDelay)));
         }
         return casts;
     }
@@ -37,13 +37,13 @@ public record RepeatCastTransformer(int amount, int stepDelay) implements CastTr
 
     public static class Builder {
         private final int amount;
-        private int stepDelay;
+        private float stepDelay;
 
         public Builder(int amount) {
             this.amount = amount;
         }
 
-        public Builder stepDelay(int stepDelay) {
+        public Builder stepDelay(float stepDelay) {
             this.stepDelay = stepDelay;
             return this;
         }

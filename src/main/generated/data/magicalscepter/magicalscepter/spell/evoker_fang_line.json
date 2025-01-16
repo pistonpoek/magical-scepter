@@ -61,7 +61,7 @@
             "y": 0.0,
             "z": 20.0
           },
-          "step_delay": 1
+          "step_delay": 1.0
         },
         {
           "type": "magicalscepter:surface",

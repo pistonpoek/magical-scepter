@@ -62,12 +62,6 @@ public class Spells {
     public static final RegistryKey<Spell> WITHER_SKULL_KEY = of("wither_skull");
     public static final RegistryKey<Spell> WITHER_REPULSION_KEY = of("wither_repulsion");
 
-    private static final PositionSource PROJECTILE_BASE =
-            RelativePositionSource.builder(0, 0, 0.8).position(
-                    EntityPositionSource.builder(
-                            EntityPositionSource.Anchor.EYES
-                    ).build()
-            ).build();
 
     private static RegistryKey<Spell> of(String id) {
         return RegistryKey.of(ModRegistryKeys.SPELL, ModIdentifier.of(id));
@@ -79,12 +73,28 @@ public class Spells {
         Function<EntityType<?>, RegistryEntry.Reference<EntityType<?>>> entityTypeReferenceFunction = entityType ->
                 entityTypeLookup.getOrThrow(RegistryKey.of(RegistryKeys.ENTITY_TYPE, EntityType.getId(entityType)));
 
+        final PositionSource PROJECTILE_BASE =
+                RelativePositionSource.builder(0, 0, 0.8).position(
+                        EntityPositionSource.builder(
+                                EntityPositionSource.Anchor.EYES
+                        ).build()
+                ).build();
+
+        final double MAGICAL_ATTACK_RANGE = 8.0;
+        final double DRAGON_GROWL_RANGE = 8.0;
+        final double SHULKER_BULLET_RANGE = 24.0;
+        final double SONIC_BOOM_RANGE = 20.0;
+
         register(registry, MAGICAL_ATTACK_KEY, Spell.builder(30,
                         textOf("magical_attack"))
             .addCast(SpellCast.builder()
+                    .addTransformer(new AnchorCastTransformer())
+                    .addTransformer(
+                            DelayCastTransformer.builder((int) (MAGICAL_ATTACK_RANGE * 0.5)).build()
+                    )
                     .addTransformer(
                             RayCastTransformer.builder(
-                                    RayCastTransformer.Target.ENTITY, 16.0
+                                    RayCastTransformer.Target.ENTITY, MAGICAL_ATTACK_RANGE
                             ).build()
                     )
                     .addEffect(
@@ -95,13 +105,11 @@ public class Spells {
                     )
             )
             .addCast(SpellCast.builder()
+                    .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(new Vec3d(0, 0, 16.0F)).build()
-                            ).build()
-                    )
-                    .addTransformer(
-                            LineCastTransformer.builder(24, PROJECTILE_BASE).build()
+                            LineCastTransformer.builder((int) (MAGICAL_ATTACK_RANGE * 2),
+                                    RelativePositionSource.builder(new Vec3d(0, 0, MAGICAL_ATTACK_RANGE)).build()
+                            ).stepDelay(0.5F).build()
                     )
                     .addEffect(
                             SpawnParticleSpellEffect.builder(ParticleTypes.WITCH)
@@ -125,7 +133,7 @@ public class Spells {
         register(registry, BLAZE_SMALL_FIREBALL_KEY, Spell.builder(40,
                         textOf("small_fireballs"))
             .addCast(SpellCast.builder()
-                    .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6).build())
+                    .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6.0F).build())
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_BLAZE_SHOOT),
                             ConstantFloatProvider.create(1.0F),
@@ -134,7 +142,7 @@ public class Spells {
             )
             .addCast(SpellCast.builder()
                     .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
-                    .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6).build())
+                    .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6.0F).build())
                     .addTransformer(
                             RotateCastTransformer.builder(
                                     new RandomRotationSource(0.0F, 12.0F)
@@ -286,10 +294,10 @@ public class Spells {
                             ).nbt(areaEffectCloudNbtCompound).build()
                     )
                     .addTransformer(
-                            RepeatCastTransformer.builder(4).stepDelay(4).build()
+                            RepeatCastTransformer.builder(4).stepDelay(4.0F).build()
                     )
                     .addTransformer(
-                            RayCastTransformer.builder(RayCastTransformer.Target.BLOCK, 8)
+                            RayCastTransformer.builder(RayCastTransformer.Target.BLOCK, DRAGON_GROWL_RANGE)
                                     .require(true)
                                     .build()
                     )
@@ -301,22 +309,22 @@ public class Spells {
                                     .build()
                     )
                     .addTransformer(
-                            RepeatCastTransformer.builder(4).stepDelay(4).build()
+                            RepeatCastTransformer.builder(4).stepDelay(4.0F).build()
                     )
                     .addTransformer(
-                            RayCastTransformer.builder(RayCastTransformer.Target.BLOCK, 8)
+                            RayCastTransformer.builder(RayCastTransformer.Target.BLOCK, DRAGON_GROWL_RANGE)
                                     .require(true)
                                     .build()
                     )
                     .addTransformer(
                             MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, 8).build()
+                                    RelativePositionSource.builder(0, 0, DRAGON_GROWL_RANGE).build()
                             ).build()
                     )
                     .addTransformer(
                             LineCastTransformer.builder(12,
                                     EntityPositionSource.builder(EntityPositionSource.Anchor.EYES).build()
-                            ).stepDelay(1).build()
+                            ).stepDelay(1.0F).build()
                     )
             )
         );
@@ -349,7 +357,7 @@ public class Spells {
                                             .pitchRotation(new AbsoluteRotationSource(0, 0)
                                             ).build()
                                     ).build()
-                            ).stepDelay(1)
+                            ).stepDelay(1.0F)
                             .build()
                     )
                     .addTransformer(
@@ -386,7 +394,7 @@ public class Spells {
                     )
                     .addTransformer(
                             CircleCastTransformer.builder(
-                                    RelativePositionSource.builder(new Vec3d(0, 0, 1.5f)).build(), 5
+                                    RelativePositionSource.builder(new Vec3d(0, 0, 1.5F)).build(), 5
                             ).build()
                     )
                     .addTransformer(
@@ -482,7 +490,7 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addTransformer(
                             RayCastTransformer.builder(
-                                    RayCastTransformer.Target.ENTITY, 16.0
+                                    RayCastTransformer.Target.ENTITY, SHULKER_BULLET_RANGE
                             ).require(true)
                             .build()
                     )
@@ -494,7 +502,7 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addTransformer(
                             RayCastTransformer.builder(
-                                RayCastTransformer.Target.ENTITY, 16.0
+                                RayCastTransformer.Target.ENTITY, SHULKER_BULLET_RANGE
                             ).require(true)
                             .build()
                     )
@@ -527,7 +535,6 @@ public class Spells {
             )
         );
 
-        final double SONIC_BOOM_RANGE = 20.0;
         register(registry, WARDEN_SONIC_BOOM_KEY, Spell.builder(60,
                         textOf("sonic_boom"))
             .addCast(SpellCast.builder()

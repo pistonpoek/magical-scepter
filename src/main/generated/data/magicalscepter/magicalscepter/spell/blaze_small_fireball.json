@@ -19,7 +19,7 @@
         {
           "type": "magicalscepter:repeat",
           "amount": 3,
-          "step_delay": 6
+          "step_delay": 6.0
         }
       ]
     },
@@ -53,7 +53,7 @@
         {
           "type": "magicalscepter:repeat",
           "amount": 3,
-          "step_delay": 6
+          "step_delay": 6.0
         },
         {
           "type": "magicalscepter:rotate",

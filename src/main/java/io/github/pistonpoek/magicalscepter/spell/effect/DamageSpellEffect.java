@@ -6,7 +6,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.floatprovider.FloatProvider;
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record DamageSpellEffect(FloatProvider amount, RegistryEntry<DamageType> damageType) implements SpellEffect {
@@ -20,7 +19,6 @@ public record DamageSpellEffect(FloatProvider amount, RegistryEntry<DamageType> 
 
     @Override
     public void apply(SpellContext context) {
-        MagicalScepter.LOGGER.info("Damaging effect applied to {}", context.target().toString());
         context.target().damage(context.getWorld(),
                 new DamageSource(damageType, context.caster()),
                 amount.get(context.getRandom()));

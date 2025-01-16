@@ -43,7 +43,7 @@ public class RefractorEntity extends IllagerEntity {
         super.initGoals();
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(4, new RefillScepterGoal<>(this));
-        this.goalSelector.add(5, new ScepterAttackGoal<>(this, 0.5, 50, 12.0F));
+        this.goalSelector.add(5, new ScepterAttackGoal<>(this, 0.5, 40, 8.0F));
         this.goalSelector.add(8, new WanderAroundGoal(this, 0.6));
         this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.add(10, new LookAtEntityGoal(this, MobEntity.class, 8.0F));
@@ -56,7 +56,7 @@ public class RefractorEntity extends IllagerEntity {
     public static DefaultAttributeContainer.Builder createRefractorAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.5)
-                .add(EntityAttributes.FOLLOW_RANGE, 12.0)
+                .add(EntityAttributes.FOLLOW_RANGE, 8.0)
                 .add(EntityAttributes.MAX_HEALTH, 24.0);
     }
 

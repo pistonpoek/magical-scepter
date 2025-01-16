@@ -19,14 +19,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public record CircleCastTransformer(PositionSource position, float direction, float arc, int amount, int stepDelay) implements CastTransformer {
+public record CircleCastTransformer(PositionSource position, float direction, float arc, int amount, float stepDelay) implements CastTransformer {
     public static final MapCodec<CircleCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(CircleCastTransformer::position),
-                    Codec.floatRange(180.0f, -180.0f).optionalFieldOf("direction", 0.0f).forGetter(CircleCastTransformer::direction),
-                    Codec.FLOAT.optionalFieldOf("arc", 360.0f).forGetter(CircleCastTransformer::arc),
+                    Codec.floatRange(180.0F, -180.0F).optionalFieldOf("direction", 0.0F).forGetter(CircleCastTransformer::direction),
+                    Codec.FLOAT.optionalFieldOf("arc", 360.0F).forGetter(CircleCastTransformer::arc),
                     Codecs.NON_NEGATIVE_INT.fieldOf("amount").forGetter(CircleCastTransformer::amount),
-                    Codecs.NON_NEGATIVE_INT.optionalFieldOf("step_delay", 0).forGetter(CircleCastTransformer::stepDelay)
+                    Codecs.NON_NEGATIVE_FLOAT.optionalFieldOf("step_delay", 0.0F).forGetter(CircleCastTransformer::stepDelay)
             ).apply(instance, CircleCastTransformer::new)
     );
 
@@ -42,7 +42,7 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
         Collection<SpellCasting> casts = new ArrayList<>();
         double radianStep = Math.toRadians(arc) / amount;
         for (int i = 0; i < amount; i++) {
-            SpellCasting pointCast = DelayCastTransformer.delay(casting, i * stepDelay);
+            SpellCasting pointCast = DelayCastTransformer.delay(casting, (int) (i * stepDelay));
             double angle = radianStep * i;
 
             Vec3d relativePosition = new Vec3d(
@@ -75,10 +75,10 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
 
     public static class Builder {
         private final PositionSource position;
-        private float direction = 0.0f;
-        private float arc = 360.0f;
+        private float direction = 0.0F;
+        private float arc = 360.0F;
         private final int amount;
-        private int stepDelay = 0;
+        private float stepDelay = 0.0F;
 
         public Builder(PositionSource position, int amount) {
             this.position = position;
@@ -95,7 +95,7 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
             return this;
         }
 
-        public Builder stepDelay(int stepDelay) {
+        public Builder stepDelay(float stepDelay) {
             this.stepDelay = stepDelay;
             return this;
         }
