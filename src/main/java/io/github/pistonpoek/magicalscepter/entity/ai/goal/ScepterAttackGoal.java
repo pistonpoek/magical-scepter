@@ -16,15 +16,13 @@ import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.util.LivingEntityHand;
 
 public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
+    private static final double ATTACKS_PER_PROTECT = Math.E;
     private final T actor;
     private final double speed;
     private final int attackInterval;
     private final float squaredRange;
     private int cooldown = -1;
     private int targetSeeingTicker;
-    private boolean movingToLeft;
-    private boolean backward;
-    private int combatTicks = -1;
 
     public ScepterAttackGoal(T actor, double speed, int attackInterval, float range) {
         this.actor = actor;
@@ -88,42 +86,18 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
                 this.targetSeeingTicker--;
             }
 
-            if (squaredDistance <= this.squaredRange && this.targetSeeingTicker >= 20) {
+            if (squaredDistance <= this.squaredRange && this.targetSeeingTicker >= 5) {
                 this.actor.getNavigation().stop();
-                this.combatTicks++;
             } else {
                 this.actor.getNavigation().startMovingTo(target, this.speed);
-                this.combatTicks = -1;
             }
 
-            if (this.combatTicks >= 20) {
-                if ((double)this.actor.getRandom().nextFloat() < 0.3) {
-                    this.movingToLeft = !this.movingToLeft;
-                }
-
-                if ((double)this.actor.getRandom().nextFloat() < 0.3) {
-                    this.backward = !this.backward;
-                }
-
-                this.combatTicks = 0;
+            if (this.actor.getControllingVehicle() instanceof MobEntity mobEntity) {
+                mobEntity.lookAtEntity(target, 30.0F, 30.0F);
+                mobEntity.getLookControl().lookAt(target, 30.0F, 30.0F);
             }
-
-            if (this.combatTicks > -1) {
-                if (squaredDistance > this.squaredRange * 0.75F) {
-                    this.backward = false;
-                } else if (squaredDistance < this.squaredRange * 0.25F) {
-                    this.backward = true;
-                }
-
-                this.actor.getMoveControl().strafeTo(this.backward ? -0.5F : 0.5F, this.movingToLeft ? 0.5F : -0.5F);
-                if (this.actor.getControllingVehicle() instanceof MobEntity mobEntity) {
-                    mobEntity.lookAtEntity(target, 30.0F, 30.0F);
-                }
-
-                this.actor.lookAtEntity(target, 30.0F, 30.0F);
-            } else {
-                this.actor.getLookControl().lookAt(target, 30.0F, 30.0F);
-            }
+            this.actor.lookAtEntity(target, 30.0F, 30.0F);
+            this.actor.getLookControl().lookAt(target, 30.0F, 30.0F);
 
             if (--this.cooldown < 0 && this.targetSeeingTicker >= 20) {
                 ItemStack scepterStack = this.actor.getStackInHand(
@@ -135,7 +109,8 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
                 Optional<Spell> scepterSpell;
                 final boolean attackCast;
                 if ((this.actor.age - this.actor.getLastAttackedTime() <= 20 ||
-                    squaredDistance < squaredRange * 0.3F) && this.actor.getRandom().nextFloat() <= 0.3F) {
+                    squaredDistance < squaredRange * 0.3F) &&
+                        this.actor.age % ((ATTACKS_PER_PROTECT + 1) * this.attackInterval) < this.attackInterval) {
                     attackCast = protectSpell.isEmpty();
                     scepterSpell = protectSpell.or(() -> attackSpell);
                 } else {

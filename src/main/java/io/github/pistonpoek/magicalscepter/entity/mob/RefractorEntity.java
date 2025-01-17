@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.CreakingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.IllagerEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -24,7 +25,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import io.github.pistonpoek.magicalscepter.entity.ai.goal.RefillScepterGoal;
 import io.github.pistonpoek.magicalscepter.entity.ai.goal.ScepterAttackGoal;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
@@ -42,7 +42,8 @@ public class RefractorEntity extends IllagerEntity {
     protected void initGoals() {
         super.initGoals();
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(4, new RefillScepterGoal<>(this));
+        this.goalSelector.add(1, new FleeEntityGoal<>(this, CreakingEntity.class, 8.0F, 1.0, 1.2));
+        this.goalSelector.add(2, new RaiderEntity.PatrolApproachGoal(this, 10.0F));
         this.goalSelector.add(5, new ScepterAttackGoal<>(this, 0.5, 40, 8.0F));
         this.goalSelector.add(8, new WanderAroundGoal(this, 0.6));
         this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 3.0F, 1.0F));
@@ -56,7 +57,7 @@ public class RefractorEntity extends IllagerEntity {
     public static DefaultAttributeContainer.Builder createRefractorAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.5)
-                .add(EntityAttributes.FOLLOW_RANGE, 8.0)
+                .add(EntityAttributes.FOLLOW_RANGE, 16.0)
                 .add(EntityAttributes.MAX_HEALTH, 24.0);
     }
 
