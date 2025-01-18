@@ -42,9 +42,8 @@ public class RefractorEntity extends IllagerEntity {
     protected void initGoals() {
         super.initGoals();
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new FleeEntityGoal<>(this, CreakingEntity.class, 8.0F, 1.0, 1.2));
-        this.goalSelector.add(2, new RaiderEntity.PatrolApproachGoal(this, 10.0F));
-        this.goalSelector.add(5, new ScepterAttackGoal<>(this, 0.5, 40, 8.0F));
+        this.goalSelector.add(3, new FleeEntityGoal<>(this, CreakingEntity.class, 8.0F, 1.0, 1.2));
+        this.goalSelector.add(6, new ScepterAttackGoal<>(this, 0.5, 40, 8.0F));
         this.goalSelector.add(8, new WanderAroundGoal(this, 0.6));
         this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 3.0F, 1.0F));
         this.goalSelector.add(10, new LookAtEntityGoal(this, MobEntity.class, 8.0F));

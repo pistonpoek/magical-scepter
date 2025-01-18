@@ -8,21 +8,21 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.IllagerEntityRenderer;
 import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
 import net.minecraft.client.render.entity.model.IllagerEntityModel;
+import net.minecraft.client.render.entity.state.IllagerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
 import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 
 @Environment(EnvType.CLIENT)
-public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEntity, RefractorEntityRenderState> {
+public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEntity, IllagerEntityRenderState> {
     private static final Identifier TEXTURE = ModIdentifier.of("textures/entity/illager/refractor.png");
 
     public RefractorEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new IllagerEntityModel<>(context.getPart(ModEntityModelLayers.REFRACTOR)), 0.5F);
         this.addFeature(new HeldItemFeatureRenderer<>(this) {
             public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i,
-                               RefractorEntityRenderState renderState, float f, float g) {
-                this.getContextModel().getHat().visible = renderState.hatVisible;
+                               IllagerEntityRenderState renderState, float f, float g) {
                 if (renderState.attacking) {
                     super.render(matrixStack, vertexConsumerProvider, i, renderState, f, g);
                 }
@@ -31,20 +31,19 @@ public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEnti
         });
     }
 
-    @Override
-    public RefractorEntityRenderState createRenderState() {
-        return new RefractorEntityRenderState();
+    public void render(IllagerEntityRenderState renderState, MatrixStack matrixStack,
+                       VertexConsumerProvider vertexConsumerProvider, int light) {
+        this.model.getHat().visible = !renderState.attacking;
+        super.render(renderState, matrixStack, vertexConsumerProvider, light);
     }
 
-    public void updateRenderState(RefractorEntity refractorEntity,
-                                  RefractorEntityRenderState renderState,
-                                  float tickDelta) {
-        super.updateRenderState(refractorEntity, renderState, tickDelta);
-        renderState.hatVisible = !refractorEntity.isAttacking();
+        @Override
+    public IllagerEntityRenderState createRenderState() {
+        return new IllagerEntityRenderState();
     }
 
     @Override
-    public Identifier getTexture(RefractorEntityRenderState state) {
+    public Identifier getTexture(IllagerEntityRenderState state) {
         return TEXTURE;
     }
 }
