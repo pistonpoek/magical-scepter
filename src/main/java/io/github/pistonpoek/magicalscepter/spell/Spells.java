@@ -317,14 +317,7 @@ public class Spells {
                                     .build()
                     )
                     .addTransformer(
-                            MoveCastTransformer.builder(
-                                    RelativePositionSource.builder(0, 0, DRAGON_GROWL_RANGE).build()
-                            ).build()
-                    )
-                    .addTransformer(
-                            LineCastTransformer.builder(12,
-                                    EntityPositionSource.builder(EntityPositionSource.Anchor.EYES).build()
-                            ).stepDelay(1.0F).build()
+                            LineCastTransformer.builder(12, PROJECTILE_BASE).build()
                     )
             )
         );

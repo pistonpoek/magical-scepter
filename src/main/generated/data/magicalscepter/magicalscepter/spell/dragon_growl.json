@@ -69,22 +69,18 @@
           "target": "block"
         },
         {
-          "type": "magicalscepter:move",
-          "position": {
-            "type": "magicalscepter:relative",
-            "x": 0.0,
-            "y": 0.0,
-            "z": 8.0
-          }
-        },
-        {
           "type": "magicalscepter:line",
           "amount": 12,
           "position": {
-            "type": "magicalscepter:entity",
-            "anchor": "eyes"
-          },
-          "step_delay": 1.0
+            "type": "magicalscepter:relative",
+            "position": {
+              "type": "magicalscepter:entity",
+              "anchor": "eyes"
+            },
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.8
+          }
         }
       ]
     }
