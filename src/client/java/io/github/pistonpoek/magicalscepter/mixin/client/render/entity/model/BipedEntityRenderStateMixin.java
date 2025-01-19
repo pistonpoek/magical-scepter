@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(BipedEntityRenderState.class)
 public class BipedEntityRenderStateMixin implements ArmSwingingEntityRenderState {
     @Shadow public float handSwingProgress;
-    @Unique public SwingType magical_scepter$swingType;
+    @Unique public SwingType magicalscepter$swingType;
 
     @Override
     public float magical_scepter$getHandSwingProgress() {
@@ -22,11 +22,11 @@ public class BipedEntityRenderStateMixin implements ArmSwingingEntityRenderState
 
     @Override
     public SwingType magical_scepter$getSwingType() {
-        return magical_scepter$swingType;
+        return magicalscepter$swingType;
     }
 
     @Override
     public void magical_scepter$setSwingType(SwingType swingType) {
-        this.magical_scepter$swingType = swingType;
+        this.magicalscepter$swingType = swingType;
     }
 }

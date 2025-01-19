@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState & ArmSwingingEntityRenderState>
         extends EntityModel<T> implements ArmSwingingEntityModel<T> {
     @Unique
-    private ModelPart magical_scepter$body;
+    private ModelPart magicalscepter$body;
 
     protected IllagerEntityModelMixin(ModelPart root) {
         super(root);
@@ -38,12 +38,12 @@ public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState
 
     @Override
     public ModelPart magical_scepter$getBody() {
-        return this.magical_scepter$body;
+        return this.magicalscepter$body;
     }
 
     @Inject(method="<init>(Lnet/minecraft/client/model/ModelPart;)V", at = @At("TAIL"))
     public void IllagerEntityModel(ModelPart root, CallbackInfo callbackInfo) {
-        this.magical_scepter$body = root.getChild(EntityModelPartNames.BODY);
+        this.magicalscepter$body = root.getChild(EntityModelPartNames.BODY);
     }
 
     @Inject(method = "setAngles*", at = @At("TAIL"))

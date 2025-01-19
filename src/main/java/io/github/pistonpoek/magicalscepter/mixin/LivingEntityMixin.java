@@ -27,7 +27,7 @@ public abstract class LivingEntityMixin extends Entity implements SwingHandLivin
     @Shadow public Hand preferredHand;
 
     @Unique
-    public SwingType magical_scepter$swingType = SwingType.HIT;
+    public SwingType magicalscepter$swingType = SwingType.HIT;
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -61,11 +61,11 @@ public abstract class LivingEntityMixin extends Entity implements SwingHandLivin
 
     @Override
     public SwingType magical_scepter$getSwingType() {
-        return magical_scepter$swingType;
+        return magicalscepter$swingType;
     }
 
     @Override
     public void magical_scepter$setSwingType(SwingType swingType) {
-        this.magical_scepter$swingType = swingType;
+        this.magicalscepter$swingType = swingType;
     }
 }
