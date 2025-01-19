@@ -7,6 +7,7 @@
     "LivingEntityMixin",
     "LootContextTypesMixin",
     "ParrotEntityMixin",
+    "RaidMixin",
     "VibrationsMixin"
   ],
   "injectors": {
