@@ -44,7 +44,6 @@ public class MagicalScepter implements ModInitializer {
 		ModCriteria.init();
 		ModGameEvent.init();
 		ModSoundEvents.init();
-		MixsonEvents.init();
 		ModParticleTypes.init();
 
 		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastingManager::afterDeath);
