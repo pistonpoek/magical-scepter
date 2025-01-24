@@ -21,6 +21,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
     protected void configure(RegistryWrapper.WrapperLookup arg) {
         FabricTagBuilder refractorPreferredWeaponsTagBuilder =
                 getOrCreateTagBuilder(ModItemTags.REFRACTOR_PREFERRED_WEAPONS);
+        refractorPreferredWeaponsTagBuilder.add(ModItems.SCEPTER);
         refractorPreferredWeaponsTagBuilder.add(ModItems.MAGICAL_SCEPTER);
     }
 }

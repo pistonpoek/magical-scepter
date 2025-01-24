@@ -47,7 +47,7 @@ public class ModItems {
     private static void addInfusedScepters(FabricItemGroupEntries entries, RegistryWrapper<Scepter> registryWrapper, ItemGroup.StackVisibility visibility) {
         Set<ItemStack> scepters = ItemStackSet.create();
         registryWrapper.getOrThrow(ScepterTags.INFUSED).stream()
-                .map(ScepterHelper::createScepter)
+                .map(ScepterHelper::createMagicalScepter)
                 .forEach(scepters::add);
         entries.addAfter(Items.WIND_CHARGE, scepters, visibility);
     }
@@ -55,7 +55,7 @@ public class ModItems {
     private static void addItemsToCombatItemGroup(FabricItemGroupEntries entries) {
         entries.getContext().lookup().getOptional(ModRegistryKeys.SCEPTER).ifPresent(registryWrapper -> {
             RegistryEntry<Scepter> magicalScepter = registryWrapper.getOrThrow(Scepters.MAGICAL_KEY);
-                    entries.addAfter(Items.MACE, ScepterHelper.createScepter(magicalScepter));
+                    entries.addAfter(Items.MACE, ScepterHelper.createMagicalScepter(magicalScepter));
             addInfusedScepters(entries, registryWrapper, ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS);
         });
     }

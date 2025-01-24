@@ -11,6 +11,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterPredicate;
+import org.jetbrains.annotations.Nullable;
 
 public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCriterion.Conditions> {
     @Override
@@ -25,19 +26,22 @@ public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCrite
     public record Conditions(Optional<LootContextPredicate> player, Optional<ScepterPredicate> scepter) implements AbstractCriterion.Conditions {
         public static final Codec<InfuseScepterCriterion.Conditions> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
-                                EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(InfuseScepterCriterion.Conditions::player),
-                                ScepterPredicate.CODEC.optionalFieldOf("scepter").forGetter(InfuseScepterCriterion.Conditions::scepter)
-                        )
-                        .apply(instance, InfuseScepterCriterion.Conditions::new)
+                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player")
+                                .forGetter(InfuseScepterCriterion.Conditions::player),
+                        ScepterPredicate.CODEC.optionalFieldOf("scepter")
+                                .forGetter(InfuseScepterCriterion.Conditions::scepter)
+                ).apply(instance, InfuseScepterCriterion.Conditions::new)
         );
 
-        public static AdvancementCriterion<InfuseScepterCriterion.Conditions> create(Optional<ScepterPredicate> scepter) {
-            return ModCriteria.INFUSE_SCEPTER.create(new InfuseScepterCriterion.Conditions(Optional.empty(), scepter));
+        public static AdvancementCriterion<InfuseScepterCriterion.Conditions> create(@Nullable ScepterPredicate scepter) {
+            return ModCriteria.INFUSE_SCEPTER.create(
+                    new InfuseScepterCriterion.Conditions(Optional.empty(), Optional.ofNullable(scepter)));
         }
 
         public static AdvancementCriterion<InfuseScepterCriterion.Conditions> create(RegistryEntry<Scepter> scepter) {
-            return ModCriteria.INFUSE_SCEPTER
-                    .create(new InfuseScepterCriterion.Conditions(Optional.empty(), Optional.of(ScepterPredicate.of(scepter))));
+            return ModCriteria.INFUSE_SCEPTER.create(
+                    new InfuseScepterCriterion.Conditions(Optional.empty(),
+                            Optional.of(ScepterPredicate.of(scepter))));
         }
 
         public boolean matches(RegistryEntry<Scepter> scepter) {

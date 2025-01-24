@@ -12,6 +12,7 @@ import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.predicate.item.ItemPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.Nullable;
 
 public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Conditions> {
     @Override
@@ -23,22 +24,26 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
         this.trigger(player, conditions -> conditions.matches(stack));
     }
 
-    public record Conditions(Optional<LootContextPredicate> player, Optional<ItemPredicate> item) implements AbstractCriterion.Conditions {
+    public record Conditions(Optional<LootContextPredicate> player, Optional<ItemPredicate> item)
+            implements AbstractCriterion.Conditions {
         public static final Codec<CastSpellCriterion.Conditions> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
-                                EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(CastSpellCriterion.Conditions::player),
-                                ItemPredicate.CODEC.optionalFieldOf("item").forGetter(CastSpellCriterion.Conditions::item)
-                        )
-                        .apply(instance, CastSpellCriterion.Conditions::new)
+                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player")
+                                .forGetter(CastSpellCriterion.Conditions::player),
+                        ItemPredicate.CODEC.optionalFieldOf("item")
+                                .forGetter(CastSpellCriterion.Conditions::item)
+                ).apply(instance, CastSpellCriterion.Conditions::new)
         );
 
-        public static AdvancementCriterion<CastSpellCriterion.Conditions> create(Optional<ItemPredicate> item) {
-            return ModCriteria.CAST_SCEPTER.create(new CastSpellCriterion.Conditions(Optional.empty(), item));
+        public static AdvancementCriterion<CastSpellCriterion.Conditions> create(@Nullable ItemPredicate item) {
+            return ModCriteria.CAST_SCEPTER.create(
+                    new CastSpellCriterion.Conditions(Optional.empty(), Optional.ofNullable(item)));
         }
 
         public static AdvancementCriterion<CastSpellCriterion.Conditions> create(ItemConvertible item) {
-            return ModCriteria.CAST_SCEPTER
-                    .create(new CastSpellCriterion.Conditions(Optional.empty(), Optional.of(ItemPredicate.Builder.create().items(Registries.ITEM, item).build())));
+            return ModCriteria.CAST_SCEPTER.create(
+                    new CastSpellCriterion.Conditions(Optional.empty(),
+                            Optional.of(ItemPredicate.Builder.create().items(Registries.ITEM, item).build())));
         }
 
         public boolean matches(ItemStack stack) {

@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.entity.mob;
 
+import io.github.pistonpoek.magicalscepter.entity.ai.goal.ScepterRefillGoal;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.EntityData;
@@ -39,6 +40,7 @@ public class RefractorEntity extends IllagerEntity {
 
     public RefractorEntity(EntityType<? extends RefractorEntity> entityType, World world) {
         super(entityType, world);
+        this.setCanPickUpLoot(true);
     }
 
     @Override
@@ -46,6 +48,7 @@ public class RefractorEntity extends IllagerEntity {
         super.initGoals();
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(3, new FleeEntityGoal<>(this, CreakingEntity.class, 8.0F, 1.0, 1.2));
+        this.goalSelector.add(4, new ScepterRefillGoal<>(this));
         this.goalSelector.add(6, new ScepterAttackGoal<>(this, 0.5, 40, 8.0F));
         this.goalSelector.add(8, new WanderAroundGoal(this, 0.6));
         this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 3.0F, 1.0F));
@@ -75,7 +78,7 @@ public class RefractorEntity extends IllagerEntity {
     protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
         Registry<Scepter> scepterRegistry = this.getRegistryManager().getOrThrow(ModRegistryKeys.SCEPTER);
         RegistryEntry<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
-        this.equipStack(EquipmentSlot.MAINHAND, ScepterHelper.createScepter(magicalScepter));
+        this.equipStack(EquipmentSlot.MAINHAND, ScepterHelper.createMagicalScepter(magicalScepter));
     }
 
     @Override

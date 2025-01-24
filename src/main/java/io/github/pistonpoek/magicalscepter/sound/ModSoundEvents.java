@@ -19,6 +19,7 @@ public class ModSoundEvents {
     public static final SoundEvent ENTITY_REFRACTOR_HURT = register("entity.refractor.hurt");
     public static final SoundEvent ITEM_MAGICAL_SCEPTER_CAST_ATTACK_SPELL = register("item.magical_scepter.cast_attack_spell");
     public static final SoundEvent ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL = register("item.magical_scepter.cast_protect_spell");
+    public static final SoundEvent ITEM_MAGICAL_SCEPTER_INFUSE = register("item.magical_scepter.infuse");
 
     public static void init() {
 

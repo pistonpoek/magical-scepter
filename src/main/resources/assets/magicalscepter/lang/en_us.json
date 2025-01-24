@@ -51,5 +51,6 @@
   "subtitles.magicalscepter.entity.refractor.death": "Refractor dies",
   "subtitles.magicalscepter.entity.refractor.hurt": "Refractor hurts",
   "subtitles.magicalscepter.item.magical_scepter.cast_attack_spell": "Magical Scepter casts",
-  "subtitles.magicalscepter.item.magical_scepter.cast_protect_spell": "Magical Scepter shields"
+  "subtitles.magicalscepter.item.magical_scepter.cast_protect_spell": "Magical Scepter shields",
+  "subtitles.magicalscepter.item.magical_scepter.infuse": "Magical Scepter infuses"
 }

@@ -52,5 +52,11 @@
     "sounds": [
       "magicalscepter:magical_scepter_shield1"
     ]
+  },
+  "item.magical_scepter.infuse": {
+    "subtitle": "subtitles.magicalscepter.item.magical_scepter.infuse",
+    "sounds": [
+      "magicalscepter:magical_scepter_infuse1"
+    ]
   }
 }

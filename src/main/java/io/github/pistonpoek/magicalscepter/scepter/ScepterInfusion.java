@@ -1,7 +1,9 @@
 package io.github.pistonpoek.magicalscepter.scepter;
 
+import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
@@ -25,7 +27,6 @@ public class ScepterInfusion {
             tryInfuseScepter(entity, source);
         }
     }
-
 
     /**
      * Get the infusion for the damage source
@@ -74,6 +75,11 @@ public class ScepterInfusion {
             entity.setStackInHand(hand, infusedScepter);
             if (entity instanceof ServerPlayerEntity serverPlayerEntity) {
                 ModCriteria.INFUSE_SCEPTER.trigger(serverPlayerEntity, scepter.get());
+            }
+            if (entity.getWorld() instanceof ServerWorld serverWorld) {
+                serverWorld.playSoundFromEntity(null, entity,
+                        ModSoundEvents.ITEM_MAGICAL_SCEPTER_INFUSE, entity.getSoundCategory(),
+                        1.0F, 1.0F);
             }
         }
     }

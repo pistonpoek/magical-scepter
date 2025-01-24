@@ -54,7 +54,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         AdvancementEntry allScepterInfusionsAdvancement = requireListedSceptersInfused(
                 Advancement.Builder.create().parent(castScepterAdvancement)
                 .display(
-                        ScepterHelper.createScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY)),
+                        ScepterHelper.createMagicalScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY)),
                         ModIdentifier.translatable("advancements.adventure.all_scepter_infusions.title"),
                         ModIdentifier.translatable("advancements.adventure.all_scepter_infusions.description"),
                         null,

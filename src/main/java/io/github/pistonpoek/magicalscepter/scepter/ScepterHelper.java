@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.scepter;
 
+import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
@@ -13,6 +14,11 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class ScepterHelper {
+    /**
+     * Predicate to check if an item stack is a scepter.
+     */
+    public static final Predicate<ItemStack> IS_SCEPTER = itemStack ->
+            itemStack.isOf(ModItems.SCEPTER);
     /**
      * Predicate to check if an item stack is a magical scepter.
      */
@@ -29,8 +35,21 @@ public class ScepterHelper {
     public static final Predicate<ItemStack> IS_SCEPTER_WITH_SPELL = itemStack -> IS_MAGICAL_SCEPTER.test(itemStack) &&
             ScepterContentsComponent.hasSpell(itemStack);
 
-    public static ItemStack createScepter(RegistryEntry<Scepter> scepter) {
-        return ScepterContentsComponent.setScepter(ModItems.MAGICAL_SCEPTER.getDefaultStack(), scepter);
+    public static ItemStack createMagicalScepter(RegistryEntry<Scepter> scepter) {
+        return createMagicalScepter(ItemStack.EMPTY, scepter);
+    }
+
+    public static ItemStack createMagicalScepter(ItemStack stack, RegistryEntry<Scepter> scepter) {
+        ItemStack scepterStack = ModItems.MAGICAL_SCEPTER.getDefaultStack();
+        scepterStack.applyChanges(stack.getComponentChanges());
+        return ScepterContentsComponent.setScepter(scepterStack, scepter);
+    }
+
+    public static ItemStack createScepter(ItemStack stack) {
+        ItemStack scepterStack = ModItems.SCEPTER.getDefaultStack();
+        scepterStack.applyChanges(stack.getComponentChanges());
+        scepterStack.remove(ModDataComponentTypes.SCEPTER_CONTENTS);
+        return scepterStack;
     }
 
     public static Registry<Scepter> getScepterRegistry(World world) {

@@ -100,9 +100,8 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
             this.actor.getLookControl().lookAt(target, 30.0F, 30.0F);
 
             if (--this.cooldown < 0 && this.targetSeeingTicker >= 20) {
-                ItemStack scepterStack = this.actor.getStackInHand(
-                        LivingEntityHand.get(actor, ScepterHelper.IS_SCEPTER_WITH_SPELL)
-                );
+                Hand hand = LivingEntityHand.get(actor, ScepterHelper.IS_SCEPTER_WITH_SPELL);
+                ItemStack scepterStack = this.actor.getStackInHand(hand);
                 Optional<Spell> attackSpell = ScepterContentsComponent.getAttackSpell(scepterStack);
                 Optional<Spell> protectSpell = ScepterContentsComponent.getProtectSpell(scepterStack);
 
@@ -121,8 +120,9 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
                 this.cooldown = this.attackInterval;
 
                 scepterSpell.ifPresent(spell -> {
-                    MagicalScepterItem.castSpell(spell, this.actor,
+                    ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, this.actor,
                             scepterStack, attackCast, Hand.MAIN_HAND);
+                    this.actor.setStackInHand(hand, usedScepterStack);
                 });
             }
         }

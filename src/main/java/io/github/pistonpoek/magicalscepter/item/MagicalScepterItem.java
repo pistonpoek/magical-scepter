@@ -1,12 +1,12 @@
 package io.github.pistonpoek.magicalscepter.item;
 
 import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
+import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
@@ -18,9 +18,7 @@ import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 
 public class MagicalScepterItem extends Item implements AttackItem {
@@ -69,16 +67,9 @@ public class MagicalScepterItem extends Item implements AttackItem {
         );
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
-        MagicalScepterItem.castSpell(spell, user, itemStack, attackCast, hand);
+        ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, user, itemStack, attackCast, hand);
 
-        if (!world.isClient()) {
-            itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
-            if (itemStack.isEmpty()) {
-                itemStack = createScepter(itemStack);
-            }
-        }
-
-        return ActionResult.CONSUME.withNewHandStack(itemStack);
+        return ActionResult.CONSUME.withNewHandStack(usedScepterStack);
     }
 
     /**
@@ -89,9 +80,11 @@ public class MagicalScepterItem extends Item implements AttackItem {
      * @param itemStack Item stack that the spell is cast with.
      * @param attackCast Truth assignment, if cast is an attack and not protect.
      * @param hand Hand being used to cast the spell.
+     *
+     * @return Damaged item stack that was used to cast the spell.
      */
-    public static void castSpell(@NotNull Spell spell, @NotNull LivingEntity caster,
-                                @Nullable ItemStack itemStack,
+    public static ItemStack castSpell(@NotNull Spell spell, @NotNull LivingEntity caster,
+                                @NotNull ItemStack itemStack,
                                 boolean attackCast, Hand hand) {
         caster.playSound(attackCast ?
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_ATTACK_SPELL :
@@ -101,26 +94,23 @@ public class MagicalScepterItem extends Item implements AttackItem {
         ((SwingHandLivingEntity)caster).magical_scepter$swingHand(hand, swingType);
 
         if (caster.getWorld().isClient()) {
-            return;
+            return itemStack;
         }
 
-        if (caster instanceof ServerPlayerEntity serverPlayerEntity && itemStack != null) {
+        if (caster instanceof ServerPlayerEntity serverPlayerEntity) {
             ModCriteria.CAST_SCEPTER.trigger(serverPlayerEntity, itemStack);
         }
 
         spell.castSpell(caster);
-    }
 
-    public ItemStack createScepter(ItemStack stack) {
-        ItemStack scepterStack = ModItems.SCEPTER.getDefaultStack();
-        scepterStack.applyChanges(stack.getComponentChanges());
-        scepterStack.remove(ModDataComponentTypes.SCEPTER_CONTENTS);
-        return scepterStack;
-    }
+        ItemStack replacementStack = ItemStack.EMPTY;
+        if (itemStack.willBreakNextUse() && itemStack.isOf(ModItems.MAGICAL_SCEPTER)) {
+            replacementStack = ScepterHelper.createScepter(itemStack);
+            replacementStack.setDamage(0);
+        }
+        itemStack.damage(1, caster, LivingEntity.getSlotForHand(hand));
 
-    @Override
-    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType type) {
-        ScepterContentsComponent.buildTooltip(tooltip::add, stack);
+        return !itemStack.isEmpty() ? itemStack : replacementStack;
     }
 
     @Override

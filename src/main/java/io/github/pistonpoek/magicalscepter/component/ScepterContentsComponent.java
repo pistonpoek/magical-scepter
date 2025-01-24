@@ -3,7 +3,10 @@ package io.github.pistonpoek.magicalscepter.component;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipAppender;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -30,7 +33,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                                        Optional<Integer> customExperienceCost,
                                        Optional<Boolean> infusable,
                                        Optional<RegistryEntry<Spell>> customAttackSpell,
-                                       Optional<RegistryEntry<Spell>> customProtectSpell) {
+                                       Optional<RegistryEntry<Spell>> customProtectSpell) implements TooltipAppender {
     public static final ScepterContentsComponent DEFAULT =
             new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(),
             Optional.empty(), Optional.empty(), Optional.empty());
@@ -251,29 +254,26 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     private static final Text CAST_PROTECT_TEXT = ModIdentifier.translatable("scepter.on_cast_protect")
             .formatted(TITLE_FORMATTING);
 
-    public void buildTooltip(Consumer<Text> textConsumer) {
+    @Override
+    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type) {
         Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
 
         if (attackSpell.isEmpty() && protectSpell.isEmpty()) {
-            textConsumer.accept(NO_SPELLS_TEXT);
+            tooltip.accept(NO_SPELLS_TEXT);
             return;
         }
 
-        textConsumer.accept(ScreenTexts.EMPTY);
+        tooltip.accept(ScreenTexts.EMPTY);
 
         if (attackSpell.isPresent()) {
-            textConsumer.accept(CAST_ATTACK_TEXT);
-            textConsumer.accept(ScreenTexts.space().append(getAttackSpellName()));
+            tooltip.accept(CAST_ATTACK_TEXT);
+            tooltip.accept(ScreenTexts.space().append(getAttackSpellName()));
         }
 
         if (protectSpell.isPresent()) {
-            textConsumer.accept(CAST_PROTECT_TEXT);
-            textConsumer.accept(ScreenTexts.space().append(getProtectSpellName()));
+            tooltip.accept(CAST_PROTECT_TEXT);
+            tooltip.accept(ScreenTexts.space().append(getProtectSpellName()));
         }
-    }
-
-    public static void buildTooltip(Consumer<Text> textConsumer, ItemStack stack) {
-        get(stack).orElse(DEFAULT).buildTooltip(textConsumer);
     }
 }

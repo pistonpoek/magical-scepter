@@ -75,7 +75,7 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
         return List.of(
                 new ShapelessCraftingRecipeDisplay(
                         getIngredientPlacement().getIngredients().stream().map(Ingredient::toDisplay).toList(),
-                        new SlotDisplay.StackSlotDisplay(ScepterHelper.createScepter(resultScepter)),
+                        new SlotDisplay.StackSlotDisplay(ScepterHelper.createMagicalScepter(resultScepter)),
                         new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
                 )
         );
