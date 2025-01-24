@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.registry;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.entity.damage.DamageType;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
@@ -12,9 +12,12 @@ import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import io.github.pistonpoek.magicalscepter.spell.target.TargetSource;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.registry.RegistryKeys
+ */
 public class ModRegistryKeys {
     public static final RegistryKey<Registry<Scepter>> SCEPTER = of("scepter");
     public static final RegistryKey<Registry<Spell>> SPELL = of("spell");

@@ -4,12 +4,19 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.recipe.RecipeSerializer
+ */
 public interface ModRecipeSerializer {
     RecipeSerializer<MagicalScepterRecipe> MAGICAL_SCEPTER = register("crafting_magical_scepter",
             new MagicalScepterRecipeSerializer());
 
+    /**
+     * Initialize the class for the static fields.
+     */
     static void init() {
 
     }

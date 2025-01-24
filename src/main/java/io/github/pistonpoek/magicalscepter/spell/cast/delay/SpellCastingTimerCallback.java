@@ -6,7 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.timer.Timer;
 import net.minecraft.world.timer.TimerCallback;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 import java.util.Optional;
 import java.util.UUID;

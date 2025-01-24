@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.item;
 
-import io.github.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.render.entity;
 
 import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.render.ModRenderLayer;
 import io.github.pistonpoek.magicalscepter.render.entity.model.GuardianBoltEntityModel;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;

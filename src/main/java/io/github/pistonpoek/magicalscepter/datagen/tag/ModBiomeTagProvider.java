@@ -1,5 +1,6 @@
-package io.github.pistonpoek.magicalscepter.datagen;
+package io.github.pistonpoek.magicalscepter.datagen.tag;
 
+import io.github.pistonpoek.magicalscepter.registry.tag.ModBiomeTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.registry.RegistryKeys;
@@ -9,6 +10,10 @@ import net.minecraft.world.biome.BiomeKeys;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.data.tag.vanilla.VanillaBiomeTagProvider
+ */
 public class ModBiomeTagProvider extends FabricTagProvider<Biome> {
 
     public ModBiomeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.mixin;
 
 import com.google.common.collect.BiMap;
-import io.github.pistonpoek.magicalscepter.loot.ModLootContextTypes;
+import io.github.pistonpoek.magicalscepter.loot.context.ModLootContextTypes;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.context.ContextType;

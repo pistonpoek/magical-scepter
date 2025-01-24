@@ -9,6 +9,10 @@ import net.minecraft.registry.RegistryKeys;
 
 import java.util.List;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.entity.damage.DamageTypes
+ */
 public class ModDamageTypes {
     public static final List<RegistryKey<DamageType>> DAMAGE_TYPE_KEYS = List.of();
 

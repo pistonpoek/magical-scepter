@@ -9,10 +9,10 @@ import net.minecraft.data.advancement.AdvancementTabGenerator;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
-import io.github.pistonpoek.magicalscepter.advancement.criteria.CastSpellCriterion;
-import io.github.pistonpoek.magicalscepter.advancement.criteria.InfuseScepterCriterion;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellCriterion;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterCriterion;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.data.advancement.vanilla.VanillaAdvancementProviders
+ */
 public class ModAdvancementProvider extends FabricAdvancementProvider {
     protected ModAdvancementProvider(FabricDataOutput output,
                                      CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

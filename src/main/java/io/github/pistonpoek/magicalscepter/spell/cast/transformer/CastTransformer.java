@@ -3,7 +3,7 @@ package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.registry.Registry;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import org.jetbrains.annotations.NotNull;

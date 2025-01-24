@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
@@ -21,10 +20,14 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.recipe.MagicalScepterRecipe;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.data.recipe.RecipeGenerator.RecipeProvider
+ */
 public class ModRecipeProvider extends FabricRecipeProvider {
 
     public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
@@ -57,6 +60,6 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public String getName() {
-        return "Magical Scepter Recipes";
+        return "ModRecipeProvider";
     }
 }

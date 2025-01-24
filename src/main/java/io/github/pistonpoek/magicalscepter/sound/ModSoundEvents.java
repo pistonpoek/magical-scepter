@@ -1,12 +1,16 @@
 package io.github.pistonpoek.magicalscepter.sound;
 
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.sound.SoundEvents
+ */
 public class ModSoundEvents {
     public static final SoundEvent ENTITY_PARROT_IMITATE_REFRACTOR = register("entity.parrot.imitate.refractor");
     public static final SoundEvent ENTITY_REFRACTOR_AMBIENT = register("entity.refractor.ambient");

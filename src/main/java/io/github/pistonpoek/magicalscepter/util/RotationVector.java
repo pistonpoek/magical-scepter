@@ -16,6 +16,6 @@ public class RotationVector {
         float i = MathHelper.sin(g);
         float j = MathHelper.cos(f);
         float k = MathHelper.sin(f);
-        return new Vec3d((double)(i * j), (double)(-k), (double)(h * j));
+        return new Vec3d(i * j, -k, h * j);
     }
 }

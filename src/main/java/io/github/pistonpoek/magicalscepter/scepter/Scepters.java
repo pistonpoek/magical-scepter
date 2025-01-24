@@ -9,7 +9,7 @@ import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.Spells;

@@ -13,6 +13,10 @@ import net.minecraft.util.Identifier;
 
 import java.util.Optional;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.client.data.ModelProvider
+ */
 @Environment(EnvType.CLIENT)
 public class ModModelProvider extends FabricModelProvider {
     public static final Model HANDHELD_SCEPTER = new Model(

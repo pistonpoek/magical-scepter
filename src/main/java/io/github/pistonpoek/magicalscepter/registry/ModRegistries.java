@@ -13,6 +13,10 @@ import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import io.github.pistonpoek.magicalscepter.spell.target.TargetSource;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.registry.Registries
+ */
 public class ModRegistries {
     public static final Registry<MapCodec<? extends SpellEffect>> SPELL_EFFECT_TYPE =
             FabricRegistryBuilder.createSimple(ModRegistryKeys.SPELL_EFFECT_TYPE).buildAndRegister();

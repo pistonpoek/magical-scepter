@@ -1,14 +1,18 @@
-package io.github.pistonpoek.magicalscepter.loot;
+package io.github.pistonpoek.magicalscepter.loot.context;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.context.ContextType;
 
 import java.util.function.Consumer;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.loot.context.LootContextTypes
+ */
 public class ModLootContextTypes {
     private static final BiMap<Identifier, ContextType> MAP = HashBiMap.create();
 
@@ -20,6 +24,9 @@ public class ModLootContextTypes {
                     .require(LootContextParameters.BLOCK_STATE)
     );
 
+    /**
+     * Initialize the class for the static fields.
+     */
     public static void init() {
 
     }

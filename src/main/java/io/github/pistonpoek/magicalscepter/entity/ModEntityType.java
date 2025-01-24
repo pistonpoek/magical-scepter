@@ -9,15 +9,15 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.entity.EntityType
+ */
 public class ModEntityType {
-    public static void init() {
-        MagicalScepter.LOGGER.info("Registering Entities for " + ModIdentifier.MOD_NAME);
-    }
-
     public static final EntityType<RefractorEntity> REFRACTOR = registerMob(
         "refractor",
         EntityType.Builder.create(RefractorEntity::new, SpawnGroup.MONSTER)
@@ -35,6 +35,13 @@ public class ModEntityType {
                     .maxTrackingRange(4)
                     .trackingTickInterval(10)
     );
+
+    /**
+     * Initialize the class for the static fields.
+     */
+    public static void init() {
+        MagicalScepter.LOGGER.info("Registering Entities for " + ModIdentifier.MOD_NAME);
+    }
 
     private static <T extends Entity> EntityType<T> registerMob(String id, EntityType.Builder<T> type) {
         EntityType<T> entityType = register(id, type);

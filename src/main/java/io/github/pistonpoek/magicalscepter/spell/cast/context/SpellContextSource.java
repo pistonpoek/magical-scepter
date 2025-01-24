@@ -2,9 +2,8 @@ package io.github.pistonpoek.magicalscepter.spell.cast.context;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import net.minecraft.registry.Registry;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;

@@ -1,6 +1,5 @@
-package io.github.pistonpoek.magicalscepter.datagen;
+package io.github.pistonpoek.magicalscepter.datagen.type;
 
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.data.DataOutput;

@@ -1,5 +1,11 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
+import io.github.pistonpoek.magicalscepter.datagen.tag.ModBiomeTagProvider;
+import io.github.pistonpoek.magicalscepter.datagen.tag.ModItemTagProvider;
+import io.github.pistonpoek.magicalscepter.datagen.tag.ScepterTagProvider;
+import io.github.pistonpoek.magicalscepter.datagen.type.DamageTypeProvider;
+import io.github.pistonpoek.magicalscepter.datagen.type.ScepterTypeProvider;
+import io.github.pistonpoek.magicalscepter.datagen.type.SpellTypeProvider;
 import io.github.pistonpoek.magicalscepter.entity.damage.ModDamageTypes;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
@@ -18,16 +24,16 @@ public class MagicalScepterDataGeneratorClient implements DataGeneratorEntrypoin
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
         pack.addProvider(ModModelProvider::new);
-        pack.addProvider(ModDamageTypeProvider::new);
 
+        pack.addProvider(ModBiomeTagProvider::new);
+        pack.addProvider(ModItemTagProvider::new);
+        pack.addProvider(ScepterTagProvider::new);
+
+        pack.addProvider(DamageTypeProvider::new);
         pack.addProvider(ScepterTypeProvider::new);
         pack.addProvider(SpellTypeProvider::new);
+
         pack.addProvider(ModAdvancementProvider::new);
-        pack.addProvider(ModBlockTagProvider::new);
-        pack.addProvider(ModItemTagProvider::new);
-        pack.addProvider(ModBiomeTagProvider::new);
-        pack.addProvider(ModScepterTagProvider::new);
-        pack.addProvider(ModBlockLootTableProvider::new);
         pack.addProvider(ModRecipeProvider::new);
     }
 

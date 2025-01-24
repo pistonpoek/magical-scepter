@@ -12,7 +12,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
-import io.github.pistonpoek.magicalscepter.advancement.criteria.ModCriteria;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 
 import java.util.Optional;

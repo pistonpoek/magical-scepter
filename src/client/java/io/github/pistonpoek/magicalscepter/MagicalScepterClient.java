@@ -13,13 +13,13 @@ import io.github.pistonpoek.magicalscepter.attack.ItemAttackCallback;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
 import io.github.pistonpoek.magicalscepter.render.entity.RefractorEntityRenderer;
-import io.github.pistonpoek.magicalscepter.network.ModClientPlayPackets;
+import io.github.pistonpoek.magicalscepter.network.ClientPlayPackets;
 
 @Environment(EnvType.CLIENT)
 public class MagicalScepterClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		ModClientPlayPackets.init();
+		ClientPlayPackets.init();
 
 		EntityRendererRegistry.register(ModEntityType.REFRACTOR, RefractorEntityRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.REFRACTOR,

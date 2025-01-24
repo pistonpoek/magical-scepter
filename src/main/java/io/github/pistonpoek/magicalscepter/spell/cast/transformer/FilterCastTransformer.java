@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.pistonpoek.magicalscepter.loot.ModLootContextTypes;
+import io.github.pistonpoek.magicalscepter.loot.context.ModLootContextTypes;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.block.BlockState;

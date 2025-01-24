@@ -32,7 +32,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 
 import java.util.ArrayList;

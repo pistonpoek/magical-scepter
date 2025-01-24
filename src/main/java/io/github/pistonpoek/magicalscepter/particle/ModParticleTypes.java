@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.particle;
 
 import com.mojang.serialization.MapCodec;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.particle.ParticleEffect;
@@ -11,8 +11,14 @@ import net.minecraft.registry.Registry;
 
 import java.util.function.Function;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.particle.ParticleTypes
+ */
 public class ModParticleTypes {
-
+    /**
+     * Initialize the class for the static fields.
+     */
     public static void init() {
 
     }

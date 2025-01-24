@@ -3,7 +3,7 @@ package io.github.pistonpoek.magicalscepter.mixson;
 import io.github.pistonpoek.magicalscepter.mixson.advancement.adventure.KillAMobMixson;
 import io.github.pistonpoek.magicalscepter.mixson.advancement.adventure.KillAllMobsMixson;
 import io.github.pistonpoek.magicalscepter.mixson.advancement.nether.AllEffectsMixson;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.util.Identifier;
 import net.ramixin.mixson.inline.Mixson;
 import net.ramixin.mixson.inline.events.MixsonEvent;

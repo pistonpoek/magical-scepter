@@ -1,4 +1,4 @@
-package io.github.pistonpoek.magicalscepter.datagen;
+package io.github.pistonpoek.magicalscepter.datagen.type;
 
 import io.github.pistonpoek.magicalscepter.entity.damage.ModDamageTypes;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
@@ -15,8 +15,8 @@ import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class ModDamageTypeProvider extends FabricCodecDataProvider<DamageType> {
-    public ModDamageTypeProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
+    public DamageTypeProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(dataOutput, registriesFuture, DataOutput.OutputType.DATA_PACK,
                 ModRegistryKeys.directory(RegistryKeys.DAMAGE_TYPE), DamageType.CODEC);
     }

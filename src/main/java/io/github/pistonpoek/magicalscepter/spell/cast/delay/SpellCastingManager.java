@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;

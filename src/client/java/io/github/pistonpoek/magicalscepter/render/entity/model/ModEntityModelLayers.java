@@ -3,11 +3,15 @@ package io.github.pistonpoek.magicalscepter.render.entity.model;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.client.render.entity.model.EntityModelLayers
+ */
 @Environment(EnvType.CLIENT)
 public class ModEntityModelLayers {
     private static final Set<EntityModelLayer> LAYERS = new HashSet<>();

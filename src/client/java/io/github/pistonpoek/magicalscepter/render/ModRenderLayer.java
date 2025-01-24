@@ -6,6 +6,10 @@ import net.minecraft.client.render.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TriState;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ * @see net.minecraft.client.render.RenderLayer
+ */
 @Environment(EnvType.CLIENT)
 public abstract class ModRenderLayer {
     public static RenderLayer getGuardianBolt(Identifier texture, float x, float y) {
@@ -17,7 +21,7 @@ public abstract class ModRenderLayer {
                 false,
                 true,
                 RenderLayer.MultiPhaseParameters.builder()
-                        .program(RenderPhase.ENERGY_SWIRL_PROGRAM) // TODO check what program is and should be?
+                        .program(RenderPhase.ENERGY_SWIRL_PROGRAM)
                         .texture(new RenderPhase.Texture(texture, TriState.FALSE, false))
                         .texturing(new RenderPhase.OffsetTexturing(x, y))
                         .transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)

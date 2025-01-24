@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.entity.mob;
 
+import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -17,8 +18,10 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.raid.RaiderEntity;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.random.Random;
@@ -102,6 +105,11 @@ public class RefractorEntity extends IllagerEntity {
 
     @Override
     public void addBonusForWave(ServerWorld world, int wave, boolean unused) {
+    }
+
+    @Override
+    public TagKey<Item> getPreferredWeapons() {
+        return ModItemTags.REFRACTOR_PREFERRED_WEAPONS;
     }
 
     @Override

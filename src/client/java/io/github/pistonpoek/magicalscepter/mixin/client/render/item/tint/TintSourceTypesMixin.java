@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.mixin.client.render.item.tint;
 
 import com.mojang.serialization.MapCodec;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterTintSource;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

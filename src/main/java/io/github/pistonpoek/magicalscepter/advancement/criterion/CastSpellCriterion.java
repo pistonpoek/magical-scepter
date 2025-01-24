@@ -1,4 +1,4 @@
-package io.github.pistonpoek.magicalscepter.advancement.criteria;
+package io.github.pistonpoek.magicalscepter.advancement.criterion;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

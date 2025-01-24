@@ -12,7 +12,7 @@ import net.minecraft.client.render.entity.state.IllagerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 @Environment(EnvType.CLIENT)
 public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEntity, IllagerEntityRenderState> {

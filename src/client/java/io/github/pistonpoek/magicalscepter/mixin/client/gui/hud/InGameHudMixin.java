@@ -9,7 +9,7 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.registry.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import org.spongepowered.asm.mixin.Final;
