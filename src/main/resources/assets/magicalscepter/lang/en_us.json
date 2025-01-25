@@ -52,5 +52,7 @@
   "subtitles.magicalscepter.entity.refractor.hurt": "Refractor hurts",
   "subtitles.magicalscepter.item.magical_scepter.cast_attack_spell": "Magical Scepter casts",
   "subtitles.magicalscepter.item.magical_scepter.cast_protect_spell": "Magical Scepter shields",
-  "subtitles.magicalscepter.item.magical_scepter.infuse": "Magical Scepter infuses"
+  "subtitles.magicalscepter.item.magical_scepter.infuse": "Magical Scepter infuses",
+  "tag.item.magicalscepter.refractor_preferred_weapons": "Refractor preferred weapons",
+  "tag.worldgen.biome.magicalscepter.has_structure.old_taiga_cabin": "Has Structure Old Taiga Cabin"
 }
