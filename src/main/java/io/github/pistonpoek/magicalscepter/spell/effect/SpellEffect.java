@@ -23,6 +23,7 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("rotate"), RotateSpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("ignite"), IgniteSpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("explore"), ExplodeSpellEffect.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("replace_block"), ReplaceBlockSpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("run_function"), RunFunctionSpellEffect.MAP_CODEC);
     }
 
