@@ -25,7 +25,8 @@ public class SpellCastingManager extends PersistentState {
 
     public static SpellCastingManager load(MinecraftServer server) {
         return server.getOverworld().getPersistentStateManager()
-                .getOrCreate(SpellCastingManager.getPersistentStateType(), ModIdentifier.id("scheduled_castings"));
+                .getOrCreate(SpellCastingManager.getPersistentStateType(),
+                        ModIdentifier.key("scheduled_castings", "_"));
     }
 
     public void schedule(ServerWorld world, SpellCasting spellCasting, int delay) {

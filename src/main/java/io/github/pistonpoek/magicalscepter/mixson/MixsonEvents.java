@@ -16,23 +16,23 @@ import net.ramixin.mixson.inline.events.MixsonEvent;
 public class MixsonEvents {
     public static void registerMobModification(Identifier mobIdentifier) {
         registerMixsonEvent("advancement/adventure/kill_a_mob",
-                ModIdentifier.name("kill_a_mob_" + mobIdentifier.getPath()),
+                ModIdentifier.id("kill_a_mob_" + mobIdentifier.getPath()),
                 new KillAMobMixson(mobIdentifier));
         registerMixsonEvent("advancement/adventure/kill_all_mobs",
-                ModIdentifier.name("kill_all_mobs_" + mobIdentifier.getPath()),
+                ModIdentifier.id("kill_all_mobs_" + mobIdentifier.getPath()),
                 new KillAllMobsMixson(mobIdentifier));
     }
 
     public static void registerEffectModification(Identifier effectIdentifier) {
         registerMixsonEvent("advancement/nether/all_effects",
-                ModIdentifier.name("all_effects_" + effectIdentifier.getPath()),
+                ModIdentifier.id("all_effects_" + effectIdentifier.getPath()),
                 new AllEffectsMixson(effectIdentifier));
     }
 
     public static void registerMonsterSpawnEntry(RegistryKey<Biome> biome, SpawnGroup group, SpawnSettings.SpawnEntry entry) {
         String biomePath = biome.getValue().getPath();
         registerMixsonEvent("worldgen/biome/" + biomePath,
-                ModIdentifier.name(String.join("_", "biome_spawn_entry",
+                ModIdentifier.id(String.join("_", "biome_spawn_entry",
                                 biomePath, entry.type.getUntranslatedName())),
                 new BiomeSpawnEntryMixson(group, entry));
     }
