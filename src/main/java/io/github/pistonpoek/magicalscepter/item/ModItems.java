@@ -27,7 +27,7 @@ import java.util.function.Function;
 public class ModItems {
     public static final Item SCEPTER = register("scepter", new Item.Settings().maxCount(1).rarity(Rarity.RARE));
     public static final Item MAGICAL_SCEPTER = register("magical_scepter", MagicalScepterItem::new,
-            new Item.Settings().maxDamage(300).rarity(Rarity.RARE)
+            new Item.Settings().maxDamage(64).rarity(Rarity.RARE)
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT));
 
     public static final Item REFRACTOR_SPAWN_EGG = register("refractor_spawn_egg",
