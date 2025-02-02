@@ -7,7 +7,7 @@
   "item.magicalscepter.refractor_spawn_egg" : "Refractor Spawn Egg",
   "magicalscepter.advancements.adventure.cast_scepter.description" : "Cast a Spell with a Magical Scepter",
   "magicalscepter.advancements.adventure.cast_scepter.title" : "Wizardry",
-  "magicalscepter.advancements.adventure.all_scepter_infusions.description" : "Acquire each Infused Scepter variant by Infusing a Magical Scepter",
+  "magicalscepter.advancements.adventure.all_scepter_infusions.description" : "Acquire each Scepter variant by infusing a Magical Scepter",
   "magicalscepter.advancements.adventure.all_scepter_infusions.title" : "Copycat",
   "magicalscepter.commands.spell.clear.failed": "Target has no future spell casts to remove",
   "magicalscepter.commands.spell.clear.success.multiple": "Removed all future spell casts for %s targets",
