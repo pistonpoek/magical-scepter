@@ -47,6 +47,7 @@ public class GuardianBoltEntityRenderer extends EntityRenderer<GuardianBoltEntit
         return new GuardianBoltEntityRenderState();
     }
 
+    @Override
     public void updateRenderState(GuardianBoltEntity guardianBoltEntity, GuardianBoltEntityRenderState renderState, float tickDelta) {
         super.updateRenderState(guardianBoltEntity, renderState, tickDelta);
         renderState.yaw = guardianBoltEntity.getLerpedYaw(tickDelta);
@@ -54,6 +55,12 @@ public class GuardianBoltEntityRenderer extends EntityRenderer<GuardianBoltEntit
         renderState.color = getColor(guardianBoltEntity.getProgress(tickDelta));
     }
 
+    /**
+     * Get the color for the entity at the specified progress.
+     *
+     * @param progress Progress for the color gradient.
+     * @return full ARGB color value for the progress.
+     */
     private static int getColor(float progress) {
         if (progress > 1) {
             return ColorHelper.getArgb(0, 224, 64);

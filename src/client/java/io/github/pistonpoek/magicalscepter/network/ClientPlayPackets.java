@@ -8,6 +8,9 @@ import io.github.pistonpoek.magicalscepter.network.handler.SwingHandHandler;
 
 @Environment(EnvType.CLIENT)
 public class ClientPlayPackets {
+    /**
+     * Register mod play packets.
+     */
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(ModPlayPackets.SWING_HAND.id(), new SwingHandHandler());
     }

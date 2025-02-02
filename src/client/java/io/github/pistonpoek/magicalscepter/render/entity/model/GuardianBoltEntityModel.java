@@ -19,11 +19,21 @@ public class GuardianBoltEntityModel extends EntityModel<GuardianBoltEntityRende
     private static final String BOLT_MODEL_KEY = "main";
     private final ModelPart bolt;
 
-    public GuardianBoltEntityModel(ModelPart modelPart) {
-        super(modelPart, RenderLayer::getEntityTranslucent);
-        this.bolt = modelPart.getChild(BOLT_MODEL_KEY);
+    /**
+     * Constructs a guardian bolt entity model with the specified model part as root.
+     *
+     * @param root Model part that is the root for the model.
+     */
+    public GuardianBoltEntityModel(ModelPart root) {
+        super(root, RenderLayer::getEntityTranslucent);
+        this.bolt = root.getChild(BOLT_MODEL_KEY);
     }
 
+    /**
+     * Get the textured model data.
+     *
+     * @return Texture model data.
+     */
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
@@ -35,6 +45,11 @@ public class GuardianBoltEntityModel extends EntityModel<GuardianBoltEntityRende
         return TexturedModelData.of(modelData, 16, 16);
     }
 
+    /**
+     * Set the angles from the specified render state.
+     *
+     * @param state Guardian bolt entity render state to set angles from.
+     */
     public void setAngles(GuardianBoltEntityRenderState state) {
         super.setAngles(state);
         this.bolt.yaw = state.yaw * (float) (Math.PI / 180.0);

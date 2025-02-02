@@ -21,15 +21,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(IllagerEntityModel.class)
 public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState & ArmSwingingEntityRenderState>
         extends EntityModel<T> implements ArmSwingingEntityModel<T> {
-    @Unique
-    private ModelPart magicalscepter$body;
+    @Unique private ModelPart magicalscepter$body;
+    @Shadow protected abstract ModelPart getAttackingArm(Arm arm);
 
     protected IllagerEntityModelMixin(ModelPart root) {
         super(root);
     }
-
-    @Shadow
-    protected abstract ModelPart getAttackingArm(Arm arm);
 
     @Override
     public ModelPart magical_scepter$getArm(Arm arm) {
@@ -41,13 +38,25 @@ public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState
         return this.magicalscepter$body;
     }
 
+    /**
+     * Store the body model part of the illager entity model.
+     *
+     * @param root Model root of the illager model.
+     * @param callbackInfo Callback info of the method injection.
+     */
     @Inject(method="<init>(Lnet/minecraft/client/model/ModelPart;)V", at = @At("TAIL"))
     public void IllagerEntityModel(ModelPart root, CallbackInfo callbackInfo) {
         this.magicalscepter$body = root.getChild(EntityModelPartNames.BODY);
     }
 
+    /**
+     * Swing the main arm of the specified render state.
+     *
+     * @param renderState Render state to get main arm from.
+     * @param callbackInfo Callback info of the method injection.
+     */
     @Inject(method = "setAngles*", at = @At("TAIL"))
-    public void setAngles(T renderState, CallbackInfo info) {
+    public void swingMainArm(T renderState, CallbackInfo callbackInfo) {
         this.magical_scepter$swingArm(renderState, renderState.illagerMainArm);
     }
 }

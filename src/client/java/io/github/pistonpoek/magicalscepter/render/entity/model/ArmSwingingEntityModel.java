@@ -12,12 +12,20 @@ import org.spongepowered.asm.mixin.Unique;
 @Environment(EnvType.CLIENT)
 public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSwingingEntityRenderState> 
         extends ModelWithHead {
+    /**
+     * Get the model part for the specified arm.
+     *
+     * @param arm Arm to get model part for.
+     * @return Model part of the arm.
+     */
+    @Unique ModelPart magical_scepter$getArm(Arm arm);
 
-    @Unique
-    ModelPart magical_scepter$getArm(Arm arm);
-
-    @Unique
-    ModelPart magical_scepter$getBody();
+    /**
+     * Get the model part for the body of the entity model.
+     *
+     * @return Model part of the body.
+     */
+    @Unique ModelPart magical_scepter$getBody();
 
     /**
      * Swing the arm of the entity model for the specified render state.
@@ -35,7 +43,13 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
         };
     }
 
-    default void magical_scepter$swingHandAttack(T renderState, Arm arm) {
+    /**
+     * Animate the specified arm to swing in an attack motion.
+     *
+     * @param renderState Render state to use for animation.
+     * @param arm Arm to swing.
+     */
+    @Unique default void magical_scepter$swingHandAttack(T renderState, Arm arm) {
         ModelPart armModel = magical_scepter$getArm(arm);
         ModelPart bodyModel = magical_scepter$getBody();
         ModelPart headModel = getHead();
@@ -69,7 +83,13 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
         armModel.roll += MathHelper.sin(handSwingProgress * MathHelper.PI) * -0.4F;
     }
 
-    default void magical_scepter$swingHandProtect(T renderState, Arm arm) {
+    /**
+     * Animate the specified arm to swing in a protect motion.
+     *
+     * @param renderState Render state to use for animation.
+     * @param arm Arm to swing.
+     */
+    @Unique default void magical_scepter$swingHandProtect(T renderState, Arm arm) {
         ModelPart armModel = magical_scepter$getArm(arm);
         ModelPart bodyModel = magical_scepter$getBody();
         ModelPart headModel = getHead();
@@ -88,6 +108,7 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
         leftArmModel.yaw += bodyModel.yaw;
         leftArmModel.pitch += bodyModel.yaw;
 
+        // TODO update swing animation, variable naming and code structuring here.
         float f = 1.0F - 2.0F * handSwingProgress;
         f *= f;
         f *= f;

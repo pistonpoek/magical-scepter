@@ -22,6 +22,9 @@ public record ScepterTintSource(int defaultColor) implements TintSource {
             ).apply(instance, ScepterTintSource::new)
     );
 
+    /**
+     * Constructs a scepter tint source.
+     */
     public ScepterTintSource() {
         this(ScepterContentsComponent.BASE_COLOR);
     }

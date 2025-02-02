@@ -31,6 +31,7 @@ public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEnti
         });
     }
 
+    @Override
     public void render(IllagerEntityRenderState renderState, MatrixStack matrixStack,
                        VertexConsumerProvider vertexConsumerProvider, int light) {
         this.model.getHat().visible = !renderState.attacking;

@@ -16,6 +16,7 @@ import java.util.Optional;
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  * @see net.minecraft.client.data.ModelProvider
+ * @see net.minecraft.client.data.Models
  */
 @Environment(EnvType.CLIENT)
 public class ModModelProvider extends FabricModelProvider {
@@ -23,6 +24,11 @@ public class ModModelProvider extends FabricModelProvider {
             Optional.of(Identifier.ofVanilla("item/handheld")),
             Optional.empty(), TextureKey.LAYER0, TextureKey.LAYER1);
 
+    /**
+     * Construct a mod model provider for data generation.
+     *
+     * @param output Data output to generate mod model data into.
+     */
     public ModModelProvider(FabricDataOutput output) {
         super(output);
     }
@@ -42,11 +48,25 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.registerSpawnEgg(ModItems.REFRACTOR_SPAWN_EGG, 9804699, 6307420);
     }
 
+    /**
+     * Register a tinted scepter model.
+     *
+     * @param itemModelGenerator Item model generator to output the generated item model into.
+     * @param item Item to create item model for.
+     * @param model Identifier to register the item model at.
+     */
     public static void registerScepterTinted(ItemModelGeneratorMixin itemModelGenerator,
                                              Item item, Identifier model) {
         itemModelGenerator.getOutput().accept(item, ItemModels.tinted(model, new ScepterTintSource()));
     }
 
+    /**
+     * Register a scepter model.
+     *
+     * @param itemModelGenerator Item model generator to output the generated item model into.
+     * @param item Item to create item model for.
+     * @param model Identifier to register the item model at.
+     */
     public static void registerScepter(ItemModelGeneratorMixin itemModelGenerator,
                                        Item item, Model model) {
         Identifier identifier = uploadTwoLayers(
@@ -57,6 +77,18 @@ public class ModModelProvider extends FabricModelProvider {
         registerScepterTinted(itemModelGenerator, item, identifier);
     }
 
+    /**
+     * Upload a specified model with two texture layers for a specified item.
+     *
+     * @param itemModelGenerator Item model generator to output the generated item model into.
+     * @param item Item to upload item model for.
+     * @param model Model to upload for the item.
+     * @param layer0 Identifier of the first layer.
+     * @param layer1 Identifier of the second layer.
+     * @return Identifier of the uploaded model.
+     *
+     * @see Model
+     */
     public static Identifier uploadTwoLayers(ItemModelGeneratorMixin itemModelGenerator,
                                              Item item, Model model,
                                              Identifier layer0, Identifier layer1) {

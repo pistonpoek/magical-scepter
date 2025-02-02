@@ -1,7 +1,5 @@
 package io.github.pistonpoek.magicalscepter.sound;
 
-
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,6 +15,11 @@ public class GuardianBoltSoundInstance extends MovingSoundInstance {
     private static final float PROGRESS_PITCH_MULTIPLIER = 0.5F;
     private final GuardianBoltEntity guardianBolt;
 
+    /**
+     * Constructs a guardian bolt sound instance.
+     *
+     * @param guardianBolt Guardian bolt entity to create sound instance for.
+     */
     public GuardianBoltSoundInstance(GuardianBoltEntity guardianBolt) {
         super(SoundEvents.ENTITY_GUARDIAN_ATTACK, guardianBolt.getSoundCategory(), SoundInstance.createRandom());
         this.guardianBolt = guardianBolt;

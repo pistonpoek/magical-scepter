@@ -23,8 +23,14 @@ public abstract class ClientPlayNetworkHandlerMixin extends ClientCommonNetworkH
         super(client, connection, connectionState);
     }
 
+    /**
+     * Play spawn sounds for mod entities.
+     *
+     * @param entity Entity to play spawn sound for.
+     * @param callbackInfo Callback info of the method injection.
+     */
     @Inject(method = "playSpawnSound", at = @At("TAIL"))
-    private void playSpawnSound(Entity entity, CallbackInfo ci) {
+    private void playSpawnSound(Entity entity, CallbackInfo callbackInfo) {
         if (entity instanceof GuardianBoltEntity guardianBoltEntity) {
             this.client.getSoundManager().play(new GuardianBoltSoundInstance(guardianBoltEntity));
         }

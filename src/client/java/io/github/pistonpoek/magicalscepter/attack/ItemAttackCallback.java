@@ -46,6 +46,15 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
         return false;
     }
 
+    /**
+     * Process the attack of the specified player with the specified item.
+     *
+     * @param client Client to process the attack on.
+     * @param player Player that performs the attack.
+     * @param item Item that is being attacked with.
+     *
+     * @return Result of the attack action for the player.
+     */
     private ActionResult processAttackItem(MinecraftClient client, ClientPlayerEntity player, Item item) {
         // Check the result for the attack item.
         ActionResult result = ((AttackItem) item)
@@ -61,6 +70,13 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
         return result;
     }
 
+    /**
+     * Render the attack use of the specified player.
+     *
+     * @param client Client to render the attack with.
+     * @param player Player that performs the attack.
+     * @param shouldSwingHand Truth assignment, if the players hand should swing.
+     */
     private void renderAttackUse(MinecraftClient client, ClientPlayerEntity player, boolean shouldSwingHand) {
         if (shouldSwingHand) {
             player.swingHand(Hand.MAIN_HAND);
