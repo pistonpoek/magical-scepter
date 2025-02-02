@@ -8,6 +8,8 @@
     "LivingEntityMixin",
     "LootContextTypesMixin",
     "ParrotEntityMixin",
+    "PatrolEntityMixin",
+    "RaiderEntityMixin",
     "RaidMixin",
     "VibrationsMixin"
   ],
