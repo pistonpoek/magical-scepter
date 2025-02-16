@@ -9,6 +9,7 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastingManager;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
@@ -28,6 +29,15 @@ public class SpellCommand {
             new SimpleCommandExceptionType(ModIdentifier.translatable("commands.spell.clear.failed")
     );
 
+    /**
+     * Register the spell command.
+     *
+     * @param dispatcher Dispatcher to register the command to.
+     * @param registryAccess Entry point to access registries used by the command.
+     * @param environment Environment that the command is being registered for.
+     *
+     * @see CommandRegistrationCallback
+     */
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher,
                                 CommandRegistryAccess registryAccess,
                                 CommandManager.RegistrationEnvironment environment) {
@@ -66,15 +76,24 @@ public class SpellCommand {
         );
     }
 
+    /**
+     * Try to cast the specified spells for the specified group of entities.
+     *
+     * @param source Server command source to send feedback to.
+     * @param entities Entities selected to cast the spell.
+     * @param spell Spell to be cast by the entities.
+     * @return Number of successful spell casts.
+     * @throws CommandSyntaxException When no entities were able to cast the spell.
+     */
     private static int executeCast(
             ServerCommandSource source,
-            Collection<? extends Entity> targets,
+            Collection<? extends Entity> entities,
             RegistryEntry<Spell> spell
     ) throws CommandSyntaxException {
         Spell spellInstance = spell.value();
         int successes = 0;
 
-        for (Entity entity : targets) {
+        for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity) {
                 spellInstance.castSpell(livingEntity);
                 successes++;
@@ -84,26 +103,34 @@ public class SpellCommand {
         if (successes == 0) {
             throw CAST_FAILED_EXCEPTION.create();
         } else {
-            if (targets.size() == 1) {
+            if (entities.size() == 1) {
                 source.sendFeedback(
                         () -> ModIdentifier.translatable("commands.spell.cast.success.single",
-                                Spell.getName(spell), targets.iterator().next().getDisplayName()),
+                                Spell.getName(spell), entities.iterator().next().getDisplayName()),
                         true
                 );
             } else {
                 source.sendFeedback(() -> ModIdentifier.translatable("commands.spell.cast.success.multiple",
-                        Spell.getName(spell), targets.size()), true);
+                        Spell.getName(spell), entities.size()), true);
             }
 
             return successes;
         }
     }
 
-    private static int executeClear(ServerCommandSource source, Collection<? extends Entity> targets)
+    /**
+     * Try to clear scheduled spells for the specified group of entities.
+     *
+     * @param source Server command source to send feedback to.
+     * @param entities Entities selected to clear scheduled spells.
+     * @return Number of successful entities cleared.
+     * @throws CommandSyntaxException When no entities had scheduled spell casts to clear.
+     */
+    private static int executeClear(ServerCommandSource source, Collection<? extends Entity> entities)
             throws CommandSyntaxException {
         int successes = 0;
 
-        for (Entity entity : targets) {
+        for (Entity entity : entities) {
             if (entity instanceof LivingEntity livingEntity && SpellCastingManager.clear(livingEntity)) {
                 successes++;
             }
@@ -112,12 +139,12 @@ public class SpellCommand {
         if (successes == 0) {
             throw CLEAR_FAILED_EXCEPTION.create();
         } else {
-            if (targets.size() == 1) {
+            if (entities.size() == 1) {
                 source.sendFeedback(() -> ModIdentifier.translatable("commands.spell.clear.success.single",
-                        (targets.iterator().next()).getDisplayName()), true);
+                        (entities.iterator().next()).getDisplayName()), true);
             } else {
                 source.sendFeedback(() -> ModIdentifier.translatable("commands.spell.clear.success.multiple",
-                        targets.size()), true);
+                        entities.size()), true);
             }
 
             return successes;

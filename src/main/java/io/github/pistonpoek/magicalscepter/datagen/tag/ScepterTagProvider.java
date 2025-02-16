@@ -12,6 +12,12 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import java.util.concurrent.CompletableFuture;
 
 public class ScepterTagProvider extends FabricTagProvider<Scepter> {
+    /**
+     * Construct a mod scepter tag provider for data generation.
+     *
+     * @param output Data output to generate scepter tag data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
     public ScepterTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, ModRegistryKeys.SCEPTER, registriesFuture);
     }

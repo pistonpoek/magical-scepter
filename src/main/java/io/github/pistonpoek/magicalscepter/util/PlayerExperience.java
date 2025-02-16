@@ -4,10 +4,22 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 
 public class PlayerExperience {
+    /**
+     * Get the amount of experience points in the current level of the specified player.
+     *
+     * @param player Player to get the amount of experience points for.
+     * @return Number of experience points in the current level the specified player has.
+     */
     public static int getExperiencePoints(PlayerEntity player) {
         return MathHelper.floor(player.experienceProgress * (float)player.getNextLevelExperience());
     }
 
+    /**
+     * Get the total amount of experience points for the specified player.
+     *
+     * @param player Player to get the total amount of experience for.
+     * @return Total number of experience points the specified player has.
+     */
     public static int getTotalExperience(PlayerEntity player) {
         int level = player.experienceLevel;
         int levelPoints;

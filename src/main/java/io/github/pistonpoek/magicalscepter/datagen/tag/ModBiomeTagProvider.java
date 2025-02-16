@@ -15,7 +15,12 @@ import java.util.concurrent.CompletableFuture;
  * @see net.minecraft.data.tag.vanilla.VanillaBiomeTagProvider
  */
 public class ModBiomeTagProvider extends FabricTagProvider<Biome> {
-
+    /**
+     * Construct a mod biome tag provider for data generation.
+     *
+     * @param output Data output to generate biome tag data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
     public ModBiomeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, RegistryKeys.BIOME, registriesFuture);
     }

@@ -3,6 +3,7 @@ package io.github.pistonpoek.magicalscepter.item;
 import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -117,6 +118,8 @@ public class MagicalScepterItem extends Item implements AttackItem {
     public Text getName(ItemStack stack) {
         ScepterContentsComponent scepterContentsComponent = stack.get(ModDataComponentTypes.SCEPTER_CONTENTS);
         return scepterContentsComponent != null ?
-                scepterContentsComponent.getName(this.translationKey + ".") : super.getName(stack);
+                ModIdentifier.translatable(this.getTranslationKey() + "." +
+                        scepterContentsComponent.getTranslationKey()) :
+                super.getName(stack);
     }
 }

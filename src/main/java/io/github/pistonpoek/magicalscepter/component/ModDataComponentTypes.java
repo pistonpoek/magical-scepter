@@ -25,6 +25,14 @@ public class ModDataComponentTypes {
 
     }
 
+    /**
+     * Register a mod data component type for a specified id.
+     *
+     * @param id String id to register data component type for.
+     * @param builderOperator Component type builder operator to apply to the builder.
+     * @return Registered component type.
+     * @param <T> Type of the component type to register.
+     */
     private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
         return Registry.register(Registries.DATA_COMPONENT_TYPE, ModIdentifier.of(id),
                 builderOperator.apply(ComponentType.builder()).build());

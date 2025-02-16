@@ -21,8 +21,8 @@ public class ModIdentifier {
     /**
      * Create an identifier with mod namespace {@value MOD_ID} with the specified path.
      *
-     * @param path Path to create identifier for
-     * @return Identifier that is validated
+     * @param path Path to create identifier for.
+     * @return Identifier that is validated.
      *
      * @see net.minecraft.util.Identifier
      */
@@ -33,8 +33,8 @@ public class ModIdentifier {
     /**
      * Create the string representation for the identifier with mod namespace {@value MOD_ID} and the specified path.
      *
-     * @param path String to create mod identifier string representation for
-     * @return String that represents the mod identifier with the specified path
+     * @param path String to create mod identifier string representation for.
+     * @return String that represents the mod identifier with the specified path.
      * 
      * @see #of(String)
      * @see #key(String, String) 
@@ -46,9 +46,9 @@ public class ModIdentifier {
     /**
      * Create a string key for the mod with id {@value MOD_ID} and the specified value.
      *
-     * @param value String to create mod represented key for
-     * @param delimiter String to separate the mod id from the specified value
-     * @return String key that joins the specified value with the mod id using the specified delimiter
+     * @param value String to create mod represented key for.
+     * @param delimiter String to separate the mod id from the specified value.
+     * @return String key that joins the specified value with the mod id using the specified delimiter.
      */
     public static String key(String value, String delimiter) {
         return String.join(delimiter, MOD_ID, value);
@@ -57,8 +57,8 @@ public class ModIdentifier {
     /**
      * Create a mutable text for the specified path in the {@value MOD_ID} namespace with arguments to use in the text.
      *
-     * @param path String to create mutable text with
-     * @param args Arguments to create mutable text with
+     * @param path String to create mutable text with.
+     * @param args Arguments to create mutable text with.
      * @return MutableText created for the path and arguments with the mod namespace.
      *
      * @see net.minecraft.text.Text#translatable(String, Object...)

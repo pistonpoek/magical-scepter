@@ -28,6 +28,16 @@ import java.util.function.Consumer;
 
 import static io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes.SCEPTER_CONTENTS;
 
+/**
+ * Component that stores data values used as contents for a magical scepter item.
+ *
+ * @param scepter Scepter registry entry that is the default data and can be overruled by the other data values.
+ * @param customColor Color that should be used for visual representation of the scepter.
+ * @param customExperienceCost Experience cost that should be used when casting a spell.
+ * @param infusable Truth assignment that determines if the scepter is allowed to be infused.
+ * @param customAttackSpell Attack spell of the scepter that is cast on hit.
+ * @param customProtectSpell Protect spell of the scepter that is cast on use.
+ */
 public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                                        Optional<Integer> customColor,
                                        Optional<Integer> customExperienceCost,
@@ -115,6 +125,12 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
         return stack;
     }
 
+    /**
+     * Get the scepter color.
+     *
+     * @param defaultColor Color value to use when no color is present.
+     * @return Color value.
+     */
     public int getColor(int defaultColor) {
         return this.customColor.orElseGet(() -> getScepterValue().map(Scepter::getColor).orElse(defaultColor));
     }
@@ -130,12 +146,23 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                 .map(ColorHelper::fullAlpha).orElse(BASE_COLOR);
     }
 
+    /**
+     * Get the experience cost of casting a spell with the scepter.
+     *
+     * @return Experience cost.
+     */
     public int getExperienceCost() {
         return customExperienceCost
                 .or(() -> scepter.map(RegistryEntry::value).map(Scepter::getExperienceCost))
                 .orElse(BASE_EXPERIENCE_COST);
     }
 
+    /**
+     * Check if the player has enough experience for the casting cost.
+     *
+     * @param player Player to check experience for.
+     * @return Truth assignment, if the player has enough experience.
+     */
     public boolean hasEnoughExperience(PlayerEntity player) {
         return PlayerExperience.getTotalExperience(player) >= getExperienceCost();
     }
@@ -161,17 +188,32 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                 .or(() -> getScepterValue().map(Scepter::isInfusable));
     }
 
-    public Text getName(String prefix) {
-        String name = scepter.flatMap(RegistryEntry::getKey)
+    /**
+     * Get the scepter contents key to use for translations.
+     *
+     * @return String key that may differentiate scepter content components.
+     */
+    public String getTranslationKey() {
+        return scepter.flatMap(RegistryEntry::getKey)
                 .map(key -> key.getValue().getPath().replace("/", "."))
                 .orElse("empty");
-        return ModIdentifier.translatable(prefix + name);
     }
 
+    /**
+     * Check if the specified item stack has a spell to cast.
+     *
+     * @param stack Item stack to check components for.
+     * @return Truth assignment, if stack has a spell.
+     */
     public static boolean hasSpell(ItemStack stack) {
         return get(stack).map(ScepterContentsComponent::hasSpell).orElse(false);
     }
 
+    /**
+     * Check if there is a spell present that could be cast.
+     *
+     * @return Truth assignment, if spell is present.
+     */
     public boolean hasSpell() {
         return customAttackSpell.isPresent() || customProtectSpell.isPresent() ||
                 getScepterValue().map(Scepter::getAttackSpell).isPresent() ||
@@ -218,6 +260,12 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                 .or(() -> getScepterValue().flatMap(Scepter::getProtectSpell));
     }
 
+    /**
+     * Construct a scepter contents component using the specified scepter.
+     *
+     * @param scepter Scepter to construct component with.
+     * @return Scepter contents component made with the scepter.
+     */
     public ScepterContentsComponent with(RegistryEntry<Scepter> scepter) {
         return new ScepterContentsComponent(Optional.of(scepter), this.customColor, this.customExperienceCost,
                 this.infusable, this.customAttackSpell, this.customProtectSpell);
@@ -228,6 +276,11 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     private static final Text MISSING_SPELL_TEXT = ModIdentifier.translatable("scepter.missing_spell")
             .formatted(Formatting.DARK_GRAY);
 
+    /**
+     * Get the name of the attack spell.
+     *
+     * @return Text that represents the attack spell.
+     */
     public Text getAttackSpellName() {
         Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         if (attackSpell.isEmpty()) {
@@ -237,6 +290,11 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
         return Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(ATTACK_SPELL_FORMATTING));
     }
 
+    /**
+     * Get the name of the protect spell.
+     *
+     * @return Text that represents the protect spell.
+     */
     public Text getProtectSpellName() {
         Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
         if (protectSpell.isEmpty()) {

@@ -20,10 +20,22 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
         return CastSpellCriterion.Conditions.CODEC;
     }
 
+    /**
+     * Trigger the cast spell criterion.
+     *
+     * @param player Player that is casting the spell.
+     * @param stack Item stack used when casting the spell.
+     */
     public void trigger(ServerPlayerEntity player, ItemStack stack) {
         this.trigger(player, conditions -> conditions.matches(stack));
     }
 
+    /**
+     * Conditions that can be used to narrow the cast spell criterion.
+     *
+     * @param player Optional loot context predicate to check on the casting player.
+     * @param item Optional item predicate to check on the item stack used when casting.
+     */
     public record Conditions(Optional<LootContextPredicate> player, Optional<ItemPredicate> item)
             implements AbstractCriterion.Conditions {
         public static final Codec<CastSpellCriterion.Conditions> CODEC = RecordCodecBuilder.create(
@@ -35,17 +47,35 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
                 ).apply(instance, CastSpellCriterion.Conditions::new)
         );
 
+        /**
+         * Create an advancement criterion with the cast spell conditions for an item predicate.
+         *
+         * @param item Item predicate to create the condition with.
+         * @return Advancement criterion with a cast spell condition.
+         */
         public static AdvancementCriterion<CastSpellCriterion.Conditions> create(@Nullable ItemPredicate item) {
             return ModCriteria.CAST_SCEPTER.create(
                     new CastSpellCriterion.Conditions(Optional.empty(), Optional.ofNullable(item)));
         }
 
+        /**
+         * Create an advancement criterion with the cast spell conditions for a specified item.
+         *
+         * @param item Item convertible to create the condition with.
+         * @return Advancement criterion with a cast spell condition.
+         */
         public static AdvancementCriterion<CastSpellCriterion.Conditions> create(ItemConvertible item) {
             return ModCriteria.CAST_SCEPTER.create(
                     new CastSpellCriterion.Conditions(Optional.empty(),
                             Optional.of(ItemPredicate.Builder.create().items(Registries.ITEM, item).build())));
         }
 
+        /**
+         * Check if the specified item stack matches the conditions item predicate.
+         *
+         * @param stack Item stack to test for the conditions item predicate.
+         * @return Truth assignment, if the stack fulfills the conditions.
+         */
         public boolean matches(ItemStack stack) {
             return this.item.isEmpty() || (this.item.get()).test(stack);
         }

@@ -15,8 +15,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
-    public ScepterTypeProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(dataOutput, registriesFuture, DataOutput.OutputType.DATA_PACK,
+    /**
+     * Construct a scepter type provider for data generation.
+     *
+     * @param output Data output to generate scepter type data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
+    public ScepterTypeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
                 ModRegistryKeys.directory(ModRegistryKeys.SCEPTER), Scepter.CODEC);
     }
 
@@ -28,7 +34,14 @@ public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
             addScepter(provider, scepterLookup, scepterKey);
         }
     }
-
+    
+    /**
+     * Add a scepter to the specified provider.
+     *
+     * @param provider Provider to add the scepter to.
+     * @param lookup Registry entry lookup for the scepter.
+     * @param key Registry key to add to the scepter provider.
+     */
     private static void addScepter(BiConsumer<Identifier, Scepter> provider,
                                    RegistryEntryLookup<Scepter> lookup,
                                    RegistryKey<Scepter> key) {
@@ -37,6 +50,6 @@ public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
 
     @Override
     public String getName() {
-        return "ScepterTypeProvider";
+        return "Scepter Type";
     }
 }

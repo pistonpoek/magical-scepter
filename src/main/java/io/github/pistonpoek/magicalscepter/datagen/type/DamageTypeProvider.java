@@ -16,8 +16,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
-    public DamageTypeProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(dataOutput, registriesFuture, DataOutput.OutputType.DATA_PACK,
+    /**
+     * Construct a mod damage type provider for data generation.
+     *
+     * @param output Data output to generate damage type data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
+    public DamageTypeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
                 ModRegistryKeys.directory(RegistryKeys.DAMAGE_TYPE), DamageType.CODEC);
     }
 
@@ -30,6 +36,13 @@ public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
         }
     }
 
+    /**
+     * Add a damage type to the specified provider.
+     *
+     * @param provider Provider to add the damage type to.
+     * @param lookup Registry entry lookup for the damage type.
+     * @param key Registry key to add to the damage type provider.
+     */
     private static void addDamageType(BiConsumer<Identifier, DamageType> provider,
                                    RegistryEntryLookup<DamageType> lookup,
                                    RegistryKey<DamageType> key) {
@@ -38,6 +51,6 @@ public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
 
     @Override
     public String getName() {
-        return "ModDamageTypeProvider";
+        return "Damage Type";
     }
 }

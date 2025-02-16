@@ -13,8 +13,14 @@ import java.util.concurrent.CompletableFuture;
  * @see net.minecraft.data.tag.vanilla.VanillaItemTagProvider
  */
 public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
-    public ModItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
-        super(output, completableFuture);
+    /**
+     * Construct a mod item tag provider for data generation.
+     *
+     * @param output Data output to generate item tag data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
+    public ModItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture);
     }
 
     @Override

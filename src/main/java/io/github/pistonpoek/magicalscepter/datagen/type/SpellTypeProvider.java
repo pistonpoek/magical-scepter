@@ -15,8 +15,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
-    public SpellTypeProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(dataOutput, registriesFuture, DataOutput.OutputType.DATA_PACK,
+    /**
+     * Construct a mod spell type provider for data generation.
+     *
+     * @param output Data output to generate spell data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
+    public SpellTypeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
                 ModRegistryKeys.directory(ModRegistryKeys.SPELL), Spell.CODEC);
     }
 
@@ -29,6 +35,13 @@ public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
         }
     }
 
+    /**
+     * Add a spell to the specified provider.
+     *
+     * @param provider Provider to add the spell to.
+     * @param lookup Registry entry lookup for the spell.
+     * @param key Registry key to add to the spell provider.
+     */
     private static void addSpell(BiConsumer<Identifier, Spell> provider,
                                  RegistryEntryLookup<Spell> lookup,
                                  RegistryKey<Spell> key) {
@@ -37,6 +50,6 @@ public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
 
     @Override
     public String getName() {
-        return "SpellTypeProvider";
+        return "Spell Type";
     }
 }

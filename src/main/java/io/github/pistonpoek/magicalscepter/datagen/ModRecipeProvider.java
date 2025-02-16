@@ -29,7 +29,12 @@ import java.util.concurrent.CompletableFuture;
  * @see net.minecraft.data.recipe.RecipeGenerator.RecipeProvider
  */
 public class ModRecipeProvider extends FabricRecipeProvider {
-
+    /**
+     * Construct a mod recipe provider for data generation.
+     *
+     * @param output Data output to generate recipe data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
     public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
     }

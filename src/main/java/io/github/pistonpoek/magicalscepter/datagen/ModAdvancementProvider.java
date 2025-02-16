@@ -27,6 +27,12 @@ import java.util.function.Consumer;
  * @see net.minecraft.data.advancement.vanilla.VanillaAdvancementProviders
  */
 public class ModAdvancementProvider extends FabricAdvancementProvider {
+    /**
+     * Construct a mod advancement provider for data generation.
+     *
+     * @param output Data output to generate mod advancement data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
     protected ModAdvancementProvider(FabricDataOutput output,
                                      CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
@@ -68,8 +74,17 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         ).build(consumer, ModIdentifier.id("adventure/all_scepter_infusions"));
     }
 
-    protected static Advancement.Builder requireListedSceptersInfused(
-            Advancement.Builder builder, RegistryWrapper.WrapperLookup registryLookup, List<RegistryKey<Scepter>> scepters
+    /**
+     * Extend the specified advancement builder with infuse scepter criterion for the list of specified scepters.
+     *
+     * @param builder Advancement builder to extend with condition.
+     * @param registryLookup Registry lookup to access registries with.
+     * @param scepters List of scepters that each add an infuse condition to the advancement builder.
+     * @return Advancement builder that is extended with a criterion for each specified scepter.
+     */
+    protected static Advancement.Builder requireListedSceptersInfused(Advancement.Builder builder,
+                                                                      RegistryWrapper.WrapperLookup registryLookup,
+                                                                      List<RegistryKey<Scepter>> scepters
     ) {
         RegistryEntryLookup<Scepter> scepterRegistryLookup = registryLookup.getOrThrow(ModRegistryKeys.SCEPTER);
         for (RegistryKey<Scepter> registryKey : scepters) {
