@@ -156,6 +156,11 @@ public class SpellCastingManager extends PersistentState {
         return SpellCastingManager.load(server).clear(server, entity.getUuid());
     }
 
+    /**
+     * TODO ...
+     *
+     * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AfterDeath
+     */
     public static void afterDeath(LivingEntity entity, DamageSource damageSource) {
         if (entity == null) {
             return;

@@ -13,12 +13,17 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import net.minecraft.util.Identifier;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  * @see net.minecraft.entity.effect.StatusEffects
  */
 public class ModStatusEffects {
+    private static final Collection<Identifier> effects = new ArrayList<>();
     /**
      * Status effect that provides (explosion) knockback resistance to the applied entity.
      */
@@ -40,7 +45,9 @@ public class ModStatusEffects {
      * Initialize the class for the static fields.
      */
     public static void init() {
-
+        for (Identifier effect : effects) {
+            MixsonEvents.registerEffectModification(effect);
+        }
     }
 
     /**
@@ -66,9 +73,8 @@ public class ModStatusEffects {
      * @return Registered registry entry of the status effect.
      */
     private static RegistryEntry<StatusEffect> registerEffect(String identifier, StatusEffect effect) {
-        RegistryEntry<StatusEffect> statusEffect = register(identifier, effect);
-        MixsonEvents.registerEffectModification(ModIdentifier.of(identifier));
-        return statusEffect;
+        effects.add(ModIdentifier.of(identifier));
+        return register(identifier, effect);
     }
 
     /**

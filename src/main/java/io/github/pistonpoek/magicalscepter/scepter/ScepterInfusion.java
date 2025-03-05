@@ -21,12 +21,6 @@ import java.util.Optional;
 import static io.github.pistonpoek.magicalscepter.scepter.ScepterHelper.IS_INFUSABLE_SCEPTER;
 
 public class ScepterInfusion {
-    public static void afterDamage(LivingEntity entity, DamageSource source,
-                            float baseDamageTaken, float damageTaken, boolean blocked) {
-        if (damageTaken > 0) {
-            tryInfuseScepter(entity, source);
-        }
-    }
 
     /**
      * Get the infusion for the damage source
@@ -100,5 +94,17 @@ public class ScepterInfusion {
                 .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, damageSource.getSource());
         LootWorldContext lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
         return new LootContext.Builder(lootContextParameterSet).build(Optional.empty());
+    }
+
+    /**
+     * TODO ...
+     *
+     * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AfterDamage
+     */
+    public static void afterDamage(LivingEntity entity, DamageSource source,
+                                   float baseDamageTaken, float damageTaken, boolean blocked) {
+        if (damageTaken > 0) {
+            tryInfuseScepter(entity, source);
+        }
     }
 }
