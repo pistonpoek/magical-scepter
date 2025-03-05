@@ -65,7 +65,6 @@ public abstract class RaidMixin {
     private <T extends Entity> T createRaiderEntity(EntityType<T> instance, World world, SpawnReason reason) {
         int wave = this.magicalscepter$wave;
         int count = this.magicalscepter$count;
-        MagicalScepter.LOGGER.info("wave {}, count {}", wave, count);
         if (instance.equals(EntityType.PILLAGER)) {
             if (wave == 4 && !this.isSpawningExtraWave() && count == 0) {
                 magicalscepter$setOptionalRefractorRaiderEntity(world, reason);

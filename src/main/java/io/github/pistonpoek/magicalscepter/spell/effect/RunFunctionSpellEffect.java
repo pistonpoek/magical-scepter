@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.spell.effect;
 
-import com.mojang.logging.LogUtils;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
@@ -11,7 +10,6 @@ import net.minecraft.server.function.CommandFunction;
 import net.minecraft.server.function.CommandFunctionManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec2f;
-import org.slf4j.Logger;
 
 import java.util.Optional;
 
@@ -28,7 +26,7 @@ public record RunFunctionSpellEffect(Identifier function) implements SpellEffect
         Optional<CommandFunction<ServerCommandSource>> optional = commandFunctionManager.getFunction(this.function);
 
         if (optional.isEmpty()) {
-            MagicalScepter.LOGGER.error("Spell run_function effect failed for non-existent function {}", this.function);
+            MagicalScepter.LOGGER.error("Spell function effect failed for non-existent function {}", this.function);
             return;
         }
 

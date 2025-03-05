@@ -26,6 +26,15 @@ public abstract class ItemStackMixin {
             ComponentType<T> componentType, Item.TooltipContext context,
             Consumer<Text> textConsumer, TooltipType type);
 
+    /**
+     * Add the tooltip for scepter contents.
+     *
+     * @param context Context to create tooltip with.
+     * @param player Player to create tooltip for.
+     * @param type Type of tooltip to create.
+     * @param callbackInfoReturnable Mixin callback info returnable.
+     * @param consumer Local text consumer value to append tooltip to.
+     */
     @Inject(
             method = "getTooltip",
             at = @At(

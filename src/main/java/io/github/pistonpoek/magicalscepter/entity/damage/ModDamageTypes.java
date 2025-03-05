@@ -16,10 +16,22 @@ import java.util.List;
 public class ModDamageTypes {
     public static final List<RegistryKey<DamageType>> DAMAGE_TYPE_KEYS = List.of();
 
+    /**
+     * Create a damage source for the specified damage type registry key.
+     *
+     * @param dynamicRegistryManager Registry manager to use for retrieving the damage type.
+     * @param key Damage type registry key to create a damage source for.
+     * @return Damage source created with the specified registry key.
+     */
     public static DamageSource of(DynamicRegistryManager dynamicRegistryManager, RegistryKey<DamageType> key) {
         return new DamageSource(dynamicRegistryManager.getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key));
     }
 
+    /**
+     * Add mod damage types to the specified registry during bootstrap.
+     *
+     * @param registry Damage type registrable to add damage types to.
+     */
     public static void bootstrap(Registerable<DamageType> registry) {
     }
 }

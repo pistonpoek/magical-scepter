@@ -63,8 +63,8 @@ public class Spells {
     public static final RegistryKey<Spell> WITHER_REPULSION_KEY = of("wither_repulsion");
 
 
-    private static RegistryKey<Spell> of(String id) {
-        return RegistryKey.of(ModRegistryKeys.SPELL, ModIdentifier.of(id));
+    private static RegistryKey<Spell> of(String identifier) {
+        return RegistryKey.of(ModRegistryKeys.SPELL, ModIdentifier.of(identifier));
     }
 
     public static void bootstrap(Registerable<Spell> registry) {

@@ -38,14 +38,14 @@ public record RayCastTransformer(Target target, double range, boolean require) i
         ENTITY("entity");
 
         public final static Codec<Target> CODEC = StringIdentifiable.createBasicCodec(Target::values);
-        private final String id;
-        Target(String id) {
-            this.id = id;
+        private final String identifier;
+        Target(String identifier) {
+            this.identifier = identifier;
         }
 
         @Override
         public String asString() {
-            return id;
+            return identifier;
         }
     }
 

@@ -23,26 +23,40 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class MagicalScepterItem extends Item implements AttackItem {
+    /**
+     * Construct a magical scepter item with the specified item settings.
+     *
+     * @param settings Item settings to create item with.
+     */
     public MagicalScepterItem(Settings settings) {
         super(settings);
     }
 
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        return use(world, user, hand, false);
+        return performAction(world, user, hand, false);
     }
 
     @Override
     public ActionResult attack(World world, PlayerEntity user) {
-        return use(world, user, Hand.MAIN_HAND, true);
+        return performAction(world, user, Hand.MAIN_HAND, true);
     }
 
-    private ActionResult use(World world, PlayerEntity user, Hand hand, boolean attackCast) {
+    /**
+     * Activate the magical scepter to potentially cast a spell.
+     *
+     * @param world World that the user tries to perform the action in.
+     * @param user Player entity that is to perform the action.
+     * @param hand Hand that the user is performing the action with.
+     * @param isAttack Truth assignment, if the action is an attack.
+     * @return Action result of the performed action.
+     */
+    private ActionResult performAction(World world, PlayerEntity user, Hand hand, boolean isAttack) {
         ItemStack itemStack = user.getStackInHand(hand);
         ScepterContentsComponent scepterContent =
                 ScepterContentsComponent.get(itemStack).orElse(ScepterContentsComponent.DEFAULT);
 
-        Optional<Spell> optionalSpell = (attackCast ?
+        Optional<Spell> optionalSpell = (isAttack ?
                 scepterContent.getAttackSpell() :
                 scepterContent.getProtectSpell()).map(RegistryEntry::value);
 
@@ -68,7 +82,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
         );
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
-        ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, user, itemStack, attackCast, hand);
+        ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, user, itemStack, isAttack, hand);
 
         return ActionResult.CONSUME.withNewHandStack(usedScepterStack);
     }
@@ -79,19 +93,19 @@ public class MagicalScepterItem extends Item implements AttackItem {
      * @param spell Spell to cast.
      * @param caster Living entity to cast the spell for.
      * @param itemStack Item stack that the spell is cast with.
-     * @param attackCast Truth assignment, if cast is an attack and not protect.
+     * @param isAttack Truth assignment, if cast is an attack and not protect.
      * @param hand Hand being used to cast the spell.
      *
      * @return Damaged item stack that was used to cast the spell.
      */
     public static ItemStack castSpell(@NotNull Spell spell, @NotNull LivingEntity caster,
-                                @NotNull ItemStack itemStack,
-                                boolean attackCast, Hand hand) {
-        caster.playSound(attackCast ?
+                                      @NotNull ItemStack itemStack,
+                                      boolean isAttack, Hand hand) {
+        caster.playSound(isAttack ?
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_ATTACK_SPELL :
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL);
 
-        SwingType swingType = attackCast ? SwingType.HIT : SwingType.PROTECT;
+        SwingType swingType = isAttack ? SwingType.HIT : SwingType.PROTECT;
         ((SwingHandLivingEntity)caster).magical_scepter$swingHand(hand, swingType);
 
         if (caster.getWorld().isClient()) {

@@ -25,19 +25,19 @@ public class ModSoundEvents {
 
     }
 
-    private static SoundEvent register(String id) {
-        return register(ModIdentifier.of(id));
+    private static SoundEvent register(String identifier) {
+        return register(ModIdentifier.of(identifier));
     }
 
-    private static RegistryEntry.Reference<SoundEvent> registerReference(String id) {
-        return registerReference(ModIdentifier.of(id));
+    private static RegistryEntry.Reference<SoundEvent> registerReference(String identifier) {
+        return registerReference(ModIdentifier.of(identifier));
     }
 
-    private static SoundEvent register(Identifier id) {
-        return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+    private static SoundEvent register(Identifier identifier) {
+        return Registry.register(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
     }
 
-    private static RegistryEntry.Reference<SoundEvent> registerReference(Identifier id) {
-        return Registry.registerReference(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+    private static RegistryEntry.Reference<SoundEvent> registerReference(Identifier identifier) {
+        return Registry.registerReference(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
     }
 }

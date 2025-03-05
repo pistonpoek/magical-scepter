@@ -31,18 +31,30 @@ public class ModLootContextTypes {
 
     }
 
+    /**
+     * Get the mod loot context map.
+     *
+     * @return Mod loot context map.
+     */
     public static BiMap<Identifier, ContextType> getLootContextMap() {
         return MAP;
     }
 
-    private static ContextType register(String name, Consumer<ContextType.Builder> type) {
+    /**
+     * Register a mod context type for the specified identifier.
+     *
+     * @param identifier String identifier to register for.
+     * @param type Context type builder consumer to register.
+     * @return Registered context type.
+     */
+    private static ContextType register(String identifier, Consumer<ContextType.Builder> type) {
         ContextType.Builder builder = new ContextType.Builder();
         type.accept(builder);
         ContextType contextType = builder.build();
-        Identifier identifier = ModIdentifier.of(name);
-        ContextType putContextType = MAP.put(identifier, contextType);
+        ContextType putContextType = MAP.put(ModIdentifier.of(identifier), contextType);
         if (putContextType != null) {
-            throw new IllegalStateException("Loot table parameter set " + identifier + " is already registered");
+            throw new IllegalStateException("Loot table parameter set " +
+                    ModIdentifier.of(identifier) + " is already registered");
         } else {
             return contextType;
         }

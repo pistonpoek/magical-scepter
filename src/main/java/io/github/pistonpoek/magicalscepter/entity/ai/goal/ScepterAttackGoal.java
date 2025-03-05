@@ -120,19 +120,19 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
 
         // Determine the spell to cast
         Optional<Spell> scepterSpell;
-        final boolean attackCast;
+        final boolean isAttack;
         if (useProtectSpell(target)) {
-            attackCast = protectSpell.isEmpty();
+            isAttack = protectSpell.isEmpty();
             scepterSpell = protectSpell.or(() -> attackSpell);
         } else {
-            attackCast = attackSpell.isPresent();
+            isAttack = attackSpell.isPresent();
             scepterSpell = attackSpell.or(() -> protectSpell);
         }
 
         // Cast the spell and update the stack used by the actor.
         scepterSpell.ifPresent(spell -> {
             ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, this.actor,
-                    scepterStack, attackCast, Hand.MAIN_HAND);
+                    scepterStack, isAttack, Hand.MAIN_HAND);
             this.actor.setStackInHand(hand, usedScepterStack);
         });
     }

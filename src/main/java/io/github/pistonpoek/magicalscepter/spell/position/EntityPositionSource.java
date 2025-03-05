@@ -28,14 +28,14 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
         FEET("feet");
 
         public final static Codec<Anchor> CODEC = StringIdentifiable.createBasicCodec(Anchor::values);
-        private final String id;
-        Anchor(String id) {
-            this.id = id;
+        private final String identifier;
+        Anchor(String identifier) {
+            this.identifier = identifier;
         }
 
         @Override
         public String asString() {
-            return id;
+            return identifier;
         }
     }
 

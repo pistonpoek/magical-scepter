@@ -11,7 +11,7 @@ import io.github.pistonpoek.magicalscepter.network.packet.SwingHandPayload;
 public class SwingHandHandler implements ClientPlayNetworking.PlayPayloadHandler<SwingHandPayload> {
     @Override
     public void receive(SwingHandPayload payload, ClientPlayNetworking.Context context) {
-        Entity entity = context.player().getEntityWorld().getEntityById(payload.id());
+        Entity entity = context.player().getEntityWorld().getEntityById(payload.identifier());
         if (entity instanceof SwingHandLivingEntity swingHandLivingEntity) {
             swingHandLivingEntity.magical_scepter$swingHand(payload.hand(), payload.swingType());
         }

@@ -22,19 +22,38 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Explosive projectile entity that relates to the beam attack of a guardian entity.
+ */
 public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     private static final TrackedData<Integer> AGE = DataTracker.registerData(GuardianBoltEntity.class,
             TrackedDataHandlerRegistry.INTEGER);
     private static final int DURATION = 12;
 
+    /**
+     * Construct the guardian bolt entity in the specified world.
+     *
+     * @param entityType Entity type that is being created.
+     * @param world World to create the entity in.
+     */
     public GuardianBoltEntity(EntityType<GuardianBoltEntity> entityType, World world) {
         super(entityType, world);
     }
 
+    /**
+     * Get the current age value for the entity.
+     *
+     * @return Age value of the entity.
+     */
     public int getAge() {
         return this.getDataTracker().get(AGE);
     }
 
+    /**
+     * Set the age value for the entity.
+     *
+     * @param age Age to set for the entity.
+     */
     public void setAge(int age) {
         if (!this.getWorld().isClient) {
             this.getDataTracker().set(AGE, Math.max(age, 0));

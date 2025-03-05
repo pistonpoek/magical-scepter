@@ -14,7 +14,7 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
  */
 public class ModLootFunctionTypes {
     public static final LootFunctionType<SetScepterLootFunction> SET_SCEPTER =
-            init("set_scepter", SetScepterLootFunction.CODEC);
+            register("set_scepter", SetScepterLootFunction.CODEC);
 
     /**
      * Initialize the class for the static fields.
@@ -23,7 +23,16 @@ public class ModLootFunctionTypes {
         MagicalScepter.LOGGER.info("Registering Loot Functions for " + ModIdentifier.MOD_NAME);
     }
 
-    private static <T extends LootFunction> LootFunctionType<T> init(String id, MapCodec<T> codec) {
-        return Registry.register(Registries.LOOT_FUNCTION_TYPE, ModIdentifier.of(id), new LootFunctionType<>(codec));
+    /**
+     * Register a mod loot function type for the specified identifier.
+     *
+     * @param identifier String identifier to register for.
+     * @param codec Loot function codec to register.
+     * @return Registered loot function type.
+     * @param <T> Loot function to register.
+     */
+    private static <T extends LootFunction> LootFunctionType<T> register(String identifier, MapCodec<T> codec) {
+        return Registry.register(Registries.LOOT_FUNCTION_TYPE,
+                ModIdentifier.of(identifier), new LootFunctionType<>(codec));
     }
 }

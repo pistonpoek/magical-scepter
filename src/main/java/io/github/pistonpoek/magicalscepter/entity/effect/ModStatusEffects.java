@@ -19,6 +19,9 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
  * @see net.minecraft.entity.effect.StatusEffects
  */
 public class ModStatusEffects {
+    /**
+     * Status effect that provides (explosion) knockback resistance to the applied entity.
+     */
     public static final RegistryEntry<StatusEffect> STABILITY = registerEffect("stability",
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x074857)
                     .addAttributeModifier(EntityAttributes.KNOCKBACK_RESISTANCE,
@@ -27,6 +30,9 @@ public class ModStatusEffects {
                     .addAttributeModifier(EntityAttributes.EXPLOSION_KNOCKBACK_RESISTANCE,
                         ModIdentifier.of("effect.stability"),
                         0.3f, EntityAttributeModifier.Operation.ADD_VALUE));
+    /**
+     * Status effect that blocks projectiles from hitting the applied entity.
+     */
     public static final RegistryEntry<StatusEffect> REPULSION = registerEffect("repulsion",
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0xB2B27F));
 
@@ -37,19 +43,42 @@ public class ModStatusEffects {
 
     }
 
+    /**
+     * Determine if the specified entity should take the specified amount of damage for the specified damage source.
+     *
+     * @param entity Living entity that is about to take damage.
+     * @param source Damage source that will damage the entity.
+     * @param amount Amount of damage the entity is about to take.
+     * @return Truth assignment, if damage should be taken.
+     * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AllowDamage
+     */
     public static boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
         Entity sourceEntity = source.getSource();
         return !(sourceEntity instanceof PersistentProjectileEntity
                 && entity.hasStatusEffect(ModStatusEffects.REPULSION));
     }
 
-    private static RegistryEntry<StatusEffect> registerEffect(String id, StatusEffect effect) {
-        RegistryEntry<StatusEffect> statusEffect = register(id, effect);
-        MixsonEvents.registerEffectModification(ModIdentifier.of(id));
+    /**
+     * Register an effect for the specified identifier and add it to the all effects advancement.
+     *
+     * @param identifier String to create mod identifier with.
+     * @param effect Status effect to register.
+     * @return Registered registry entry of the status effect.
+     */
+    private static RegistryEntry<StatusEffect> registerEffect(String identifier, StatusEffect effect) {
+        RegistryEntry<StatusEffect> statusEffect = register(identifier, effect);
+        MixsonEvents.registerEffectModification(ModIdentifier.of(identifier));
         return statusEffect;
     }
 
-    private static RegistryEntry<StatusEffect> register(String id, StatusEffect statusEffect) {
-        return Registry.registerReference(Registries.STATUS_EFFECT, ModIdentifier.of(id), statusEffect);
+    /**
+     * Register a status effect for the specified identifier.
+     *
+     * @param identifier String to create mod identifier with for the status effect.
+     * @param effect Status effect to register.
+     * @return Registered registry entry of the status effect.
+     */
+    private static RegistryEntry<StatusEffect> register(String identifier, StatusEffect effect) {
+        return Registry.registerReference(Registries.STATUS_EFFECT, ModIdentifier.of(identifier), effect);
     }
 }

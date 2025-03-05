@@ -35,8 +35,8 @@ public class Scepters {
             List.of(BLAZE_KEY, BREEZE_KEY, DRAGON_KEY, EVOKER_KEY,
                     GHAST_KEY, GUARDIAN_KEY, SHULKER_KEY, WARDEN_KEY, WITHER_KEY);
 
-    private static RegistryKey<Scepter> of(String id) {
-        return RegistryKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(id));
+    private static RegistryKey<Scepter> of(String identifier) {
+        return RegistryKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(identifier));
     }
 
     public static void bootstrap(Registerable<Scepter> registry) {

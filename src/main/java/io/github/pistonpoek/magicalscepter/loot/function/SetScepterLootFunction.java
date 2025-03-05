@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.loot.function;
 
-
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.ItemStack;
@@ -15,6 +14,9 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 
 import java.util.List;
 
+/**
+ * Loot function to set a scepter in the scepter contents component of an item stack.
+ */
 public class SetScepterLootFunction extends ConditionalLootFunction {
     public static final MapCodec<SetScepterLootFunction> CODEC = RecordCodecBuilder.mapCodec(
             instance -> addConditionsField(instance).and(Scepter.ENTRY_CODEC.fieldOf("id")
@@ -22,6 +24,12 @@ public class SetScepterLootFunction extends ConditionalLootFunction {
     );
     private final RegistryEntry<Scepter> scepter;
 
+    /**
+     * Construct a set scepter loot function.
+     *
+     * @param conditions List of conditions to create the loot function with.
+     * @param scepter Registry entry of the scepter to set.
+     */
     private SetScepterLootFunction(List<LootCondition> conditions, RegistryEntry<Scepter> scepter) {
         super(conditions);
         this.scepter = scepter;
@@ -39,6 +47,12 @@ public class SetScepterLootFunction extends ConditionalLootFunction {
         return stack;
     }
 
+    /**
+     * Create a set scepter loot function with specified scepter registry entry.
+     *
+     * @param scepter Registry entry of the scepter to set with the loot function.
+     * @return Set scepter loot function with the specified scepter.
+     */
     public static ConditionalLootFunction.Builder<?> builder(RegistryEntry<Scepter> scepter) {
         return builder(conditions -> new SetScepterLootFunction(conditions, scepter));
     }

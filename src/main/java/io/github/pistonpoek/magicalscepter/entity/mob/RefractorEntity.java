@@ -36,8 +36,16 @@ import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Illager entity that wields a magical scepter.
+ */
 public class RefractorEntity extends IllagerEntity {
-
+    /**
+     * Construct the refractor entity in the specified world.
+     *
+     * @param entityType Entity type that is being created.
+     * @param world World to create the entity in.
+     */
     public RefractorEntity(EntityType<? extends RefractorEntity> entityType, World world) {
         super(entityType, world);
         this.setCanPickUpLoot(true);
@@ -59,6 +67,11 @@ public class RefractorEntity extends IllagerEntity {
         this.targetSelector.add(3, new ActiveTargetGoal<IronGolemEntity>(this, IronGolemEntity.class, false).setMaxTimeWithoutVisibility(300));
     }
 
+    /**
+     * Create the default attribute container builder for the refractor entity.
+     *
+     * @return Attribute builder for the refractor entity with base values.
+     */
     public static DefaultAttributeContainer.Builder createRefractorAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.5)

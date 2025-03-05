@@ -25,13 +25,13 @@ public class ModPlayPackets {
     }
 
     private static <T  extends CustomPayload> CustomPayload.Type<? super RegistryByteBuf, T>
-    registerServerToClientPayload(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec) {
-        return PayloadTypeRegistry.playS2C().register(id, codec);
+    registerServerToClientPayload(CustomPayload.Id<T> identifier, PacketCodec<RegistryByteBuf, T> codec) {
+        return PayloadTypeRegistry.playS2C().register(identifier, codec);
     }
 
     private static <T  extends CustomPayload> CustomPayload.Type<? super RegistryByteBuf, T>
-    registerClientToServerPayload(CustomPayload.Id<T> id, PacketCodec<RegistryByteBuf, T> codec) {
-        return PayloadTypeRegistry.playC2S().register(id, codec);
+    registerClientToServerPayload(CustomPayload.Id<T> identifier, PacketCodec<RegistryByteBuf, T> codec) {
+        return PayloadTypeRegistry.playC2S().register(identifier, codec);
     }
 
 }

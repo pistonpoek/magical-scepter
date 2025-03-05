@@ -20,14 +20,14 @@ public class ModCriteria {
     }
 
     /**
-     * Register a mod advancement criteria for a specified id.
+     * Register a mod advancement criteria for a specified identifier.
      *
-     * @param id String id to register criterion for.
+     * @param identifier String identifier to register criterion for.
      * @param criterion Criterion to register.
      * @return Registered criterion.
      * @param <T> Type of the criterion to register.
      */
-    public static <T extends Criterion<?>> T register(String id, T criterion) {
-        return Registry.register(Registries.CRITERION, id, criterion);
+    public static <T extends Criterion<?>> T register(String identifier, T criterion) {
+        return Registry.register(Registries.CRITERION, identifier, criterion);
     }
 }

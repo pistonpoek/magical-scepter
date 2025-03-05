@@ -21,7 +21,7 @@ public interface ModRecipeSerializer {
 
     }
 
-    static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(String id, S serializer) {
-        return Registry.register(Registries.RECIPE_SERIALIZER, ModIdentifier.of(id), serializer);
+    static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(String identifier, S serializer) {
+        return Registry.register(Registries.RECIPE_SERIALIZER, ModIdentifier.of(identifier), serializer);
     }
 }

@@ -3,14 +3,15 @@
 	"id": "magicalscepter",
 	"version": "${version}",
 	"name": "Magical Scepter",
-	"description": "Spell casting weapon that can be infused by monsters. The Magical Scepter is wielded by a new Refractor illager who resides in an old taiga cabin.",
+	"description": "Adds a spell casting weapon that is wielded by an illager residing in an old taiga hut.",
 	"authors": [
 		"pistonpoek"
 	],
 	"contact": {
 		"email": "pistonpoek@gmail.com",
 		"homepage": "https://modrinth.com/mod/magical-scepter",
-		"sources": "https://github.com/pistonpoek/magical-scepter"
+		"sources": "https://github.com/pistonpoek/magical-scepter",
+		"issues": "https://github.com/pistonpoek/magical-scepter/issues"
 	},
 	"license": "",
 	"icon": "assets/magicalscepter/icon.png",

@@ -34,8 +34,8 @@ public class ModRegistryKeys {
     public static final RegistryKey<Registry<MapCodec<? extends SpellContextSource>>> CAST_CONTEXT_SOURCE_TYPE =
             of("cast_context_source_type");
 
-    private static <T> RegistryKey<Registry<T>> of(String id) {
-        return RegistryKey.ofRegistry(ModIdentifier.of(id));
+    private static <T> RegistryKey<Registry<T>> of(String identifier) {
+        return RegistryKey.ofRegistry(ModIdentifier.of(identifier));
     }
 
     public static String directory(RegistryKey<?> registryKey) {

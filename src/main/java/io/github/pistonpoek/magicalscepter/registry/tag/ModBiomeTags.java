@@ -12,7 +12,7 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 public class ModBiomeTags {
     public static final TagKey<Biome> OLD_TAIGA_CABIN_HAS_STRUCTURE = of("has_structure/old_taiga_cabin");
 
-    private static TagKey<Biome> of(String id) {
-        return TagKey.of(RegistryKeys.BIOME, ModIdentifier.of(id));
+    private static TagKey<Biome> of(String identifier) {
+        return TagKey.of(RegistryKeys.BIOME, ModIdentifier.of(identifier));
     }
 }

@@ -20,25 +20,25 @@ public class ModEntityModelLayers {
     public static final EntityModelLayer GUARDIAN_BOLT = registerMain("guardian_bolt");
 
     /**
-     * Register a new entity model on the main layer for the specified id.
+     * Register a new entity model on the main layer for the specified identifier.
      *
-     * @param id String to use as id of the entity model.
-     * @return Entity model layer that has been registered with the id.
+     * @param identifier String to use as id of the entity model.
+     * @return Entity model layer that has been registered with the identifier.
      */
-    private static @NotNull EntityModelLayer registerMain(String id) {
-        return register(id, "main");
+    private static @NotNull EntityModelLayer registerMain(String identifier) {
+        return register(identifier, "main");
     }
 
     /**
-     * Register a new entity model for the specified layer and id.
+     * Register a new entity model for the specified layer and identifier.
      *
-     * @param id String to use as id of the entity model.
+     * @param identifier String to use as identifier of the entity model.
      * @param layer String to get layer for.
      * @return Entity model layer that has been registered at the layer with the id.
      * @throws IllegalStateException When an id has already been registered for the layer.
      */
-    private static @NotNull EntityModelLayer register(String id, String layer) {
-        EntityModelLayer entityModelLayer = new EntityModelLayer(ModIdentifier.of(id), layer);
+    private static @NotNull EntityModelLayer register(String identifier, String layer) {
+        EntityModelLayer entityModelLayer = new EntityModelLayer(ModIdentifier.of(identifier), layer);
         if (!LAYERS.add(entityModelLayer)) {
             throw new IllegalStateException("Duplicate registration for " + entityModelLayer);
         } else {

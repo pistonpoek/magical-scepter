@@ -3,6 +3,9 @@ package io.github.pistonpoek.magicalscepter.item;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 
+/**
+ * Specifies different hand swing animation types.
+ */
 public enum SwingType {
     HIT,
     PROTECT;
