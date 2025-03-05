@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.mixson;
 
+import com.google.gson.JsonElement;
 import io.github.pistonpoek.magicalscepter.mixson.advancement.adventure.KillAMobMixson;
 import io.github.pistonpoek.magicalscepter.mixson.advancement.adventure.KillAllMobsMixson;
 import io.github.pistonpoek.magicalscepter.mixson.advancement.nether.AllEffectsMixson;
@@ -11,7 +12,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.SpawnSettings;
 import net.ramixin.mixson.inline.Mixson;
-import net.ramixin.mixson.inline.events.MixsonEvent;
+import net.ramixin.mixson.inline.MixsonEvent;
 
 public class MixsonEvents {
     public static void registerMobModification(Identifier mobIdentifier) {
@@ -37,7 +38,7 @@ public class MixsonEvents {
                 new BiomeSpawnEntryMixson(group, entry));
     }
 
-    public static void registerMixsonEvent(String resource, String name, MixsonEvent event) {
+    public static void registerMixsonEvent(String resource, String name, MixsonEvent<JsonElement> event) {
         Mixson.registerEvent(Mixson.DEFAULT_PRIORITY, resource, name, event);
     }
 }

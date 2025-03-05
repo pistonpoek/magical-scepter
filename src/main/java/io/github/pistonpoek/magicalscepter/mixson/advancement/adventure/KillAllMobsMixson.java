@@ -9,11 +9,11 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.ramixin.mixson.inline.EventContext;
-import net.ramixin.mixson.inline.events.MixsonEvent;
+import net.ramixin.mixson.inline.MixsonEvent;
 
-public record KillAllMobsMixson(Identifier mobIdentifier) implements MixsonEvent {
+public record KillAllMobsMixson(Identifier mobIdentifier) implements MixsonEvent<JsonElement> {
     @Override
-    public void runEvent(EventContext context) {
+    public void runEvent(EventContext<JsonElement> context) {
         JsonObject root = context.getFile().getAsJsonObject();
         RegistryEntry<EntityType<?>> mobEntry = Registries.ENTITY_TYPE.getEntry(mobIdentifier).orElseThrow();
         String mobReference = mobEntry.getIdAsString();

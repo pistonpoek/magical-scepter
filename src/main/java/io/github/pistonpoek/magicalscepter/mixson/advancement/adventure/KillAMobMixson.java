@@ -5,11 +5,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.util.Identifier;
 import net.ramixin.mixson.inline.EventContext;
-import net.ramixin.mixson.inline.events.MixsonEvent;
+import net.ramixin.mixson.inline.MixsonEvent;
 
-public record KillAMobMixson(Identifier mobIdentifier) implements MixsonEvent {
+public record KillAMobMixson(Identifier mobIdentifier) implements MixsonEvent<JsonElement> {
     @Override
-    public void runEvent(EventContext context) {
+    public void runEvent(EventContext<JsonElement> context) {
         JsonObject root = context.getFile().getAsJsonObject();
         String mobReference = mobIdentifier.toString();
         JsonElement mobCondition = JsonParser.parseString(
