@@ -1,3 +1,51 @@
 ---
-title: Spell Command
+title: /spell
 ---
+
+Casts or clears spells for living entities.
+
+
+## Syntax
+
+```mcfunction
+/spell cast <targets> <spell>
+```
+Casts the specified spell on the target(s).
+
+```mcfunction
+/spell clear [<targets>]
+```
+Removes active spells from the target(s).
+
+
+## Arguments
+
+`<targets>`: [entity](https://minecraft.wiki/w/Argument_types#entity)
+
+Specifies the target(s) with executing self as default. 
+
+`<spell>`: [resource](https://minecraft.wiki/w/Argument_types#resource)
+
+Specifies the spell to cast, which must exist and can be added with the [spell definition](spell_definition).
+
+
+## Output
+
+On failure returns 0, otherwise the number of entities the operation was successful for.
+
+## Examples
+
+```mcfunction
+/spell cast @s magicalscepter:magical_attack
+```
+Casts the magicalscepter:magical_attack spell for the executing entity.
+
+```mcfunction
+/spell clear @a
+```
+Removes all active spells from all players.
+
+```mcfunction
+/spell clear
+```
+Removes all active spells from the executing entity.
