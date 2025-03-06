@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id 'maven-publish'
+	id 'org.moddedmc.wiki.toolkit' version '0.2.7'
 }
 
 version project.mod_version + "+mc.$minecraft_version"
@@ -49,6 +50,14 @@ loom {
 fabricApi {
 	configureDataGeneration {
 		createRunConfiguration = false
+	}
+}
+
+wiki {
+	docs {
+		magicalscepter {
+			root = file('docs')
+		}
 	}
 }
 
