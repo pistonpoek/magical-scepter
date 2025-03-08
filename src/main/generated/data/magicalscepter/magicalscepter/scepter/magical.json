@@ -1,6 +1,6 @@
 {
   "color": 12352604,
-  "experience_cost": 12,
+  "experience_cost": 4,
   "infusable": true,
   "spell_attack": "magicalscepter:magical_attack",
   "spell_protect": "magicalscepter:magical_resistance"

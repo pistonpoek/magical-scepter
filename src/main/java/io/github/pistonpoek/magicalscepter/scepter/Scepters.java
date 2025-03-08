@@ -44,7 +44,7 @@ public class Scepters {
         RegistryEntryLookup<EntityType<?>> entityTypeRegistryEntryLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
         register(registry, MAGICAL_KEY, Scepter.builder(
                         0xBC7C5C,
-                        12,
+                        4,
                         true
                 )
                 .attackSpell(
@@ -57,7 +57,7 @@ public class Scepters {
 
         register(registry, BLAZE_KEY, Scepter.builder(
                         0xFF9900,
-                        12,
+                        4,
                         false
                 )
                 .attackSpell(
@@ -78,7 +78,7 @@ public class Scepters {
 
         register(registry, BREEZE_KEY, Scepter.builder(
                         0xBDC9FF,
-                        12,
+                        2,
                         false
                 )
                 .attackSpell(
@@ -99,7 +99,7 @@ public class Scepters {
 
         register(registry, DRAGON_KEY, Scepter.builder(
                         0xB823F5,
-                        20,
+                        8,
                         false
                 )
                 .attackSpell(
@@ -120,7 +120,7 @@ public class Scepters {
 
         register(registry, EVOKER_KEY, Scepter.builder(
                         0x959B9B,
-                        12,
+                        4,
                         false
                 )
                 .attackSpell(
@@ -144,7 +144,7 @@ public class Scepters {
 
         register(registry, GHAST_KEY, Scepter.builder(
                         0xCD5CAB,
-                        12,
+                        4,
                         false
                 )
                 .attackSpell(
@@ -165,7 +165,7 @@ public class Scepters {
 
         register(registry, GUARDIAN_KEY, Scepter.builder(
                         0x4f7d8c,
-                        12,
+                        3,
                         false
                 )
                 .attackSpell(
@@ -186,7 +186,7 @@ public class Scepters {
 
         register(registry, SHULKER_KEY, Scepter.builder(
                         0xCEFFFF,
-                        12,
+                        3,
                         false
                 )
                 .attackSpell(
@@ -207,7 +207,7 @@ public class Scepters {
 
         register(registry, WARDEN_KEY, Scepter.builder(
                         0x2ce3eb,
-                        16,
+                        5,
                         false
                 )
                 .attackSpell(
@@ -228,7 +228,7 @@ public class Scepters {
 
         register(registry, WITHER_KEY, Scepter.builder(
                         0x736156,
-                        16,
+                        5,
                         false
                 )
                 .attackSpell(
