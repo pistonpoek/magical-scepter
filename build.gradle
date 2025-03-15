@@ -4,8 +4,8 @@ plugins {
 	id 'org.moddedmc.wiki.toolkit' version '0.2.7'
 }
 
-version project.mod_version + "+mc.$minecraft_version"
-group project.maven_group
+version = project.mod_version + "+mc.$minecraft_version"
+group = project.maven_group
 
 base {
 	archivesName = project.archives_base_name
@@ -18,8 +18,8 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	maven {
-		name 'JitPack'
-		url 'https://jitpack.io'
+		name = 'JitPack'
+		url = 'https://jitpack.io'
 	}
 }
 
