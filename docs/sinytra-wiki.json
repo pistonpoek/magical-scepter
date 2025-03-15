@@ -1,7 +1,6 @@
 {
   "id": "magical-scepter",
   "platforms": {
-    "modrinth": "magical-scepter",
-    "curseforge": "magical-scepter"
+    "modrinth": "magical-scepter"
   }
 }
