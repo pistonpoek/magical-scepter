@@ -1,3 +1,46 @@
 ---
 title: Scepter Definition
 ---
+
+Scepters are stored as JSON files within a data pack in the path `data/<namespace>/magicalscepter/scepter`.
+
+- [`{}`][object]: Root object.
+    - [`RGB`][number] **color**: Color value - Display color of the scepter.
+    - [`I`][number] **experience_cost**: Non negative integer - Cost in experience points to cast a spell with this scepter.
+    - [`B`][boolean] **infusable**: Boolean - Specifies if scepter can be infused to become a different scepter. Defaults to false.
+    - [`{}`][object] **infusion**: [Predicate][predicate] - Infuses scepter when it passes and is provided with `entity` [loot context][loot-context] type.
+    - [`{}`][object]/[`""`][string] **spell_attack**: [Spell](../spells/spell_definition) component or entry [ID][id] - Spell cast on attack with scepter.
+    - [`{}`][object]/[`""`][string] **spell_protect**: [Spell](../spells/spell_definition) component or entry [ID][id] - Spell cast on use with scepter.
+
+<details open>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "color": 12067829,
+    "experience_cost": 8,
+    "infusion": [
+      {
+        "condition": "minecraft:damage_source_properties",
+        "predicate": {
+          "source_entity": {
+            "type": "minecraft:ender_dragon"
+          }
+        }
+      }
+    ],
+    "infusable": true,
+    "spell_attack": "magicalscepter:dragon_fireball",
+    "spell_protect": "magicalscepter:dragon_growl"
+  }
+  ```
+</details>
+
+[string]: https://minecraft.wiki/w/JSON#String "JSON String"
+[number]: https://minecraft.wiki/w/JSON#Number "JSON Number"
+[object]: https://minecraft.wiki/w/JSON#Object "JSON Object"
+[array]: https://minecraft.wiki/w/JSON#Array "JSON Array"
+[boolean]: https://minecraft.wiki/w/JSON#Boolean "JSON Boolean"
+[text]: https://minecraft.wiki/w/Text_component_format "Text Component"
+[predicate]: https://minecraft.wiki/w/Predicate "Predicate"
+[loot-context]: https://minecraft.wiki/w/Loot_context "Loot Context"
+[id]: https://minecraft.wiki/w/Resource_location "Identifier"
