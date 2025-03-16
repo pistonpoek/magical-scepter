@@ -29,5 +29,11 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
                 getOrCreateTagBuilder(ModItemTags.REFRACTOR_PREFERRED_WEAPONS);
         refractorPreferredWeaponsTagBuilder.add(ModItems.SCEPTER);
         refractorPreferredWeaponsTagBuilder.add(ModItems.MAGICAL_SCEPTER);
+
+        FabricTagBuilder ScepterEnchantableTagBuilder =
+                getOrCreateTagBuilder(ModItemTags.SCEPTER_ENCHANTABLE);
+        ScepterEnchantableTagBuilder.add(ModItems.SCEPTER);
+        ScepterEnchantableTagBuilder.add(ModItems.MAGICAL_SCEPTER);
+
     }
 }

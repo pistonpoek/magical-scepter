@@ -11,6 +11,7 @@ import net.minecraft.registry.tag.TagKey;
  */
 public class ModItemTags {
     public static final TagKey<Item> REFRACTOR_PREFERRED_WEAPONS = of("refractor_preferred_weapons");
+    public static final TagKey<Item> SCEPTER_ENCHANTABLE = of("enchantable/scepter");
 
     public static TagKey<Item> of(String name) {
         return TagKey.of(RegistryKeys.ITEM, ModIdentifier.of(name));
