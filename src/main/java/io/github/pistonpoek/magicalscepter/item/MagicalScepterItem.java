@@ -68,7 +68,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
 
         if (!user.getAbilities().creativeMode) {
             if (!scepterContent.hasEnoughExperience(user)) {
-                return ActionResult.FAIL;
+                return ActionResult.PASS;
             }
 
             int experienceCost = scepterContent.getExperienceCost();
