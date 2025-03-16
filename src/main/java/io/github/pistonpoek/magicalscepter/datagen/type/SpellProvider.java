@@ -14,14 +14,14 @@ import io.github.pistonpoek.magicalscepter.spell.Spells;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
+public class SpellProvider extends FabricCodecDataProvider<Spell> {
     /**
-     * Construct a mod spell type provider for data generation.
+     * Construct a mod spell provider for data generation.
      *
      * @param output Data output to generate spell data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public SpellTypeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public SpellProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
                 ModRegistryKeys.directory(ModRegistryKeys.SPELL), Spell.CODEC);
     }
@@ -50,6 +50,6 @@ public class SpellTypeProvider extends FabricCodecDataProvider<Spell> {
 
     @Override
     public String getName() {
-        return "Spell Type";
+        return "Spell";
     }
 }
