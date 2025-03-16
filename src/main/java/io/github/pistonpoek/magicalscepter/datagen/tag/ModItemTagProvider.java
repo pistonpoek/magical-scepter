@@ -5,6 +5,7 @@ import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.ItemTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -35,5 +36,14 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         ScepterEnchantableTagBuilder.add(ModItems.SCEPTER);
         ScepterEnchantableTagBuilder.add(ModItems.MAGICAL_SCEPTER);
 
+        FabricTagBuilder DurabilityEnchantableTagBuilder =
+                getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE);
+        DurabilityEnchantableTagBuilder.add(ModItems.SCEPTER);
+        DurabilityEnchantableTagBuilder.add(ModItems.MAGICAL_SCEPTER);
+
+        FabricTagBuilder VanishingEnchantableTagBuilder =
+                getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE);
+        VanishingEnchantableTagBuilder.add(ModItems.SCEPTER);
+        VanishingEnchantableTagBuilder.add(ModItems.MAGICAL_SCEPTER);
     }
 }

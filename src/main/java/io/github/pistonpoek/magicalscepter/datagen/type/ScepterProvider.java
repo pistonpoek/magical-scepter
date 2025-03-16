@@ -14,14 +14,14 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
+public class ScepterProvider extends FabricCodecDataProvider<Scepter> {
     /**
-     * Construct a scepter type provider for data generation.
+     * Construct a scepter provider for data generation.
      *
-     * @param output Data output to generate scepter type data into.
+     * @param output Data output to generate scepter data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ScepterTypeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public ScepterProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
                 ModRegistryKeys.directory(ModRegistryKeys.SCEPTER), Scepter.CODEC);
     }
@@ -50,6 +50,6 @@ public class ScepterTypeProvider extends FabricCodecDataProvider<Scepter> {
 
     @Override
     public String getName() {
-        return "Scepter Type";
+        return "Scepter";
     }
 }
