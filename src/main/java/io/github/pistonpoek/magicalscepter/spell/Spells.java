@@ -43,7 +43,7 @@ public class Spells {
     public static final List<RegistryKey<Spell>> SPELL_KEYS = new ArrayList<>();
     public static final RegistryKey<Spell> MAGICAL_ATTACK_KEY = of("magical_attack");
     public static final RegistryKey<Spell> MAGICAL_RESISTANCE_KEY = of("magical_resistance");
-    public static final RegistryKey<Spell> BLAZE_SMALL_FIREBALL_KEY = of("blaze_small_fireball");
+    public static final RegistryKey<Spell> BLAZE_FIRE_CHARGES = of("blaze_fire_charges");
     public static final RegistryKey<Spell> BLAZE_FIRE_RESISTANCE_KEY = of("blaze_fire_resistance");
     public static final RegistryKey<Spell> BREEZE_WIND_CHARGE_KEY = of("breeze_wind_charge");
     public static final RegistryKey<Spell> BREEZE_JUMP_KEY = of("breeze_jump");
@@ -130,8 +130,8 @@ public class Spells {
             )
         );
 
-        register(registry, BLAZE_SMALL_FIREBALL_KEY, Spell.builder(40,
-                        textOf("small_fireballs"))
+        register(registry, BLAZE_FIRE_CHARGES, Spell.builder(40,
+                        textOf("fire_charges"))
             .addCast(SpellCast.builder()
                     .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6.0F).build())
                     .addEffect(new PlaySoundSpellEffect(
@@ -155,7 +155,7 @@ public class Spells {
                     )
                     .addEffect(
                             SummonEntitySpellEffect.builder(
-                                    entityTypeReferenceFunction.apply(EntityType.SMALL_FIREBALL)
+                                    entityTypeReferenceFunction.apply(ModEntityType.BLAZE_FIRE_CHARGE)
                             ).addEffect(
                                     new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
                             ).build()
@@ -422,7 +422,7 @@ public class Spells {
         );
 
         register(registry, GHAST_FIREBALL_KEY, Spell.builder(40,
-                        textOf("fireball"))
+                        textOf("ghast_fireball"))
             .addCast(SpellCast.builder()
                     .addEffect(new PlaySoundSpellEffect(
                             RegistryEntry.of(SoundEvents.ENTITY_GHAST_SHOOT),
@@ -433,7 +433,7 @@ public class Spells {
                     .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addEffect(
                             SummonEntitySpellEffect.builder(
-                                    entityTypeReferenceFunction.apply(EntityType.FIREBALL)
+                                    entityTypeReferenceFunction.apply(ModEntityType.GHAST_FIREBALL)
                             ).addEffect(
                                     new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
                             ).build()
@@ -624,7 +624,7 @@ public class Spells {
                     .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                     .addEffect(
                             SummonEntitySpellEffect.builder(
-                                    entityTypeReferenceFunction.apply(EntityType.WITHER_SKULL)
+                                    entityTypeReferenceFunction.apply(ModEntityType.WITHER_SKULL)
                             ).addEffect(
                                     new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
                             ).build()

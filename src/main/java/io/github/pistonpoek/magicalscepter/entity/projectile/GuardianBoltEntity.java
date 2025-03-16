@@ -36,7 +36,7 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
      * @param entityType Entity type that is being created.
      * @param world World to create the entity in.
      */
-    public GuardianBoltEntity(EntityType<GuardianBoltEntity> entityType, World world) {
+    public GuardianBoltEntity(EntityType<? extends GuardianBoltEntity> entityType, World world) {
         super(entityType, world);
     }
 

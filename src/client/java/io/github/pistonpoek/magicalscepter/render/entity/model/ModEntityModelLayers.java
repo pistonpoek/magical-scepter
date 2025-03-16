@@ -18,6 +18,7 @@ public class ModEntityModelLayers {
     private static final Set<EntityModelLayer> LAYERS = new HashSet<>();
     public static final EntityModelLayer REFRACTOR = registerMain("refractor");
     public static final EntityModelLayer GUARDIAN_BOLT = registerMain("guardian_bolt");
+    public static final EntityModelLayer WITHER_SKULL = registerMain("wither_skull");
 
     /**
      * Register a new entity model on the main layer for the specified identifier.

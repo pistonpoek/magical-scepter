@@ -61,7 +61,7 @@ public class Scepters {
                         false
                 )
                 .attackSpell(
-                        spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_SMALL_FIREBALL_KEY)
+                        spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_FIRE_CHARGES)
                 )
                 .protectSpell(
                         spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_FIRE_RESISTANCE_KEY)

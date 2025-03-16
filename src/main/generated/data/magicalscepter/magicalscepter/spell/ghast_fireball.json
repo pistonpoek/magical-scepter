@@ -26,7 +26,7 @@
               "power": 1.0
             }
           ],
-          "entity": "minecraft:fireball"
+          "entity": "magicalscepter:ghast_fireball"
         }
       ],
       "transformers": [
@@ -48,6 +48,6 @@
   ],
   "cooldown": 40,
   "description": {
-    "translate": "spell.magicalscepter.fireball"
+    "translate": "spell.magicalscepter.ghast_fireball"
   }
 }
