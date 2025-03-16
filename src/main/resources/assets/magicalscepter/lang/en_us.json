@@ -1,6 +1,7 @@
 {
   "effect.magicalscepter.repulsion" : "Repulsion",
   "effect.magicalscepter.stability" : "Stability",
+  "enchantment.magicalscepter.insight": "Insight",
   "entity.magicalscepter.refractor" : "Refractor",
   "item.magicalscepter.scepter" : "Scepter",
   "item.magicalscepter.magical_scepter": "Magical Scepter",
