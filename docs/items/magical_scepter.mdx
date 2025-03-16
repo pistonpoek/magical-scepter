@@ -5,11 +5,62 @@ icon: magicalscepter:magical_scepter
 type: item
 ---
 
-Spell casting weapon
+A magical scepter is a [spell](../spells/spells) casting weapon that has 9 additional monster variants. 
+Each [scepter](../scepters/scepters) has both a spell that can be cast on attack and a spell that is casted when the item is used.
+
+## Obtaining
+
+### Crafting
+
+The magical scepter can be [crafted](https://minecraft.wiki/w/Crafting) using a [scepter](scepter), [lapis lazuli](https://minecraft.wiki/w/Lapis_Lazuli) and a [brown mushroom](https://minecraft.wiki/w/Brown_Mushroom).
+
+<CraftingRecipe
+    slots={[
+        'magicalscepter:scepter',
+        'lapis_lazuli',
+        'brown_mushroom',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+    ]}
+    result="magicalscepter:magical_scepter"
+/>
+
+### Generated Loot
+
+The [old taiga cabin](../structures/old_taiga_cabin) structure contains a chest with loot that always has either a [scepter](scepter) or a magical scepter. 
+| Item    | Stack size | Weight | Chance |
+| ------- | ---------- | ------ | ------ |
+| [<Asset width={16} height={16} location="magicalscepter:scepter" title="Scepter" /> Scepter](../items/scepter) | 1 | 5 / 7 | 71.4% |
+| **<Asset width={16} height={16} location="magicalscepter:magical_scepter" title="Magical Scepter" /> Magical Scepter** | 1 | 2 / 7 | 28.6% |
+
+
+### Mob Loot
+
+When a [refractor](../entities/refractor) is killed there is a small chance (8.5%) of dropping a magical scepte; 
+the drop rate increases by 1% per level of Looting: 9.5% with Looting I, 10.5% with Looting II and 11.5% with Looting III. 
+
+## Usage
+
+### Casting
+
+Each [scepter](../scepters/scepters) variant has two ways to cast a [spell](../spells/spells); 
+either attack with the item to cast the attack spell or use the item to cast the protect spell.
+In order to cast a spell the [scepter](../scepters/scepters) requires the player to have enough [experience](https://minecraft.wiki/w/Experience) to cast a spell.
+When a spell is being cast a cooldown will be imposed on the use of any magical scepter with a duration based on the [spell](../spells/spells).
+
+### Durability
+
+Casting a spell costs 1 [durability](https://minecraft.wiki/w/Durability). 
+When the item breaks it will be replaced by a [scepter](scepter), which can be crafted back into a magical scepter. 
+The [scepter](scepter) will keep the enchantments of the broken magical scepter, but it will lose the possible infusion.
 
 ## Advancements
 
-The magical scepter has two related [advancements](https://minecraft.wiki/w/Advancement) in the [adventure](https://minecraft.wiki/w/Advancement#Adventure) tab.
+Two [advancements](https://minecraft.wiki/w/Advancement) are related to the magical scepter in the [adventure](https://minecraft.wiki/w/Advancement#Adventure) tab.
 
 
 ### Wizardry
