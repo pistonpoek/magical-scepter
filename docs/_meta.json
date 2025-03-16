@@ -1,4 +1,8 @@
 {
+    "effects": {
+        "name": "Effects",
+        "icon": "FlaskRound"
+    },
     "entities": {
         "name": "Entities",
         "icon": "PersonStanding"
