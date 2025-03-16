@@ -1,6 +1,9 @@
 package io.github.pistonpoek.magicalscepter.entity;
 
+import io.github.pistonpoek.magicalscepter.entity.projectile.BlazeFireChargeEntity;
+import io.github.pistonpoek.magicalscepter.entity.projectile.GhastFireballEntity;
 import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
+import io.github.pistonpoek.magicalscepter.entity.projectile.WitherSkullEntity;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -42,6 +45,30 @@ public class ModEntityType {
                     .dropsNothing()
                     .dimensions(0.3125F, 0.3125F)
                     .eyeHeight(0.0F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(10)
+    );
+    public static final EntityType<BlazeFireChargeEntity> BLAZE_FIRE_CHARGE = register(
+            "blaze_fire_charge",
+            EntityType.Builder.create(BlazeFireChargeEntity::new, SpawnGroup.MISC)
+                    .dropsNothing()
+                    .dimensions(0.3125F, 0.3125F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(10)
+    );
+    public static final EntityType<GhastFireballEntity> GHAST_FIREBALL = register(
+            "ghast_fireball",
+            EntityType.Builder.create(GhastFireballEntity::new, SpawnGroup.MISC)
+                    .dropsNothing()
+                    .dimensions(1.0F, 1.0F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(10)
+    );
+    public static final EntityType<WitherSkullEntity> WITHER_SKULL = register(
+            "wither_skull",
+            EntityType.Builder.create(WitherSkullEntity::new, SpawnGroup.MISC)
+                    .dropsNothing()
+                    .dimensions(0.3125F, 0.3125F)
                     .maxTrackingRange(4)
                     .trackingTickInterval(10)
     );

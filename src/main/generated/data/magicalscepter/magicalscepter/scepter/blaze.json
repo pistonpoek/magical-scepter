@@ -11,6 +11,6 @@
       }
     }
   ],
-  "spell_attack": "magicalscepter:blaze_small_fireball",
+  "spell_attack": "magicalscepter:blaze_fire_charges",
   "spell_protect": "magicalscepter:blaze_fire_resistance"
 }

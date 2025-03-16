@@ -33,7 +33,7 @@
               "power": 1.0
             }
           ],
-          "entity": "minecraft:small_fireball"
+          "entity": "magicalscepter:blaze_fire_charge"
         }
       ],
       "transformers": [
@@ -76,6 +76,6 @@
   ],
   "cooldown": 40,
   "description": {
-    "translate": "spell.magicalscepter.small_fireballs"
+    "translate": "spell.magicalscepter.fire_charges"
   }
 }

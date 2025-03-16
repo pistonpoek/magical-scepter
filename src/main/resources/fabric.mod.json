@@ -3,7 +3,7 @@
 	"id": "magicalscepter",
 	"version": "${version}",
 	"name": "Magical Scepter",
-	"description": "Adds a spell casting weapon that is wielded by an illager residing in an old taiga hut.",
+	"description": "Adds a spell casting weapon that is wielded by an illager residing in an old taiga cabin.",
 	"authors": [
 		"pistonpoek"
 	],
