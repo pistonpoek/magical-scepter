@@ -3,3 +3,33 @@ title: Wither Scepter
 id: magicalscepter:wither
 icon: magicalscepter:wither_scepter
 ---
+
+Casting a spell with the scepter costs 5 [experience](https://minecraft.wiki/w/Experience) points.
+
+## Infusion
+The wither scepter can be obtained by taking damage from a [wither](https://minecraft.wiki/w/Wither) to infuse a held [magical sceper](../items/magical_scepter).
+
+### Attack - [Wither Skull](../spells/spells#wither_skull)
+Shoot a [wither skull](https://minecraft.wiki/w/Wither#Wither_Skull).
+
+### Protect - [Repulsion](../spells/spells#repulsion)
+Get [repulsion](../effects/repulsion) for 10 to 12.5 seconds.
+
+```json
+{
+  "color": 7561558,
+  "experience_cost": 5,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:wither"
+        }
+      }
+    }
+  ],
+  "spell_attack": "magicalscepter:wither_skull",
+  "spell_protect": "magicalscepter:wither_repulsion"
+}
+```

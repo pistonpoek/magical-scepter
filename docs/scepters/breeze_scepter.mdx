@@ -3,3 +3,33 @@ title: Breeze Scepter
 id: magicalscepter:breeze
 icon: magicalscepter:breeze_scepter
 ---
+
+Casting a spell with the scepter costs 2 [experience](https://minecraft.wiki/w/Experience) points.
+
+## Infusion
+The breeze scepter can be obtained by taking damage from a [breeze](https://minecraft.wiki/w/Breeze) to infuse a held [magical sceper](../items/magical_scepter).
+
+### Attack - [Wind Charge](../spells/spells#wind_charge)
+Shoot a [wind charge](https://minecraft.wiki/w/Wind_Charge).
+
+### Protect - [Breeze Jump](../spells/spells#breeze_jump)
+Make a high jump from on the ground or get [slow falling](https://minecraft.wiki/w/Slow_Falling) for 0.8 to 1.2 seconds.
+
+```json
+{
+  "color": 12438015,
+  "experience_cost": 2,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:breeze"
+        }
+      }
+    }
+  ],
+  "spell_attack": "magicalscepter:breeze_wind_charge",
+  "spell_protect": "magicalscepter:breeze_jump"
+}
+```

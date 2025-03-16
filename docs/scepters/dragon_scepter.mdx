@@ -3,3 +3,33 @@ title: Dragon Scepter
 id: magicalscepter:dragon
 icon: magicalscepter:dragon_scepter
 ---
+
+Casting a spell with the scepter costs 8 [experience](https://minecraft.wiki/w/Experience) points.
+
+## Infusion
+The dragon scepter can be obtained by taking damage from a [ender dragon](https://minecraft.wiki/w/Ender_Dragon) to infuse a held [magical sceper](../items/magical_scepter).
+
+### Attack - [Dragon Fireball](../spells/spells#dragon_fireball)
+Shoot  a [dragon fireball](https://minecraft.wiki/w/Ender_Dragon#Dragon_Fireball).
+
+### Protect - [Dragon Growl](../spells/spells#dragon_growl)
+Spray damaging dragon breath 4 times nearby on the ground seperated by 4 ticks.
+
+```json
+{
+  "color": 12067829,
+  "experience_cost": 8,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:ender_dragon"
+        }
+      }
+    }
+  ],
+  "spell_attack": "magicalscepter:dragon_fireball",
+  "spell_protect": "magicalscepter:dragon_growl"
+}
+```
