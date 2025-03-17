@@ -1,2 +1,44 @@
-# Magical Scepter
- Fabric Minecraft mod that adds a magical scepter
+
+The [magical scepter][magical-scepter] is a spell casting weapon central to this Minecraft mod.
+To play with these features visit the mod page on [modrinth][modrinth].
+
+## [Download][download]
+
+The mod contains 10 [scepters][scepters] that each have 2 [spells][spells] to cast.
+The scepter variants are based on vanilla monsters as they can be obtained by
+infusing the [magical scepter][magical-scepter] with the attack of the monster.
+
+## Discover
+Obtaining magic is as simple as exploring the world.
+A [cabin structure][old-taiga-cabin] can be found in the old taiga biomes
+and contains loot to obtain the [magical scepter][magical-scepter].
+
+![Image of the Refractor illager wandering outside of a Old Taiga Cabin.](https://cdn.modrinth.com/data/cached_images/8751612aaf5a1b4ffb132e992350de027d4bbb3c.png "Wandering Refractor Illager")
+
+At night the [refractor][refractor] illager appears to explore the world as it leaves it residence of the [old taiga cabin][old-taiga-cabin].
+Beware of the [refractor][refractor] as it wields the [magical scepter][magical-scepter] to protect itself.
+
+## Develop
+
+Creating your own magic features is as easy as creating a [data pack][data-pack].
+The [scepter definition][scepter-definition] and [spell definition][spell-definition]
+clarify how to write or modify data to integrate your ideas directly into the game.
+
+## Donate
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/pistonpoek)
+
+[magical-scepter]: https://moddedmc.wiki/en/project/magical-scepter/docs/items/magical_scepter "Magical Scepter"
+[wiki]: https://moddedmc.wiki/en/project/magical-scepter/docs "Magical Scepter Wiki"
+[modrinth]: https://modrinth.com/mod/magical-scepter "Magical Scepter Modrinth"
+[download]: https://modrinth.com/mod/magical-scepter#download "Magical Scepter Download"
+
+[scepters]: https://moddedmc.wiki/en/project/magical-scepter/docs/scepters/scepters "Scepters"
+[spells]: https://moddedmc.wiki/en/project/magical-scepter/docs/spells/spells "Spells"
+
+[old-taiga-cabin]: https://moddedmc.wiki/en/project/magical-scepter/docs/structures/old_taiga_cabin "Old Taiga Cabin"
+[refractor]: https://moddedmc.wiki/en/project/magical-scepter/docs/entities/refractor "Refractor"
+
+[data-pack]: https://minecraft.wiki/w/Tutorial:Creating_a_data_pack "Create Data Pack"
+[scepter-definition]: https://moddedmc.wiki/en/project/magical-scepter/docs/scepters/scepter_definition "Scepter Definition"
+[spell-definition]: https://moddedmc.wiki/en/project/magical-scepter/docs/spells/spell_definition "Spell Definition"
