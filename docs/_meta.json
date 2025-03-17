@@ -1,0 +1,26 @@
+{
+    "effects": {
+        "name": "Effects",
+        "icon": "FlaskRound"
+    },
+    "entities": {
+        "name": "Entities",
+        "icon": "PersonStanding"
+    },
+    "items": {
+        "name": "Items",
+        "icon": "Pickaxe"
+    },
+    "scepters": {
+        "name": "Scepters",
+        "icon": "Wand"
+    },
+    "spells": {
+        "name": "Spells",
+        "icon": "Sparkles"
+    },
+    "structures": {
+        "name": "Structures",
+        "icon": "TentTree"
+    }
+}

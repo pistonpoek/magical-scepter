@@ -1,0 +1,35 @@
+---
+title: Shulker Scepter
+id: magicalscepter:shulker
+icon: magicalscepter:shulker_scepter
+---
+
+Casting a spell with the scepter costs 3 [experience](https://minecraft.wiki/w/Experience) points.
+
+## Infusion
+The shulker scepter can be obtained by taking damage from a [shulker](https://minecraft.wiki/w/Shulker) to infuse a held [magical sceper](../items/magical_scepter).
+
+### Attack - [Shulker Bullet](../spells/spells#shulker_bullet)
+Shoot a [shulker bullet](https://minecraft.wiki/w/Shulker_Bullet) at the facing target.
+
+### Protect - [Teleport](../spells/spells#teleport)
+Teleport to a random 'safe' place in a 8x4x8 area around the caster.
+
+```json
+{
+  "color": 13565951,
+  "experience_cost": 3,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:shulker"
+        }
+      }
+    }
+  ],
+  "spell_attack": "magicalscepter:shulker_bullet",
+  "spell_protect": "magicalscepter:shulker_teleport"
+}
+```

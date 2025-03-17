@@ -1,0 +1,68 @@
+---
+title: Spell Definition
+---
+
+Spells are stored as JSON files within a data pack in the path `data/<namespace>/magicalscepter/spell`.
+
+- [`{}`][object]: Root object.
+    - [`[]`][array][`{}`][object] **casts**: Cast components.
+        - [`[]`][array][`{}`][object] **effects**: [Effect](#effect) components - Controls the effect of the spell.
+            - [`""`][string] **type**: Effect type specified by [ID][id].
+            - `+` Additional fields based on effect type.
+        - [`[]`][array][`{}`][object] **transformers**: Transformer components - Controls the context of the spell.
+            - [`""`][string] **type**: [Transformer](#transformer) type specified by [ID][id].
+            - `+` Additional fields based on transformer type.
+    - [`I`][number] **cooldown**: Non negative integer - Duration of casting cooldown in ticks afterthe spell is cast.
+    - [`@`][text] **description**: Text component - Tooltip description for the spell.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "casts": [
+      {
+        "effects": [
+          {
+            "type": "magicalscepter:play_sound",
+            ...
+          }
+        ]
+      },
+      {
+        "effects": [
+          {
+            "type": "magicalscepter:summon_entity",
+            ...
+          }
+        ],
+        "transformers": [
+          {
+            "type": "magicalscepter:move",
+            ...
+          }
+        ]
+      }
+    ],
+    "cooldown": 100,
+    "description": {
+      "translate": "spell.magicalscepter.dragon_fireball"
+    }
+  }
+  ```
+</details>
+
+## <span id="effect">Effect</span>
+
+...
+
+## <span id="transformer">Transformer</span>
+
+...
+
+[string]: https://minecraft.wiki/w/JSON#String "JSON String"
+[number]: https://minecraft.wiki/w/JSON#Number "JSON Number"
+[object]: https://minecraft.wiki/w/JSON#Object "JSON Object"
+[array]: https://minecraft.wiki/w/JSON#Array "JSON Array"
+[boolean]: https://minecraft.wiki/w/JSON#Boolean "JSON Boolean"
+[text]: https://minecraft.wiki/w/Text_component_format "Text Component"
+[id]: https://minecraft.wiki/w/Resource_location "Identifier"

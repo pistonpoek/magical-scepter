@@ -1,0 +1,38 @@
+---
+title: Evoker Scepter
+id: magicalscepter:evoker
+icon: magicalscepter:evoker_scepter
+---
+
+Casting a spell with the scepter costs 4 [experience](https://minecraft.wiki/w/Experience) points.
+
+## Infusion
+The evoker scepter can be obtained by taking damage from a [evoker](https://minecraft.wiki/w/Evoker) to infuse a held [magical sceper](../items/magical_scepter).
+
+### Attack - [Evoker Fang Line](../spells/spells#evoker_fang_line)
+Summon a line of 16 [evoker fangs](https://minecraft.wiki/w/Evoker#Evoker_fangs).
+
+### Protect - [Evoker Fang Circle](../spells/spells#evoker_fang_circle)
+Summon 2 circles of 5 and 8 [evoker fangs](https://minecraft.wiki/w/Evoker#Evoker_fangs) respectively.
+
+```json
+{
+  "color": 9804699,
+  "experience_cost": 4,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "direct_entity": {
+          "type": "minecraft:evoker_fangs"
+        },
+        "source_entity": {
+          "type": "minecraft:evoker"
+        }
+      }
+    }
+  ],
+  "spell_attack": "magicalscepter:evoker_fang_line",
+  "spell_protect": "magicalscepter:evoker_fang_circle"
+}
+```

@@ -1,0 +1,35 @@
+---
+title: Guardian Scepter
+id: magicalscepter:guardian
+icon: magicalscepter:guardian_scepter
+---
+
+Casting a spell with the scepter costs 3 [experience](https://minecraft.wiki/w/Experience) points.
+
+## Infusion
+The guardian scepter can be obtained by taking damage from a [elder guardian](https://minecraft.wiki/w/Elder_Guardian) to infuse a held [magical sceper](../items/magical_scepter).
+
+### Attack - [Guardian Bolt](../spells/spells#guardian_bolt)
+Shoot a [guardian bolt](../entities/guardian_bolt).
+
+### Protect - [Haste](../spells/spells#haste)
+Get [haste](https://minecraft.wiki/w/Haste) II for 20 to 25 seconds.
+
+```json
+{
+  "color": 5209484,
+  "experience_cost": 3,
+  "infusion": [
+    {
+      "condition": "minecraft:damage_source_properties",
+      "predicate": {
+        "source_entity": {
+          "type": "minecraft:elder_guardian"
+        }
+      }
+    }
+  ],
+  "spell_attack": "magicalscepter:guardian_bolt",
+  "spell_protect": "magicalscepter:guardian_haste"
+}
+```
