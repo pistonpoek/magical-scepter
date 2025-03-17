@@ -16,6 +16,7 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("play_sound"), PlaySoundSpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("spawn_particles"), SpawnParticleSpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("apply_mob_effect"), ApplyMobEffectSpellEffect.MAP_CODEC);
+        Registry.register(registry, ModIdentifier.of("remove_mob_effect"), RemoveMobEffectSpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("summon_entity"), SummonEntitySpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("teleport"), TeleportSpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("damage"), DamageSpellEffect.MAP_CODEC);

@@ -474,7 +474,11 @@ public class Spells {
                             ConstantFloatProvider.create(20.0F),
                             ConstantFloatProvider.create(25.0F),
                             ConstantFloatProvider.create(1.0F),
-                            ConstantFloatProvider.create(1.0F)))
+                            ConstantFloatProvider.create(1.0F))
+                    )
+                    .addEffect(new RemoveMobEffectSpellEffect(
+                            RegistryEntryList.of(StatusEffects.MINING_FATIGUE)
+                    ))
             )
         );
 
