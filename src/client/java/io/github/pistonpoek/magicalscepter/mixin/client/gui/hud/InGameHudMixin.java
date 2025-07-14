@@ -1,6 +1,8 @@
 package io.github.pistonpoek.magicalscepter.mixin.client.gui.hud;
 
+import io.github.pistonpoek.magicalscepter.gui.hud.ScepterExperienceBarOverlay;
 import io.github.pistonpoek.magicalscepter.gui.hud.SpellCostIndicationBar;
+import io.github.pistonpoek.magicalscepter.gui.hud.SpellExperienceBarOverlay;
 import io.github.pistonpoek.magicalscepter.gui.hud.SpellUseIndicationBar;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -10,6 +12,7 @@ import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
+import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,30 +46,18 @@ public abstract class InGameHudMixin {
         assert this.client.player != null;
         ClientPlayerEntity player = this.client.player;
 
+        // TODO what if both scepter and spell bar are rendered?
+
+        ItemStack mainHandStack = player.getMainHandStack();
+        ItemStack offHandStack = player.getOffHandStack();
+
         // Overlay rendering is only needed when the player is holding a magical scepter.
-        if (!player.isHolding(ScepterHelper.IS_MAGICAL_SCEPTER)) {
-            return;
+        if (player.isHolding(ScepterHelper.IS_MAGICAL_SCEPTER)) {
+            SpellExperienceBarOverlay.render(context, mainHandStack, player, x);
         }
 
-        // Only when the scepter has spells to cast do we render the overlay.
-        Optional<ScepterContentsComponent> optionalScepterContents =
-                ScepterHelper.getScepterContentsComponent(player);
-        if (optionalScepterContents.isEmpty()) {
-            return;
-        }
-        ScepterContentsComponent scepterContents = optionalScepterContents.get();
-        if (!scepterContents.hasSpell()) {
-            return;
-        }
-
-        // Compute the y position of the experience bar.
-        int y = context.getScaledWindowHeight() - 32 + 3;
-
-        // Check if the player has sufficient experience to cast a spell to determine what indication to render.
-        if (scepterContents.hasEnoughExperience(player)) {
-            SpellUseIndicationBar.render(context, player, scepterContents, x, y);
-        } else {
-            SpellCostIndicationBar.render(context, player, scepterContents, x, y);
+        if (player.isHolding(ScepterHelper.IS_ARCANE_SCEPTER)) {
+            ScepterExperienceBarOverlay.render(context, mainHandStack, player, x);
         }
     }
 }

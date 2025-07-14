@@ -4,6 +4,7 @@ import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -72,8 +73,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
             }
 
             int experienceCost = scepterContent.getExperienceCost();
-            user.addExperience(-experienceCost);
-            user.addScore(experienceCost); // Compensating for lost score in adding experience cost.
+            PlayerExperience.addOnlyExperience(user, -experienceCost);
         }
         user.setCurrentHand(hand);
         user.getItemCooldownManager().set(itemStack,

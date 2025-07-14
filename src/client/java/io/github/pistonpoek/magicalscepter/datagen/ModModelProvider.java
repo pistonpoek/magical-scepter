@@ -40,6 +40,7 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.SCEPTER, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.ARCANE_SCEPTER, Models.HANDHELD);
 
         if (itemModelGenerator instanceof ItemModelGeneratorMixin scepterItemModelGenerator) {
             registerScepter(scepterItemModelGenerator, ModItems.MAGICAL_SCEPTER, HANDHELD_SCEPTER);

@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.scepter;
 
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
+import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
@@ -19,6 +20,17 @@ public class ScepterHelper {
      */
     public static final Predicate<ItemStack> IS_SCEPTER = itemStack ->
             itemStack.isOf(ModItems.SCEPTER);
+    /**
+     * Predicate to check if an item stack is an arcane scepter.
+     */
+    public static final Predicate<ItemStack> IS_ARCANE_SCEPTER = itemStack ->
+            itemStack.isOf(ModItems.ARCANE_SCEPTER);
+    /**
+     * Predicate to check if an item stack is a filled arcane scepter.
+     */
+    public static final Predicate<ItemStack> IS_FILLED_ARCANE_SCEPTER = itemStack ->
+            IS_ARCANE_SCEPTER.test(itemStack) && itemStack.getOrDefault(
+                    ModDataComponentTypes.EXPERIENCE, 0) >= ArcaneScepterItem.EXPERIENCE_STEP;
     /**
      * Predicate to check if an item stack is a magical scepter.
      */

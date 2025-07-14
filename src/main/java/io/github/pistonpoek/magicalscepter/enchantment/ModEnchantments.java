@@ -21,15 +21,15 @@ import java.util.List;
  * Mod specific class that provides similar functionality to respective vanilla class.
  * @see net.minecraft.enchantment.Enchantments
  */
-public class ModEnchantments {
-    public static final List<RegistryKey<Enchantment>> ENCHANTMENT_KEYS = new ArrayList<>();
-    public static final RegistryKey<Enchantment> INSIGHT_KEY = of("insight");
+public interface ModEnchantments {
+    List<RegistryKey<Enchantment>> ENCHANTMENT_KEYS = new ArrayList<>();
+    RegistryKey<Enchantment> INSIGHT_KEY = of("insight");
 
     private static RegistryKey<Enchantment> of(String identifier) {
         return RegistryKey.of(RegistryKeys.ENCHANTMENT, ModIdentifier.of(identifier));
     }
 
-    public static void bootstrap(Registerable<Enchantment> registry) {
+    static void bootstrap(Registerable<Enchantment> registry) {
         RegistryEntryLookup<Item> itemLookup = registry.getRegistryLookup(RegistryKeys.ITEM);
 
         register(registry, INSIGHT_KEY, new Enchantment.Builder(
@@ -45,6 +45,9 @@ public class ModEnchantments {
             ).addEffect(
                 EnchantmentEffectComponentTypes.MOB_EXPERIENCE,
                 new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.3F, 0.35F))
+            ).addNonListEffect(
+                ModEnchantmentEffectComponentTypes.EXPERIENCE_STEP,
+                new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.lookup(List.of(2.0F, 4.0F, 8.0F), EnchantmentLevelBasedValue.constant(8.0F)))
             )
         );
     }

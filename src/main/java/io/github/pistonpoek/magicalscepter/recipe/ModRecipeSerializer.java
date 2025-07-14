@@ -2,6 +2,7 @@ package io.github.pistonpoek.magicalscepter.recipe;
 
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
@@ -11,6 +12,8 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
  * @see net.minecraft.recipe.RecipeSerializer
  */
 public interface ModRecipeSerializer {
+    RecipeSerializer<ExperienceBottleRecipe> EXPERIENCE_BOTTLE = register("crafting_experience_bottle",
+            new SpecialCraftingRecipe.SpecialRecipeSerializer<>(ExperienceBottleRecipe::new));
     RecipeSerializer<MagicalScepterRecipe> MAGICAL_SCEPTER = register("crafting_magical_scepter",
             new MagicalScepterRecipeSerializer());
 

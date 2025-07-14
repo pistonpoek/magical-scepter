@@ -3,6 +3,7 @@
   "effect.magicalscepter.stability" : "Stability",
   "enchantment.magicalscepter.insight": "Insight",
   "entity.magicalscepter.refractor" : "Refractor",
+  "item.magicalscepter.arcane_scepter": "Arcane Scepter",
   "item.magicalscepter.scepter" : "Scepter",
   "item.magicalscepter.magical_scepter": "Magical Scepter",
   "item.magicalscepter.refractor_spawn_egg" : "Refractor Spawn Egg",
@@ -27,6 +28,7 @@
   "magicalscepter.item.magicalscepter.magical_scepter.shulker" : "Shulker Scepter",
   "magicalscepter.item.magicalscepter.magical_scepter.warden" : "Warden Scepter",
   "magicalscepter.item.magicalscepter.magical_scepter.wither" : "Wither Scepter",
+  "magicalscepter.scepter.experience": "Experience: %s",
   "magicalscepter.scepter.on_cast_attack" : "On Attack:",
   "magicalscepter.scepter.on_cast_protect" : "On Protect:",
   "magicalscepter.scepter.no_spells": "No Spells",
@@ -55,5 +57,6 @@
   "subtitles.magicalscepter.item.magical_scepter.cast_protect_spell": "Magical Scepter shields",
   "subtitles.magicalscepter.item.magical_scepter.infuse": "Magical Scepter infuses",
   "tag.item.magicalscepter.refractor_preferred_weapons": "Refractor preferred weapons",
+  "tag.item.magicalscepter.scepter": "Scepters",
   "tag.worldgen.biome.magicalscepter.has_structure.old_taiga_cabin": "Has Structure Old Taiga Cabin"
 }
