@@ -16,12 +16,12 @@ public class ScepterExperienceBarOverlay {
      * @param player Player to reference the experience data for.
      * @param item Item to get scepter contents from for experience values.
      * @param x Horizontal position of the experience bar on the screen.
+     * @param y Vertical position of the experience bar on the screen.
      *
-     * @return Truth assignment, if overlay was added.
+     * @return Truth assignment, if overlay was added excluding cost indication.
      */
-    public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x) {
-        // Compute the y position of the experience bar.
-        int y = context.getScaledWindowHeight() - 32 + 3;
+    public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x, int y) {
+        if (player.getItemCooldownManager().isCoolingDown(item)) return false;
 
         int playerExperience = PlayerExperience.getTotalExperience(player);
         int scepterExperience = item.getOrDefault(ModDataComponentTypes.EXPERIENCE, 0);
@@ -34,6 +34,7 @@ public class ScepterExperienceBarOverlay {
             ScepterGainIndicationBar.render(context, player, step, x, y);
         } else {
             ScepterCostIndicationBar.render(context, player, step, x, y);
+            return false;
         }
         return true;
     }

@@ -1,9 +1,6 @@
 package io.github.pistonpoek.magicalscepter.mixin.client.gui.hud;
 
-import io.github.pistonpoek.magicalscepter.gui.hud.ScepterExperienceBarOverlay;
-import io.github.pistonpoek.magicalscepter.gui.hud.SpellCostIndicationBar;
-import io.github.pistonpoek.magicalscepter.gui.hud.SpellExperienceBarOverlay;
-import io.github.pistonpoek.magicalscepter.gui.hud.SpellUseIndicationBar;
+import io.github.pistonpoek.magicalscepter.gui.hud.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -46,18 +43,10 @@ public abstract class InGameHudMixin {
         assert this.client.player != null;
         ClientPlayerEntity player = this.client.player;
 
-        // TODO what if both scepter and spell bar are rendered?
-
         ItemStack mainHandStack = player.getMainHandStack();
+        if (ExperienceBarOverlay.render(context, mainHandStack, player, x)) return;
+
         ItemStack offHandStack = player.getOffHandStack();
-
-        // Overlay rendering is only needed when the player is holding a magical scepter.
-        if (player.isHolding(ScepterHelper.IS_MAGICAL_SCEPTER)) {
-            SpellExperienceBarOverlay.render(context, mainHandStack, player, x);
-        }
-
-        if (player.isHolding(ScepterHelper.IS_ARCANE_SCEPTER)) {
-            ScepterExperienceBarOverlay.render(context, mainHandStack, player, x);
-        }
+        ExperienceBarOverlay.render(context, offHandStack, player, x);
     }
 }

@@ -15,10 +15,13 @@ public class SpellExperienceBarOverlay {
      * @param player Player to reference the experience data for.
      * @param item Item to get scepter contents from for experience values.
      * @param x Horizontal position of the experience bar on the screen.
+     * @param y Vertical position of the experience bar on the screen.
      *
-     * @return Truth assignment, if overlay was added.
+     * @return Truth assignment, if overlay was added excluding cost indication.
      */
-    public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x) {
+    public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x, int y) {
+        if (player.getItemCooldownManager().isCoolingDown(item)) return false;
+
         // Only when the scepter has spells to cast do we render the overlay.
         Optional<ScepterContentsComponent> optionalScepterContents = ScepterContentsComponent.get(item);
 
@@ -30,14 +33,12 @@ public class SpellExperienceBarOverlay {
             return false;
         }
 
-        // Compute the y position of the experience bar.
-        int y = context.getScaledWindowHeight() - 32 + 3;
-
         // Check if the player has sufficient experience to cast a spell to determine what indication to render.
         if (scepterContents.hasEnoughExperience(player)) {
             SpellUseIndicationBar.render(context, player, scepterContents, x, y);
         } else {
             SpellCostIndicationBar.render(context, player, scepterContents, x, y);
+            return false;
         }
         return true;
     }
