@@ -70,34 +70,6 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean isIgnoredInRecipeBook() {
-        return false;
-    }
-
-    @Override
-    public IngredientPlacement getIngredientPlacement() {
-        DefaultedList<Ingredient> ingredients = DefaultedList.of();
-        // TODO Arcane Scepter ingredient should ignore durability.
-        ingredients.add(Ingredient.ofItems(ModItems.ARCANE_SCEPTER));
-        ingredients.add(Ingredient.ofItems(Items.GLASS_BOTTLE));
-        return IngredientPlacement.forShapeless(ingredients);
-    }
-
-    @Override
-    public List<RecipeDisplay> getDisplays() {
-        ItemStack filledArcaneScepter = ModItems.ARCANE_SCEPTER.getDefaultStack();
-        filledArcaneScepter.set(ModDataComponentTypes.EXPERIENCE, ArcaneScepterItem.EXPERIENCE_STEP);
-        return List.of(
-                new ShapelessCraftingRecipeDisplay(
-                        List.of(new SlotDisplay.StackSlotDisplay(filledArcaneScepter),
-                                Ingredient.ofItem(Items.GLASS_BOTTLE).toDisplay()),
-                        new SlotDisplay.StackSlotDisplay(Items.EXPERIENCE_BOTTLE.getDefaultStack()),
-                        new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
-                )
-        );
-    }
-
-    @Override
     public RecipeSerializer<ExperienceBottleRecipe> getSerializer() {
         return ModRecipeSerializer.EXPERIENCE_BOTTLE;
     }

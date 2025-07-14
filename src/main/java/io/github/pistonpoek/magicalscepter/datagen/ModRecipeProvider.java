@@ -9,10 +9,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancement.AdvancementRequirements;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
-import net.minecraft.data.recipe.CraftingRecipeJsonBuilder;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.data.recipe.TransmuteRecipeJsonBuilder;
+import net.minecraft.data.recipe.*;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
@@ -74,22 +71,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .criterion("has_scepter", this.conditionsFromItem(ModItems.SCEPTER))
                         .offerTo(this.exporter);
 
-
-                Identifier experienceBottleRecipeId = ModIdentifier.of("experience_bottle");
-                RegistryKey<Recipe<?>> experienceBottleRecipeRegistryKey =
-                        RegistryKey.of(RegistryKeys.RECIPE, experienceBottleRecipeId);
-                category = RecipeCategory.TOOLS;
-
-                exporter.accept(experienceBottleRecipeRegistryKey,
-                        new ExperienceBottleRecipe(CraftingRecipeJsonBuilder.toCraftingCategory(category)),
-                        exporter.getAdvancementBuilder()
-                                .criterion("has_arcane_scepter", this.conditionsFromItem(ModItems.ARCANE_SCEPTER))
-                                .criterion("has_the_recipe",
-                                        RecipeUnlockedCriterion.create(experienceBottleRecipeRegistryKey))
-                                .rewards(AdvancementRewards.Builder.recipe(experienceBottleRecipeRegistryKey))
-                                .criteriaMerger(AdvancementRequirements.CriterionMerger.OR)
-                                .build(experienceBottleRecipeId.withPrefixedPath("recipes/" + category.getName() + "/"))
-                );
+                ComplexRecipeJsonBuilder.create(ExperienceBottleRecipe::new).offerTo(exporter,
+                        RegistryKey.of(RegistryKeys.RECIPE, ModIdentifier.of("experience_bottle")));
             }
         };
     }
