@@ -452,7 +452,7 @@ public class Spells {
             )
         );
 
-        register(registry, GUARDIAN_BOLT_KEY, Spell.builder(40,
+        register(registry, GUARDIAN_BOLT_KEY, Spell.builder(30,
                         textOf("guardian_bolt"))
             .addCast(SpellCast.builder()
                     .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())

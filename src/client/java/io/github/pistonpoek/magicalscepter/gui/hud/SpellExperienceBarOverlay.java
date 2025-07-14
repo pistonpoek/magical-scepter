@@ -20,8 +20,6 @@ public class SpellExperienceBarOverlay {
      * @return Truth assignment, if overlay was added excluding cost indication.
      */
     public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x, int y) {
-        if (player.getItemCooldownManager().isCoolingDown(item)) return false;
-
         // Only when the scepter has spells to cast do we render the overlay.
         Optional<ScepterContentsComponent> optionalScepterContents = ScepterContentsComponent.get(item);
 

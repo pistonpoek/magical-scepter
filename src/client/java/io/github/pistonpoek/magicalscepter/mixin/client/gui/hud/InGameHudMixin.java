@@ -44,9 +44,16 @@ public abstract class InGameHudMixin {
         ClientPlayerEntity player = this.client.player;
 
         ItemStack mainHandStack = player.getMainHandStack();
+        ItemStack offHandStack = player.getOffHandStack();
+        boolean mainHandCooldown = player.getItemCooldownManager().isCoolingDown(mainHandStack);
+        boolean offHandCooldown = player.getItemCooldownManager().isCoolingDown(offHandStack);
+
+        if (!offHandCooldown && mainHandCooldown) {
+            if (ExperienceBarOverlay.render(context, offHandStack, player, x)) return;
+        }
+
         if (ExperienceBarOverlay.render(context, mainHandStack, player, x)) return;
 
-        ItemStack offHandStack = player.getOffHandStack();
         ExperienceBarOverlay.render(context, offHandStack, player, x);
     }
 }

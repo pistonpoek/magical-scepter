@@ -21,8 +21,6 @@ public class ScepterExperienceBarOverlay {
      * @return Truth assignment, if overlay was added excluding cost indication.
      */
     public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x, int y) {
-        if (player.getItemCooldownManager().isCoolingDown(item)) return false;
-
         int playerExperience = PlayerExperience.getTotalExperience(player);
         int scepterExperience = item.getOrDefault(ModDataComponentTypes.EXPERIENCE, 0);
         int step = ModEnchantmentHelper.getExperienceStep(item, player, ArcaneScepterItem.EXPERIENCE_STEP);
