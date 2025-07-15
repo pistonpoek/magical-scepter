@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "category": "equipment",
+  "input": "magicalscepter:scepter",
+  "material": "minecraft:lapis_lazuli",
+  "result": "magicalscepter:arcane_scepter"
+}

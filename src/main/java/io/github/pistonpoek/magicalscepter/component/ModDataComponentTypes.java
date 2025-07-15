@@ -1,9 +1,11 @@
 package io.github.pistonpoek.magicalscepter.component;
 
 import net.minecraft.component.ComponentType;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import net.minecraft.util.dynamic.Codecs;
 
 import java.util.function.UnaryOperator;
 
@@ -12,6 +14,11 @@ import java.util.function.UnaryOperator;
  * @see net.minecraft.component.DataComponentTypes
  */
 public class ModDataComponentTypes {
+    public static final ComponentType<Integer> EXPERIENCE = register(
+            "experience", builder ->
+                    builder.codec(Codecs.NON_NEGATIVE_INT)
+                            .packetCodec(PacketCodecs.VAR_INT)
+    );
     public static final ComponentType<ScepterContentsComponent> SCEPTER_CONTENTS = register(
             "scepter_contents", builder ->
                     builder.codec(ScepterContentsComponent.CODEC)

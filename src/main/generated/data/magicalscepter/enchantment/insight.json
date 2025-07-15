@@ -4,6 +4,18 @@
     "translate": "enchantment.magicalscepter.insight"
   },
   "effects": {
+    "minecraft:experience_step": {
+      "type": "minecraft:multiply",
+      "factor": {
+        "type": "minecraft:lookup",
+        "fallback": 8.0,
+        "values": [
+          2.0,
+          4.0,
+          8.0
+        ]
+      }
+    },
     "minecraft:mob_experience": [
       {
         "effect": {

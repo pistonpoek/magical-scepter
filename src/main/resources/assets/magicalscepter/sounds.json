@@ -40,6 +40,18 @@
       "magicalscepter:refractor_hurt3"
     ]
   },
+  "item.arcane_scepter.charges": {
+    "subtitle": "subtitles.magicalscepter.item.arcane_scepter.charges",
+    "sounds": [
+      "magicalscepter:arcane_scepter_charges"
+    ]
+  },
+  "item.arcane_scepter.discharges": {
+    "subtitle": "subtitles.magicalscepter.item.arcane_scepter.discharges",
+    "sounds": [
+      "magicalscepter:arcane_scepter_discharges"
+    ]
+  },
   "item.magical_scepter.cast_attack_spell": {
     "subtitle": "subtitles.magicalscepter.item.magical_scepter.cast_attack_spell",
     "sounds": [

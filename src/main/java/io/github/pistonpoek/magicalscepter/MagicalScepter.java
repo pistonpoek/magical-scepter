@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter;
 
 import io.github.pistonpoek.magicalscepter.command.SpellCommand;
+import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentEffectComponentTypes;
 import io.github.pistonpoek.magicalscepter.particle.ModParticleTypes;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastingManager;
@@ -44,6 +45,7 @@ public class MagicalScepter implements ModInitializer {
 		ModGameEvent.init();
 		ModSoundEvents.init();
 		ModParticleTypes.init();
+		ModEnchantmentEffectComponentTypes.init();
 
 		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastingManager::afterDeath);
 		ServerLivingEntityEvents.ALLOW_DAMAGE.register(ModStatusEffects::allowDamage);

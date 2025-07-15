@@ -31,19 +31,22 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         refractorPreferredWeaponsTagBuilder.add(ModItems.SCEPTER);
         refractorPreferredWeaponsTagBuilder.add(ModItems.MAGICAL_SCEPTER);
 
+        FabricTagBuilder SceptersTagBuilder =
+                getOrCreateTagBuilder(ModItemTags.SCEPTERS);
+        SceptersTagBuilder.add(ModItems.ARCANE_SCEPTER);
+        SceptersTagBuilder.add(ModItems.SCEPTER);
+        SceptersTagBuilder.add(ModItems.MAGICAL_SCEPTER);
+
         FabricTagBuilder ScepterEnchantableTagBuilder =
                 getOrCreateTagBuilder(ModItemTags.SCEPTER_ENCHANTABLE);
-        ScepterEnchantableTagBuilder.add(ModItems.SCEPTER);
-        ScepterEnchantableTagBuilder.add(ModItems.MAGICAL_SCEPTER);
+        ScepterEnchantableTagBuilder.addTag(ModItemTags.SCEPTERS);
 
         FabricTagBuilder DurabilityEnchantableTagBuilder =
                 getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE);
-        DurabilityEnchantableTagBuilder.add(ModItems.SCEPTER);
-        DurabilityEnchantableTagBuilder.add(ModItems.MAGICAL_SCEPTER);
+        DurabilityEnchantableTagBuilder.addTag(ModItemTags.SCEPTERS);
 
         FabricTagBuilder VanishingEnchantableTagBuilder =
                 getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE);
-        VanishingEnchantableTagBuilder.add(ModItems.SCEPTER);
-        VanishingEnchantableTagBuilder.add(ModItems.MAGICAL_SCEPTER);
+        VanishingEnchantableTagBuilder.addTag(ModItemTags.SCEPTERS);
     }
 }

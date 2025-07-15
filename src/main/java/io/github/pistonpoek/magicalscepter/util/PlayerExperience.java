@@ -11,7 +11,7 @@ public class PlayerExperience {
      * @return Number of experience points in the current level the specified player has.
      */
     public static int getExperiencePoints(PlayerEntity player) {
-        return MathHelper.floor(player.experienceProgress * (float)player.getNextLevelExperience());
+        return MathHelper.floor(player.experienceProgress * (float) player.getNextLevelExperience());
     }
 
     /**
@@ -31,5 +31,16 @@ public class PlayerExperience {
             levelPoints = 7 * level + (level - 1) * (level);
         }
         return levelPoints + getExperiencePoints(player);
+    }
+
+    /**
+     * Add experience points to the specified player without modifying their score.
+     *
+     * @param player Player to add experience points to.
+     */
+    public static void addOnlyExperience(PlayerEntity player, int experience) {
+        int amount = Math.max(-getTotalExperience(player), experience);
+        player.addExperience(amount);
+        player.addScore(-amount);
     }
 }

@@ -26,6 +26,8 @@ import java.util.function.Function;
  */
 public class ModItems {
     public static final Item SCEPTER = register("scepter", new Item.Settings().maxCount(1).rarity(Rarity.RARE));
+    public static final Item ARCANE_SCEPTER = register("arcane_scepter", ArcaneScepterItem::new,
+            new Item.Settings().maxDamage(64).rarity(Rarity.RARE));
     public static final Item MAGICAL_SCEPTER = register("magical_scepter", MagicalScepterItem::new,
             new Item.Settings().maxDamage(64).rarity(Rarity.RARE)
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT));
@@ -39,6 +41,7 @@ public class ModItems {
     public static void init() {
         MagicalScepter.LOGGER.info("Registering Mod Items for " + ModIdentifier.MOD_NAME);
 
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(ModItems::addItemsToToolsItemGroup);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(ModItems::addItemsToCombatItemGroup);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(ModItems::addItemsToIngredientsGroup);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(ModItems::addItemsToSpawnEggsGroup);
@@ -56,6 +59,15 @@ public class ModItems {
             scepters.add(ScepterHelper.createMagicalScepter(scepter));
         }
         return scepters;
+    }
+
+    /**
+     * Add tools group items to the specified item group entries.
+     *
+     * @param entries Tools item group entries to add items to.
+     */
+    private static void addItemsToToolsItemGroup(FabricItemGroupEntries entries) {
+        entries.addAfter(Items.FISHING_ROD, ARCANE_SCEPTER);
     }
 
     /**
@@ -79,7 +91,9 @@ public class ModItems {
      * @param entries Ingredients item group entries to add items to.
      */
     private static void addItemsToIngredientsGroup(FabricItemGroupEntries entries) {
-        entries.addAfter(Items.BOWL, SCEPTER);
+        entries.addBefore(Items.BOWL, SCEPTER);
+        entries.addBefore(Items.BOWL, Items.BROWN_MUSHROOM);
+        entries.addBefore(Items.BOWL, Items.RED_MUSHROOM);
     }
 
     /**

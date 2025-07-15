@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_scepter": {
+      "conditions": {
+        "items": [
+          {
+            "items": "magicalscepter:scepter"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "magicalscepter:arcane_scepter"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_scepter"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "magicalscepter:arcane_scepter"
+    ]
+  }
+}

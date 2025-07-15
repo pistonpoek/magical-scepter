@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
+import io.github.pistonpoek.magicalscepter.recipe.ExperienceBottleRecipe;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
@@ -8,9 +9,9 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancement.AdvancementRequirements;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
-import net.minecraft.data.recipe.CraftingRecipeJsonBuilder;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
+import net.minecraft.data.recipe.*;
+import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryKey;
@@ -44,21 +45,34 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         return new RecipeGenerator(registries, exporter) {
             @Override
             public void generate() {
-                Identifier recipeId = ModIdentifier.of("magical_scepter");
-                RegistryKey<Recipe<?>> recipeRegistryKey = RegistryKey.of(RegistryKeys.RECIPE, recipeId);
+                Identifier magicalScepterRecipeId = ModIdentifier.of("magical_scepter");
+                RegistryKey<Recipe<?>> magicalScepterRecipeRegistryKey =
+                        RegistryKey.of(RegistryKeys.RECIPE, magicalScepterRecipeId);
                 RecipeCategory category = RecipeCategory.COMBAT;
 
                 RegistryWrapper<Scepter> scepterRegistry = registries.getOrThrow(ModRegistryKeys.SCEPTER);
                 RegistryEntry<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
 
-                exporter.accept(recipeRegistryKey,
+                exporter.accept(magicalScepterRecipeRegistryKey,
                         new MagicalScepterRecipe(magicalScepter, CraftingRecipeJsonBuilder.toCraftingCategory(category)),
                         exporter.getAdvancementBuilder()
                                 .criterion("has_scepter", this.conditionsFromItem(ModItems.SCEPTER))
-                                .criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeRegistryKey))
-                                .rewards(AdvancementRewards.Builder.recipe(recipeRegistryKey))
+                                .criterion("has_the_recipe",
+                                        RecipeUnlockedCriterion.create(magicalScepterRecipeRegistryKey))
+                                .rewards(AdvancementRewards.Builder.recipe(magicalScepterRecipeRegistryKey))
                                 .criteriaMerger(AdvancementRequirements.CriterionMerger.OR)
-                                .build(recipeId.withPrefixedPath("recipes/" + category.getName() + "/")));
+                                .build(magicalScepterRecipeId.withPrefixedPath("recipes/" + category.getName() + "/")));
+
+
+                TransmuteRecipeJsonBuilder.create(
+                                RecipeCategory.TOOLS, Ingredient.ofItem(ModItems.SCEPTER),
+                                Ingredient.ofItem(Items.LAPIS_LAZULI), ModItems.ARCANE_SCEPTER
+                        )
+                        .criterion("has_scepter", this.conditionsFromItem(ModItems.SCEPTER))
+                        .offerTo(this.exporter);
+
+                ComplexRecipeJsonBuilder.create(ExperienceBottleRecipe::new).offerTo(exporter,
+                        RegistryKey.of(RegistryKeys.RECIPE, ModIdentifier.of("experience_bottle")));
             }
         };
     }
