@@ -2,7 +2,6 @@ package io.github.pistonpoek.magicalscepter.mixin;
 
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import net.minecraft.component.ComponentType;
-import net.minecraft.component.ComponentsAccess;
 import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -50,6 +49,8 @@ public abstract class ItemStackMixin {
             CallbackInfo callbackInfo
     ) {
         this.appendComponentTooltip(ModDataComponentTypes.SCEPTER_CONTENTS, context,
+                TooltipDisplayComponent.DEFAULT, consumer, type);
+        this.appendComponentTooltip(ModDataComponentTypes.SCEPTER_EXPERIENCE, context,
                 TooltipDisplayComponent.DEFAULT, consumer, type);
     }
 }
