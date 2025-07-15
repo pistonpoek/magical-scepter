@@ -7,23 +7,21 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Uuids;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-// TODO fix saving and test/create upgrading data from previous version.
 public class SpellCastingManager extends PersistentState {
     private static final int MAX_CASTER_CASTINGS = Integer.MAX_VALUE;
     private static final String ID = ModIdentifier.key("spell_castings", "_");
     public static final Codec<SpellCastingManager> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                            Codec.unboundedMap(Uuids.CODEC, Codec.unboundedMap(Codec.INT, ScheduledSpellCasting.CODEC))
+                            Codec.unboundedMap(Codec.STRING.xmap(UUID::fromString, UUID::toString),
+                                            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), ScheduledSpellCasting.CODEC))
                                     .fieldOf("scheduled_castings").forGetter(spellCastingManager -> spellCastingManager.scheduledCastings),
                             Codec.INT.fieldOf("start_key").forGetter(spellCastingManager -> spellCastingManager.startKey)
                     )
@@ -120,8 +118,9 @@ public class SpellCastingManager extends PersistentState {
     }
 
     public static PersistentStateType<SpellCastingManager> getPersistentStateType() {
+        // TODO add data fix type to transition from previous version?
         return new PersistentStateType<>(ID,
-                SpellCastingManager::new, CODEC, null); // TODO add data fix type to transition from previous version?
+                SpellCastingManager::new, CODEC, null);
     }
 
     public static boolean clear(@NotNull LivingEntity entity) {
@@ -133,7 +132,7 @@ public class SpellCastingManager extends PersistentState {
     }
 
     /**
-     * TODO ...
+     * Clear the scheduled spell castings after death.
      *
      * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AfterDeath
      */
