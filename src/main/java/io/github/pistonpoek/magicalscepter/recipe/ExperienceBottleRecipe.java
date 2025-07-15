@@ -1,25 +1,18 @@
 package io.github.pistonpoek.magicalscepter.recipe;
 
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
+import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
-import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.IngredientPlacement;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.display.RecipeDisplay;
-import net.minecraft.recipe.display.ShapelessCraftingRecipeDisplay;
-import net.minecraft.recipe.display.SlotDisplay;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
     public ExperienceBottleRecipe(CraftingRecipeCategory category) {
@@ -58,8 +51,8 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
         for (int i = 0; i < remainders.size(); i++) {
             ItemStack itemStack = input.getStackInSlot(i).copy();
             if (ScepterHelper.IS_FILLED_ARCANE_SCEPTER.test(itemStack)) {
-                int experience = itemStack.getOrDefault(ModDataComponentTypes.EXPERIENCE, 0);
-                itemStack.set(ModDataComponentTypes.EXPERIENCE, experience - ArcaneScepterItem.EXPERIENCE_STEP);
+                int experience = ScepterHelper.getExperience(itemStack) - ArcaneScepterItem.EXPERIENCE_STEP;
+                itemStack.set(ModDataComponentTypes.SCEPTER_EXPERIENCE, new ScepterExperienceComponent(experience));
                 remainders.set(i, itemStack);
             } else {
                 remainders.set(i, itemStack.getItem().getRecipeRemainder());

@@ -50,5 +50,6 @@ public abstract class ItemStackMixin {
             @Local Consumer<Text> consumer
     ) {
         this.appendTooltip(ModDataComponentTypes.SCEPTER_CONTENTS, context, consumer, type);
+        this.appendTooltip(ModDataComponentTypes.SCEPTER_EXPERIENCE, context, consumer, type);
     }
 }

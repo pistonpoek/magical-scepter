@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.scepter;
 
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
+import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -29,8 +30,7 @@ public class ScepterHelper {
      * Predicate to check if an item stack is a filled arcane scepter.
      */
     public static final Predicate<ItemStack> IS_FILLED_ARCANE_SCEPTER = itemStack ->
-            IS_ARCANE_SCEPTER.test(itemStack) && itemStack.getOrDefault(
-                    ModDataComponentTypes.EXPERIENCE, 0) >= ArcaneScepterItem.EXPERIENCE_STEP;
+            IS_ARCANE_SCEPTER.test(itemStack) && getExperience(itemStack) >= ArcaneScepterItem.EXPERIENCE_STEP;
     /**
      * Predicate to check if an item stack is a magical scepter.
      */
@@ -77,5 +77,10 @@ public class ScepterHelper {
             return ScepterContentsComponent.get(player.getMainHandStack())
                     .or(() -> ScepterContentsComponent.get(player.getOffHandStack()));
         }
+    }
+
+    public static int getExperience(ItemStack itemStack) {
+        return itemStack.getOrDefault(ModDataComponentTypes.SCEPTER_EXPERIENCE,
+                ScepterExperienceComponent.DEFAULT).experience();
     }
 }

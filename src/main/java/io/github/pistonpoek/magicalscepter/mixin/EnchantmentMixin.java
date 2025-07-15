@@ -17,7 +17,6 @@ public abstract class EnchantmentMixin implements ModEnchantment {
     @Unique
     @Override
     public void magicalscepter$modifyExperienceStep(Random random, int level, MutableFloat experienceStep) {
-        MagicalScepter.LOGGER.info("Modfiying exprience step value: " + experienceStep.getValue());
         this.invokeModifyValue(ModEnchantmentEffectComponentTypes.EXPERIENCE_STEP, random, level, experienceStep);
     }
 

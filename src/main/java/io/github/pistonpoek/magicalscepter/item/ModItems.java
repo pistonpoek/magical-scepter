@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.item;
 
+import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.registry.tag.ScepterTags;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -27,7 +28,8 @@ import java.util.function.Function;
 public class ModItems {
     public static final Item SCEPTER = register("scepter", new Item.Settings().maxCount(1).rarity(Rarity.RARE));
     public static final Item ARCANE_SCEPTER = register("arcane_scepter", ArcaneScepterItem::new,
-            new Item.Settings().maxDamage(64).rarity(Rarity.RARE));
+            new Item.Settings().maxDamage(64).rarity(Rarity.RARE)
+                    .component(ModDataComponentTypes.SCEPTER_EXPERIENCE, ScepterExperienceComponent.DEFAULT));
     public static final Item MAGICAL_SCEPTER = register("magical_scepter", MagicalScepterItem::new,
             new Item.Settings().maxDamage(64).rarity(Rarity.RARE)
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT));
