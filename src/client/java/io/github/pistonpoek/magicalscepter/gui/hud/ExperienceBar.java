@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.gui.hud;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
@@ -32,10 +31,8 @@ public class ExperienceBar {
         if (width <= 0) {
             return;
         }
-        RenderSystem.enableBlend();
         context.drawGuiTexture(RenderLayer::getGuiTextured, texture, WIDTH, HEIGHT,
                 startX, 0, x + startX, y, width, HEIGHT);
-        RenderSystem.disableBlend();
     }
 
     /**

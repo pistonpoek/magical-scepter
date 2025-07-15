@@ -9,7 +9,6 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastingManager;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
@@ -36,7 +35,7 @@ public class SpellCommand {
      * @param registryAccess Entry point to access registries used by the command.
      * @param environment Environment that the command is being registered for.
      *
-     * @see CommandRegistrationCallback
+     * @see net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
      */
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher,
                                 CommandRegistryAccess registryAccess,
@@ -141,7 +140,7 @@ public class SpellCommand {
         } else {
             if (entities.size() == 1) {
                 source.sendFeedback(() -> ModIdentifier.translatable("commands.spell.clear.success.single",
-                        (entities.iterator().next()).getDisplayName()), true);
+                        entities.iterator().next().getDisplayName()), true);
             } else {
                 source.sendFeedback(() -> ModIdentifier.translatable("commands.spell.clear.success.multiple",
                         entities.size()), true);

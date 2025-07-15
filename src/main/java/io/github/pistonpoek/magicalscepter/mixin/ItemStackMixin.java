@@ -1,8 +1,9 @@
 package io.github.pistonpoek.magicalscepter.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import net.minecraft.component.ComponentType;
+import net.minecraft.component.ComponentsAccess;
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,17 +15,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-    @Shadow
-    protected abstract <T extends TooltipAppender> void appendTooltip(
-            ComponentType<T> componentType, Item.TooltipContext context,
-            Consumer<Text> textConsumer, TooltipType type);
+    @Shadow public abstract <T extends TooltipAppender> void appendComponentTooltip(ComponentType<T> componentType,
+                           Item.TooltipContext context, TooltipDisplayComponent displayComponent,
+                           Consumer<Text> textConsumer, TooltipType type);
 
     /**
      * Add the tooltip for scepter contents.
@@ -32,23 +31,25 @@ public abstract class ItemStackMixin {
      * @param context Context to create tooltip with.
      * @param player Player to create tooltip for.
      * @param type Type of tooltip to create.
-     * @param callbackInfoReturnable Mixin callback info returnable.
+     * @param callbackInfo Mixin callback info.
      * @param consumer Local text consumer value to append tooltip to.
      */
     @Inject(
-            method = "getTooltip",
+            method = "appendTooltip",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/item/ItemStack;appendAttributeModifiersTooltip(Ljava/util/function/Consumer;Lnet/minecraft/entity/player/PlayerEntity;)V"
+                    target = "Lnet/minecraft/item/ItemStack;appendAttributeModifiersTooltip(Ljava/util/function/Consumer;Lnet/minecraft/component/type/TooltipDisplayComponent;Lnet/minecraft/entity/player/PlayerEntity;)V"
             )
     )
     private void addScepterContentsTooltip(
             Item.TooltipContext context,
+            TooltipDisplayComponent displayComponent,
             @Nullable PlayerEntity player,
             TooltipType type,
-            CallbackInfoReturnable<List<Text>> callbackInfoReturnable,
-            @Local Consumer<Text> consumer
+            Consumer<Text> consumer,
+            CallbackInfo callbackInfo
     ) {
-        this.appendTooltip(ModDataComponentTypes.SCEPTER_CONTENTS, context, consumer, type);
+        this.appendComponentTooltip(ModDataComponentTypes.SCEPTER_CONTENTS, context,
+                TooltipDisplayComponent.DEFAULT, consumer, type);
     }
 }

@@ -45,7 +45,7 @@ public class ModModelProvider extends FabricModelProvider {
             registerScepter(scepterItemModelGenerator, ModItems.MAGICAL_SCEPTER, HANDHELD_SCEPTER);
         }
 
-        itemModelGenerator.registerSpawnEgg(ModItems.REFRACTOR_SPAWN_EGG, 9804699, 6307420);
+        itemModelGenerator.register(ModItems.REFRACTOR_SPAWN_EGG, Models.GENERATED);
     }
 
     /**

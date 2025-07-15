@@ -30,12 +30,13 @@ public class MixsonEvents {
                 new AllEffectsMixson(effectIdentifier));
     }
 
-    public static void registerMonsterSpawnEntry(RegistryKey<Biome> biome, SpawnGroup group, SpawnSettings.SpawnEntry entry) {
+    public static void registerMonsterSpawnEntry(RegistryKey<Biome> biome, SpawnGroup group,
+                                                 int weight, SpawnSettings.SpawnEntry entry) {
         String biomePath = biome.getValue().getPath();
         registerMixsonEvent("worldgen/biome/" + biomePath,
                 ModIdentifier.identifier(String.join("_", "biome_spawn_entry",
-                                biomePath, entry.type.getUntranslatedName())),
-                new BiomeSpawnEntryMixson(group, entry));
+                                biomePath, entry.type().getUntranslatedName())),
+                new BiomeSpawnEntryMixson(group, weight, entry));
     }
 
     public static void registerMixsonEvent(String resource, String name, MixsonEvent<JsonElement> event) {

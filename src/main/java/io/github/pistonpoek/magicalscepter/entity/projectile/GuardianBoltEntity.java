@@ -86,7 +86,7 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.age = nbt.getInt("Age");
+        this.age = nbt.getInt("Age", 0);
         setAge(this.age);
     }
 
