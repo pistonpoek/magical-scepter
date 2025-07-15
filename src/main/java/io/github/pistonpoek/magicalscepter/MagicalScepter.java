@@ -52,7 +52,8 @@ public class MagicalScepter implements ModInitializer {
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
 		CommandRegistrationCallback.EVENT.register(SpellCommand::register);
 
-		TimerCallbackSerializer.INSTANCE.registerSerializer(new SpellCastingTimerCallback.Serializer());
+		TimerCallbackSerializer.INSTANCE.registerSerializer(SpellCastingTimerCallback.ID,
+				SpellCastingTimerCallback.MAP_CODEC);
 		FabricDefaultAttributeRegistry.register(ModEntityType.REFRACTOR, RefractorEntity.createRefractorAttributes());
 	}
 }
