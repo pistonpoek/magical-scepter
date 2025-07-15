@@ -1,0 +1,73 @@
+---
+title: Arcane Scepter
+id: magicalscepter:arcane_scepter
+icon: magicalscepter:arcane_scepter
+type: item
+---
+
+An arcane scepter is a [spell](../spells/spells) casting weapon that has 9 additional monster variants. 
+Each [scepter](../scepters/scepters) has both a spell that can be cast on attack and a spell that is casted when the item is used.
+
+
+## Obtaining
+
+### Crafting
+
+The arcane scepter can only be obtained by [crafting](https://minecraft.wiki/w/Crafting) a [scepter](scepter) with and a [lapis lazuli](https://minecraft.wiki/w/Lapis_Lazuli).
+
+<CraftingRecipe
+    slots={[
+        'magicalscepter:scepter',
+        'lapis_lazuli',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+    ]}
+    result="magicalscepter:arcane_scepter"
+/>
+
+
+## Usage
+
+### Experience
+
+The arcane scepter can store and release [experience](https://minecraft.wiki/w/Experience) by using it. 
+Each time it is used a base value of 7 experience is transfered from the player into the scepter.
+In case the player does not have enough experience to transfer the scepter can discharge experience to the player.
+The amount transfered when using the scepter is modified by the [insight](./insight) enchantment.
+
+### Durability
+
+Using the scepter costs 1 [durability](https://minecraft.wiki/w/Durability). 
+When the item breaks it will release all stored experience as [orbs](https://minecraft.wiki/w/Experience#Experience_orbs) 
+and be replaced by a [scepter](scepter), which can be crafted back into an arcane scepter. 
+The [scepter](scepter) will keep the enchantments of the broken arcane scepter.
+
+### Crafting Ingredient
+
+The arcane scepter can be used to craft [Botte o' Enchanting](https://minecraft.wiki/w/Bottle_o%27_Enchanting) using 7 experience that is stored.
+
+<CraftingRecipe
+    slots={[
+        'magicalscepter:arcane_scepter',
+        'glass_bottle',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        ''
+    ]}
+    result="experience_bottle"
+/>
+
+
+## Enchantments
+
+[Insight](./insight), [Unbreaking](https://minecraft.wiki/w/Unbreaking), [mending](https://minecraft.wiki/w/Mending) 
+and [curse of vanishing](https://minecraft.wiki/w/Curse_of_Vanishing) are compatible with the magical scepter.
