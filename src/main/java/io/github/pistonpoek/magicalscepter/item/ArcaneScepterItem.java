@@ -3,6 +3,7 @@ package io.github.pistonpoek.magicalscepter.item;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentHelper;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
+import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import net.minecraft.entity.ExperienceOrbEntity;
@@ -34,21 +35,22 @@ public class ArcaneScepterItem extends Item {
 
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        // TODO Should this only be on server?
         ItemStack itemStack = user.getStackInHand(hand);
         int playerExperience = PlayerExperience.getTotalExperience(user);
         int scepterExperience = itemStack.getOrDefault(ModDataComponentTypes.EXPERIENCE, 0);
         int step = ModEnchantmentHelper.getExperienceStep(itemStack, user, EXPERIENCE_STEP);
 
+        boolean collecting = false;
         if (playerExperience >= step) {
-            collectExperience(itemStack, user, step);
-        } else if (scepterExperience >= step) {
-            collectExperience(itemStack, user, -step);
-        } else {
+            collecting = true;
+        } else if (scepterExperience < step) {
             return ActionResult.PASS;
         }
 
-        scepterExperience = itemStack.getOrDefault(ModDataComponentTypes.EXPERIENCE, 0);
+        scepterExperience = collectExperience(itemStack, user, collecting ? step : -step);
+        user.playSound(collecting ?
+                ModSoundEvents.ITEM_ARCANE_SCEPTER_COLLECT_EXPERIENCE :
+                ModSoundEvents.ITEM_ARCANE_SCEPTER_RELEASE_EXPERIENCE);
 
         user.getItemCooldownManager().set(itemStack, user.getAbilities().creativeMode ? 3 : 10);
         user.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -72,10 +74,11 @@ public class ArcaneScepterItem extends Item {
         return ActionResult.SUCCESS.withNewHandStack(replacementStack);
     }
 
-    private void collectExperience(ItemStack itemStack, PlayerEntity player, int amount) {
-        int experience = itemStack.getOrDefault(ModDataComponentTypes.EXPERIENCE, 0);
-        itemStack.set(ModDataComponentTypes.EXPERIENCE, experience + amount);
+    private int collectExperience(ItemStack itemStack, PlayerEntity player, int amount) {
+        int experience = itemStack.getOrDefault(ModDataComponentTypes.EXPERIENCE, 0) + amount;
+        itemStack.set(ModDataComponentTypes.EXPERIENCE, experience);
         PlayerExperience.addOnlyExperience(player, -amount);
+        return experience;
     }
 
     @Override
