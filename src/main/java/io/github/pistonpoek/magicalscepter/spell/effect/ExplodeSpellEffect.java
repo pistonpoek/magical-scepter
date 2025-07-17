@@ -25,28 +25,26 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public record ExplodeSpellEffect(
-        boolean attributeToUser,
+        boolean attributeToCaster,
         Optional<RegistryEntry<DamageType>> damageType,
         Optional<FloatProvider> knockbackMultiplier,
         Optional<RegistryEntryList<Block>> immuneBlocks,
         FloatProvider radius,
         boolean createFire,
         World.ExplosionSourceType blockInteraction,
-        ParticleEffect smallParticle,
-        ParticleEffect largeParticle,
+        ParticleEffect particle,
         RegistryEntry<SoundEvent> sound
 ) implements SpellEffect {
     public static final MapCodec<ExplodeSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            Codec.BOOL.optionalFieldOf("attribute_to_user", false).forGetter(ExplodeSpellEffect::attributeToUser),
+                            Codec.BOOL.optionalFieldOf("attribute_to_caster", false).forGetter(ExplodeSpellEffect::attributeToCaster),
                             DamageType.ENTRY_CODEC.optionalFieldOf("damage_type").forGetter(ExplodeSpellEffect::damageType),
                             FloatProvider.VALUE_CODEC.optionalFieldOf("knockback_multiplier").forGetter(ExplodeSpellEffect::knockbackMultiplier),
                             RegistryCodecs.entryList(RegistryKeys.BLOCK).optionalFieldOf("immune_blocks").forGetter(ExplodeSpellEffect::immuneBlocks),
                             FloatProvider.VALUE_CODEC.fieldOf("radius").forGetter(ExplodeSpellEffect::radius),
                             Codec.BOOL.optionalFieldOf("create_fire", false).forGetter(ExplodeSpellEffect::createFire),
                             World.ExplosionSourceType.CODEC.fieldOf("block_interaction").forGetter(ExplodeSpellEffect::blockInteraction),
-                            ParticleTypes.TYPE_CODEC.fieldOf("small_particle").forGetter(ExplodeSpellEffect::smallParticle),
-                            ParticleTypes.TYPE_CODEC.fieldOf("large_particle").forGetter(ExplodeSpellEffect::largeParticle),
+                            ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(ExplodeSpellEffect::particle),
                             SoundEvent.ENTRY_CODEC.fieldOf("sound").forGetter(ExplodeSpellEffect::sound)
                     )
                     .apply(instance, ExplodeSpellEffect::new)
@@ -57,7 +55,7 @@ public record ExplodeSpellEffect(
         Vec3d vec3d = context.position();
         Random random = context.getRandom();
         context.getWorld().createExplosion(
-                this.attributeToUser ? context.caster() : null,
+                this.attributeToCaster ? context.caster() : null,
                 this.getDamageSource(context.caster(), vec3d),
                 new AdvancedExplosionBehavior(
                         this.blockInteraction != World.ExplosionSourceType.NONE,
@@ -71,15 +69,15 @@ public record ExplodeSpellEffect(
                 Math.max(this.radius.get(random), 0.0F),
                 this.createFire,
                 this.blockInteraction,
-                this.smallParticle,
-                this.largeParticle,
+                this.particle,
+                this.particle,
                 this.sound
         );
     }
 
     @Nullable
     private DamageSource getDamageSource(Entity caster, Vec3d position) {
-        return this.damageType.map(damageTypeRegistryEntry -> this.attributeToUser
+        return this.damageType.map(damageTypeRegistryEntry -> this.attributeToCaster
                 ? new DamageSource(damageTypeRegistryEntry, caster)
                 : new DamageSource(damageTypeRegistryEntry, position)).orElse(null);
     }

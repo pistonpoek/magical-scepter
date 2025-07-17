@@ -8,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.List;
 
-public class AnchorCastTransformer implements CastTransformer {
-    public static final MapCodec<AnchorCastTransformer> MAP_CODEC = MapCodec.unit(AnchorCastTransformer::new);
+public record AnchorCastTransformer() implements CastTransformer {
+    public static final MapCodec<AnchorCastTransformer> MAP_CODEC = MapCodec.unit(new AnchorCastTransformer());
     @Override
     public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
         return List.of(casting.addContext(new ContextSourceList(casting.getContext())));
