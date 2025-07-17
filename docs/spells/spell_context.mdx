@@ -1,0 +1,284 @@
+---
+title: Spell Context
+---
+
+[Spells](spells) are cast with a context that can be modified with [spell transformers](./spell_definition#transformer).
+
+- [`{}`][object]: Root object.
+    - [`{}`][object] **[position](#position)**: Position to apply spell effects at, by default caster position.
+        - [`""`][string] **type**: Position type specified by id.
+        - `+` Additional fields based on position type.
+    - [`{}`][object] **[rotation](#rotation)**: Rotation to apply spell effects with, by default caster facing.
+        - [`""`][string] **type**: Rotation type specified by id.
+        - `+` Additional fields based on rotation type.
+    - [`{}`][object] **[target](#target)**: Living entity to apply spell effects to, by default the caster.
+        - [`""`][string] **type**: Target type specified by id.
+        - `+` Additional fields based on target type.
+
+
+## <span id="position">Position</span>
+
+### <span id="aboslute_position">Absolute</span>
+
+Position based on absolute coordinates.
+
+- [`{}`][object]: Root object.
+    - [`D`][number] **x**: Absolute x coordinate to set.
+    - [`D`][number] **y**: Absolute y coordinate to set.
+    - [`D`][number] **z**: Absolute z coordinate to set.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:absolute",
+    "x": -390.0,
+    "y": 64.0,
+    "z": 220.0
+  }
+  ```
+</details>
+
+### <span id="entity_position">Entity</span>
+
+Position based on context entity position.
+
+- [`{}`][object]: Root object.
+    - [`""`][string] **anchor**: Position anchor, either eyes or feet.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:entity",
+    "anchor": "eyes"
+  }
+  ```
+</details>
+
+### <span id="mixed_position">Mixed</span>
+
+Position based on a mix of positions.
+
+- [`{}`][object]: Root object.
+    - [`{}`][position] **x**: Position to set x coordinate with.
+    - [`{}`][position] **y**: Position to set y coordinate with.
+    - [`{}`][position] **z**: Position to set z coordinate with.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:mixed",
+    "x": {
+      "type": "magicalscepter:relative",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 1.0
+    },
+    "y": {
+      "type": "magicalscepter:entity",
+      "anchor": "eyes"
+    },
+    "z": {
+      "type": "magicalscepter:relative",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 1.0
+    }
+  }
+  ```
+</details>
+
+### <span id="random_position">Random</span>
+
+Position based on random relative coordinates.
+
+- [`{}`][object]: Root object.
+    - [`D`][number] **dx**: Delta x coordinate to randomly set.
+    - [`D`][number] **dy**: Delta y coordinate to randomly set.
+    - [`D`][number] **dz**: Delta z coordinate to randomly set.
+    - [`{}`][position] **position**: Optional position to use.
+    - [`{}`][rotation] **rotation**: Optional rotation to use.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:random",
+    "x": 4.0,
+    "y": 4.0,
+    "z": 4.0
+  }
+  ```
+</details>
+
+### <span id="relative_position">Relative</span>
+
+Position based on relative coordinates.
+
+- [`{}`][object]: Root object.
+    - [`D`][number] **x**: Relative x coordinate to set.
+    - [`D`][number] **y**: Relative y coordinate to set.
+    - [`D`][number] **z**: Relative z coordinate to set.
+    - [`{}`][position] **position**: Optional position to use.
+    - [`{}`][rotation] **rotation**: Optional rotation to use.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:relative",
+    "x": 0.0,
+    "y": 0.0,
+    "z": 20.0
+  }
+  ```
+</details>
+
+
+## <span id="rotation">Rotation</span>
+
+### <span id="aboslute_rotation">Absolute</span>
+
+Rotation based on absolute angles.
+
+- [`{}`][object]: Root object.
+    - [`F`][number] **pitch**: Absolute pitch angle to set, default is 0.
+    - [`F`][number] **yaw**: Absolute yaw angle to set, default is 0.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:absolute",
+    "yaw": 180,
+    "pitch": 45,
+  }
+  ```
+</details>
+
+### <span id="entity_rotation">Entity</span>
+
+Rotation based on entity rotation.
+
+- [`{}`][object]: Root object.
+    - [`F`][number] **pitch**: Relative pitch angle to add, default is 0.
+    - [`F`][number] **yaw**: Relative yaw angle to add, default is 0.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:entity"
+  }
+  ```
+</details>
+
+### <span id="facing_rotation">facing</span>
+
+Rotation to face a position.
+
+- [`{}`][object]: Root object.
+    - [`{}`][position] **position**: Position to rotate towards.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:facing",
+    "position": {
+      "type": "magicalscepter:entity"
+    }
+  }
+  ```
+</details>
+
+### <span id="mixed_rotation">Mixed</span>
+
+Rotation based on mixed angles.
+
+- [`{}`][object]: Root object.
+    - [`{}`][rotation] **pitch**: Rotation to set pitch angle with, default is keep current angle.
+    - [`{}`][rotation] **yaw**: Rotation to set yaw angle with, default is keep current angle.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:mixed",
+    "pitch": {
+      "type": "magicalscepter:entity"
+    }
+  }
+  ```
+</details>
+
+### <span id="random_rotation">Random</span>
+
+Rotation based on random angles.
+
+- [`{}`][object]: Root object.
+    - [`F`][number] **pitch**: Delta pitch angle to randomly set, default is 180.
+    - [`F`][number] **yaw**: Delta yaw angle to randomly set. default is 360.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:random",
+    "yaw": 30,
+    "pitch": 10,
+  }
+  ```
+</details>
+
+### <span id="relative_rotation">Relative</span>
+
+Rotation based on relative angles.
+
+- [`{}`][object]: Root object.
+    - [`F`][number] **pitch**: Relative pitch angle to set, default is 0.
+    - [`F`][number] **yaw**: Relative Delta yaw angle to set. default is 0.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:relative",
+    "yaw": 30,
+    "pitch": -10,
+  }
+  ```
+</details>
+
+## <span id="target">Target</span>
+
+### <span id="aboslute_target">Absolute</span>
+
+Target based on UUID.
+
+- [`{}`][object]: Root object.
+    - [`""`][string] **target**: UUID to set target with.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:target",
+    "target": "19fc9957f9a845089140f7491fcdbba4",
+  }
+  ```
+</details>
+
+[string]: https://minecraft.wiki/w/JSON#String "JSON String"
+[number]: https://minecraft.wiki/w/JSON#Number "JSON Number"
+[object]: https://minecraft.wiki/w/JSON#Object "JSON Object"
+[array]: https://minecraft.wiki/w/JSON#Array "JSON Array"
+[boolean]: https://minecraft.wiki/w/JSON#Boolean "JSON Boolean"
+[text]: https://minecraft.wiki/w/Text_component_format "Text Component"
+[id]: https://minecraft.wiki/w/Resource_location "Identifier"
+
+[position]: #position "Position"
+[rotation]: #rotation "Rotation"
+[target]: #target "Target"

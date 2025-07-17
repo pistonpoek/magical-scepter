@@ -2,15 +2,15 @@
 title: Spell Definition
 ---
 
-Spells are stored as JSON files within a data pack in the path `data/<namespace>/magicalscepter/spell`.
+[Spells](spells) are stored as JSON files within a data pack in the path `data/<namespace>/magicalscepter/spell`.
 
 - [`{}`][object]: Root object.
     - [`[]`][array][`{}`][object] **casts**: Cast components.
-        - [`[]`][array][`{}`][object] **effects**: [Effect](#effect) components - Controls the effect of the spell.
-            - [`""`][string] **type**: Effect type specified by [ID][id].
+        - [`[]`][array][`{}`][object] **[effects](#transformer)**: Effect components - Controls the effect of the spell.
+            - [`""`][string] **type**: Effect type specified by id.
             - `+` Additional fields based on effect type.
-        - [`[]`][array][`{}`][object] **transformers**: Transformer components - Controls the context of the spell.
-            - [`""`][string] **type**: [Transformer](#transformer) type specified by [ID][id].
+        - [`[]`][array][`{}`][object] **[transformers](#transformer)**: Transformer components - Controls the [context](spell_context) of the spell.
+            - [`""`][string] **type**: Transformer type specified by id.
             - `+` Additional fields based on transformer type.
     - [`I`][number] **cooldown**: Non negative integer - Duration of casting cooldown in ticks afterthe spell is cast.
     - [`@`][text] **description**: Text component - Tooltip description for the spell.
@@ -53,11 +53,486 @@ Spells are stored as JSON files within a data pack in the path `data/<namespace>
 
 ## <span id="effect">Effect</span>
 
-...
+### <span id="play_sound">Play Sound</span>
+
+Play a sound like the vanilla enchantment effect [play sound](https://minecraft.wiki/w/Enchantment_definition#play_sound).
+
+- [`{}`][object]: Root object.
+    - [`""`][id][`{}`][object] **sound**: Sound to play.
+    - [`F`][number] **volume**: Volume to to play the sound with.
+    - [`F`][number] **pitch**: Pitch to to play the sound with.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:play_sound",
+    "pitch": {
+      "type": "minecraft:uniform",
+      "max_exclusive": 1.2,
+      "min_inclusive": 0.8
+    },
+    "sound": "minecraft:entity.warden.sonic_boom",
+    "volume": 1.0
+  }
+  ```
+</details>
+
+### <span id="spawn_particles">Spawn Particles</span>
+
+Spawn particles like the vanilla enchantment effect [spawn particles](https://minecraft.wiki/w/Enchantment_definition#spawn_particles).
+
+- [`{}`][object]: Root object.
+    - [`{}`][object] **particle**: Particle to spawn.
+    - [`{}`][object] **delta**: Direction to move particle towards.
+    - [`F`][number] **speed**: Particle speed to mutiply direction with.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:spawn_particles",
+    "particle": {
+      "type": "minecraft:dragon_breath"
+    },
+    "delta": [0.0, 2.0, 1.0],
+    "speed": 1.8
+  }
+  ```
+</details>
+
+### <span id="apply_mob_effect">Apply Mob Effect</span>
+
+Apply mob effect like the vanilla enchantment effect [apply mob effect](https://minecraft.wiki/w/Enchantment_definition#apply_mob_effect).
+
+- [`{}`][object]: Root object.
+    - [`[]`][array][`""`][id] **to_apply**: Any number of effects.
+    - [`F`][number] **duration**: Duration of effect in seconds.
+    - [`F`][number] **amplifier**: Amplifier of effect.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:apply_mob_effect",
+    "to_apply": "minecraft:haste"
+    "duration": {
+      "type": "minecraft:uniform",
+      "max_exclusive": 25.0,
+      "min_inclusive": 20.0
+    },
+    "amplifier": 1.0,
+  }
+  ```
+</details>
+
+### <span id="apply_mob_effect">Remove Mob Effect</span>
+
+Remove any mob effect from the current target.
+
+- [`{}`][object]: Root object.
+    - [`[]`][array][`""`][id] **to_apply**: Any number of effects to remove.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:remove_mob_effect",
+    "to_apply": "minecraft:haste"
+  }
+  ```
+</details>
+
+### <span id="summon_entity">Summon Entity</span>
+
+Summon an entity like the vanilla enchantment effect [spawn entity](https://minecraft.wiki/w/Enchantment_definition#summon_entity).
+
+- [`{}`][object]: Root object.
+    - [`[]`][array][`""`][id] **entity**: Any number of entity types to spawn.
+    - [`[]`][array][`{}`][object] **effects**: List of spell effects to apply to the spawned entity.
+    - [`{}`][object] **nbt**: Nbt data to spawn entities with.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:summon_entity",
+    "effects": [],
+    "entity": "minecraft:evoker_fangs"
+  }
+  ```
+</details>
+
+### <span id="teleport">Teleport</span>
+
+Teleport the target to the location.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:teleport"
+  }
+  ```
+</details>
+
+### <span id="damage">Damage</span>
+
+Damage the target like the vanilla enchantment effect [damage entity](https://minecraft.wiki/w/Enchantment_definition#damage_entity).
+
+- [`{}`][object]: Root object.
+    - [`F`][number] **amount**: Amount of damage to apply.
+    - [`""`][id] **damage_type**: [Damage type](https://minecraft.wiki/w/Damage_type) to apply damage with.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:damage",
+    "amount": {
+      "type": "minecraft:uniform",
+      "max_exclusive": 6.0,
+      "min_inclusive": 4.0
+    },
+    "damage_type": "minecraft:indirect_magic"
+  }
+  ```
+</details>
+
+### <span id="move">Move</span>
+
+Move the target in the direction of the rotation.
+
+- [`{}`][object]: Root object.
+    - [`F`][number] **power**: Power to move the target with.
+    - [`B`][boolean] **knockback**: Whether the force is applied as knockback.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:move",
+    "knockback": true,
+    "power": 0.5
+  }
+  ```
+</details>
+
+### <span id="rotate">Rotate</span>
+
+Rotate the target to the rotation.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:rotate"
+  }
+  ```
+</details>
+
+### <span id="ignite">Ignite</span>
+
+Ignite the target like the vanilla enchantment effect [ignite](https://minecraft.wiki/w/Enchantment_definition#ignite).
+
+- [`{}`][object]: Root object.
+    - [`F`][number] **duration**: Duration to set the target on fire for in seconds.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:ignite",
+    "duration": 1.5,
+  }
+  ```
+</details>
+
+### <span id="explode">Explode</span>
+
+Cause an explosion like the vanilla enchantment effect [explode](https://minecraft.wiki/w/Enchantment_definition#explode).
+
+- [`{}`][object]: Root object.
+    - [`B`][boolean] **attribute_to_caster**: Whether the explosion should be attributed to the spell caster.
+    - [`""`][id] **damage_type**: [Damage type](https://minecraft.wiki/w/Damage_type) the explosion should have.
+    - [`F`][number] **knockback_multiplier**: Multiplies the amount of knockback the explosion should have.
+    - [`[]`][array][`""`][id] **immune_blocks**: List of blocks that should be immune to the explosion.
+    - [`F`][number] **radius**: Radius the explosion should have.
+    - [`B`][boolean] **create_fire**: Whether the explosion should cause fire.
+    - [`""`][id] **block_interaction**: How the explosion should interact with surrounding blocks.
+    - [`{}`][object] **particle**: Particle the explosion should spawn.
+    - [`""`][id][`{}`][object] **sound**: Sound the explosion should play.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:explode",
+    "damage_type": "minecraft:indirect_magic",
+    "radius": 1.5,
+    "block_interaction": "block",
+    "particle": {
+      "type": "minecraft:explosion"
+    },
+    "sound": "entity.generic.explode"
+  }
+  ```
+</details>
+
+### <span id="replace_block">Replace Block</span>
+
+Replace a block like the vanilla enchantment effect [replace block](https://minecraft.wiki/w/Enchantment_definition#replace_block).
+
+- [`{}`][object]: Root object.
+    - [`{}`][object] **block_state**: Block state to set the block to.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:replace_block",
+    "block_state": {
+      "simple_state_provider": {
+        "state": {
+          "Name": "dirt"
+        }
+      }
+    }
+  }
+  ```
+</details>
+
+### <span id="run_function">Run Function</span>
+
+Run a function like the vanilla enchantment effect [run function](https://minecraft.wiki/w/Enchantment_definition#run_function).
+
+- [`{}`][object]: Root object.
+    - [`""`][id] **function**: Function to run.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:run_function",
+    "function": "magicalscepter:sayhi"
+  }
+  ```
+</details>
+
 
 ## <span id="transformer">Transformer</span>
 
-...
+### <span id="anchor">Anchor</span>
+
+Anchors the [context](spell_context) in time, which allows a transformer that delays to invoke effects at a fixed context.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:anchor"
+  }
+  ```
+</details>
+
+### <span id="line">Line</span>
+
+Splits the cast into multiple positions on a line.
+
+- [`{}`][object]: Root object.
+    - [`{}`][position] **position**: Position at the end of the line to create.
+    - [`I`][number] **amount**: Amount of casts to create on the line.
+    - [`F`][number] **step_delay**: Time between casts on the line in ticks.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:line",
+    "amount": 16,
+    "position": {
+      "type": "magicalscepter:relative",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 20.0
+    },
+    "step_delay": 1.0
+  }
+  ```
+</details>
+
+
+### <span id="circle">Circle</span>
+
+Splits the cast into multiple positions on a circle.
+
+- [`{}`][object]: Root object.
+    - [`{}`][position] **position**: Position at the start of the circle.
+    - [`F`][number] **direction**: Direction to circle the start position around the context position.
+    - [`F`][number] **arc**: Arc degrees to create casts onto a section of the circle, by default 360.
+    - [`I`][number] **amount**: Amount of casts to create on the circle.
+    - [`F`][number] **step_delay**: Time between casts on the circle in ticks.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:circle",
+    "amount": 5,
+    "position": {
+      "type": "magicalscepter:relative",
+      "x": 0.0,
+      "y": 0.0,
+      "z": 1.5
+    }
+  }
+  ```
+</details>
+
+### <span id="surface">Surface</span>
+
+Relocate the cast vertically to a nearby surface.
+
+- [`{}`][object]: Root object.
+    - [`F`][number] **distance**: Vertical distance to find valid surface for.
+    - [`B`][boolean] **require**: Whether to cancel or keep current cast on failure.
+    - [`{}`][position] **position**: Optional position to increase search range above or below context position.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:surface",
+    "distance": 8.0
+  }
+  ```
+</details>
+
+### <span id="move">Move</span>
+
+Move the cast to a specified position.
+
+- [`{}`][object]: Root object.
+    - [`{}`][position] **position**: Position to move cast to.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:move",
+    "position": {
+      "type": "magicalscepter:random",
+      "dx": 8.0,
+      "dy": 4.0,
+      "dz": 8.0
+    }
+  }
+  ```
+</details>
+
+### <span id="rotate">Rotate</span>
+
+Rotate the cast to a specified rotation.
+
+- [`{}`][object]: Root object.
+    - [`{}`][rotation] **rotation**: Rotation to rotate cast to.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:rotate",
+    "rotation": {
+      "type": "magicalscepter:random",
+      "pitch": 0.0,
+      "yaw": 12.0
+    }
+  }
+  ```
+</details>
+
+### <span id="delay">Delay</span>
+
+Delay the cast with a specified delay.
+
+- [`{}`][object]: Root object.
+    - [`I`][number] **delay**: Time to delay the cast with in ticks.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:delay",
+    "delay": 4
+  }
+  ```
+</details>
+
+### <span id="repeat">Repeat</span>
+
+Repeat the cast multiple times.
+
+- [`{}`][object]: Root object.
+    - [`I`][number] **amount**: Amount of casts to create.
+    - [`I`][number] **step_delay**: Time to delay between the casts in ticks.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:repeat",
+    "amount": 8,
+    "delay": 2
+  }
+  ```
+</details>
+
+### <span id="ray">Ray</span>
+
+Check a ray to change context to first hit block or entity.
+
+- [`{}`][object]: Root object.
+    - [`""`][string] **target**: Ray target, either block or entity.
+    - [`D`][number] **range**: Range of the ray to cast.
+    - [`B`][boolean] **require**: Whether to cancel or keep current cast on failure.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:ray",
+    "range": 24.0,
+    "target": "entity"
+  }
+  ```
+</details>
+
+### <span id="filter">Filter</span>
+
+Cancel the cast based on predicate.
+
+- [`{}`][object]: Root object.
+    - [`{}`][object] **filters**: Predicate to check.
+
+<details>
+  <summary>Example JSON</summary>
+  ```json
+  {
+    "type": "magicalscepter:filter",
+    "filters": [
+      {
+        "condition": "minecraft:entity_properties",
+        "entity": "this",
+        "predicate": {
+          "flags": {
+            "is_on_ground": false
+          }
+        }
+      }
+    ]
+  }
+  ```
+</details>
 
 [string]: https://minecraft.wiki/w/JSON#String "JSON String"
 [number]: https://minecraft.wiki/w/JSON#Number "JSON Number"
@@ -66,3 +541,7 @@ Spells are stored as JSON files within a data pack in the path `data/<namespace>
 [boolean]: https://minecraft.wiki/w/JSON#Boolean "JSON Boolean"
 [text]: https://minecraft.wiki/w/Text_component_format "Text Component"
 [id]: https://minecraft.wiki/w/Resource_location "Identifier"
+
+[position]: spell_context#position "Position"
+[rotation]: spell_context#rotation "Rotation"
+[target]: spell_context#target "Target"
