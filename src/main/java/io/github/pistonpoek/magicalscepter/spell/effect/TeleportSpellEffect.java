@@ -12,8 +12,7 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 import java.util.Set;
 
-public record TeleportSpellEffect()
-        implements SpellEffect {
+public record TeleportSpellEffect() implements SpellEffect {
     public static final MapCodec<TeleportSpellEffect> MAP_CODEC = MapCodec.unit(new TeleportSpellEffect());
 
     @Override

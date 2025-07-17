@@ -123,10 +123,9 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.RESISTANCE),
-                            ConstantFloatProvider.create(10.0F),
-                            ConstantFloatProvider.create(12.5F),
-                            ConstantFloatProvider.create(1.0F),
-                            ConstantFloatProvider.create(1.0F)))
+                            UniformFloatProvider.create(10.0F, 12.5F),
+                            ConstantFloatProvider.create(1.0F)
+                    ))
             )
         );
 
@@ -167,10 +166,9 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.FIRE_RESISTANCE),
-                            ConstantFloatProvider.create(10.0F),
-                            ConstantFloatProvider.create(12.5F),
-                            ConstantFloatProvider.create(0.0F),
-                            ConstantFloatProvider.create(0.0F)))
+                            UniformFloatProvider.create(10.0F, 12.5F),
+                            ConstantFloatProvider.create(0.0F)
+                    ))
             )
         );
 
@@ -244,9 +242,7 @@ public class Spells {
                     ))
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.SLOW_FALLING),
-                            ConstantFloatProvider.create(0.8F),
-                            ConstantFloatProvider.create(1.2F),
-                            ConstantFloatProvider.create(0.0F),
+                            UniformFloatProvider.create(0.8F, 1.2F),
                             ConstantFloatProvider.create(0.0F)
                     ))
             )
@@ -445,10 +441,9 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.REGENERATION),
-                            ConstantFloatProvider.create(10.0F),
-                            ConstantFloatProvider.create(12.5F),
-                            ConstantFloatProvider.create(1.0F),
-                            ConstantFloatProvider.create(1.0F)))
+                            UniformFloatProvider.create(10.0F, 12.5F),
+                            ConstantFloatProvider.create(1.0F)
+                    ))
             )
         );
 
@@ -471,11 +466,9 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.HASTE),
-                            ConstantFloatProvider.create(20.0F),
-                            ConstantFloatProvider.create(25.0F),
-                            ConstantFloatProvider.create(1.0F),
-                            ConstantFloatProvider.create(1.0F))
-                    )
+                            UniformFloatProvider.create(20.0F, 25.0F),
+                            ConstantFloatProvider.create(1.0F)
+                    ))
                     .addEffect(new RemoveMobEffectSpellEffect(
                             RegistryEntryList.of(StatusEffects.MINING_FATIGUE)
                     ))
@@ -609,10 +602,9 @@ public class Spells {
             .addCast(SpellCast.builder()
                     .addEffect(new ApplyMobEffectSpellEffect(
                             RegistryEntryList.of(ModStatusEffects.STABILITY),
-                            ConstantFloatProvider.create(20.0F),
-                            ConstantFloatProvider.create(25.0F),
-                            ConstantFloatProvider.create(1.0F),
-                            ConstantFloatProvider.create(1.0F)))
+                            UniformFloatProvider.create(20.0F, 25.0F),
+                            ConstantFloatProvider.create(1.0F)
+                    ))
             )
         );
 
@@ -640,10 +632,9 @@ public class Spells {
                 .addCast(SpellCast.builder()
                         .addEffect(new ApplyMobEffectSpellEffect(
                                 RegistryEntryList.of(ModStatusEffects.REPULSION),
-                                ConstantFloatProvider.create(10.0F),
-                                ConstantFloatProvider.create(12.0F),
-                                ConstantFloatProvider.create(0.0F),
-                                ConstantFloatProvider.create(0.0F)))
+                                UniformFloatProvider.create(10.0F, 12.5F),
+                                ConstantFloatProvider.create(0.0F)
+                        ))
                 )
         );
     }
