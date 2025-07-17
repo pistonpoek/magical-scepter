@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.entity.projectile;
 
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -32,7 +31,6 @@ public class GhastFireballEntity extends AbstractFireballEntity {
         if (this.getWorld() instanceof ServerWorld serverWorld) {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
-            MagicalScepter.LOGGER.info("Damaging entity {}", entity.getType());
             DamageSource damageSource = this.getDamageSources().fireball(this, owner);
             entity.damage(serverWorld, damageSource, 6.0F);
             EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource);

@@ -12,6 +12,11 @@ import net.minecraft.text.Text;
 
 import java.util.function.Consumer;
 
+/**
+ * Component that stores data value by the arcane scepter item.
+ *
+ * @param experience Experience stored currently in the item.
+ */
 public record ScepterExperienceComponent(int experience) implements TooltipAppender {
     public static final ScepterExperienceComponent DEFAULT = new ScepterExperienceComponent(0);
     public static final Codec<ScepterExperienceComponent> CODEC = Codec.INT.xmap(

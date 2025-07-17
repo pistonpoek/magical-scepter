@@ -157,7 +157,7 @@ public class SpellCastingManager extends PersistentState {
     }
 
     /**
-     * TODO ...
+     * Clear the scheduled spell castings after death.
      *
      * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AfterDeath
      */
