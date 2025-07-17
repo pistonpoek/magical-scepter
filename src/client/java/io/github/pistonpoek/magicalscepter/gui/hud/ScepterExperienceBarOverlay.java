@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.gui.hud;
 
-import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentHelper;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;

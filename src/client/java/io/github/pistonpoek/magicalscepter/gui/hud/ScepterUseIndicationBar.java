@@ -2,6 +2,7 @@ package io.github.pistonpoek.magicalscepter.gui.hud;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.hud.bar.Bar;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -21,7 +22,7 @@ public class ScepterUseIndicationBar {
                               int experienceStep, int x, int y) {
         int progress = ExperienceBar.getPixelProgress(player);
         float use_progress = experienceStep / (float)player.getNextLevelExperience();
-        int use_part = Math.round(use_progress * (ExperienceBar.WIDTH + 1.0F));
+        int use_part = Math.round(use_progress * (Bar.WIDTH + 1.0F));
         ExperienceBar.renderSection(context, TEXTURE, x, y, progress - use_part, progress);
     }
 }

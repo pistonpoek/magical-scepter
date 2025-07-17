@@ -3,6 +3,7 @@ package io.github.pistonpoek.magicalscepter.component;
 import com.mojang.serialization.Codec;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.component.ComponentsAccess;
 import net.minecraft.item.Item;
 import net.minecraft.item.tooltip.TooltipAppender;
 import net.minecraft.item.tooltip.TooltipType;
@@ -29,7 +30,7 @@ public record ScepterExperienceComponent(int experience) implements TooltipAppen
     );
 
     @Override
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type) {
+    public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
         textConsumer.accept(ModIdentifier.translatable("scepter.experience", experience));
     }
 }

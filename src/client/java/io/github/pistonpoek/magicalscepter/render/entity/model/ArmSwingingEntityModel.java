@@ -64,10 +64,10 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
         }
 
         // Move the body and arm pivots with it
-        rightArmModel.pivotZ = MathHelper.sin(bodyModel.yaw) * 5.0F;
-        rightArmModel.pivotX = -MathHelper.cos(bodyModel.yaw) * 5.0F;
-        leftArmModel.pivotZ = -MathHelper.sin(bodyModel.yaw) * 5.0F;
-        leftArmModel.pivotX = MathHelper.cos(bodyModel.yaw) * 5.0F;
+        rightArmModel.originZ = MathHelper.sin(bodyModel.yaw) * 5.0F;
+        rightArmModel.originX = -MathHelper.cos(bodyModel.yaw) * 5.0F;
+        leftArmModel.originZ = -MathHelper.sin(bodyModel.yaw) * 5.0F;
+        leftArmModel.originX = MathHelper.cos(bodyModel.yaw) * 5.0F;
         rightArmModel.yaw += bodyModel.yaw;
         leftArmModel.yaw += bodyModel.yaw;
         leftArmModel.pitch += bodyModel.yaw;
@@ -94,10 +94,10 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
 
         // Move the body and arm pivots with it
         bodyModel.yaw = leftMirror * MathHelper.sin(MathHelper.sqrt(handSwingProgress) * MathHelper.TAU) * 0.2F;
-        rightArmModel.pivotZ = MathHelper.sin(bodyModel.yaw) * 5.0F;
-        rightArmModel.pivotX = -MathHelper.cos(bodyModel.yaw) * 5.0F;
-        leftArmModel.pivotZ = -MathHelper.sin(bodyModel.yaw) * 5.0F;
-        leftArmModel.pivotX = MathHelper.cos(bodyModel.yaw) * 5.0F;
+        rightArmModel.originZ = MathHelper.sin(bodyModel.yaw) * 5.0F;
+        rightArmModel.originX = -MathHelper.cos(bodyModel.yaw) * 5.0F;
+        leftArmModel.originZ = -MathHelper.sin(bodyModel.yaw) * 5.0F;
+        leftArmModel.originX = MathHelper.cos(bodyModel.yaw) * 5.0F;
         rightArmModel.yaw += bodyModel.yaw;
         leftArmModel.yaw += bodyModel.yaw;
         leftArmModel.pitch += bodyModel.yaw;

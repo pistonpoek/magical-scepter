@@ -14,6 +14,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -84,16 +86,16 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        this.age = nbt.getInt("Age");
+    public void readCustomData(ReadView view) {
+        super.readCustomData(view);
+        this.age = view.getInt("Age", 0);
         setAge(this.age);
     }
 
     @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.putInt("Age", this.age);
+    public void writeCustomData(WriteView view) {
+        super.writeCustomData(view);
+        view.putInt("Age", this.age);
     }
 
     @Override

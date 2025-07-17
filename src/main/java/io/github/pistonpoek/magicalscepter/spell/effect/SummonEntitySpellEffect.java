@@ -23,6 +23,7 @@ import net.minecraft.registry.entry.RegistryEntryListCodec;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Uuids;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -132,9 +133,11 @@ public record SummonEntitySpellEffect(
         Entity target = context.target();
         LivingEntity caster = context.caster();
 
-        nbtCompound.putUuid("Target", target.getUuid());
+        if (target != null) {
+            nbtCompound.put("Target", Uuids.INT_STREAM_CODEC, target.getUuid());
+        }
         Direction direction = RotationSource.getDirection(context);
-        nbtCompound.putInt("Dir", direction.getId());
+        nbtCompound.putNullable("Dir", Direction.INDEX_CODEC, direction);
         nbtCompound.putInt("Steps",  10 + caster.getRandom().nextInt(5) * 10);
         double xOffset = direction.getOffsetX();
         double yOffset = direction.getOffsetY();

@@ -5,6 +5,7 @@
   "client": [
     "data.ItemModelGeneratorMixin",
     "gui.hud.InGameHudMixin",
+    "gui.hud.bar.ExperienceBarMixin",
     "network.ClientPlayNetworkHandlerMixin",
     "render.entity.model.ArmedEntityRenderStateMixin",
     "render.entity.model.BipedEntityModelMixin",

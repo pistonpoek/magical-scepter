@@ -83,8 +83,8 @@ public class ModEntityType {
             MixsonEvents.registerMobModification(monster);
         }
         for (RegistryKey<Biome> biome : REFRACTOR_SPAWN_BIOMES) {
-            MixsonEvents.registerMonsterSpawnEntry(biome, SpawnGroup.MONSTER,
-                    new SpawnSettings.SpawnEntry(REFRACTOR, 5, 1, 1));
+            MixsonEvents.registerMonsterSpawnEntry(biome, SpawnGroup.MONSTER, 5,
+                    new SpawnSettings.SpawnEntry(REFRACTOR, 1, 1));
         }
     }
 

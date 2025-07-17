@@ -2,6 +2,7 @@ package io.github.pistonpoek.magicalscepter.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.component.ComponentsAccess;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -313,7 +314,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
             .formatted(TITLE_FORMATTING);
 
     @Override
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip, TooltipType type) {
+    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip,
+                              TooltipType type, ComponentsAccess components) {
         Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
         Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
 

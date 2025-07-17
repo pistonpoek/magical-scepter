@@ -1,32 +1,51 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
+import net.minecraft.world.PersistentStateType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class SpellCastingManager extends PersistentState {
     private static final int MAX_CASTER_CASTINGS = Integer.MAX_VALUE;
-    private static final int VERSION = 0;
-    private final Map<UUID, Map<Integer, ScheduledSpellCasting>> scheduledCastings = new HashMap<>();
-    private int startKey = 0;
+    private static final String ID = ModIdentifier.key("spell_castings", "_");
+    public static final Codec<SpellCastingManager> CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                            Codec.unboundedMap(Codec.STRING.xmap(UUID::fromString, UUID::toString),
+                                            Codec.unboundedMap(Codec.STRING.xmap(Integer::parseInt, Object::toString), ScheduledSpellCasting.CODEC))
+                                    .fieldOf("scheduled_castings").forGetter(spellCastingManager -> spellCastingManager.scheduledCastings),
+                            Codec.INT.fieldOf("start_key").forGetter(spellCastingManager -> spellCastingManager.startKey)
+                    )
+                    .apply(instance, SpellCastingManager::new)
+    );
+    private final Map<UUID, Map<Integer, ScheduledSpellCasting>> scheduledCastings;
+    private int startKey;
+
+    private SpellCastingManager(Map<UUID, Map<Integer, ScheduledSpellCasting>> scheduledCastings, int startKey) {
+        this.scheduledCastings = new HashMap<>(scheduledCastings);
+        for (Map.Entry<UUID, Map<Integer, ScheduledSpellCasting>>
+                scheduledCasting : scheduledCastings.entrySet()) {
+            this.scheduledCastings.put(scheduledCasting.getKey(), new HashMap<>(scheduledCasting.getValue()));
+        }
+        this.startKey = startKey;
+    }
+
+    public SpellCastingManager() {
+        this(new HashMap<>(), 0);
+    }
 
     public static SpellCastingManager load(MinecraftServer server) {
         return server.getOverworld().getPersistentStateManager()
-                .getOrCreate(SpellCastingManager.getPersistentStateType(),
-                        ModIdentifier.key("scheduled_castings", "_"));
+                .getOrCreate(SpellCastingManager.getPersistentStateType());
     }
 
     public void schedule(ServerWorld world, SpellCasting spellCasting, int delay) {
@@ -98,54 +117,10 @@ public class SpellCastingManager extends PersistentState {
         return -1;
     }
 
-    public static PersistentState.Type<SpellCastingManager> getPersistentStateType() {
-        return new PersistentState.Type<>(SpellCastingManager::new, SpellCastingManager::fromNbt, null);
-    }
-
-    public static SpellCastingManager fromNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup registries) {
-        SpellCastingManager spellCastingManager = new SpellCastingManager();
-        int version = nbtCompound.getInt("Version");
-        if (version != VERSION) {
-            return spellCastingManager;
-        }
-
-        spellCastingManager.startKey = nbtCompound.getInt("StartKey");
-        NbtCompound spellCastings = nbtCompound.getCompound("ScheduledCastings");
-
-        for (String uuidKey : spellCastings.getKeys()) {
-
-            NbtCompound casterCastings = spellCastings.getCompound(uuidKey);
-            Map<Integer, ScheduledSpellCasting> castingMap = new HashMap<>();
-
-            for (String key : casterCastings.getKeys()) {
-                castingMap.put(Integer.parseInt(key),
-                        ScheduledSpellCasting.fromNbt(casterCastings.getCompound(key), registries));
-            }
-            spellCastingManager.scheduledCastings.put(UUID.fromString(uuidKey), castingMap);
-        }
-
-        return spellCastingManager;
-    }
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup registries) {
-        nbtCompound.putInt("Version", VERSION);
-        nbtCompound.putInt("StartKey", startKey);
-
-        NbtCompound encodedScheduledCastings = new NbtCompound();
-        for (UUID uuid : scheduledCastings.keySet()) {
-
-            NbtCompound encodedCasterCastings = new NbtCompound();
-            for (int key : scheduledCastings.get(uuid).keySet()) {
-
-                encodedCasterCastings.put(String.valueOf(key),
-                        scheduledCastings.get(uuid).get(key).writeNbt(new NbtCompound(), registries));
-            }
-            encodedScheduledCastings.put(uuid.toString(), encodedCasterCastings);
-        }
-        nbtCompound.put("ScheduledCastings", encodedScheduledCastings);
-
-        return nbtCompound;
+    public static PersistentStateType<SpellCastingManager> getPersistentStateType() {
+        // TODO add data fix type to transition from previous version?
+        return new PersistentStateType<>(ID,
+                SpellCastingManager::new, CODEC, null);
     }
 
     public static boolean clear(@NotNull LivingEntity entity) {
