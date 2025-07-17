@@ -93,7 +93,7 @@ public class ModItems {
      * @param entries Ingredients item group entries to add items to.
      */
     private static void addItemsToIngredientsGroup(FabricItemGroupEntries entries) {
-        entries.addBefore(Items.BOWL, SCEPTER);
+        entries.addAfter(Items.HEAVY_CORE, SCEPTER);
         entries.addBefore(Items.BOWL, Items.BROWN_MUSHROOM);
         entries.addBefore(Items.BOWL, Items.RED_MUSHROOM);
     }

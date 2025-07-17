@@ -4,6 +4,7 @@ import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.hud.bar.Bar;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 
@@ -24,7 +25,7 @@ public class SpellCostIndicationBar {
         int progress = ExperienceBar.getPixelProgress(player);
         float cost_progress = (scepterContents.getExperienceCost() - PlayerExperience.getTotalExperience(player))
                 / (float)player.getNextLevelExperience();
-        int cost_part = Math.round(cost_progress * (ExperienceBar.WIDTH + 1.0F));
+        int cost_part = Math.round(cost_progress * (Bar.WIDTH + 1.0F));
         ExperienceBar.renderSection(context, TEXTURE, x, y, progress, progress + cost_part);
     }
 }

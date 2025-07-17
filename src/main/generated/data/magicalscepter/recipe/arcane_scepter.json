@@ -3,5 +3,7 @@
   "category": "equipment",
   "input": "magicalscepter:scepter",
   "material": "minecraft:lapis_lazuli",
-  "result": "magicalscepter:arcane_scepter"
+  "result": {
+    "id": "magicalscepter:arcane_scepter"
+  }
 }
