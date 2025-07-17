@@ -72,13 +72,8 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
         leftArmModel.yaw += bodyModel.yaw;
         leftArmModel.pitch += bodyModel.yaw;
 
-        float f = 1.0F - handSwingProgress;
-        f *= f;
-        f *= f;
-        f = 1.0F - f;
-        float g = MathHelper.sin(f * MathHelper.PI);
-        float h = MathHelper.sin(handSwingProgress * MathHelper.PI) * -(headModel.pitch - 0.7F) * 0.75F;
-        armModel.pitch -= g * 1.2F + h;
+        armModel.pitch -= MathHelper.sin((1.0F - (float) Math.pow(1.0F - handSwingProgress, 4)) * MathHelper.PI)
+                * 1.2F + MathHelper.sin(handSwingProgress * MathHelper.PI) * -(headModel.pitch - 0.7F) * 0.75F;
         armModel.yaw += bodyModel.yaw * 2.0F;
         armModel.roll += MathHelper.sin(handSwingProgress * MathHelper.PI) * -0.4F;
     }
@@ -92,7 +87,6 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
     @Unique default void magical_scepter$swingHandProtect(T renderState, Arm arm) {
         ModelPart armModel = magical_scepter$getArm(arm);
         ModelPart bodyModel = magical_scepter$getBody();
-        ModelPart headModel = getHead();
         ModelPart leftArmModel = magical_scepter$getArm(Arm.LEFT);
         ModelPart rightArmModel = magical_scepter$getArm(Arm.RIGHT);
         float handSwingProgress = renderState.magical_scepter$getHandSwingProgress();
@@ -108,20 +102,9 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
         leftArmModel.yaw += bodyModel.yaw;
         leftArmModel.pitch += bodyModel.yaw;
 
-        // TODO update swing animation, variable naming and code structuring here.
-        float f = 1.0F - 2.0F * handSwingProgress;
-        f *= f;
-        f *= f;
-        f = 1.0F - f;
-        float g = MathHelper.sin(f * MathHelper.PI);
-        float h = MathHelper.sin(handSwingProgress * MathHelper.PI) * -(headModel.pitch - 0.7F) * 0.75F;
-//            armModel.pitch -= g * 2.0F + h; // Forward backwards
-//            armModel.yaw += (MathHelper.sin(MathHelper.sqrt(this.handSwingProgress) * MathHelper.TAU) + 1.0F) * -0.6F; // To from body
-//            armModel.roll -= MathHelper.sin(this.handSwingProgress * MathHelper.PI) * 0.8F; // Around arm
-        armModel.pitch -= MathHelper.sin(5.0F/3.0F*MathHelper.PI*handSwingProgress-1.0F/3.0F*MathHelper.PI)-MathHelper.sin(-1.0F/3.0F*MathHelper.PI);
-        //armModel.pitch -= MathHelper.PI/2 - MathHelper.PI/10;
-        armModel.yaw -= leftMirror * (MathHelper.sin(g) + 0.9F) * 0.7F;
-//            armModel.yaw -= MathHelper.PI * 1/4;
-        //armModel.roll += MathHelper.sin(1.0F-(float)Math.pow(1.1F-2.2F*this.handSwingProgress, 4.0F) *MathHelper.PI)+0.84147F;
+        armModel.pitch -= MathHelper.sin(5.0F/3.0F * MathHelper.PI * handSwingProgress
+                - 1.0F/3.0F * MathHelper.PI) - MathHelper.sin(- 1.0F/3.0F * MathHelper.PI);
+        armModel.yaw -= leftMirror * (MathHelper.sin(MathHelper.sin(
+                (1.0F - (float) Math.pow(1.0F - 2.0F * handSwingProgress, 4)) * MathHelper.PI)) + 0.9F) * 0.7F;
     }
 }

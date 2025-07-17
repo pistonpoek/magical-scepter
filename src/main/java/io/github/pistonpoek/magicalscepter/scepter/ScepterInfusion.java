@@ -97,7 +97,7 @@ public class ScepterInfusion {
     }
 
     /**
-     * TODO ...
+     * Try to infuse a scepter after damage was taken by a living entity.
      *
      * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AfterDamage
      */
