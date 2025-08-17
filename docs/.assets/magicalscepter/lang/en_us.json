@@ -1,0 +1,10 @@
+{
+  "effect.magicalscepter.repulsion" : "Repulsion",
+  "effect.magicalscepter.stability" : "Stability",
+  "enchantment.magicalscepter.insight": "Insight",
+  "entity.magicalscepter.refractor" : "Refractor",
+  "item.magicalscepter.arcane_scepter": "Arcane Scepter",
+  "item.magicalscepter.scepter" : "Scepter",
+  "item.magicalscepter.magical_scepter": "Magical Scepter",
+  "item.magicalscepter.refractor_spawn_egg" : "Refractor Spawn Egg"
+}
