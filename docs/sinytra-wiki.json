@@ -1,7 +1,11 @@
 {
   "id": "magical-scepter",
+  "modid": "magicalscepter",
   "platforms": {
     "modrinth": "magical-scepter",
     "curseforge": "magical-scepter"
-  }
+  },
+  "owners": [
+    "pistonpoek"
+  ]
 }
