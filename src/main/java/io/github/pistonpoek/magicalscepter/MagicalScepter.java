@@ -3,6 +3,7 @@ package io.github.pistonpoek.magicalscepter;
 import io.github.pistonpoek.magicalscepter.command.SpellCommand;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentEffectComponentTypes;
 import io.github.pistonpoek.magicalscepter.particle.ModParticleTypes;
+import io.github.pistonpoek.magicalscepter.predicate.component.ModComponentPredicateTypes;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastingManager;
 import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
@@ -38,6 +39,7 @@ public class MagicalScepter implements ModInitializer {
         ModRecipeSerializer.init();
         ModStatusEffects.init();
         ModDataComponentTypes.init();
+        ModComponentPredicateTypes.init();
         ModEntityType.init();
         ModLootFunctionTypes.init();
         ModPlayPackets.init();
