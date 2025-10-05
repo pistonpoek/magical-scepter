@@ -39,14 +39,14 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Illager entity that wields a magical scepter.
  */
-public class RefractorEntity extends IllagerEntity {
+public class SorcererEntity extends IllagerEntity {
     /**
-     * Construct the refractor entity in the specified world.
+     * Construct the sorcerer entity in the specified world.
      *
      * @param entityType Entity type that is being created.
      * @param world      World to create the entity in.
      */
-    public RefractorEntity(EntityType<? extends RefractorEntity> entityType, World world) {
+    public SorcererEntity(EntityType<? extends SorcererEntity> entityType, World world) {
         super(entityType, world);
         this.setCanPickUpLoot(true);
     }
@@ -68,11 +68,11 @@ public class RefractorEntity extends IllagerEntity {
     }
 
     /**
-     * Create the default attribute container builder for the refractor entity.
+     * Create the default attribute container builder for the sorcerer entity.
      *
-     * @return Attribute builder for the refractor entity with base values.
+     * @return Attribute builder for the sorcerer entity with base values.
      */
-    public static DefaultAttributeContainer.Builder createRefractorAttributes() {
+    public static DefaultAttributeContainer.Builder createSorcererAttributes() {
         return HostileEntity.createHostileAttributes()
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.5)
                 .add(EntityAttributes.FOLLOW_RANGE, 16.0)
@@ -101,22 +101,22 @@ public class RefractorEntity extends IllagerEntity {
 
     @Override
     public SoundEvent getCelebratingSound() {
-        return ModSoundEvents.ENTITY_REFRACTOR_CELEBRATE;
+        return ModSoundEvents.ENTITY_SORCERER_CELEBRATE;
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return ModSoundEvents.ENTITY_REFRACTOR_AMBIENT;
+        return ModSoundEvents.ENTITY_SORCERER_AMBIENT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSoundEvents.ENTITY_REFRACTOR_DEATH;
+        return ModSoundEvents.ENTITY_SORCERER_DEATH;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSoundEvents.ENTITY_REFRACTOR_HURT;
+        return ModSoundEvents.ENTITY_SORCERER_HURT;
     }
 
     @Override
@@ -125,11 +125,11 @@ public class RefractorEntity extends IllagerEntity {
 
     @Override
     public TagKey<Item> getPreferredWeapons() {
-        return ModItemTags.REFRACTOR_PREFERRED_WEAPONS;
+        return ModItemTags.SORCERER_PREFERRED_WEAPONS;
     }
 
     @Override
-    public RefractorEntity.State getState() {
+    public SorcererEntity.State getState() {
         return this.isAttacking() ? IllagerEntity.State.NEUTRAL : IllagerEntity.State.CROSSED;
     }
 }

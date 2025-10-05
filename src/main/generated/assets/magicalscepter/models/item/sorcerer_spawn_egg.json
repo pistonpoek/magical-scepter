@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "magicalscepter:item/refractor_spawn_egg"
+    "layer0": "magicalscepter:item/sorcerer_spawn_egg"
   }
 }

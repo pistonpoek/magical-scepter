@@ -22,6 +22,6 @@ public class ParrotEntityMixin {
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void addMobSounds(CallbackInfo ci) {
-        MOB_SOUNDS.put(ModEntityType.REFRACTOR, ModSoundEvents.ENTITY_PARROT_IMITATE_REFRACTOR);
+        MOB_SOUNDS.put(ModEntityType.SORCERER, ModSoundEvents.ENTITY_PARROT_IMITATE_SORCERER);
     }
 }

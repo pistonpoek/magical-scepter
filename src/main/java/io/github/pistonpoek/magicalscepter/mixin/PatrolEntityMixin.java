@@ -30,7 +30,7 @@ public abstract class PatrolEntityMixin extends HostileEntity {
             opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
     private void modifyPatrolLeader(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
                                     EntityData entityData, CallbackInfoReturnable<EntityData> callbackInfoReturnable) {
-        this.patrolLeader = this.patrolLeader && (this.getType() != (ModEntityType.REFRACTOR) ||
+        this.patrolLeader = this.patrolLeader && (this.getType() != (ModEntityType.SORCERER) ||
                 spawnReason != SpawnReason.NATURAL);
     }
 }

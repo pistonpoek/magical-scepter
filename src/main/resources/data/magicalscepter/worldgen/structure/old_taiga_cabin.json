@@ -9,7 +9,7 @@
       "bounding_box": "piece",
       "spawns": [
         {
-          "type": "magicalscepter:refractor",
+          "type": "magicalscepter:sorcerer",
           "maxCount": 1,
           "minCount": 1,
           "weight": 1

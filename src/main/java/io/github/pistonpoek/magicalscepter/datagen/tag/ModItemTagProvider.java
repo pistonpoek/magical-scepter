@@ -27,7 +27,7 @@ public class ModItemTagProvider extends VanillaItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        this.builder(ModItemTags.REFRACTOR_PREFERRED_WEAPONS)
+        this.builder(ModItemTags.SORCERER_PREFERRED_WEAPONS)
                 .add(ModItems.SCEPTER)
                 .add(ModItems.MAGICAL_SCEPTER);
 

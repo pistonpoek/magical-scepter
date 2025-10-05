@@ -37,8 +37,8 @@ public class ModItems {
             new Item.Settings().maxDamage(64).rarity(Rarity.RARE)
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT));
 
-    public static final Item REFRACTOR_SPAWN_EGG = register("refractor_spawn_egg",
-            settings -> new SpawnEggItem(ModEntityType.REFRACTOR, settings));
+    public static final Item SORCERER_SPAWN_EGG = register("sorcerer_spawn_egg",
+            settings -> new SpawnEggItem(ModEntityType.SORCERER, settings));
 
     /**
      * Initialize the class for the static fields.
@@ -107,7 +107,7 @@ public class ModItems {
      * @param entries Spawn eggs item group entries to add items to.
      */
     private static void addItemsToSpawnEggsGroup(FabricItemGroupEntries entries) {
-        entries.addAfter(Items.RAVAGER_SPAWN_EGG, REFRACTOR_SPAWN_EGG);
+        entries.addAfter(Items.RAVAGER_SPAWN_EGG, SORCERER_SPAWN_EGG);
     }
 
     /**

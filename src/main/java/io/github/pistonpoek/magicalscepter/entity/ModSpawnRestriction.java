@@ -12,7 +12,7 @@ import net.minecraft.world.Heightmap;
  */
 public class ModSpawnRestriction {
     static {
-        SpawnRestriction.register(ModEntityType.REFRACTOR, SpawnLocationTypes.ON_GROUND,
+        SpawnRestriction.register(ModEntityType.SORCERER, SpawnLocationTypes.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
     }
 

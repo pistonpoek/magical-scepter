@@ -6,7 +6,7 @@ import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentEffectComponentTypes;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
-import io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
+import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.loot.function.ModLootFunctionTypes;
 import io.github.pistonpoek.magicalscepter.network.packet.ModPlayPackets;
@@ -55,6 +55,6 @@ public class MagicalScepter implements ModInitializer {
 
         TimerCallbackSerializer.INSTANCE.registerSerializer(SpellCastingTimerCallback.ID,
                 SpellCastingTimerCallback.MAP_CODEC);
-        FabricDefaultAttributeRegistry.register(ModEntityType.REFRACTOR, RefractorEntity.createRefractorAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntityType.SORCERER, SorcererEntity.createSorcererAttributes());
     }
 }

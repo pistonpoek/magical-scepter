@@ -27,6 +27,6 @@ public class ModEntityTypeTagProvider extends VanillaEntityTypeTagProvider {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
         this.builder(EntityTypeTags.ILLAGER)
-                .add(ModEntityType.REFRACTOR);
+                .add(ModEntityType.SORCERER);
     }
 }

@@ -70,15 +70,15 @@ public abstract class RaidMixin {
         int count = this.magicalscepter$count;
         if (instance.equals(EntityType.PILLAGER)) {
             if (wave == 4 && !this.isSpawningExtraWave() && count == 0) {
-                magicalscepter$setOptionalRefractorRaiderEntity(world, reason);
+                magicalscepter$setOptionalSorcererRaiderEntity(world, reason);
                 return null;
             } else if (wave >= 5 && count == 0) {
-                magicalscepter$setRefractorRaiderEntity(world, reason);
+                magicalscepter$setSorcererRaiderEntity(world, reason);
                 return null;
             }
         }
         if (instance.equals(EntityType.VINDICATOR) && wave >= 5 && count == 0) {
-            magicalscepter$setOptionalRefractorRaiderEntity(world, reason);
+            magicalscepter$setOptionalSorcererRaiderEntity(world, reason);
             return null;
         }
         this.magicalscepter$raiderEntity = null;
@@ -86,15 +86,15 @@ public abstract class RaidMixin {
     }
 
     @Unique
-    private void magicalscepter$setOptionalRefractorRaiderEntity(World world, SpawnReason reason) {
+    private void magicalscepter$setOptionalSorcererRaiderEntity(World world, SpawnReason reason) {
         if (this.random.nextBoolean()) {
-            magicalscepter$setRefractorRaiderEntity(world, reason);
+            magicalscepter$setSorcererRaiderEntity(world, reason);
         }
     }
 
     @Unique
-    private void magicalscepter$setRefractorRaiderEntity(World world, SpawnReason reason) {
-        this.magicalscepter$raiderEntity = ModEntityType.REFRACTOR.create(world, reason);
+    private void magicalscepter$setSorcererRaiderEntity(World world, SpawnReason reason) {
+        this.magicalscepter$raiderEntity = ModEntityType.SORCERER.create(world, reason);
     }
 
     @ModifyVariable(
@@ -104,7 +104,7 @@ public abstract class RaidMixin {
             ),
             ordinal = 0
     )
-    private RaiderEntity createRefractorRaiderEntity(RaiderEntity raiderEntity) {
+    private RaiderEntity createSorcererRaiderEntity(RaiderEntity raiderEntity) {
         RaiderEntity newRaiderEntity = this.magicalscepter$raiderEntity;
         if (newRaiderEntity != null) {
             this.magicalscepter$raiderEntity = null;
@@ -129,13 +129,13 @@ public abstract class RaidMixin {
             return EntityType.PILLAGER.create(world, SpawnReason.EVENT);
         } else if (wave == 6) {
             if (count == 0) {
-                return ModEntityType.REFRACTOR.create(world, SpawnReason.EVENT);
+                return ModEntityType.SORCERER.create(world, SpawnReason.EVENT);
             } else {
                 return null;
             }
         } else {
             return switch (count) {
-                case 0 -> ModEntityType.REFRACTOR.create(world, SpawnReason.EVENT);
+                case 0 -> ModEntityType.SORCERER.create(world, SpawnReason.EVENT);
                 case 1 -> EntityType.EVOKER.create(world, SpawnReason.EVENT);
                 default -> EntityType.VINDICATOR.create(world, SpawnReason.EVENT);
             };

@@ -13,11 +13,11 @@ import net.minecraft.util.Identifier;
  * @see net.minecraft.sound.SoundEvents
  */
 public class ModSoundEvents {
-    public static final SoundEvent ENTITY_PARROT_IMITATE_REFRACTOR = register("entity.parrot.imitate.refractor");
-    public static final SoundEvent ENTITY_REFRACTOR_AMBIENT = register("entity.refractor.ambient");
-    public static final SoundEvent ENTITY_REFRACTOR_CELEBRATE = register("entity.refractor.celebrate");
-    public static final SoundEvent ENTITY_REFRACTOR_DEATH = register("entity.refractor.death");
-    public static final SoundEvent ENTITY_REFRACTOR_HURT = register("entity.refractor.hurt");
+    public static final SoundEvent ENTITY_PARROT_IMITATE_SORCERER = register("entity.parrot.imitate.sorcerer");
+    public static final SoundEvent ENTITY_SORCERER_AMBIENT = register("entity.sorcerer.ambient");
+    public static final SoundEvent ENTITY_SORCERER_CELEBRATE = register("entity.sorcerer.celebrate");
+    public static final SoundEvent ENTITY_SORCERER_DEATH = register("entity.sorcerer.death");
+    public static final SoundEvent ENTITY_SORCERER_HURT = register("entity.sorcerer.hurt");
     public static final SoundEvent ITEM_ARCANE_SCEPTER_COLLECT_EXPERIENCE = register("item.arcane_scepter.charges");
     public static final SoundEvent ITEM_ARCANE_SCEPTER_RELEASE_EXPERIENCE = register("item.arcane_scepter.discharges");
     public static final SoundEvent ITEM_MAGICAL_SCEPTER_CAST_ATTACK_SPELL = register("item.magical_scepter.cast_attack_spell");

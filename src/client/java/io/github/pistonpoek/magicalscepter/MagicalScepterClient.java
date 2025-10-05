@@ -4,7 +4,7 @@ import io.github.pistonpoek.magicalscepter.attack.ItemAttackCallback;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.network.ClientPlayPackets;
 import io.github.pistonpoek.magicalscepter.render.entity.GuardianBoltEntityRenderer;
-import io.github.pistonpoek.magicalscepter.render.entity.RefractorEntityRenderer;
+import io.github.pistonpoek.magicalscepter.render.entity.SorcererEntityRenderer;
 import io.github.pistonpoek.magicalscepter.render.entity.WitherSkullEntityRenderer;
 import io.github.pistonpoek.magicalscepter.render.entity.model.GuardianBoltEntityModel;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
@@ -23,8 +23,8 @@ public class MagicalScepterClient implements ClientModInitializer {
     public void onInitializeClient() {
         ClientPlayPackets.init();
 
-        EntityRendererRegistry.register(ModEntityType.REFRACTOR, RefractorEntityRenderer::new);
-        EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.REFRACTOR,
+        EntityRendererRegistry.register(ModEntityType.SORCERER, SorcererEntityRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.SORCERER,
                 IllagerEntityModel::getTexturedModelData);
 
         EntityRendererRegistry.register(ModEntityType.GUARDIAN_BOLT, GuardianBoltEntityRenderer::new);

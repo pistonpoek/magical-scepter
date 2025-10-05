@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.entity.ai.goal;
 
+import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
@@ -14,7 +15,7 @@ import net.minecraft.util.Hand;
 
 /**
  * Entity goal to refill scepters to magical scepters,
- * for example used by {@link io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity}.
+ * for example used by {@link SorcererEntity}.
  *
  * @param <T> Entity type to use this goal for.
  */

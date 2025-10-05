@@ -17,7 +17,7 @@ import java.util.Set;
 @Environment(EnvType.CLIENT)
 public class ModEntityModelLayers {
     private static final Set<EntityModelLayer> LAYERS = new HashSet<>();
-    public static final EntityModelLayer REFRACTOR = registerMain("refractor");
+    public static final EntityModelLayer SORCERER = registerMain("sorcerer");
     public static final EntityModelLayer GUARDIAN_BOLT = registerMain("guardian_bolt");
     public static final EntityModelLayer WITHER_SKULL = registerMain("wither_skull");
 

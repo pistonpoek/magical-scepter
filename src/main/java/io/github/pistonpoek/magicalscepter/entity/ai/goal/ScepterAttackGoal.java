@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.entity.ai.goal;
 
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
+import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
 import io.github.pistonpoek.magicalscepter.item.MagicalScepterItem;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
@@ -17,7 +18,7 @@ import java.util.Optional;
 
 /**
  * Entity attack goal for the use of a magical scepter,
- * for example used by {@link io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity}.
+ * for example used by {@link SorcererEntity}.
  *
  * @param <T> Entity type to use this goal for.
  */

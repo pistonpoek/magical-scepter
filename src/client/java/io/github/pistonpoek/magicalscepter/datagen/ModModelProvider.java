@@ -49,7 +49,7 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.SCEPTER, Models.HANDHELD);
 
         Identifier filledArcaneScepter = itemModelGenerator.registerSubModel(ModItems.ARCANE_SCEPTER, "_filled", Models.HANDHELD);
-        Identifier aracaneScepter = itemModelGenerator.upload(ModItems.ARCANE_SCEPTER, Models.HANDHELD);
+        Identifier arcaneScepter = itemModelGenerator.upload(ModItems.ARCANE_SCEPTER, Models.HANDHELD);
         itemModelGenerator.registerCondition(
                 ModItems.ARCANE_SCEPTER,
                 new ComponentBooleanProperty(
@@ -59,14 +59,14 @@ public class ModModelProvider extends FabricModelProvider {
                     )
                 ),
                 ItemModels.basic(filledArcaneScepter),
-                ItemModels.basic(aracaneScepter)
+                ItemModels.basic(arcaneScepter)
         );
 
         if (itemModelGenerator instanceof ItemModelGeneratorMixin scepterItemModelGenerator) {
             registerScepter(scepterItemModelGenerator, ModItems.MAGICAL_SCEPTER, HANDHELD_SCEPTER);
         }
 
-        itemModelGenerator.register(ModItems.REFRACTOR_SPAWN_EGG, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SORCERER_SPAWN_EGG, Models.GENERATED);
     }
 
     /**

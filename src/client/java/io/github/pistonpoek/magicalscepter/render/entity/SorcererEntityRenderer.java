@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.render.entity;
 
-import io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
+import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.api.EnvType;
@@ -15,11 +15,11 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEntity, IllagerEntityRenderState> {
-    private static final Identifier TEXTURE = ModIdentifier.of("textures/entity/illager/refractor.png");
+public class SorcererEntityRenderer extends IllagerEntityRenderer<SorcererEntity, IllagerEntityRenderState> {
+    private static final Identifier TEXTURE = ModIdentifier.of("textures/entity/illager/sorcerer.png");
 
-    public RefractorEntityRenderer(EntityRendererFactory.Context context) {
-        super(context, new IllagerEntityModel<>(context.getPart(ModEntityModelLayers.REFRACTOR)), 0.5F);
+    public SorcererEntityRenderer(EntityRendererFactory.Context context) {
+        super(context, new IllagerEntityModel<>(context.getPart(ModEntityModelLayers.SORCERER)), 0.5F);
         this.addFeature(new HeldItemFeatureRenderer<>(this) {
             public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i,
                                IllagerEntityRenderState renderState, float f, float g) {
