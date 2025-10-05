@@ -18,14 +18,14 @@ public record KillAMobMixson(Identifier mobIdentifier) implements MixsonEvent<Js
                         "conditions": {
                             "entity": [
                                 {
-                                    "condition": "minecraft:entity_properties"
-                                    "entity": "this"
+                                    "condition": "minecraft:entity_properties",
+                                    "entity": "this",
                                     "predicate": {
                                         "type": "%s"
                                     }
                                 }
                             ]
-                        }
+                        },
                         "trigger": "minecraft:player_killed_entity"
                     }
                 """.formatted(mobReference)
