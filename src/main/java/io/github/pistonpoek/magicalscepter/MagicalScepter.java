@@ -29,31 +29,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MagicalScepter implements ModInitializer {
-	public static final Logger LOGGER = LoggerFactory.getLogger(ModIdentifier.MOD_NAME);
+    public static final Logger LOGGER = LoggerFactory.getLogger(ModIdentifier.MOD_NAME);
 
-	@Override
-	public void onInitialize() {
-		ModRegistries.init();
-		ModItems.init();
-		ModRecipeSerializer.init();
-		ModStatusEffects.init();
-		ModDataComponentTypes.init();
-		ModEntityType.init();
-		ModLootFunctionTypes.init();
-		ModPlayPackets.init();
-		ModCriteria.init();
-		ModGameEvent.init();
-		ModSoundEvents.init();
-		ModParticleTypes.init();
-		ModEnchantmentEffectComponentTypes.init();
+    @Override
+    public void onInitialize() {
+        ModRegistries.init();
+        ModItems.init();
+        ModRecipeSerializer.init();
+        ModStatusEffects.init();
+        ModDataComponentTypes.init();
+        ModEntityType.init();
+        ModLootFunctionTypes.init();
+        ModPlayPackets.init();
+        ModCriteria.init();
+        ModGameEvent.init();
+        ModSoundEvents.init();
+        ModParticleTypes.init();
+        ModEnchantmentEffectComponentTypes.init();
 
-		ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastingManager::afterDeath);
-		ServerLivingEntityEvents.ALLOW_DAMAGE.register(ModStatusEffects::allowDamage);
-		ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
-		CommandRegistrationCallback.EVENT.register(SpellCommand::register);
+        ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastingManager::afterDeath);
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register(ModStatusEffects::allowDamage);
+        ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
+        CommandRegistrationCallback.EVENT.register(SpellCommand::register);
 
-		TimerCallbackSerializer.INSTANCE.registerSerializer(SpellCastingTimerCallback.ID,
-				SpellCastingTimerCallback.MAP_CODEC);
-		FabricDefaultAttributeRegistry.register(ModEntityType.REFRACTOR, RefractorEntity.createRefractorAttributes());
-	}
+        TimerCallbackSerializer.INSTANCE.registerSerializer(SpellCastingTimerCallback.ID,
+                SpellCastingTimerCallback.MAP_CODEC);
+        FabricDefaultAttributeRegistry.register(ModEntityType.REFRACTOR, RefractorEntity.createRefractorAttributes());
+    }
 }
