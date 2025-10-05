@@ -1,14 +1,15 @@
 package io.github.pistonpoek.magicalscepter.recipe;
 
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.recipe.RecipeSerializer
  */
 public interface ModRecipeSerializer {

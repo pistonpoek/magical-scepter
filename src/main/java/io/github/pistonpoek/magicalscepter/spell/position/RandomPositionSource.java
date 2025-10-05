@@ -3,10 +3,10 @@ package io.github.pistonpoek.magicalscepter.spell.position;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;

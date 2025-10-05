@@ -11,9 +11,9 @@ public abstract class SpellCastingScheduler {
     /**
      * Schedule a spell cast callback after a specified delay.
      *
-     * @param world Server world to schedule callback with.
+     * @param world    Server world to schedule callback with.
      * @param callback Spell cast timer callback to schedule.
-     * @param delay Positive time delay to set for the callback in ticks.
+     * @param delay    Positive time delay to set for the callback in ticks.
      */
     static void schedule(@NotNull ServerWorld world, @NotNull SpellCastingTimerCallback callback, int delay) {
         if (delay <= 0) {

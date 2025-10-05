@@ -12,9 +12,9 @@ public record ScepterExperiencePredicate(
         NumberRange.IntRange experience) implements ComponentSubPredicate<ScepterExperienceComponent> {
     public static final Codec<ScepterExperiencePredicate> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                            NumberRange.IntRange.CODEC.optionalFieldOf("experience",
-                                    NumberRange.IntRange.ANY).forGetter(ScepterExperiencePredicate::experience)
-                    ).apply(instance, ScepterExperiencePredicate::new)
+                    NumberRange.IntRange.CODEC.optionalFieldOf("experience",
+                            NumberRange.IntRange.ANY).forGetter(ScepterExperiencePredicate::experience)
+            ).apply(instance, ScepterExperiencePredicate::new)
     );
 
     @Override

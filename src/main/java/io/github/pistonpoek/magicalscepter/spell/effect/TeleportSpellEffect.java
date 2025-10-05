@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -8,7 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.event.GameEvent;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 import java.util.Set;
 

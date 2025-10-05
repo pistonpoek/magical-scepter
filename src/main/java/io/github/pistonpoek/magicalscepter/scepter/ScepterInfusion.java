@@ -1,9 +1,10 @@
 package io.github.pistonpoek.magicalscepter.scepter;
 
+import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
+import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
@@ -14,10 +15,9 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Hand;
-import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
-import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 
 import java.util.Optional;
+
 import static io.github.pistonpoek.magicalscepter.scepter.ScepterHelper.IS_INFUSABLE_SCEPTER;
 
 public class ScepterInfusion {
@@ -26,13 +26,12 @@ public class ScepterInfusion {
      * Get the infusion for the damage source
      *
      * @param lootContext Loot context to check infusion conditions with.
-     *
      * @return Optional scepter for the damage source infusion.
      */
     public static Optional<RegistryEntry<Scepter>> getInfusion(
             Registry<Scepter> scepterRegistry, LootContext lootContext) {
 
-        for (RegistryEntry<Scepter> scepter: scepterRegistry.streamEntries().toList()) {
+        for (RegistryEntry<Scepter> scepter : scepterRegistry.streamEntries().toList()) {
             if (scepter.value().infuses(lootContext)) {
                 return Optional.of(scepter);
             }
@@ -81,12 +80,12 @@ public class ScepterInfusion {
     /**
      * Create a loot context for the provided entity and damage source.
      *
-     * @param entity Entity to create loot context with.
+     * @param entity       Entity to create loot context with.
      * @param damageSource Damage source to create loot context with.
      * @return Loot context constructed with values from the entity and damage source.
      */
     private static LootContext getLootContext(LivingEntity entity, DamageSource damageSource) {
-        LootWorldContext.Builder builder = new LootWorldContext.Builder((ServerWorld)entity.getWorld())
+        LootWorldContext.Builder builder = new LootWorldContext.Builder((ServerWorld) entity.getWorld())
                 .add(LootContextParameters.THIS_ENTITY, entity)
                 .add(LootContextParameters.ORIGIN, entity.getPos())
                 .add(LootContextParameters.DAMAGE_SOURCE, damageSource)

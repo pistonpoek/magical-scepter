@@ -3,9 +3,6 @@ package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.Pair;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
@@ -14,12 +11,16 @@ import io.github.pistonpoek.magicalscepter.spell.position.RelativePositionSource
 import io.github.pistonpoek.magicalscepter.spell.rotation.AbsoluteRotationSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.FacingLocationRotationSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
+import net.minecraft.util.Pair;
+import net.minecraft.util.dynamic.Codecs;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public record CircleCastTransformer(PositionSource position, float direction, float arc, int amount, float stepDelay) implements CastTransformer {
+public record CircleCastTransformer(PositionSource position, float direction, float arc, int amount,
+                                    float stepDelay) implements CastTransformer {
     public static final MapCodec<CircleCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(CircleCastTransformer::position),
@@ -53,7 +54,7 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
 
             PositionSource absolutePosition = AbsolutePositionSource.builder(
                     RelativePositionSource.builder(relativePosition)
-                    .rotation(rotation).build().getPosition(context)).build();
+                            .rotation(rotation).build().getPosition(context)).build();
             pointCast.addContext(absolutePosition);
 
             Pair<Float, Float> pointRotation = new FacingLocationRotationSource(absolutePosition).getRotation(context);

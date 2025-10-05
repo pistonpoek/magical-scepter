@@ -1,8 +1,11 @@
 package io.github.pistonpoek.magicalscepter.item;
 
 import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
+import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
+import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
+import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import net.minecraft.entity.LivingEntity;
@@ -16,9 +19,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
-import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.spell.Spell;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -46,9 +46,9 @@ public class MagicalScepterItem extends Item implements AttackItem {
     /**
      * Activate the magical scepter to potentially cast a spell.
      *
-     * @param world World that the user tries to perform the action in.
-     * @param user Player entity that is to perform the action.
-     * @param hand Hand that the user is performing the action with.
+     * @param world    World that the user tries to perform the action in.
+     * @param user     Player entity that is to perform the action.
+     * @param hand     Hand that the user is performing the action with.
      * @param isAttack Truth assignment, if the action is an attack.
      * @return Action result of the performed action.
      */
@@ -78,7 +78,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
         user.setCurrentHand(hand);
         user.getItemCooldownManager().set(itemStack,
                 user.getAbilities().creativeMode ?
-                    10 : spell.getCooldown()
+                        10 : spell.getCooldown()
         );
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
@@ -90,12 +90,11 @@ public class MagicalScepterItem extends Item implements AttackItem {
     /**
      * Cast a specified spell for a specific living entity.
      *
-     * @param spell Spell to cast.
-     * @param caster Living entity to cast the spell for.
+     * @param spell     Spell to cast.
+     * @param caster    Living entity to cast the spell for.
      * @param itemStack Item stack that the spell is cast with.
-     * @param isAttack Truth assignment, if cast is an attack and not protect.
-     * @param hand Hand being used to cast the spell.
-     *
+     * @param isAttack  Truth assignment, if cast is an attack and not protect.
+     * @param hand      Hand being used to cast the spell.
      * @return Damaged item stack that was used to cast the spell.
      */
     public static ItemStack castSpell(@NotNull Spell spell, @NotNull LivingEntity caster,
@@ -106,7 +105,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL);
 
         SwingType swingType = isAttack ? SwingType.HIT : SwingType.PROTECT;
-        ((SwingHandLivingEntity)caster).magical_scepter$swingHand(hand, swingType);
+        ((SwingHandLivingEntity) caster).magical_scepter$swingHand(hand, swingType);
 
         if (caster.getWorld().isClient()) {
             return itemStack;

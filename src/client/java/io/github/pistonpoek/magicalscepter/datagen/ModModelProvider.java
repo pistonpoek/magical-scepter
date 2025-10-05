@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
+import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.mixin.client.data.ItemModelGeneratorMixin;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterTintSource;
 import net.fabricmc.api.EnvType;
@@ -7,7 +8,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.*;
-import io.github.pistonpoek.magicalscepter.item.ModItems;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 
@@ -15,6 +15,7 @@ import java.util.Optional;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.client.data.ModelProvider
  * @see net.minecraft.client.data.Models
  */
@@ -53,8 +54,8 @@ public class ModModelProvider extends FabricModelProvider {
      * Register a tinted scepter model.
      *
      * @param itemModelGenerator Item model generator to output the generated item model into.
-     * @param item Item to create item model for.
-     * @param model Identifier to register the item model at.
+     * @param item               Item to create item model for.
+     * @param model              Identifier to register the item model at.
      */
     public static void registerScepterTinted(ItemModelGeneratorMixin itemModelGenerator,
                                              Item item, Identifier model) {
@@ -65,8 +66,8 @@ public class ModModelProvider extends FabricModelProvider {
      * Register a scepter model.
      *
      * @param itemModelGenerator Item model generator to output the generated item model into.
-     * @param item Item to create item model for.
-     * @param model Identifier to register the item model at.
+     * @param item               Item to create item model for.
+     * @param model              Identifier to register the item model at.
      */
     public static void registerScepter(ItemModelGeneratorMixin itemModelGenerator,
                                        Item item, Model model) {
@@ -82,12 +83,11 @@ public class ModModelProvider extends FabricModelProvider {
      * Upload a specified model with two texture layers for a specified item.
      *
      * @param itemModelGenerator Item model generator to output the generated item model into.
-     * @param item Item to upload item model for.
-     * @param model Model to upload for the item.
-     * @param layer0 Identifier of the first layer.
-     * @param layer1 Identifier of the second layer.
+     * @param item               Item to upload item model for.
+     * @param model              Model to upload for the item.
+     * @param layer0             Identifier of the first layer.
+     * @param layer1             Identifier of the second layer.
      * @return Identifier of the uploaded model.
-     *
      * @see Model
      */
     public static Identifier uploadTwoLayers(ItemModelGeneratorMixin itemModelGenerator,

@@ -10,7 +10,6 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -36,7 +35,7 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
      * Construct the guardian bolt entity in the specified world.
      *
      * @param entityType Entity type that is being created.
-     * @param world World to create the entity in.
+     * @param world      World to create the entity in.
      */
     public GuardianBoltEntity(EntityType<? extends GuardianBoltEntity> entityType, World world) {
         super(entityType, world);

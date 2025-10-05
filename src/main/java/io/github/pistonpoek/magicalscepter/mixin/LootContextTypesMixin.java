@@ -18,7 +18,7 @@ public class LootContextTypesMixin {
     @Final
     private static BiMap<Identifier, ContextType> MAP;
 
-    @Inject(method="<init>", at=@At("TAIL"))
+    @Inject(method = "<init>", at = @At("TAIL"))
     public void registerModLootContextTypes(CallbackInfo callbackInfo) {
         MAP.putAll(ModLootContextTypes.getLootContextMap());
     }

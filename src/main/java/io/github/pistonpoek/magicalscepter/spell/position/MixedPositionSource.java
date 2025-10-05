@@ -2,8 +2,8 @@ package io.github.pistonpoek.magicalscepter.spell.position;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -58,9 +58,9 @@ public record MixedPositionSource(Optional<PositionSource> x,
 
         public MixedPositionSource build() {
             return new MixedPositionSource(
-                Optional.ofNullable(xPosition),
-                Optional.ofNullable(yPosition),
-                Optional.ofNullable(zPosition)
+                    Optional.ofNullable(xPosition),
+                    Optional.ofNullable(yPosition),
+                    Optional.ofNullable(zPosition)
             );
         }
 

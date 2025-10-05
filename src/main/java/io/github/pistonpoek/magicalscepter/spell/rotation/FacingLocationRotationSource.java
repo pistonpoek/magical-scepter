@@ -2,10 +2,10 @@ package io.github.pistonpoek.magicalscepter.spell.rotation;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
+import net.minecraft.util.Pair;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 public record FacingLocationRotationSource(PositionSource position) implements RotationSource {

@@ -3,9 +3,9 @@ package io.github.pistonpoek.magicalscepter.spell.rotation;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record RelativeRotationSource(float pitch, float yaw) implements RotationSource {
@@ -18,8 +18,8 @@ public record RelativeRotationSource(float pitch, float yaw) implements Rotation
 
     public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
         return new Pair<>(
-                    MathHelper.wrapDegrees(context.pitch() + pitch),
-                    MathHelper.wrapDegrees(context.yaw() + yaw));
+                MathHelper.wrapDegrees(context.pitch() + pitch),
+                MathHelper.wrapDegrees(context.yaw() + yaw));
     }
 
     @Override

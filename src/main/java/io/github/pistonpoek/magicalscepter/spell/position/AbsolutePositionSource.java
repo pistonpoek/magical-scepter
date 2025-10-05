@@ -3,8 +3,8 @@ package io.github.pistonpoek.magicalscepter.spell.position;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 public record AbsolutePositionSource(double x, double y, double z) implements PositionSource {

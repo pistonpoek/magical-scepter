@@ -1,15 +1,16 @@
 package io.github.pistonpoek.magicalscepter.loot.function;
 
 import com.mojang.serialization.MapCodec;
+import io.github.pistonpoek.magicalscepter.MagicalScepter;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.loot.function.LootFunction;
 import net.minecraft.loot.function.LootFunctionType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.loot.function.LootFunctionTypes
  */
 public class ModLootFunctionTypes {
@@ -27,9 +28,9 @@ public class ModLootFunctionTypes {
      * Register a mod loot function type for the specified identifier.
      *
      * @param identifier String identifier to register for.
-     * @param codec Loot function codec to register.
+     * @param codec      Loot function codec to register.
+     * @param <T>        Loot function to register.
      * @return Registered loot function type.
-     * @param <T> Loot function to register.
      */
     private static <T extends LootFunction> LootFunctionType<T> register(String identifier, MapCodec<T> codec) {
         return Registry.register(Registries.LOOT_FUNCTION_TYPE,

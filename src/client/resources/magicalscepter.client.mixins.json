@@ -1,20 +1,20 @@
 {
-  "required": true,
-  "package": "io.github.pistonpoek.magicalscepter.mixin.client",
-  "compatibilityLevel": "JAVA_21",
-  "client": [
-    "data.ItemModelGeneratorMixin",
-    "gui.hud.InGameHudMixin",
-    "gui.hud.bar.ExperienceBarMixin",
-    "network.ClientPlayNetworkHandlerMixin",
-    "render.entity.model.ArmedEntityRenderStateMixin",
-    "render.entity.model.BipedEntityModelMixin",
-    "render.entity.model.BipedEntityRenderStateMixin",
-    "render.entity.model.IllagerEntityModelMixin",
-    "render.entity.model.IllagerEntityRenderStateMixin",
-    "render.item.tint.TintSourceTypesMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+    "required": true,
+    "package": "io.github.pistonpoek.magicalscepter.mixin.client",
+    "compatibilityLevel": "JAVA_21",
+    "client": [
+        "data.ItemModelGeneratorMixin",
+        "gui.hud.InGameHudMixin",
+        "gui.hud.bar.ExperienceBarMixin",
+        "network.ClientPlayNetworkHandlerMixin",
+        "render.entity.model.ArmedEntityRenderStateMixin",
+        "render.entity.model.BipedEntityModelMixin",
+        "render.entity.model.BipedEntityRenderStateMixin",
+        "render.entity.model.IllagerEntityModelMixin",
+        "render.entity.model.IllagerEntityRenderStateMixin",
+        "render.item.tint.TintSourceTypesMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
 }

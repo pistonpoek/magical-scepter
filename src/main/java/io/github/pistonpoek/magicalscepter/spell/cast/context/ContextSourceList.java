@@ -19,7 +19,7 @@ public record ContextSourceList(List<SpellContextSource> sources) implements Spe
 
     @Override
     public SpellContext getContext(@NotNull SpellContext spellContext) {
-        for (SpellContextSource contextSource: sources) {
+        for (SpellContextSource contextSource : sources) {
             spellContext = contextSource.getContext(spellContext);
         }
         return spellContext;
@@ -27,7 +27,7 @@ public record ContextSourceList(List<SpellContextSource> sources) implements Spe
 
     public ContextSourceList append(SpellContextSource contextSource) {
         if (contextSource instanceof ContextSourceList) {
-            ((ContextSourceList)contextSource).sources.forEach(this::append);
+            ((ContextSourceList) contextSource).sources.forEach(this::append);
             return this;
         }
         sources.add(contextSource);
@@ -36,10 +36,10 @@ public record ContextSourceList(List<SpellContextSource> sources) implements Spe
 
     public ContextSourceList(SpellContext context) {
         this(List.of(
-                new AbsoluteTargetSource(context.target().getUuid()),
-                new AbsolutePositionSource(context.position()),
-                new AbsoluteRotationSource(context.pitch(), context.yaw())
-            )
+                        new AbsoluteTargetSource(context.target().getUuid()),
+                        new AbsolutePositionSource(context.position()),
+                        new AbsoluteRotationSource(context.pitch(), context.yaw())
+                )
         );
     }
 

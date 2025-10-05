@@ -1,13 +1,16 @@
 package io.github.pistonpoek.magicalscepter.render.entity;
 
 import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.render.ModRenderLayer;
 import io.github.pistonpoek.magicalscepter.render.entity.model.GuardianBoltEntityModel;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
@@ -66,9 +69,9 @@ public class GuardianBoltEntityRenderer extends EntityRenderer<GuardianBoltEntit
             return ColorHelper.getArgb(0, 224, 64);
         }
         float transition = progress * progress;
-        int red = 64 + (int)(transition * 191.0F);
-        int green = 32 + (int)(transition * 191.0F);
-        int blue = 128 - (int)(transition * 64.0F);
+        int red = 64 + (int) (transition * 191.0F);
+        int green = 32 + (int) (transition * 191.0F);
+        int blue = 128 - (int) (transition * 64.0F);
         return ColorHelper.getArgb(red, green, blue);
     }
 }

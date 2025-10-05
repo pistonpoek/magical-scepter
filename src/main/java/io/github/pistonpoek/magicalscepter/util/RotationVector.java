@@ -19,7 +19,7 @@ public class RotationVector {
      * Get the rotation vector going into the direction of the specified pitch and yaw.
      *
      * @param pitch Float that specifies vertical direction.
-     * @param yaw Float that specifies horizontal direction.
+     * @param yaw   Float that specifies horizontal direction.
      * @return Vector that expresses the direction of the specified pitch and yaw.
      */
     public static Vec3d get(float pitch, float yaw) {

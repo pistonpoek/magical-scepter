@@ -1,9 +1,9 @@
 package io.github.pistonpoek.magicalscepter.render.entity.model;
 
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -11,6 +11,7 @@ import java.util.Set;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.client.render.entity.model.EntityModelLayers
  */
 @Environment(EnvType.CLIENT)
@@ -34,7 +35,7 @@ public class ModEntityModelLayers {
      * Register a new entity model for the specified layer and identifier.
      *
      * @param identifier String to use as identifier of the entity model.
-     * @param layer String to get layer for.
+     * @param layer      String to get layer for.
      * @return Entity model layer that has been registered at the layer with the id.
      * @throws IllegalStateException When an id has already been registered for the layer.
      */

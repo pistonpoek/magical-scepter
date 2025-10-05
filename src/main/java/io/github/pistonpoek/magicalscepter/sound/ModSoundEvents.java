@@ -9,6 +9,7 @@ import net.minecraft.util.Identifier;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.sound.SoundEvents
  */
 public class ModSoundEvents {

@@ -1,5 +1,8 @@
 package io.github.pistonpoek.magicalscepter.recipe;
 
+import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
+import io.github.pistonpoek.magicalscepter.item.ModItems;
+import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
@@ -17,9 +20,6 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
-import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.item.ModItems;
-import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 
 import java.util.List;
 
@@ -92,6 +92,6 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
 
     @Override
     public RecipeSerializer<MagicalScepterRecipe> getSerializer() {
-            return ModRecipeSerializer.MAGICAL_SCEPTER;
-        }
+        return ModRecipeSerializer.MAGICAL_SCEPTER;
+    }
 }

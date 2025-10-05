@@ -2,11 +2,11 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.floatprovider.FloatProvider;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record DamageSpellEffect(FloatProvider amount, RegistryEntry<DamageType> damageType) implements SpellEffect {
     public static final MapCodec<DamageSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(

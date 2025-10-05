@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.entity.effect;
 
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -12,7 +13,6 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import java.util.Collection;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.entity.effect.StatusEffects
  */
 public class ModStatusEffects {
@@ -30,11 +31,11 @@ public class ModStatusEffects {
     public static final RegistryEntry<StatusEffect> STABILITY = registerEffect("stability",
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x074857)
                     .addAttributeModifier(EntityAttributes.KNOCKBACK_RESISTANCE,
-                        ModIdentifier.of("effect.stability"),
-                        0.3f, EntityAttributeModifier.Operation.ADD_VALUE)
+                            ModIdentifier.of("effect.stability"),
+                            0.3f, EntityAttributeModifier.Operation.ADD_VALUE)
                     .addAttributeModifier(EntityAttributes.EXPLOSION_KNOCKBACK_RESISTANCE,
-                        ModIdentifier.of("effect.stability"),
-                        0.3f, EntityAttributeModifier.Operation.ADD_VALUE));
+                            ModIdentifier.of("effect.stability"),
+                            0.3f, EntityAttributeModifier.Operation.ADD_VALUE));
     /**
      * Status effect that blocks projectiles from hitting the applied entity.
      */
@@ -69,7 +70,7 @@ public class ModStatusEffects {
      * Register an effect for the specified identifier and add it to the all effects advancement.
      *
      * @param identifier String to create mod identifier with.
-     * @param effect Status effect to register.
+     * @param effect     Status effect to register.
      * @return Registered registry entry of the status effect.
      */
     private static RegistryEntry<StatusEffect> registerEffect(String identifier, StatusEffect effect) {
@@ -81,7 +82,7 @@ public class ModStatusEffects {
      * Register a status effect for the specified identifier.
      *
      * @param identifier String to create mod identifier with for the status effect.
-     * @param effect Status effect to register.
+     * @param effect     Status effect to register.
      * @return Registered registry entry of the status effect.
      */
     private static RegistryEntry<StatusEffect> register(String identifier, StatusEffect effect) {

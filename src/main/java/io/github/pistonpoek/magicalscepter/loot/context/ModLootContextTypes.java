@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.loot.context.LootContextTypes
  */
 public class ModLootContextTypes {
@@ -44,7 +45,7 @@ public class ModLootContextTypes {
      * Register a mod context type for the specified identifier.
      *
      * @param identifier String identifier to register for.
-     * @param type Context type builder consumer to register.
+     * @param type       Context type builder consumer to register.
      * @return Registered context type.
      */
     private static ContextType register(String identifier, Consumer<ContextType.Builder> type) {

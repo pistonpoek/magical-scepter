@@ -12,7 +12,7 @@ public class LivingEntityHand {
     /**
      * Get the hand of the specified entity that contains the specified predicate assuming it holds for at least one hand.
      *
-     * @param entity Entity to get find the appropriate hand for.
+     * @param entity    Entity to get find the appropriate hand for.
      * @param predicate Predicate to find the hand for.
      * @return Hand of entity for which the predicate holds.
      */

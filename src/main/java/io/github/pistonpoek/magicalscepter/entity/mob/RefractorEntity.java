@@ -1,7 +1,12 @@
 package io.github.pistonpoek.magicalscepter.entity.mob;
 
+import io.github.pistonpoek.magicalscepter.entity.ai.goal.ScepterAttackGoal;
 import io.github.pistonpoek.magicalscepter.entity.ai.goal.ScepterRefillGoal;
+import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
+import io.github.pistonpoek.magicalscepter.scepter.Scepter;
+import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
+import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -29,11 +34,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import io.github.pistonpoek.magicalscepter.entity.ai.goal.ScepterAttackGoal;
-import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
-import io.github.pistonpoek.magicalscepter.scepter.Scepter;
-import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
-import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -44,7 +44,7 @@ public class RefractorEntity extends IllagerEntity {
      * Construct the refractor entity in the specified world.
      *
      * @param entityType Entity type that is being created.
-     * @param world World to create the entity in.
+     * @param world      World to create the entity in.
      */
     public RefractorEntity(EntityType<? extends RefractorEntity> entityType, World world) {
         super(entityType, world);

@@ -3,9 +3,9 @@ package io.github.pistonpoek.magicalscepter.spell.position;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.Vec3d;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record EntityPositionSource(Anchor anchor) implements PositionSource {
@@ -17,7 +17,7 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
 
     @Override
     public Vec3d getPosition(@NotNull SpellContext context) {
-        return switch(anchor) {
+        return switch (anchor) {
             case EYES -> context.caster().getEyePos();
             case FEET -> context.caster().getPos();
         };
@@ -29,6 +29,7 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
 
         public final static Codec<Anchor> CODEC = StringIdentifiable.createBasicCodec(Anchor::values);
         private final String identifier;
+
         Anchor(String identifier) {
             this.identifier = identifier;
         }

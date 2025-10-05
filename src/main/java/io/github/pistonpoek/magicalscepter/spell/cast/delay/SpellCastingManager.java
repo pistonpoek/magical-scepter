@@ -3,8 +3,8 @@ package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.MinecraftServer;
@@ -13,7 +13,10 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class SpellCastingManager extends PersistentState {
     private static final int MAX_CASTER_CASTINGS = Integer.MAX_VALUE;

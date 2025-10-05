@@ -3,22 +3,22 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 import java.util.Optional;
 
 public record MoveSpellEffect(FloatProvider power, boolean knockback) implements SpellEffect {
     public static final MapCodec<MoveSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            FloatProvider.VALUE_CODEC.fieldOf("power").forGetter(MoveSpellEffect::power),
-                            Codec.BOOL.optionalFieldOf("knockback", false).forGetter(MoveSpellEffect::knockback)
-                    ).apply(instance, MoveSpellEffect::new)
+                    FloatProvider.VALUE_CODEC.fieldOf("power").forGetter(MoveSpellEffect::power),
+                    Codec.BOOL.optionalFieldOf("knockback", false).forGetter(MoveSpellEffect::knockback)
+            ).apply(instance, MoveSpellEffect::new)
     );
 
     @Override

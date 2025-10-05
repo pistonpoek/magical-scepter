@@ -12,16 +12,16 @@ public class ScepterUseIndicationBar {
     /**
      * Render the scepter use indication bar.
      *
-     * @param context Draw context to use for rendering.
-     * @param player Player to reference the experience data for.
+     * @param context        Draw context to use for rendering.
+     * @param player         Player to reference the experience data for.
      * @param experienceStep Experience step to determine bar size for.
-     * @param x Horizontal position of the experience bar on the screen.
-     * @param y Vertical position of the experience bar on the screen.
+     * @param x              Horizontal position of the experience bar on the screen.
+     * @param y              Vertical position of the experience bar on the screen.
      */
     public static void render(DrawContext context, ClientPlayerEntity player,
                               int experienceStep, int x, int y) {
         int progress = ExperienceBar.getPixelProgress(player);
-        float use_progress = experienceStep / (float)player.getNextLevelExperience();
+        float use_progress = experienceStep / (float) player.getNextLevelExperience();
         int use_part = Math.round(use_progress * (Bar.WIDTH + 1.0F));
         ExperienceBar.renderSection(context, TEXTURE, x, y, progress - use_part, progress);
     }

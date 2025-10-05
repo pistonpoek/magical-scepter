@@ -19,7 +19,7 @@ public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
     /**
      * Construct a mod damage type provider for data generation.
      *
-     * @param output Data output to generate damage type data into.
+     * @param output           Data output to generate damage type data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
     public DamageTypeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
@@ -31,7 +31,7 @@ public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
     protected void configure(BiConsumer<Identifier, DamageType> provider, RegistryWrapper.WrapperLookup registries) {
         RegistryEntryLookup<DamageType> damageTypeLookup = registries.getOrThrow(RegistryKeys.DAMAGE_TYPE);
 
-        for (RegistryKey<DamageType> damageTypeKey: ModDamageTypes.DAMAGE_TYPE_KEYS) {
+        for (RegistryKey<DamageType> damageTypeKey : ModDamageTypes.DAMAGE_TYPE_KEYS) {
             addDamageType(provider, damageTypeLookup, damageTypeKey);
         }
     }
@@ -40,12 +40,12 @@ public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
      * Add a damage type to the specified provider.
      *
      * @param provider Provider to add the damage type to.
-     * @param lookup Registry entry lookup for the damage type.
-     * @param key Registry key to add to the damage type provider.
+     * @param lookup   Registry entry lookup for the damage type.
+     * @param key      Registry key to add to the damage type provider.
      */
     private static void addDamageType(BiConsumer<Identifier, DamageType> provider,
-                                   RegistryEntryLookup<DamageType> lookup,
-                                   RegistryKey<DamageType> key) {
+                                      RegistryEntryLookup<DamageType> lookup,
+                                      RegistryKey<DamageType> key) {
         provider.accept(key.getValue(), lookup.getOrThrow(key).value());
     }
 

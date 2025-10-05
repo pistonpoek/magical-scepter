@@ -35,7 +35,7 @@ public class MixsonEvents {
         String biomePath = biome.getValue().getPath();
         registerMixsonEvent("worldgen/biome/" + biomePath,
                 ModIdentifier.identifier(String.join("_", "biome_spawn_entry",
-                                biomePath, entry.type().getUntranslatedName())),
+                        biomePath, entry.type().getUntranslatedName())),
                 new BiomeSpawnEntryMixson(group, weight, entry));
     }
 

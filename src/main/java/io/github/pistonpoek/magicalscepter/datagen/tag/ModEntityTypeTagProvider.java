@@ -10,13 +10,14 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.data.tag.vanilla.VanillaEntityTypeTagProvider
  */
 public class ModEntityTypeTagProvider extends VanillaEntityTypeTagProvider {
     /**
      * Construct a mod entity type tag provider for data generation.
      *
-     * @param output Data output to generate entity type tag data into.
+     * @param output           Data output to generate entity type tag data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
     public ModEntityTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

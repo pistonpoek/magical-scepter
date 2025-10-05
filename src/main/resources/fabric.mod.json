@@ -1,46 +1,46 @@
 {
-	"schemaVersion": 1,
-	"id": "magicalscepter",
-	"version": "${version}",
-	"name": "Magical Scepter",
-	"description": "Adds a spell casting weapon that is wielded by an illager residing in an old taiga cabin.",
-	"authors": [
-		"pistonpoek"
-	],
-	"contact": {
-		"email": "pistonpoek@gmail.com",
-		"homepage": "https://modrinth.com/mod/magical-scepter",
-		"sources": "https://github.com/pistonpoek/magical-scepter",
-		"issues": "https://github.com/pistonpoek/magical-scepter/issues"
-	},
-	"license": "",
-	"icon": "assets/magicalscepter/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-          	"io.github.pistonpoek.magicalscepter.MagicalScepter"
-		],
-		"client": [
-			"io.github.pistonpoek.magicalscepter.MagicalScepterClient"
-		],
-		"fabric-datagen": [
-			"io.github.pistonpoek.magicalscepter.datagen.MagicalScepterDataGeneratorClient"
-		]
-	},
-	"mixins": [
-		"magicalscepter.mixins.json",
-		{
-			"config": "magicalscepter.client.mixins.json",
-			"environment": "client"
-		}
-	],
-	"depends": {
-		"fabricloader": ">=0.16.10",
-		"minecraft": "1.21.8",
-		"java": ">=21",
-		"fabric-api": "*",
-		"mixson": "1.3.1"
-	},
-	"suggests": {
-	}
+    "schemaVersion": 1,
+    "id": "magicalscepter",
+    "version": "${version}",
+    "name": "Magical Scepter",
+    "description": "Adds a spell casting weapon that is wielded by an illager residing in an old taiga cabin.",
+    "authors": [
+        "pistonpoek"
+    ],
+    "contact": {
+        "email": "pistonpoek@gmail.com",
+        "homepage": "https://modrinth.com/mod/magical-scepter",
+        "sources": "https://github.com/pistonpoek/magical-scepter",
+        "issues": "https://github.com/pistonpoek/magical-scepter/issues"
+    },
+    "license": "",
+    "icon": "assets/magicalscepter/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "io.github.pistonpoek.magicalscepter.MagicalScepter"
+        ],
+        "client": [
+            "io.github.pistonpoek.magicalscepter.MagicalScepterClient"
+        ],
+        "fabric-datagen": [
+            "io.github.pistonpoek.magicalscepter.datagen.MagicalScepterDataGeneratorClient"
+        ]
+    },
+    "mixins": [
+        "magicalscepter.mixins.json",
+        {
+            "config": "magicalscepter.client.mixins.json",
+            "environment": "client"
+        }
+    ],
+    "depends": {
+        "fabricloader": ">=0.16.10",
+        "minecraft": "1.21.8",
+        "java": ">=21",
+        "fabric-api": "*",
+        "mixson": "1.3.1"
+    },
+    "suggests": {
+    }
 }

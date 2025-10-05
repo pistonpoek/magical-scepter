@@ -8,6 +8,7 @@ import net.minecraft.world.event.GameEvent;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see GameEvent
  */
 public class ModGameEvent {
@@ -34,7 +35,7 @@ public class ModGameEvent {
      * Register a game event with a specified range.
      *
      * @param identifier Identifier path of mod to register the game event for.
-     * @param range Range that the game event is detected at.
+     * @param range      Range that the game event is detected at.
      * @return Registry entry reference for registered game event.
      */
     private static RegistryEntry.Reference<GameEvent> register(String identifier, int range) {

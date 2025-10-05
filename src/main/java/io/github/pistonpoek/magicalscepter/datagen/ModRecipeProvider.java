@@ -1,9 +1,12 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
+import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.recipe.ExperienceBottleRecipe;
+import io.github.pistonpoek.magicalscepter.recipe.MagicalScepterRecipe;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancement.AdvancementRequirements;
@@ -19,21 +22,19 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
-import io.github.pistonpoek.magicalscepter.item.ModItems;
-import io.github.pistonpoek.magicalscepter.recipe.MagicalScepterRecipe;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 import java.util.concurrent.CompletableFuture;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.data.recipe.RecipeGenerator.RecipeProvider
  */
 public class ModRecipeProvider extends FabricRecipeProvider {
     /**
      * Construct a mod recipe provider for data generation.
      *
-     * @param output Data output to generate recipe data into.
+     * @param output           Data output to generate recipe data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
     public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

@@ -13,6 +13,7 @@ import java.util.function.Function;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.particle.ParticleTypes
  */
 public class ModParticleTypes {

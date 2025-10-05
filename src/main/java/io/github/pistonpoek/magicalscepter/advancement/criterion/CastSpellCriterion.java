@@ -2,7 +2,6 @@ package io.github.pistonpoek.magicalscepter.advancement.criterion;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.Optional;
 import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.item.ItemConvertible;
@@ -14,6 +13,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Conditions> {
     @Override
     public Codec<CastSpellCriterion.Conditions> getConditionsCodec() {
@@ -24,7 +25,7 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
      * Trigger the cast spell criterion.
      *
      * @param player Player that is casting the spell.
-     * @param stack Item stack used when casting the spell.
+     * @param stack  Item stack used when casting the spell.
      */
     public void trigger(ServerPlayerEntity player, ItemStack stack) {
         this.trigger(player, conditions -> conditions.matches(stack));
@@ -34,7 +35,7 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
      * Conditions that can be used to narrow the cast spell criterion.
      *
      * @param player Optional loot context predicate to check on the casting player.
-     * @param item Optional item predicate to check on the item stack used when casting.
+     * @param item   Optional item predicate to check on the item stack used when casting.
      */
     public record Conditions(Optional<LootContextPredicate> player, Optional<ItemPredicate> item)
             implements AbstractCriterion.Conditions {

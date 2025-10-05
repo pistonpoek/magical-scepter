@@ -1,18 +1,19 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.context;
 
+import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
+import io.github.pistonpoek.magicalscepter.util.RotationVector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Position;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
-import io.github.pistonpoek.magicalscepter.util.RotationVector;
 
 import java.util.List;
 import java.util.Optional;
 
-public record SpellContext(LivingEntity caster, Entity target, Vec3d position, float pitch, float yaw) implements Position {
+public record SpellContext(LivingEntity caster, Entity target, Vec3d position, float pitch,
+                           float yaw) implements Position {
 
     public SpellContext(LivingEntity caster) {
         this(caster, caster, caster.getEyePos(), caster.getPitch(), caster.getYaw());
@@ -65,7 +66,7 @@ public record SpellContext(LivingEntity caster, Entity target, Vec3d position, f
     }
 
     public void apply(List<SpellEffect> effects) {
-        for (SpellEffect effect: effects) {
+        for (SpellEffect effect : effects) {
             effect.apply(this);
         }
     }

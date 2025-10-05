@@ -1,5 +1,13 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
+import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellCriterion;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterCriterion;
+import io.github.pistonpoek.magicalscepter.item.ModItems;
+import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import io.github.pistonpoek.magicalscepter.scepter.Scepter;
+import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
+import io.github.pistonpoek.magicalscepter.scepter.Scepters;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
@@ -9,14 +17,6 @@ import net.minecraft.data.advancement.AdvancementTabGenerator;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
-import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellCriterion;
-import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterCriterion;
-import io.github.pistonpoek.magicalscepter.item.ModItems;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
-import io.github.pistonpoek.magicalscepter.scepter.Scepter;
-import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
-import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -24,13 +24,14 @@ import java.util.function.Consumer;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.data.advancement.vanilla.VanillaAdvancementProviders
  */
 public class ModAdvancementProvider extends FabricAdvancementProvider {
     /**
      * Construct a mod advancement provider for data generation.
      *
-     * @param output Data output to generate mod advancement data into.
+     * @param output           Data output to generate mod advancement data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
     protected ModAdvancementProvider(FabricDataOutput output,
@@ -59,16 +60,16 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
         AdvancementEntry allScepterInfusionsAdvancement = requireListedSceptersInfused(
                 Advancement.Builder.create().parent(castScepterAdvancement)
-                .display(
-                        ScepterHelper.createMagicalScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY)),
-                        ModIdentifier.translatable("advancements.adventure.all_scepter_infusions.title"),
-                        ModIdentifier.translatable("advancements.adventure.all_scepter_infusions.description"),
-                        null,
-                        AdvancementFrame.GOAL,
-                        true,
-                        true,
-                        false
-                ),
+                        .display(
+                                ScepterHelper.createMagicalScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY)),
+                                ModIdentifier.translatable("advancements.adventure.all_scepter_infusions.title"),
+                                ModIdentifier.translatable("advancements.adventure.all_scepter_infusions.description"),
+                                null,
+                                AdvancementFrame.GOAL,
+                                true,
+                                true,
+                                false
+                        ),
                 registryLookup,
                 Scepters.ALL_INFUSED_SCEPTERS
         ).build(consumer, ModIdentifier.identifier("adventure/all_scepter_infusions"));
@@ -77,9 +78,9 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
     /**
      * Extend the specified advancement builder with infuse scepter criterion for the list of specified scepters.
      *
-     * @param builder Advancement builder to extend with condition.
+     * @param builder        Advancement builder to extend with condition.
      * @param registryLookup Registry lookup to access registries with.
-     * @param scepters List of scepters that each add an infuse condition to the advancement builder.
+     * @param scepters       List of scepters that each add an infuse condition to the advancement builder.
      * @return Advancement builder that is extended with a criterion for each specified scepter.
      */
     protected static Advancement.Builder requireListedSceptersInfused(Advancement.Builder builder,

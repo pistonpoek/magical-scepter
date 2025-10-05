@@ -2,11 +2,8 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import io.github.pistonpoek.magicalscepter.MagicalScepter;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.minecraft.entity.*;
 import net.minecraft.entity.mob.EvokerFangsEntity;
@@ -29,8 +26,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public record SummonEntitySpellEffect(
         RegistryEntryList<EntityType<?>> entityTypes,
@@ -39,12 +38,12 @@ public record SummonEntitySpellEffect(
 ) implements SpellEffect {
     public static final MapCodec<SummonEntitySpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            RegistryEntryListCodec.create(RegistryKeys.ENTITY_TYPE,
-                                            Registries.ENTITY_TYPE.getEntryCodec(), false)
-                                .fieldOf("entity").forGetter(SummonEntitySpellEffect::entityTypes),
-                            SpellEffect.CODEC.listOf().fieldOf("effects").forGetter(SummonEntitySpellEffect::effects),
-                            NbtCompound.CODEC.optionalFieldOf("nbt").forGetter(SummonEntitySpellEffect::nbt)
-                    ).apply(instance, SummonEntitySpellEffect::new)
+                    RegistryEntryListCodec.create(RegistryKeys.ENTITY_TYPE,
+                                    Registries.ENTITY_TYPE.getEntryCodec(), false)
+                            .fieldOf("entity").forGetter(SummonEntitySpellEffect::entityTypes),
+                    SpellEffect.CODEC.listOf().fieldOf("effects").forGetter(SummonEntitySpellEffect::effects),
+                    NbtCompound.CODEC.optionalFieldOf("nbt").forGetter(SummonEntitySpellEffect::nbt)
+            ).apply(instance, SummonEntitySpellEffect::new)
     );
 
     @Override
@@ -138,7 +137,7 @@ public record SummonEntitySpellEffect(
         }
         Direction direction = RotationSource.getDirection(context);
         nbtCompound.putNullable("Dir", Direction.INDEX_CODEC, direction);
-        nbtCompound.putInt("Steps",  10 + caster.getRandom().nextInt(5) * 10);
+        nbtCompound.putInt("Steps", 10 + caster.getRandom().nextInt(5) * 10);
         double xOffset = direction.getOffsetX();
         double yOffset = direction.getOffsetY();
         double zOffset = direction.getOffsetZ();

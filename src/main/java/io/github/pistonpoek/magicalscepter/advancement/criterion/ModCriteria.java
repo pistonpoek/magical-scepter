@@ -6,6 +6,7 @@ import net.minecraft.registry.Registry;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.advancement.criterion.Criteria
  */
 public class ModCriteria {
@@ -23,9 +24,9 @@ public class ModCriteria {
      * Register a mod advancement criteria for a specified identifier.
      *
      * @param identifier String identifier to register criterion for.
-     * @param criterion Criterion to register.
+     * @param criterion  Criterion to register.
+     * @param <T>        Type of the criterion to register.
      * @return Registered criterion.
-     * @param <T> Type of the criterion to register.
      */
     public static <T extends Criterion<?>> T register(String identifier, T criterion) {
         return Registry.register(Registries.CRITERION, identifier, criterion);

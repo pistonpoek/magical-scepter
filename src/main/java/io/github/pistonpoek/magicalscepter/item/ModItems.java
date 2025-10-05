@@ -1,28 +1,31 @@
 package io.github.pistonpoek.magicalscepter.item;
 
-import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
-import io.github.pistonpoek.magicalscepter.registry.tag.ScepterTags;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.*;
-import net.minecraft.registry.*;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Rarity;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
+import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import io.github.pistonpoek.magicalscepter.registry.tag.ScepterTags;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.item.*;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Rarity;
 
 import java.util.Set;
 import java.util.function.Function;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.item.Items
  */
 public class ModItems {
@@ -79,12 +82,12 @@ public class ModItems {
      */
     private static void addItemsToCombatItemGroup(FabricItemGroupEntries entries) {
         entries.getContext().lookup().getOptional(ModRegistryKeys.SCEPTER)
-            .ifPresent(registryWrapper -> {
-                RegistryEntry<Scepter> magicalScepter = registryWrapper.getOrThrow(Scepters.MAGICAL_KEY);
-                entries.addAfter(Items.MACE, ScepterHelper.createMagicalScepter(magicalScepter));
-                entries.addAfter(Items.WIND_CHARGE, getInfusedScepters(registryWrapper),
-                    ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS);
-        });
+                .ifPresent(registryWrapper -> {
+                    RegistryEntry<Scepter> magicalScepter = registryWrapper.getOrThrow(Scepters.MAGICAL_KEY);
+                    entries.addAfter(Items.MACE, ScepterHelper.createMagicalScepter(magicalScepter));
+                    entries.addAfter(Items.WIND_CHARGE, getInfusedScepters(registryWrapper),
+                            ItemGroup.StackVisibility.PARENT_AND_SEARCH_TABS);
+                });
     }
 
     /**
@@ -121,7 +124,7 @@ public class ModItems {
      * Register an item with specified item settings.
      *
      * @param identifier String identifier to register the item for.
-     * @param settings Settings to register the item with.
+     * @param settings   Settings to register the item with.
      * @return Item registered.
      */
     public static Item register(String identifier, Item.Settings settings) {
@@ -132,7 +135,7 @@ public class ModItems {
      * Register an item with specified item factory.
      *
      * @param identifier String identifier to register the item for.
-     * @param factory Item factory that uses item settings to create an item.
+     * @param factory    Item factory that uses item settings to create an item.
      * @return Item registered.
      */
     private static Item register(String identifier, Function<Item.Settings, Item> factory) {
@@ -143,8 +146,8 @@ public class ModItems {
      * Register an item with a specified item factory and specified item settings.
      *
      * @param identifier String identifier to register the item for.
-     * @param factory Item factory that uses item settings to create an item.
-     * @param settings Settings to register the item with.
+     * @param factory    Item factory that uses item settings to create an item.
+     * @param settings   Settings to register the item with.
      * @return Item registered.
      */
     private static Item register(String identifier, Function<Item.Settings, Item> factory, Item.Settings settings) {

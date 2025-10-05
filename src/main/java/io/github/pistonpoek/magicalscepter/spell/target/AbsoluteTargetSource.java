@@ -2,10 +2,10 @@ package io.github.pistonpoek.magicalscepter.spell.target;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.Uuids;
 import org.jetbrains.annotations.NotNull;
 

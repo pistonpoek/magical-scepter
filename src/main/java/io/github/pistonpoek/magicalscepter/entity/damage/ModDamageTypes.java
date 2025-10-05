@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.entity.damage.DamageTypes
  */
 public class ModDamageTypes {
@@ -20,7 +21,7 @@ public class ModDamageTypes {
      * Create a damage source for the specified damage type registry key.
      *
      * @param dynamicRegistryManager Registry manager to use for retrieving the damage type.
-     * @param key Damage type registry key to create a damage source for.
+     * @param key                    Damage type registry key to create a damage source for.
      * @return Damage source created with the specified registry key.
      */
     public static DamageSource of(DynamicRegistryManager dynamicRegistryManager, RegistryKey<DamageType> key) {

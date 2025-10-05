@@ -63,7 +63,7 @@ public class ArcaneScepterItem extends Item {
         }
 
         if (!world.isClient()) {
-            ExperienceOrbEntity.spawn((ServerWorld)world, user.getPos(), scepterExperience);
+            ExperienceOrbEntity.spawn((ServerWorld) world, user.getPos(), scepterExperience);
             replacementStack.remove(ModDataComponentTypes.SCEPTER_EXPERIENCE);
         }
 

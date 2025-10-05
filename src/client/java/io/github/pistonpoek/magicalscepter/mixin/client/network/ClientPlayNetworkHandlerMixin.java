@@ -26,7 +26,7 @@ public abstract class ClientPlayNetworkHandlerMixin extends ClientCommonNetworkH
     /**
      * Play spawn sounds for mod entities.
      *
-     * @param entity Entity to play spawn sound for.
+     * @param entity       Entity to play spawn sound for.
      * @param callbackInfo Callback info of the method injection.
      */
     @Inject(method = "playSpawnSound", at = @At("TAIL"))

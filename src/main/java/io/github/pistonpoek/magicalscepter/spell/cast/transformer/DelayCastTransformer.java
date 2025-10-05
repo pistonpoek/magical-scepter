@@ -21,7 +21,7 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
      * Delay the invocation of the specified spell casting.
      *
      * @param casting Spell casting to delay.
-     * @param delay Time to delay in ticks.
+     * @param delay   Time to delay in ticks.
      * @return Spell casting that will have its invocation delayed.
      */
     public static SpellCasting delay(@NotNull SpellCasting casting, int delay) {

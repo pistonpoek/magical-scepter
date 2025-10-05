@@ -2,10 +2,10 @@ package io.github.pistonpoek.magicalscepter.spell.cast;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.entity.LivingEntity;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
 import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
+import net.minecraft.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

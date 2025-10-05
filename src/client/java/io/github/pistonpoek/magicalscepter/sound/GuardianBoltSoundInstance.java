@@ -36,9 +36,9 @@ public class GuardianBoltSoundInstance extends MovingSoundInstance {
     @Override
     public void tick() {
         if (!this.guardianBolt.isRemoved()) {
-            this.x = (float)this.guardianBolt.getX();
-            this.y = (float)this.guardianBolt.getY();
-            this.z = (float)this.guardianBolt.getZ();
+            this.x = (float) this.guardianBolt.getX();
+            this.y = (float) this.guardianBolt.getY();
+            this.z = (float) this.guardianBolt.getZ();
             float progress = this.guardianBolt.getProgress(0.0F);
             this.volume = BASE_VOLUME + PROGRESS_VOLUME_MULTIPLIER * progress * progress;
             this.pitch = BASE_PITCH + PROGRESS_PITCH_MULTIPLIER * progress;

@@ -1,8 +1,8 @@
 package io.github.pistonpoek.magicalscepter.registry.tag;
 
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.tag.TagKey;
 
 public class ScepterTags {

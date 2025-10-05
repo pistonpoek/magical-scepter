@@ -3,15 +3,15 @@ package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
+import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
-import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
-import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -21,11 +21,11 @@ import java.util.Optional;
 public record SurfaceCastTransformer(float distance, boolean require, Optional<PositionSource> position)
         implements CastTransformer {
     public static final MapCodec<SurfaceCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
-        instance -> instance.group(
-                Codec.FLOAT.fieldOf("distance").forGetter(SurfaceCastTransformer::distance),
-                Codec.BOOL.optionalFieldOf("require", true).forGetter(SurfaceCastTransformer::require),
-                PositionSource.CODEC.optionalFieldOf("position").forGetter(SurfaceCastTransformer::position)
-        ).apply(instance, SurfaceCastTransformer::new)
+            instance -> instance.group(
+                    Codec.FLOAT.fieldOf("distance").forGetter(SurfaceCastTransformer::distance),
+                    Codec.BOOL.optionalFieldOf("require", true).forGetter(SurfaceCastTransformer::require),
+                    PositionSource.CODEC.optionalFieldOf("position").forGetter(SurfaceCastTransformer::position)
+            ).apply(instance, SurfaceCastTransformer::new)
     );
 
     @Override

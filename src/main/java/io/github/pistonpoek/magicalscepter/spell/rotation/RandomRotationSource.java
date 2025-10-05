@@ -3,9 +3,9 @@ package io.github.pistonpoek.magicalscepter.spell.rotation;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.random.Random;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 public record RandomRotationSource(float pitch, float yaw) implements RotationSource {

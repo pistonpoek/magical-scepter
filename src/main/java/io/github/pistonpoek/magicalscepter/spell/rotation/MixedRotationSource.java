@@ -2,14 +2,15 @@ package io.github.pistonpoek.magicalscepter.spell.rotation;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public record MixedRotationSource(Optional<RotationSource> pitch, Optional<RotationSource> yaw) implements RotationSource {
+public record MixedRotationSource(Optional<RotationSource> pitch,
+                                  Optional<RotationSource> yaw) implements RotationSource {
     static MapCodec<MixedRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     RotationSource.CODEC.optionalFieldOf("pitch").forGetter(MixedRotationSource::pitch),

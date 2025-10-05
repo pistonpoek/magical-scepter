@@ -1,8 +1,7 @@
 package io.github.pistonpoek.magicalscepter.mixin;
 
-import io.github.pistonpoek.magicalscepter.MagicalScepter;
-import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentEffectComponentTypes;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantment;
+import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentEffectComponentTypes;
 import net.minecraft.component.ComponentType;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;

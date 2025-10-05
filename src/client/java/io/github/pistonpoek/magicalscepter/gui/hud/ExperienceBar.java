@@ -12,10 +12,10 @@ public class ExperienceBar {
      *
      * @param context Draw context to use for rendering.
      * @param texture Identifier of the texture to use.
-     * @param x Horizontal position of the experience bar on the screen.
-     * @param y Vertical position of the experience bar on the screen.
-     * @param start Horizontal position to start the section to render at.
-     * @param end Horizontal position to end the section to render at.
+     * @param x       Horizontal position of the experience bar on the screen.
+     * @param y       Vertical position of the experience bar on the screen.
+     * @param start   Horizontal position to start the section to render at.
+     * @param end     Horizontal position to end the section to render at.
      */
     static void renderSection(DrawContext context, Identifier texture, int x, int y, int start, int end) {
         int startX = Math.clamp(start, 0, Bar.WIDTH);
@@ -34,6 +34,6 @@ public class ExperienceBar {
      * @return Amount of pixels that make up the experience progress in pixels for the player.
      */
     static int getPixelProgress(ClientPlayerEntity player) {
-        return (int)(player.experienceProgress * 183.0F);
+        return (int) (player.experienceProgress * 183.0F);
     }
 }

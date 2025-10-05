@@ -4,7 +4,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.math.floatprovider.FloatProvider;
-import net.minecraft.util.math.intprovider.IntProvider;
 
 public record IgniteSpellEffect(FloatProvider duration) implements SpellEffect {
     public static final MapCodec<IgniteSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(

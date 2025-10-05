@@ -6,7 +6,6 @@ import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentLevelBasedValue;
-import net.minecraft.enchantment.effect.value.AddEnchantmentEffect;
 import net.minecraft.enchantment.effect.value.MultiplyEnchantmentEffect;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registerable;
@@ -19,6 +18,7 @@ import java.util.List;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.enchantment.Enchantments
  */
 public interface ModEnchantments {
@@ -33,22 +33,22 @@ public interface ModEnchantments {
         RegistryEntryLookup<Item> itemLookup = registry.getRegistryLookup(RegistryKeys.ITEM);
 
         register(registry, INSIGHT_KEY, new Enchantment.Builder(
-                Enchantment.definition(
-                        itemLookup.getOrThrow(ModItemTags.SCEPTER_ENCHANTABLE),
-                        2,
-                        3,
-                        Enchantment.leveledCost(15, 9),
-                        Enchantment.leveledCost(65, 9),
-                        4,
-                        AttributeModifierSlot.MAINHAND
+                        Enchantment.definition(
+                                itemLookup.getOrThrow(ModItemTags.SCEPTER_ENCHANTABLE),
+                                2,
+                                3,
+                                Enchantment.leveledCost(15, 9),
+                                Enchantment.leveledCost(65, 9),
+                                4,
+                                AttributeModifierSlot.MAINHAND
+                        )
+                ).addEffect(
+                        EnchantmentEffectComponentTypes.MOB_EXPERIENCE,
+                        new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.3F, 0.35F))
+                ).addNonListEffect(
+                        ModEnchantmentEffectComponentTypes.EXPERIENCE_STEP,
+                        new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.lookup(List.of(2.0F, 4.0F, 8.0F), EnchantmentLevelBasedValue.constant(8.0F)))
                 )
-            ).addEffect(
-                EnchantmentEffectComponentTypes.MOB_EXPERIENCE,
-                new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.3F, 0.35F))
-            ).addNonListEffect(
-                ModEnchantmentEffectComponentTypes.EXPERIENCE_STEP,
-                new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.lookup(List.of(2.0F, 4.0F, 8.0F), EnchantmentLevelBasedValue.constant(8.0F)))
-            )
         );
     }
 
@@ -56,8 +56,8 @@ public interface ModEnchantments {
      * Register an enchantment for the specified identifier.
      *
      * @param registry Enchantment registry to register the enchantment for.
-     * @param key Enchantment key to register the enchantment at.
-     * @param builder Enchantment builder to create enchantment to register.
+     * @param key      Enchantment key to register the enchantment at.
+     * @param builder  Enchantment builder to create enchantment to register.
      */
     private static void register(Registerable<Enchantment> registry,
                                  RegistryKey<Enchantment> key,

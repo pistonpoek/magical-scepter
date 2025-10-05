@@ -2,12 +2,12 @@ package io.github.pistonpoek.magicalscepter.spell.target;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.entity.Entity;
-import net.minecraft.registry.Registry;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import net.minecraft.entity.Entity;
+import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;

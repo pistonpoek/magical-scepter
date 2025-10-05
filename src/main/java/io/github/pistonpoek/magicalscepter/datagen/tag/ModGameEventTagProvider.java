@@ -10,13 +10,14 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.data.tag.vanilla.VanillaGameEventTagProvider
  */
 public class ModGameEventTagProvider extends VanillaGameEventTagProvider {
     /**
      * Construct a mod game event tag provider for data generation.
      *
-     * @param output Data output to generate game event tag data into.
+     * @param output           Data output to generate game event tag data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
     public ModGameEventTagProvider(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

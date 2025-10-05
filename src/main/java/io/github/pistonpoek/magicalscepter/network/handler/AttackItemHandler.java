@@ -1,5 +1,7 @@
 package io.github.pistonpoek.magicalscepter.network.handler;
 
+import io.github.pistonpoek.magicalscepter.item.AttackItem;
+import io.github.pistonpoek.magicalscepter.network.packet.AttackItemPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -7,8 +9,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
-import io.github.pistonpoek.magicalscepter.item.AttackItem;
-import io.github.pistonpoek.magicalscepter.network.packet.AttackItemPayload;
 
 public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandler<AttackItemPayload> {
     @Override
@@ -53,7 +53,7 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         int stackDamage = stack.getDamage();
 
         ActionResult result =
-                ((AttackItem)stack.getItem()).attack(player.getWorld(), player);
+                ((AttackItem) stack.getItem()).attack(player.getWorld(), player);
         ItemStack resultStack = result instanceof ActionResult.Success success ? success.getNewHandStack() : stack;
 
         if (resultStack == stack && resultStack.getCount() == stackCount &&

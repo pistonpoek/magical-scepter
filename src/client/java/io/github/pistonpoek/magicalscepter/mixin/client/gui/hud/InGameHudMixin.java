@@ -17,16 +17,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
     @Final
-    @Shadow private MinecraftClient client;
+    @Shadow
+    private MinecraftClient client;
 
-    @Inject(at= @At("RETURN"), method = "shouldShowExperienceBar", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "shouldShowExperienceBar", cancellable = true)
     public void shouldShowExperienceBarOverlay(CallbackInfoReturnable<Boolean> callbackReturnable) {
         boolean show = callbackReturnable.getReturnValue();
         ClientPlayerEntity player = this.client.player;
 
         assert player != null;
         boolean renderOverlay = player.isHolding(ScepterHelper.IS_ARCANE_SCEPTER) ||
-                                player.isHolding(ScepterHelper.IS_MAGICAL_SCEPTER);
+                player.isHolding(ScepterHelper.IS_MAGICAL_SCEPTER);
 
         callbackReturnable.setReturnValue(show || renderOverlay);
     }

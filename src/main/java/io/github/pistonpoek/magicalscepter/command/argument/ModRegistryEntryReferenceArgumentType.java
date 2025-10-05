@@ -10,6 +10,7 @@ import net.minecraft.server.command.ServerCommandSource;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.command.argument.RegistryEntryReferenceArgumentType
  */
 public class ModRegistryEntryReferenceArgumentType {
@@ -17,7 +18,7 @@ public class ModRegistryEntryReferenceArgumentType {
      * Get a spell from the specified name in the specified command context.
      *
      * @param context Command context to get the spell in.
-     * @param name String to find a spell for.
+     * @param name    String to find a spell for.
      * @return Spell registry reference.
      * @throws CommandSyntaxException When spell registry entry could not be found for the name.
      */

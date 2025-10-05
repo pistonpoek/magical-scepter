@@ -33,7 +33,7 @@ public class GuardianBoltEntityModel extends EntityModel<GuardianBoltEntityRende
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData boltModelPart = modelData.getRoot();
-        ModelPartBuilder modelPartBuilder = ModelPartBuilder.create().uv(0,0).cuboid(-4.0F, 0, -4.0F, 8.0F, 0, 8.0F, EnumSet.of(Direction.UP));
+        ModelPartBuilder modelPartBuilder = ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, 0, -4.0F, 8.0F, 0, 8.0F, EnumSet.of(Direction.UP));
         boltModelPart.addChild("up", modelPartBuilder, ModelTransform.NONE);
         boltModelPart.addChild("front", modelPartBuilder, ModelTransform.rotation(-MathHelper.HALF_PI, 0.0F, MathHelper.HALF_PI));
         boltModelPart.addChild("left", modelPartBuilder, ModelTransform.rotation(MathHelper.HALF_PI, -MathHelper.HALF_PI, 0.0F));

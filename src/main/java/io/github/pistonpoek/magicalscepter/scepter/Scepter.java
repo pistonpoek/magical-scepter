@@ -2,6 +2,8 @@ package io.github.pistonpoek.magicalscepter.scepter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import io.github.pistonpoek.magicalscepter.spell.Spell;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -9,11 +11,9 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
-import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
-import io.github.pistonpoek.magicalscepter.spell.Spell;
 import net.minecraft.util.dynamic.Codecs;
 
-import java.util.*;
+import java.util.Optional;
 
 public record Scepter(int color, int experienceCost, boolean infusable,
                       Optional<RegistryEntry<Spell>> attackSpell,
@@ -21,13 +21,13 @@ public record Scepter(int color, int experienceCost, boolean infusable,
                       Optional<LootContextPredicate> infusion) {
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                            Codecs.RGB.fieldOf("color").forGetter(Scepter::color),
-                            Codecs.NON_NEGATIVE_INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
-                            Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
-                            Spell.ENTRY_CODEC.optionalFieldOf("spell_attack").forGetter(Scepter::attackSpell),
-                            Spell.ENTRY_CODEC.optionalFieldOf("spell_protect").forGetter(Scepter::protectSpell),
-                            LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
-                    ).apply(instance, Scepter::new)
+                    Codecs.RGB.fieldOf("color").forGetter(Scepter::color),
+                    Codecs.NON_NEGATIVE_INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
+                    Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
+                    Spell.ENTRY_CODEC.optionalFieldOf("spell_attack").forGetter(Scepter::attackSpell),
+                    Spell.ENTRY_CODEC.optionalFieldOf("spell_protect").forGetter(Scepter::protectSpell),
+                    LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
+            ).apply(instance, Scepter::new)
     );
     public static final Codec<Scepter> NETWORK_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -38,12 +38,14 @@ public record Scepter(int color, int experienceCost, boolean infusable,
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_protect").forGetter(Scepter::protectSpell)
             ).apply(instance, Scepter::createClientScepter)
     );
+
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private static Scepter createClientScepter(int color, int experienceCost, boolean infusable,
                                                Optional<RegistryEntry<Spell>> attackSpell,
                                                Optional<RegistryEntry<Spell>> protectSpell) {
         return new Scepter(color, experienceCost, infusable, attackSpell, protectSpell, Optional.empty());
     }
+
     public static final Codec<RegistryEntry<Scepter>> ENTRY_CODEC = RegistryFixedCodec.of(ModRegistryKeys.SCEPTER);
     public static final PacketCodec<RegistryByteBuf, RegistryEntry<Scepter>> ENTRY_PACKET_CODEC =
             PacketCodecs.registryEntry(ModRegistryKeys.SCEPTER);

@@ -1,6 +1,8 @@
 package io.github.pistonpoek.magicalscepter.render.entity;
 
+import io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -11,8 +13,6 @@ import net.minecraft.client.render.entity.model.IllagerEntityModel;
 import net.minecraft.client.render.entity.state.IllagerEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import io.github.pistonpoek.magicalscepter.entity.mob.RefractorEntity;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 @Environment(EnvType.CLIENT)
 public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEntity, IllagerEntityRenderState> {
@@ -38,7 +38,7 @@ public class RefractorEntityRenderer extends IllagerEntityRenderer<RefractorEnti
         super.render(renderState, matrixStack, vertexConsumerProvider, light);
     }
 
-        @Override
+    @Override
     public IllagerEntityRenderState createRenderState() {
         return new IllagerEntityRenderState();
     }

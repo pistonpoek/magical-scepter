@@ -1,16 +1,16 @@
 package io.github.pistonpoek.magicalscepter.scepter;
 
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
+import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
+import io.github.pistonpoek.magicalscepter.item.ModItems;
+import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.World;
-import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.item.ModItems;
-import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 
 import java.util.Optional;
 import java.util.function.Predicate;

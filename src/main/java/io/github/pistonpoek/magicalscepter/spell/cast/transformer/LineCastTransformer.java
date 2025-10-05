@@ -2,12 +2,12 @@ package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.util.math.Vec3d;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
+import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
+import net.minecraft.util.dynamic.Codecs;
+import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public record LineCastTransformer(PositionSource position,
         for (int i = 0; i < amount; i++) {
             SpellCasting pointCast = DelayCastTransformer.delay(casting, (int) (i * stepDelay));
             pointCast.addContext(AbsolutePositionSource.builder(
-                    startPos.add(lineVector.multiply(((double)i) / (amount - 1)))).build());
+                    startPos.add(lineVector.multiply(((double) i) / (amount - 1)))).build());
             casts.add(pointCast);
         }
         return casts;

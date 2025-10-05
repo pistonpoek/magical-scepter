@@ -19,7 +19,7 @@ public class EnchantmentProvider extends FabricCodecDataProvider<Enchantment> {
     /**
      * Construct a mod enchantment provider for data generation.
      *
-     * @param output Data output to generate enchantment data into.
+     * @param output           Data output to generate enchantment data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
     public EnchantmentProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
@@ -31,7 +31,7 @@ public class EnchantmentProvider extends FabricCodecDataProvider<Enchantment> {
     protected void configure(BiConsumer<Identifier, Enchantment> provider, RegistryWrapper.WrapperLookup registries) {
         RegistryEntryLookup<Enchantment> enchantmentLookup = registries.getOrThrow(RegistryKeys.ENCHANTMENT);
 
-        for (RegistryKey<Enchantment> scepterKey: ModEnchantments.ENCHANTMENT_KEYS) {
+        for (RegistryKey<Enchantment> scepterKey : ModEnchantments.ENCHANTMENT_KEYS) {
             addEnchantment(provider, enchantmentLookup, scepterKey);
         }
     }
@@ -40,12 +40,12 @@ public class EnchantmentProvider extends FabricCodecDataProvider<Enchantment> {
      * Add an enchantment to the specified provider.
      *
      * @param provider Provider to add the enchantment to.
-     * @param lookup Registry entry lookup for the enchantment.
-     * @param key Registry key to add to the enchantment provider.
+     * @param lookup   Registry entry lookup for the enchantment.
+     * @param key      Registry key to add to the enchantment provider.
      */
     private static void addEnchantment(BiConsumer<Identifier, Enchantment> provider,
-                                   RegistryEntryLookup<Enchantment> lookup,
-                                   RegistryKey<Enchantment> key) {
+                                       RegistryEntryLookup<Enchantment> lookup,
+                                       RegistryKey<Enchantment> key) {
         provider.accept(key.getValue(), lookup.getOrThrow(key).value());
     }
 

@@ -1,9 +1,6 @@
 package io.github.pistonpoek.magicalscepter.registry;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
-import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.registry.*;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
@@ -12,9 +9,13 @@ import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import io.github.pistonpoek.magicalscepter.spell.target.TargetSource;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.minecraft.registry.Registry;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.registry.Registries
  */
 public class ModRegistries {

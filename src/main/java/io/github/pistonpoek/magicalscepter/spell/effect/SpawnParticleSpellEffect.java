@@ -2,13 +2,13 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record SpawnParticleSpellEffect(
         ParticleEffect particle,

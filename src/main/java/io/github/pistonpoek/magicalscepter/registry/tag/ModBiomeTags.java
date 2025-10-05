@@ -1,12 +1,13 @@
 package io.github.pistonpoek.magicalscepter.registry.tag;
 
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.world.biome.Biome;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.registry.tag.BiomeTags
  */
 public class ModBiomeTags {

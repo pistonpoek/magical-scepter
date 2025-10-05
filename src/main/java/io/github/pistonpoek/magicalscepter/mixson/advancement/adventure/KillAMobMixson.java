@@ -13,20 +13,22 @@ public record KillAMobMixson(Identifier mobIdentifier) implements MixsonEvent<Js
         JsonObject root = context.getFile().getAsJsonObject();
         String mobReference = mobIdentifier.toString();
         JsonElement mobCondition = JsonParser.parseString(
-                "{" +
-                    "\"conditions\": {" +
-                        "\"entity\": [" +
-                            "{" +
-                                "\"condition\": \"minecraft:entity_properties\"," +
-                                "\"entity\": \"this\"," +
-                                "\"predicate\": {" +
-                                    "\"type\": \"" + mobReference + "\"" +
-                                "}" +
-                            "}" +
-                        "]" +
-                    "}," +
-                    "\"trigger\": \"minecraft:player_killed_entity\"" +
-                "}"
+                """   
+                    {
+                        "conditions": {
+                            "entity": [
+                                {
+                                    "condition": "minecraft:entity_properties"
+                                    "entity": "this"
+                                    "predicate": {
+                                        "type": "%s"
+                                    }
+                                }
+                            ]
+                        }
+                        "trigger": "minecraft:player_killed_entity"
+                    }
+                """.formatted(mobReference)
         );
         root.getAsJsonObject("criteria").add(mobReference, mobCondition);
         root.getAsJsonArray("requirements").get(0).getAsJsonArray().add(mobReference);

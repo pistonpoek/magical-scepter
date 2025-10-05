@@ -21,8 +21,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(IllagerEntityModel.class)
 public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState & ArmSwingingEntityRenderState>
         extends EntityModel<T> implements ArmSwingingEntityModel<T> {
-    @Unique private ModelPart magicalscepter$body;
-    @Shadow protected abstract ModelPart getAttackingArm(Arm arm);
+    @Unique
+    private ModelPart magicalscepter$body;
+
+    @Shadow
+    protected abstract ModelPart getAttackingArm(Arm arm);
 
     protected IllagerEntityModelMixin(ModelPart root) {
         super(root);
@@ -41,10 +44,10 @@ public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState
     /**
      * Store the body model part of the illager entity model.
      *
-     * @param root Model root of the illager model.
+     * @param root         Model root of the illager model.
      * @param callbackInfo Callback info of the method injection.
      */
-    @Inject(method="<init>(Lnet/minecraft/client/model/ModelPart;)V", at = @At("TAIL"))
+    @Inject(method = "<init>(Lnet/minecraft/client/model/ModelPart;)V", at = @At("TAIL"))
     public void IllagerEntityModel(ModelPart root, CallbackInfo callbackInfo) {
         this.magicalscepter$body = root.getChild(EntityModelPartNames.BODY);
     }
@@ -52,7 +55,7 @@ public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState
     /**
      * Swing the main arm of the specified render state.
      *
-     * @param renderState Render state to get main arm from.
+     * @param renderState  Render state to get main arm from.
      * @param callbackInfo Callback info of the method injection.
      */
     @Inject(method = "setAngles*", at = @At("TAIL"))

@@ -1,21 +1,21 @@
 {
-  "required": true,
-  "package": "io.github.pistonpoek.magicalscepter.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "AllayEntityMixin",
-    "EnchantmentMixin",
-    "GhastEntityMixin",
-    "ItemStackMixin",
-    "LivingEntityMixin",
-    "LootContextTypesMixin",
-    "ParrotEntityMixin",
-    "PatrolEntityMixin",
-    "RaiderEntityMixin",
-    "RaidMixin",
-    "VibrationsMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+    "required": true,
+    "package": "io.github.pistonpoek.magicalscepter.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "AllayEntityMixin",
+        "EnchantmentMixin",
+        "GhastEntityMixin",
+        "ItemStackMixin",
+        "LivingEntityMixin",
+        "LootContextTypesMixin",
+        "ParrotEntityMixin",
+        "PatrolEntityMixin",
+        "RaiderEntityMixin",
+        "RaidMixin",
+        "VibrationsMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
 }

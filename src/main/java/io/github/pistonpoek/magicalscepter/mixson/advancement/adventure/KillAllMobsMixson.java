@@ -18,20 +18,22 @@ public record KillAllMobsMixson(Identifier mobIdentifier) implements MixsonEvent
         RegistryEntry<EntityType<?>> mobEntry = Registries.ENTITY_TYPE.getEntry(mobIdentifier).orElseThrow();
         String mobReference = mobEntry.getIdAsString();
         JsonElement mobCondition = JsonParser.parseString(
-                "{" +
-                    "\"conditions\": {" +
-                        "\"entity\": [" +
-                            "{" +
-                                "\"condition\": \"minecraft:entity_properties\"," +
-                                "\"entity\": \"this\"," +
-                                "\"predicate\": {" +
-                                    "\"type\": \"" + mobReference + "\"" +
-                                "}" +
-                          "}" +
-                        "]" +
-                    "}," +
-                    "\"trigger\": \"minecraft:player_killed_entity\"" +
-                "}"
+                """   
+                    {
+                        "conditions": {
+                            "entity": [
+                                {
+                                    "condition": "minecraft:entity_properties"
+                                    "entity": "this"
+                                    "predicate": {
+                                        "type": "%s"
+                                    }
+                                }
+                            ]
+                        }
+                        "trigger": "minecraft:player_killed_entity"
+                    }
+                """.formatted(mobReference)
         );
         root.getAsJsonObject("criteria").add(mobReference, mobCondition);
         JsonArray mobRequirement = new JsonArray();

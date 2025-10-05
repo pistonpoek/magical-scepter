@@ -21,8 +21,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BipedEntityModel.class)
 public abstract class BipedEntityModelMixin<T extends BipedEntityRenderState & ArmSwingingEntityRenderState>
         extends EntityModel<T> implements ArmSwingingEntityModel<T> {
-    @Final @Shadow public ModelPart body;
-    @Shadow protected abstract ModelPart getArm(Arm arm);
+    @Final
+    @Shadow
+    public ModelPart body;
+
+    @Shadow
+    protected abstract ModelPart getArm(Arm arm);
 
     public BipedEntityModelMixin(ModelPart modelPart) {
         super(modelPart);
@@ -41,9 +45,9 @@ public abstract class BipedEntityModelMixin<T extends BipedEntityRenderState & A
     /**
      * Animate the arms depending on the swing type of the render state.
      *
-     * @param renderState Render state to get swing type and arm from.
+     * @param renderState       Render state to get swing type and arm from.
      * @param animationProgress Progress of arm animations.
-     * @param callbackInfo Callback info of the method injection.
+     * @param callbackInfo      Callback info of the method injection.
      */
     @Inject(at = @At("HEAD"), method = "animateArms", cancellable = true)
     protected void animateArms(T renderState, float animationProgress, CallbackInfo callbackInfo) {

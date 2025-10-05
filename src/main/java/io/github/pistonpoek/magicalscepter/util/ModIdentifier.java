@@ -5,6 +5,7 @@ import net.minecraft.text.Text;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.util.Identifier
  */
 public class ModIdentifier {
@@ -23,7 +24,6 @@ public class ModIdentifier {
      *
      * @param path Path to create identifier for.
      * @return Identifier that is validated.
-     *
      * @see net.minecraft.util.Identifier
      */
     public static net.minecraft.util.Identifier of(String path) {
@@ -35,9 +35,8 @@ public class ModIdentifier {
      *
      * @param path String to create mod identifier string representation for.
      * @return String that represents the mod identifier with the specified path.
-     * 
      * @see #of(String)
-     * @see #key(String, String) 
+     * @see #key(String, String)
      */
     public static String identifier(String path) {
         return key(path, ":");
@@ -46,7 +45,7 @@ public class ModIdentifier {
     /**
      * Create a string key for the mod with id {@value MOD_IDENTIFIER} and the specified value.
      *
-     * @param value String to create mod represented key for.
+     * @param value     String to create mod represented key for.
      * @param delimiter String to separate the mod id from the specified value.
      * @return String key that joins the specified value with the mod id using the specified delimiter.
      */
@@ -60,7 +59,6 @@ public class ModIdentifier {
      * @param path String to create mutable text with.
      * @param args Arguments to create mutable text with.
      * @return MutableText created for the path and arguments with the mod namespace.
-     *
      * @see net.minecraft.text.Text#translatable(String, Object...)
      */
     public static MutableText translatable(String path, Object... args) {

@@ -1,19 +1,19 @@
 package io.github.pistonpoek.magicalscepter.entity.ai.goal;
 
-import java.util.EnumSet;
-import java.util.Optional;
-
+import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.item.MagicalScepterItem;
+import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
+import io.github.pistonpoek.magicalscepter.spell.Spell;
+import io.github.pistonpoek.magicalscepter.util.LivingEntityHand;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
-import io.github.pistonpoek.magicalscepter.spell.Spell;
-import io.github.pistonpoek.magicalscepter.util.LivingEntityHand;
+
+import java.util.EnumSet;
+import java.util.Optional;
 
 /**
  * Entity attack goal for the use of a magical scepter,
@@ -34,10 +34,10 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
     /**
      * Construct a scepter attack goal for a single entity.
      *
-     * @param actor Entity to construct the goal for.
-     * @param speed Navigation speed of the actor during the goal.
+     * @param actor        Entity to construct the goal for.
+     * @param speed        Navigation speed of the actor during the goal.
      * @param castInterval Interval to use between spell casts for this goal.
-     * @param range Range to attack targets at for this goal.
+     * @param range        Range to attack targets at for this goal.
      */
     public ScepterAttackGoal(T actor, double speed, int castInterval, float range) {
         this.actor = actor;

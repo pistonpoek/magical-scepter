@@ -12,8 +12,10 @@ import org.spongepowered.asm.mixin.Unique;
 @Environment(EnvType.CLIENT)
 @Mixin(IllagerEntityRenderState.class)
 public class IllagerEntityRenderStateMixin implements ArmSwingingEntityRenderState {
-    @Shadow public float handSwingProgress;
-    @Unique public SwingType magicalscepter$swingType;
+    @Shadow
+    public float handSwingProgress;
+    @Unique
+    public SwingType magicalscepter$swingType;
 
     @Override
     public float magical_scepter$getHandSwingProgress() {

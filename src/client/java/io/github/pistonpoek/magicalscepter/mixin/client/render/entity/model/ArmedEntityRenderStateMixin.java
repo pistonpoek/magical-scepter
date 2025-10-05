@@ -18,12 +18,12 @@ public class ArmedEntityRenderStateMixin {
     /**
      * Update armed entity render state with swing type.
      *
-     * @param entity Living entity to update the render state for.
-     * @param state Armed entity render state to update.
+     * @param entity           Living entity to update the render state for.
+     * @param state            Armed entity render state to update.
      * @param itemModelManager Item model manager.
-     * @param callbackInfo Callback info of the method injection.
+     * @param callbackInfo     Callback info of the method injection.
      */
-    @Inject(method="updateRenderState", at=@At("TAIL"))
+    @Inject(method = "updateRenderState", at = @At("TAIL"))
     private static void updateRenderState(LivingEntity entity, ArmedEntityRenderState state,
                                           ItemModelManager itemModelManager, CallbackInfo callbackInfo) {
         if (state instanceof ArmSwingingEntityRenderState armSwingingState) {

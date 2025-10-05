@@ -18,7 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ExperienceBar.class)
 public abstract class ExperienceBarMixin implements Bar {
     @Final
-    @Shadow private MinecraftClient client;
+    @Shadow
+    private MinecraftClient client;
 
     @Inject(at = @At("TAIL"), method = "renderBar")
     public void renderExperienceBarOverlay(DrawContext context, RenderTickCounter tickCounter, CallbackInfo callback) {

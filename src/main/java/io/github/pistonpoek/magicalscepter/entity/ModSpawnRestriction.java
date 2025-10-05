@@ -7,6 +7,7 @@ import net.minecraft.world.Heightmap;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.entity.SpawnRestriction
  */
 public class ModSpawnRestriction {

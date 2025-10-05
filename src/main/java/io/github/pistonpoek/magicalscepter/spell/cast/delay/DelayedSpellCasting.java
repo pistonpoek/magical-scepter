@@ -11,7 +11,7 @@ public class DelayedSpellCasting extends SpellCasting {
      * Constructs a delayed spell casting.
      *
      * @param casting Spell casting to delay.
-     * @param delay Time to delay invoking the spell casting with in ticks.
+     * @param delay   Time to delay invoking the spell casting with in ticks.
      */
     public DelayedSpellCasting(SpellCasting casting, int delay) {
         super(casting.getSpellCast(), casting.getCaster(), casting.getContextSource());

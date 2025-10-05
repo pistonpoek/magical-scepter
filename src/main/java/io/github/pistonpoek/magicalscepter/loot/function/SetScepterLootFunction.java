@@ -2,15 +2,15 @@ package io.github.pistonpoek.magicalscepter.loot.function;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
+import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
+import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.function.ConditionalLootFunction;
 import net.minecraft.loot.function.LootFunctionType;
 import net.minecraft.registry.entry.RegistryEntry;
-import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
-import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class SetScepterLootFunction extends ConditionalLootFunction {
      * Construct a set scepter loot function.
      *
      * @param conditions List of conditions to create the loot function with.
-     * @param scepter Registry entry of the scepter to set.
+     * @param scepter    Registry entry of the scepter to set.
      */
     private SetScepterLootFunction(List<LootCondition> conditions, RegistryEntry<Scepter> scepter) {
         super(conditions);

@@ -1,5 +1,7 @@
 package io.github.pistonpoek.magicalscepter.attack;
 
+import io.github.pistonpoek.magicalscepter.item.AttackItem;
+import io.github.pistonpoek.magicalscepter.network.packet.AttackItemPayload;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -10,8 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import io.github.pistonpoek.magicalscepter.item.AttackItem;
-import io.github.pistonpoek.magicalscepter.network.packet.AttackItemPayload;
 
 @Environment(EnvType.CLIENT)
 public class ItemAttackCallback implements ClientPreAttackCallback {
@@ -51,8 +51,7 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
      *
      * @param client Client to process the attack on.
      * @param player Player that performs the attack.
-     * @param item Item that is being attacked with.
-     *
+     * @param item   Item that is being attacked with.
      * @return Result of the attack action for the player.
      */
     private ActionResult processAttackItem(MinecraftClient client, ClientPlayerEntity player, Item item) {
@@ -73,8 +72,8 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
     /**
      * Render the attack use of the specified player.
      *
-     * @param client Client to render the attack with.
-     * @param player Player that performs the attack.
+     * @param client          Client to render the attack with.
+     * @param player          Player that performs the attack.
      * @param shouldSwingHand Truth assignment, if the players hand should swing.
      */
     private void renderAttackUse(MinecraftClient client, ClientPlayerEntity player, boolean shouldSwingHand) {

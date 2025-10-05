@@ -20,18 +20,21 @@ import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-    @Shadow public abstract <T extends TooltipAppender> void appendComponentTooltip(ComponentType<T> componentType,
-                           Item.TooltipContext context, TooltipDisplayComponent displayComponent,
-                           Consumer<Text> textConsumer, TooltipType type);
+    @Shadow
+    public abstract <T extends TooltipAppender> void appendComponentTooltip(
+            ComponentType<T> componentType,
+            Item.TooltipContext context, TooltipDisplayComponent displayComponent,
+            Consumer<Text> textConsumer, TooltipType type
+    );
 
     /**
      * Add the tooltip for scepter contents.
      *
-     * @param context Context to create tooltip with.
-     * @param player Player to create tooltip for.
-     * @param type Type of tooltip to create.
+     * @param context      Context to create tooltip with.
+     * @param player       Player to create tooltip for.
+     * @param type         Type of tooltip to create.
      * @param callbackInfo Mixin callback info.
-     * @param consumer Local text consumer value to append tooltip to.
+     * @param consumer     Local text consumer value to append tooltip to.
      */
     @Inject(
             method = "appendTooltip",

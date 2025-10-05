@@ -12,11 +12,10 @@ public class SpellExperienceBarOverlay {
      * Render spell experience bar for a player holding a scepter.
      *
      * @param context Draw context to use for rendering.
-     * @param player Player to reference the experience data for.
-     * @param item Item to get scepter contents from for experience values.
-     * @param x Horizontal position of the experience bar on the screen.
-     * @param y Vertical position of the experience bar on the screen.
-     *
+     * @param player  Player to reference the experience data for.
+     * @param item    Item to get scepter contents from for experience values.
+     * @param x       Horizontal position of the experience bar on the screen.
+     * @param y       Vertical position of the experience bar on the screen.
      * @return Truth assignment, if overlay was added excluding cost indication.
      */
     public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x, int y) {

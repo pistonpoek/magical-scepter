@@ -7,6 +7,7 @@ import net.minecraft.registry.tag.TagKey;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
+ *
  * @see net.minecraft.registry.tag.ItemTags
  */
 public class ModItemTags {

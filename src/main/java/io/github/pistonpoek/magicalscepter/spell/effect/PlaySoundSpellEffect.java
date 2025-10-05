@@ -2,15 +2,14 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
 public record PlaySoundSpellEffect(RegistryEntry<SoundEvent> soundEvent, FloatProvider volume, FloatProvider pitch)
         implements SpellEffect {

@@ -2,6 +2,10 @@ package io.github.pistonpoek.magicalscepter.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.scepter.Scepter;
+import io.github.pistonpoek.magicalscepter.spell.Spell;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import net.minecraft.component.ComponentsAccess;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -19,10 +23,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.ColorHelper;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import io.github.pistonpoek.magicalscepter.scepter.Scepter;
-import io.github.pistonpoek.magicalscepter.spell.Spell;
-import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -32,12 +32,12 @@ import static io.github.pistonpoek.magicalscepter.component.ModDataComponentType
 /**
  * Component that stores data values used as contents for a magical scepter item.
  *
- * @param scepter Scepter registry entry that is the default data and can be overruled by the other data values.
- * @param customColor Color that should be used for visual representation of the scepter.
+ * @param scepter              Scepter registry entry that is the default data and can be overruled by the other data values.
+ * @param customColor          Color that should be used for visual representation of the scepter.
  * @param customExperienceCost Experience cost that should be used when casting a spell.
- * @param infusable Truth assignment that determines if the scepter is allowed to be infused.
- * @param customAttackSpell Attack spell of the scepter that is cast on hit.
- * @param customProtectSpell Protect spell of the scepter that is cast on use.
+ * @param infusable            Truth assignment that determines if the scepter is allowed to be infused.
+ * @param customAttackSpell    Attack spell of the scepter that is cast on hit.
+ * @param customProtectSpell   Protect spell of the scepter that is cast on use.
  */
 public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                                        Optional<Integer> customColor,
@@ -47,7 +47,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
                                        Optional<RegistryEntry<Spell>> customProtectSpell) implements TooltipAppender {
     public static final ScepterContentsComponent DEFAULT =
             new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(),
-            Optional.empty(), Optional.empty(), Optional.empty());
+                    Optional.empty(), Optional.empty(), Optional.empty());
     public static final int BASE_COLOR = -4424612;
     public static final int BASE_EXPERIENCE_COST = 0;
     public static final Codec<ScepterContentsComponent> BASE_CODEC = RecordCodecBuilder.create(
@@ -117,7 +117,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     /**
      * Set the scepter contents component of the item stack with the specified scepter.
      *
-     * @param stack Item stack to set the scepter contents component for.
+     * @param stack   Item stack to set the scepter contents component for.
      * @param scepter Scepter to update the scepter contents with.
      * @return Specified item stack updated with the scepter in the scepter contents component.
      */

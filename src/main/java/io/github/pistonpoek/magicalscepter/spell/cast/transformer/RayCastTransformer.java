@@ -3,6 +3,11 @@ package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
+import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
+import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
+import io.github.pistonpoek.magicalscepter.spell.target.AbsoluteTargetSource;
+import io.github.pistonpoek.magicalscepter.util.RotationVector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.predicate.entity.EntityPredicates;
@@ -10,13 +15,11 @@ import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
-import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import io.github.pistonpoek.magicalscepter.spell.target.AbsoluteTargetSource;
-import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
-import io.github.pistonpoek.magicalscepter.util.RotationVector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -39,6 +42,7 @@ public record RayCastTransformer(Target target, double range, boolean require) i
 
         public final static Codec<Target> CODEC = StringIdentifiable.createBasicCodec(Target::values);
         private final String identifier;
+
         Target(String identifier) {
             this.identifier = identifier;
         }
