@@ -23,7 +23,7 @@ import java.util.Collection;
 
 public class SpellCommand {
     private static final SimpleCommandExceptionType CAST_FAILED_EXCEPTION =
-            new SimpleCommandExceptionType(Text.translatable("commands.spell.cast.failed"));
+            new SimpleCommandExceptionType(ModIdentifier.translatable("commands.spell.cast.failed"));
     private static final SimpleCommandExceptionType CLEAR_FAILED_EXCEPTION =
             new SimpleCommandExceptionType(ModIdentifier.translatable("commands.spell.clear.failed")
     );
