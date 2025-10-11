@@ -10,9 +10,11 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.predicate.TagPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.Collection;
  */
 public class ModStatusEffects {
     private static final Collection<Identifier> effects = new ArrayList<>();
+
     /**
      * Status effect that provides (explosion) knockback resistance to the applied entity.
      */
@@ -36,6 +39,7 @@ public class ModStatusEffects {
                     .addAttributeModifier(EntityAttributes.EXPLOSION_KNOCKBACK_RESISTANCE,
                             ModIdentifier.of("effect.stability"),
                             0.3f, EntityAttributeModifier.Operation.ADD_VALUE));
+
     /**
      * Status effect that blocks projectiles from hitting the applied entity.
      */
@@ -61,9 +65,19 @@ public class ModStatusEffects {
      * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AllowDamage
      */
     public static boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
+        if (TagPredicate.expected(DamageTypeTags.IS_EXPLOSION).test(source.getTypeRegistryEntry())
+                && TagPredicate.unexpected(DamageTypeTags.BYPASSES_INVULNERABILITY).test(source.getTypeRegistryEntry())
+                && entity.hasStatusEffect(ModStatusEffects.STABILITY)) {
+            return false;
+        }
+
         Entity sourceEntity = source.getSource();
-        return !(sourceEntity instanceof PersistentProjectileEntity
-                && entity.hasStatusEffect(ModStatusEffects.REPULSION));
+        if (sourceEntity instanceof PersistentProjectileEntity
+                && entity.hasStatusEffect(ModStatusEffects.REPULSION)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
