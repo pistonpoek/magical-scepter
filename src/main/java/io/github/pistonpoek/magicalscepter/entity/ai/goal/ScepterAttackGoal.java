@@ -12,6 +12,7 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 import java.util.Optional;
@@ -63,11 +64,6 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
         return this.actor.isHolding(ScepterHelper.IS_SCEPTER_WITH_SPELL);
     }
 
-    @Override
-    public boolean shouldContinue() {
-        return hasAliveTarget() && (this.canStart() || !this.actor.getNavigation().isIdle()) && this.isHoldingScepterWithSpell();
-    }
-
     /**
      * Check if the actor has an alive target.
      *
@@ -81,6 +77,9 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
     public void start() {
         super.start();
         this.actor.setAttacking(true);
+        if (this.actor.getVisibilityCache().canSee(this.actor.getTarget())) {
+            this.targetSeeingTicker = 15;
+        }
     }
 
     @Override
@@ -89,6 +88,11 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
         this.actor.setAttacking(false);
         this.actor.setTarget(null);
         this.targetSeeingTicker = 0;
+    }
+
+    @Override
+    public boolean canStop() {
+        return this.cooldown >= 5 || this.targetSeeingTicker < 15;
     }
 
     @Override
@@ -144,7 +148,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      * @param target Current target of the actor.
      * @return Truth assignment, if the actor should use the protect spell.
      */
-    private boolean useProtectSpell(LivingEntity target) {
+    private boolean useProtectSpell(@NotNull LivingEntity target) {
         boolean targetNearby = actor.squaredDistanceTo(target) < squaredRange * 0.3F;
         boolean recentlyDamaged = this.actor.getRecentDamageSource() != null;
         boolean inProtectInterval = this.actor.age % this.protectInterval < this.castInterval;
@@ -156,7 +160,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      *
      * @param target Current target of the actor to update the value with.
      */
-    private void updateTargetSeeingTicker(LivingEntity target) {
+    private void updateTargetSeeingTicker(@NotNull LivingEntity target) {
         boolean targetVisible = this.actor.getVisibilityCache().canSee(target);
         boolean targetAware = this.targetSeeingTicker > 0;
         if (targetVisible != targetAware) {
@@ -175,7 +179,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      *
      * @param target Current target of the actor to update navigation with.
      */
-    private void updateNavigation(LivingEntity target) {
+    private void updateNavigation(@NotNull LivingEntity target) {
         double squaredDistance = this.actor.squaredDistanceTo(target);
         if (squaredDistance <= this.squaredRange && this.targetSeeingTicker >= 5) {
             this.actor.getNavigation().stop();
@@ -189,7 +193,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      *
      * @param target Current target of the actor to update look control with.
      */
-    private void updateLookControl(LivingEntity target) {
+    private void updateLookControl(@NotNull LivingEntity target) {
         if (this.actor.getControllingVehicle() instanceof MobEntity mobEntity) {
             mobEntity.lookAtEntity(target, 30.0F, 30.0F);
             mobEntity.getLookControl().lookAt(target, 30.0F, 30.0F);
