@@ -44,7 +44,7 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
     }
 
     private Optional<Vec3d> getSurfacePosition(@NotNull SpellCasting cast) {
-        World world = cast.getCaster().getWorld();
+        World world = cast.getCaster().getEntityWorld();
         Vec3d castPosition = cast.getContext().position();
 
         // Compute the top and bottom search positions.

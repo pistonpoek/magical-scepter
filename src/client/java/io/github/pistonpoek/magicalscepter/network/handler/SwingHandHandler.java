@@ -11,7 +11,7 @@ import net.minecraft.entity.Entity;
 public class SwingHandHandler implements ClientPlayNetworking.PlayPayloadHandler<SwingHandPayload> {
     @Override
     public void receive(SwingHandPayload payload, ClientPlayNetworking.Context context) {
-        Entity entity = context.player().getWorld().getEntityById(payload.identifier());
+        Entity entity = context.player().getEntityWorld().getEntityById(payload.identifier());
         if (entity instanceof SwingHandLivingEntity swingHandLivingEntity) {
             swingHandLivingEntity.magical_scepter$swingHand(payload.hand(), payload.swingType());
         }

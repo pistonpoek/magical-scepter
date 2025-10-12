@@ -52,7 +52,7 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
      * @param caster Living entity to cast the spell for.
      */
     public void castSpell(@NotNull LivingEntity caster) {
-        if (caster.getWorld().isClient()) {
+        if (caster.getEntityWorld().isClient()) {
             return;
         }
 

@@ -57,7 +57,7 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
     private ActionResult processAttackItem(MinecraftClient client, ClientPlayerEntity player, Item item) {
         // Check the result for the attack item.
         ActionResult result = ((AttackItem) item)
-                .attack(player.getWorld(), player);
+                .attack(player.getEntityWorld(), player);
 
         // Render attack use if attack item use is accepted.
         if (result.isAccepted()) {

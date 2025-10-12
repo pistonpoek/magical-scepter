@@ -7,7 +7,6 @@ import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import net.minecraft.entity.ExperienceOrbEntity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -56,14 +55,14 @@ public class ArcaneScepterItem extends Item {
             replacementStack = ScepterHelper.createScepter(itemStack);
             replacementStack.setDamage(0);
         }
-        itemStack.damage(1, user, LivingEntity.getSlotForHand(hand));
+        itemStack.damage(1, user, hand.getEquipmentSlot());
 
         if (!itemStack.isEmpty()) {
             return ActionResult.SUCCESS;
         }
 
         if (!world.isClient()) {
-            ExperienceOrbEntity.spawn((ServerWorld) world, user.getPos(), scepterExperience);
+            ExperienceOrbEntity.spawn((ServerWorld) world, user.getEntityPos(), scepterExperience);
             replacementStack.remove(ModDataComponentTypes.SCEPTER_EXPERIENCE);
         }
 

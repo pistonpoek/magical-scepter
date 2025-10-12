@@ -25,7 +25,8 @@
           "nbt": {
             "Duration": 60,
             "Particle": {
-              "type": "minecraft:dragon_breath"
+              "type": "minecraft:dragon_breath",
+              "power": 1.0
             },
             "Radius": 1.2,
             "RadiusPerTick": -0.01,
@@ -53,7 +54,8 @@
         {
           "type": "magicalscepter:spawn_particles",
           "particle": {
-            "type": "minecraft:dragon_breath"
+            "type": "minecraft:dragon_breath",
+            "power": 1.0
           }
         }
       ],

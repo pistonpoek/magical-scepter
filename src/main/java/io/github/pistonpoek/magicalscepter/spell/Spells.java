@@ -19,6 +19,7 @@ import net.minecraft.loot.context.LootContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.particle.DragonBreathParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.potion.Potions;
 import net.minecraft.predicate.entity.EntityFlagsPredicate;
@@ -200,7 +201,7 @@ public class Spells {
                         .addTransformer(new FilterCastTransformer(
                                 LootContextPredicate.create(
                                         EntityPropertiesLootCondition.builder(
-                                                LootContext.EntityTarget.THIS,
+                                                LootContext.EntityReference.THIS,
                                                 EntityPredicate.Builder.create()
                                                         .flags(EntityFlagsPredicate.Builder.create()
                                                                 .onGround(true))
@@ -231,7 +232,7 @@ public class Spells {
                         .addTransformer(new FilterCastTransformer(
                                 LootContextPredicate.create(
                                         EntityPropertiesLootCondition.builder(
-                                                LootContext.EntityTarget.THIS,
+                                                LootContext.EntityReference.THIS,
                                                 EntityPredicate.Builder.create()
                                                         .flags(EntityFlagsPredicate.Builder.create()
                                                                 .onGround(false))
@@ -276,7 +277,8 @@ public class Spells {
         areaEffectCloudNbtCompound.putDouble("RadiusPerTick", -0.01);
         NbtElement nbtElement = PotionContentsComponent.CODEC.encodeStart(NbtOps.INSTANCE, new PotionContentsComponent(Potions.STRONG_HARMING)).getOrThrow();
         areaEffectCloudNbtCompound.put("potion_contents", nbtElement);
-        areaEffectCloudNbtCompound.put("Particle", ParticleTypes.TYPE_CODEC.encodeStart(NbtOps.INSTANCE, ParticleTypes.DRAGON_BREATH).getOrThrow());
+        areaEffectCloudNbtCompound.put("Particle", ParticleTypes.TYPE_CODEC.encodeStart(NbtOps.INSTANCE,
+                DragonBreathParticleEffect.of(ParticleTypes.DRAGON_BREATH, 1)).getOrThrow());
         register(registry, DRAGON_GROWL_KEY, Spell.builder(100,
                         textOf("dragon_growl"))
                 .addCast(SpellCast.builder()
@@ -303,7 +305,7 @@ public class Spells {
                 )
                 .addCast(SpellCast.builder()
                         .addEffect(
-                                SpawnParticleSpellEffect.builder(ParticleTypes.DRAGON_BREATH)
+                                SpawnParticleSpellEffect.builder(DragonBreathParticleEffect.of(ParticleTypes.DRAGON_BREATH, 1))
                                         .speed(ConstantFloatProvider.ZERO)
                                         .build()
                         )

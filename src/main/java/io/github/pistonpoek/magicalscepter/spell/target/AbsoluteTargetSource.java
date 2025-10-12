@@ -21,7 +21,7 @@ public record AbsoluteTargetSource(UUID targetUUID) implements TargetSource {
 
     @Override
     public Entity getTarget(@NotNull SpellContext spellContext) {
-        MinecraftServer server = spellContext.caster().getServer();
+        MinecraftServer server = spellContext.caster().getEntityWorld().getServer();
         if (server == null) {
             return spellContext.target();
         }

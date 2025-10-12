@@ -60,7 +60,7 @@ public class ScepterInfusion {
 
         // Get the infusion scepter for the damage source.
         Optional<RegistryEntry<Scepter>> scepter = getInfusion(
-                ScepterHelper.getScepterRegistry(entity.getWorld()), getLootContext(entity, damageSource));
+                ScepterHelper.getScepterRegistry(entity.getEntityWorld()), getLootContext(entity, damageSource));
 
         // Check if there is an infusion scepter, if so infuse the held scepter.
         if (scepter.isPresent()) {
@@ -69,7 +69,7 @@ public class ScepterInfusion {
             if (entity instanceof ServerPlayerEntity serverPlayerEntity) {
                 ModCriteria.INFUSE_SCEPTER.trigger(serverPlayerEntity, scepter.get());
             }
-            if (entity.getWorld() instanceof ServerWorld serverWorld) {
+            if (entity.getEntityWorld() instanceof ServerWorld serverWorld) {
                 serverWorld.playSoundFromEntity(null, entity,
                         ModSoundEvents.ITEM_MAGICAL_SCEPTER_INFUSE, entity.getSoundCategory(),
                         1.0F, 1.0F);
@@ -85,9 +85,9 @@ public class ScepterInfusion {
      * @return Loot context constructed with values from the entity and damage source.
      */
     private static LootContext getLootContext(LivingEntity entity, DamageSource damageSource) {
-        LootWorldContext.Builder builder = new LootWorldContext.Builder((ServerWorld) entity.getWorld())
+        LootWorldContext.Builder builder = new LootWorldContext.Builder((ServerWorld) entity.getEntityWorld())
                 .add(LootContextParameters.THIS_ENTITY, entity)
-                .add(LootContextParameters.ORIGIN, entity.getPos())
+                .add(LootContextParameters.ORIGIN, entity.getEntityPos())
                 .add(LootContextParameters.DAMAGE_SOURCE, damageSource)
                 .addOptional(LootContextParameters.ATTACKING_ENTITY, damageSource.getAttacker())
                 .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, damageSource.getSource());

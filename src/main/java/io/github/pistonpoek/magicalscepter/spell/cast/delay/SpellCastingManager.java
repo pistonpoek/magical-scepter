@@ -121,13 +121,12 @@ public class SpellCastingManager extends PersistentState {
     }
 
     public static PersistentStateType<SpellCastingManager> getPersistentStateType() {
-        // TODO add data fix type to transition from previous version?
         return new PersistentStateType<>(ID,
                 SpellCastingManager::new, CODEC, null);
     }
 
     public static boolean clear(@NotNull LivingEntity entity) {
-        MinecraftServer server = entity.getServer();
+        MinecraftServer server = entity.getEntityWorld().getServer();
         if (server == null) {
             return false;
         }

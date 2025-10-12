@@ -56,7 +56,7 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
      * @param age Age to set for the entity.
      */
     public void setAge(int age) {
-        if (!this.getWorld().isClient) {
+        if (!this.getEntityWorld().isClient()) {
             this.getDataTracker().set(AGE, Math.max(age, 0));
         }
     }
@@ -64,8 +64,8 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     @Override
     public void tick() {
         setAge(this.age);
-        if (!this.getWorld().isClient &&
-                (getAge() > DURATION + 1 || this.getBlockY() > this.getWorld().getTopYInclusive() + 30)) {
+        if (!this.getEntityWorld().isClient() &&
+                (getAge() > DURATION + 1 || this.getBlockY() > this.getEntityWorld().getTopYInclusive() + 30)) {
             this.discard();
         } else {
             super.tick();
@@ -119,7 +119,7 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (this.getWorld() instanceof ServerWorld serverWorld) {
+        if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
             LivingEntity owner = this.getOwner() instanceof LivingEntity livingEntity ? livingEntity : null;
             Entity entity = entityHitResult.getEntity();
             if (owner != null) {
@@ -147,7 +147,7 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
-        if (!this.getWorld().isClient) {
+        if (!this.getEntityWorld().isClient()) {
             this.discard();
         }
     }
@@ -155,7 +155,7 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        if (!this.getWorld().isClient) {
+        if (!this.getEntityWorld().isClient()) {
             this.discard();
         }
     }

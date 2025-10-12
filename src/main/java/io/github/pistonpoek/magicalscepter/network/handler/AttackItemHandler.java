@@ -53,7 +53,7 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         int stackDamage = stack.getDamage();
 
         ActionResult result =
-                ((AttackItem) stack.getItem()).attack(player.getWorld(), player);
+                ((AttackItem) stack.getItem()).attack(player.getEntityWorld(), player);
         ItemStack resultStack = result instanceof ActionResult.Success success ? success.getNewHandStack() : stack;
 
         if (resultStack == stack && resultStack.getCount() == stackCount &&

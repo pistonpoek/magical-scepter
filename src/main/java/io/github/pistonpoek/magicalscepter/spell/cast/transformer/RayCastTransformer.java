@@ -86,7 +86,7 @@ public record RayCastTransformer(Target target, double range, boolean require) i
     }
 
     private static BlockHitResult blockRaycast(double range, Entity target, Vec3d position, Vec3d endPosition) {
-        BlockHitResult hitResult = target.getWorld().raycast(
+        BlockHitResult hitResult = target.getEntityWorld().raycast(
                 new RaycastContext(position,
                         endPosition,
                         RaycastContext.ShapeType.COLLIDER,

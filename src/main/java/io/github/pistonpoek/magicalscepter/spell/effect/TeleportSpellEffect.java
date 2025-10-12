@@ -29,7 +29,7 @@ public record TeleportSpellEffect() implements SpellEffect {
         );
         double positionZ = position.getZ();
 
-        Vec3d targetPos = target.getPos();
+        Vec3d targetPos = target.getEntityPos();
 
         BlockPos blockPos = BlockPos.ofFloored(positionX, positionY, positionZ);
         target.teleport(world, blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, Set.of(), target.getYaw(), target.getPitch(), true);

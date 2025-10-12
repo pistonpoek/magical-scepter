@@ -9,10 +9,10 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
@@ -30,19 +30,27 @@ public class GuardianBoltEntityRenderer extends EntityRenderer<GuardianBoltEntit
     }
 
     @Override
-    public void render(GuardianBoltEntityRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        VertexConsumer vertexConsumer = vertexConsumers.getBuffer(
-                ModRenderLayer.getGuardianBolt(TEXTURE, 0.0F, state.age * 0.03F % 1)
-        );
+    public void render(GuardianBoltEntityRenderState state, MatrixStack matrices,
+                       OrderedRenderCommandQueue queue, CameraRenderState cameraState) {
         matrices.push();
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(MathHelper.sin(state.age * 0.2F) * 180.0F));
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(MathHelper.cos(state.age * 0.2F) * 180.0F));
         matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(MathHelper.sin(state.age * 0.3F) * 360.0F));
         this.model.setAngles(state);
-        this.model.render(matrices, vertexConsumer, LightmapTextureManager.MAX_LIGHT_COORDINATE,
-                OverlayTexture.DEFAULT_UV, state.color);
+        queue.submitModel(
+                this.model,
+                state,
+                matrices,
+                ModRenderLayer.getGuardianBolt(TEXTURE, 0.0F, state.age * 0.03F % 1),
+                LightmapTextureManager.MAX_LIGHT_COORDINATE,
+                OverlayTexture.DEFAULT_UV,
+                state.color,
+                null,
+                state.outlineColor,
+                null
+        );
         matrices.pop();
-        super.render(state, matrices, vertexConsumers, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+        super.render(state, matrices, queue, cameraState);
     }
 
     @Override

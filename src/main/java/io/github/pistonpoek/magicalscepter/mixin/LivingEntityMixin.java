@@ -57,7 +57,7 @@ public abstract class LivingEntityMixin extends Entity implements SwingHandLivin
         this.preferredHand = hand;
         magical_scepter$setSwingType(swingType);
 
-        if (this.getWorld() instanceof ServerWorld) {
+        if (this.getEntityWorld() instanceof ServerWorld) {
             SwingHandPayload swingHandPayload = new SwingHandPayload(this.getId(), hand, swingType);
             for (ServerPlayerEntity player : PlayerLookup.tracking(this)) {
                 ServerPlayNetworking.send(player, swingHandPayload);

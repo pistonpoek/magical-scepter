@@ -27,7 +27,7 @@ public class WitherSkullEntity extends ExplosiveProjectileEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (!(this.getWorld() instanceof ServerWorld serverWorld)) {
+        if (!(this.getEntityWorld() instanceof ServerWorld serverWorld)) {
             return;
         }
         Entity entity = entityHitResult.getEntity();
@@ -59,7 +59,7 @@ public class WitherSkullEntity extends ExplosiveProjectileEntity {
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        if (!this.getWorld().isClient) {
+        if (!this.getEntityWorld().isClient()) {
             this.discard();
         }
     }

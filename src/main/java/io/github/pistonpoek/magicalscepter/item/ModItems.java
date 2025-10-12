@@ -37,8 +37,8 @@ public class ModItems {
             new Item.Settings().maxDamage(64).rarity(Rarity.RARE)
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT));
 
-    public static final Item SORCERER_SPAWN_EGG = register("sorcerer_spawn_egg",
-            settings -> new SpawnEggItem(ModEntityType.SORCERER, settings));
+    public static final Item SORCERER_SPAWN_EGG = register("sorcerer_spawn_egg", SpawnEggItem::new,
+            new Item.Settings().spawnEgg(ModEntityType.SORCERER));
 
     /**
      * Initialize the class for the static fields.

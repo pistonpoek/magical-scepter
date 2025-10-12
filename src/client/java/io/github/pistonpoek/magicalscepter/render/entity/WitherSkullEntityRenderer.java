@@ -7,12 +7,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.EntityModelPartNames;
 import net.minecraft.client.render.entity.model.SkullEntityModel;
+import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -41,15 +41,23 @@ public class WitherSkullEntityRenderer extends EntityRenderer<WitherSkullEntity,
         return 15;
     }
 
-    public void render(WitherSkullEntityRenderState witherSkullEntityRenderState,
-                       MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+    @Override
+    public void render(WitherSkullEntityRenderState renderState, MatrixStack matrixStack,
+                       OrderedRenderCommandQueue orderedRenderCommandQueue, CameraRenderState cameraRenderState) {
         matrixStack.push();
         matrixStack.scale(-1.0F, -1.0F, 1.0F);
-        VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(this.model.getLayer(TEXTURE));
-        this.model.setHeadRotation(0.0F, witherSkullEntityRenderState.yaw, witherSkullEntityRenderState.pitch);
-        this.model.render(matrixStack, vertexConsumer, i, OverlayTexture.DEFAULT_UV);
+        orderedRenderCommandQueue.submitModel(
+                this.model,
+                renderState.skullState,
+                matrixStack,
+                this.model.getLayer(TEXTURE),
+                renderState.light,
+                OverlayTexture.DEFAULT_UV,
+                renderState.outlineColor,
+                null
+        );
         matrixStack.pop();
-        super.render(witherSkullEntityRenderState, matrixStack, vertexConsumerProvider, i);
+        super.render(renderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);
     }
 
     public WitherSkullEntityRenderState createRenderState() {
@@ -59,7 +67,7 @@ public class WitherSkullEntityRenderer extends EntityRenderer<WitherSkullEntity,
     public void updateRenderState(WitherSkullEntity witherSkullEntity,
                                   WitherSkullEntityRenderState witherSkullEntityRenderState, float f) {
         super.updateRenderState(witherSkullEntity, witherSkullEntityRenderState, f);
-        witherSkullEntityRenderState.yaw = witherSkullEntity.getLerpedYaw(f);
-        witherSkullEntityRenderState.pitch = witherSkullEntity.getLerpedPitch(f);
+        witherSkullEntityRenderState.skullState.yaw = witherSkullEntity.getLerpedYaw(f);
+        witherSkullEntityRenderState.skullState.pitch = witherSkullEntity.getLerpedPitch(f);
     }
 }

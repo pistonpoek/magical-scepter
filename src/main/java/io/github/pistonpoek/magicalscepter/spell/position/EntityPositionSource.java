@@ -19,7 +19,7 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
     public Vec3d getPosition(@NotNull SpellContext context) {
         return switch (anchor) {
             case EYES -> context.caster().getEyePos();
-            case FEET -> context.caster().getPos();
+            case FEET -> context.caster().getEntityPos();
         };
     }
 

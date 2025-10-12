@@ -18,7 +18,7 @@ public class GhastFireballEntity extends AbstractFireballEntity {
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        if (this.getWorld() instanceof ServerWorld serverWorld) {
+        if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
             serverWorld.createExplosion(this, this.getX(), this.getY(), this.getZ(),
                     1.0F, false, World.ExplosionSourceType.NONE);
             this.discard();
@@ -28,7 +28,7 @@ public class GhastFireballEntity extends AbstractFireballEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (this.getWorld() instanceof ServerWorld serverWorld) {
+        if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
             Entity entity = entityHitResult.getEntity();
             Entity owner = this.getOwner();
             DamageSource damageSource = this.getDamageSources().fireball(this, owner);

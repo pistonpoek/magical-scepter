@@ -47,7 +47,7 @@ public record SpellContext(LivingEntity caster, Entity target, Vec3d position, f
     }
 
     public ServerWorld getWorld() {
-        return (ServerWorld) caster.getWorld();
+        return (ServerWorld) caster.getEntityWorld();
     }
 
     public Random getRandom() {

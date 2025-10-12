@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
+import net.minecraft.particle.BlockParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryCodecs;
@@ -15,6 +16,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
@@ -71,6 +73,10 @@ public record ExplodeSpellEffect(
                 this.blockInteraction,
                 this.particle,
                 this.particle,
+                Pool.<BlockParticleEffect>builder()
+                        .add(new BlockParticleEffect(ParticleTypes.POOF, 0.5F, 1.0F))
+                        .add(new BlockParticleEffect(ParticleTypes.SMOKE, 1.0F, 1.0F))
+                        .build(),
                 this.sound
         );
     }

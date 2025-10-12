@@ -18,7 +18,7 @@ public class BlazeFireChargeEntity extends AbstractFireballEntity {
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         super.onEntityHit(entityHitResult);
-        if (this.getWorld() instanceof ServerWorld serverWorld) {
+        if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
             Entity entity = entityHitResult.getEntity();
             int fireTicks = entity.getFireTicks();
             entity.setOnFireFor(5.0F);
@@ -34,7 +34,7 @@ public class BlazeFireChargeEntity extends AbstractFireballEntity {
     @Override
     protected void onCollision(HitResult hitResult) {
         super.onCollision(hitResult);
-        if (!this.getWorld().isClient) {
+        if (!this.getEntityWorld().isClient()) {
             this.discard();
         }
     }

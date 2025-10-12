@@ -29,7 +29,7 @@ public class DelayedSpellCasting extends SpellCasting {
         }
         scheduled = true;
 
-        if (getCaster().getWorld() instanceof ServerWorld serverWorld) {
+        if (getCaster().getEntityWorld() instanceof ServerWorld serverWorld) {
             SpellCastingManager.load(serverWorld.getServer()).schedule(serverWorld, this, delay);
         }
     }

@@ -107,7 +107,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
         SwingType swingType = isAttack ? SwingType.HIT : SwingType.PROTECT;
         ((SwingHandLivingEntity) caster).magical_scepter$swingHand(hand, swingType);
 
-        if (caster.getWorld().isClient()) {
+        if (caster.getEntityWorld().isClient()) {
             return itemStack;
         }
 
@@ -122,7 +122,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
             replacementStack = ScepterHelper.createScepter(itemStack);
             replacementStack.setDamage(0);
         }
-        itemStack.damage(1, caster, LivingEntity.getSlotForHand(hand));
+        itemStack.damage(1, caster, hand.getEquipmentSlot());
 
         return !itemStack.isEmpty() ? itemStack : replacementStack;
     }
