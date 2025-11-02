@@ -51,6 +51,11 @@ fabricApi {
     configureDataGeneration {
         createRunConfiguration = false
     }
+    configureTests {
+        createSourceSet = true
+        modId = "magicalsceptertest"
+        eula = true
+    }
 }
 
 wiki {

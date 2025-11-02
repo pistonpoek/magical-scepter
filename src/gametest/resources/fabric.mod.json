@@ -1,0 +1,36 @@
+{
+    "schemaVersion": 1,
+    "id": "magicalsceptertest",
+    "version": "1.0.0",
+    "name": "Magical Scepter Game Tests",
+    "description": "Gametest for the magical scepter mod",
+    "authors": [
+        "pistonpoek"
+    ],
+    "contact": {
+        "email": "pistonpoek@gmail.com",
+        "homepage": "https://modrinth.com/mod/magical-scepter",
+        "sources": "https://github.com/pistonpoek/magical-scepter",
+        "issues": "https://github.com/pistonpoek/magical-scepter/issues"
+    },
+    "license": "",
+    "icon": "assets/magicalsceptertest/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "fabric-gametest": [
+            "io.github.pistonpoek.magicalsceptertest.MagicalScepterGametest"
+        ],
+        "fabric-client-gametest": [
+            "io.github.pistonpoek.magicalsceptertest.MagicalScepterClientGametest"
+        ]
+    },
+    "depends": {
+        "fabricloader": ">=0.17.3",
+        "minecraft": "1.21.10",
+        "java": ">=21",
+        "fabric-api": "*",
+        "mixson": "1.4.0"
+    },
+    "suggests": {
+    }
+}
