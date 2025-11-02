@@ -18,7 +18,7 @@ import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 
 @Environment(EnvType.CLIENT)
-public class MagicalScepterDataGeneratorClient implements DataGeneratorEntrypoint {
+public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();

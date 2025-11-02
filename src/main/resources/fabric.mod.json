@@ -24,7 +24,7 @@
             "io.github.pistonpoek.magicalscepter.MagicalScepterClient"
         ],
         "fabric-datagen": [
-            "io.github.pistonpoek.magicalscepter.datagen.MagicalScepterDataGeneratorClient"
+            "io.github.pistonpoek.magicalscepter.datagen.MagicalScepterDataGenerator"
         ]
     },
     "mixins": [
