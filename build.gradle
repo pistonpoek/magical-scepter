@@ -1,22 +1,17 @@
 plugins {
     id 'fabric-loom' version "$loom_version"
-    id 'maven-publish'
-    id 'org.moddedmc.wiki.toolkit' version '0.2.7'
+    id 'org.moddedmc.wiki.toolkit' version "$wiki_version"
 }
 
-version = project.mod_version + "+mc.$minecraft_version"
-group = project.maven_group
+version = project.mod_version + "+mc." + project.minecraft_version
+group = project.domain + "." + project.mod_id
+def mod = project.mod_id
 
 base {
-    archivesName = project.archives_base_name
+    archivesName = project.mod_id
 }
 
 repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-    // for more information about repositories.
     maven {
         name = 'JitPack'
         url = 'https://jitpack.io'
@@ -27,9 +22,9 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        "magicalscepter" {
-            sourceSet sourceSets.main
-            sourceSet sourceSets.client
+        create(mod) {
+            sourceSet('main')
+            sourceSet('client')
         }
     }
 }
@@ -41,14 +36,14 @@ fabricApi {
     }
     configureTests {
         createSourceSet = true
-        modId = "magicalsceptertest"
+        modId = "${project.mod_id}test"
         eula = true
     }
 }
 
 wiki {
     docs {
-        magicalscepter {
+        create(mod) {
             root = file('docs')
         }
     }
@@ -90,35 +85,8 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
 
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.base.archivesName.get()}" }
-    }
-}
-
-// configure the maven publication
-publishing {
-    publications {
-        create("mavenJava", MavenPublication) {
-            artifactId = project.archives_base_name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
-    }
 }
