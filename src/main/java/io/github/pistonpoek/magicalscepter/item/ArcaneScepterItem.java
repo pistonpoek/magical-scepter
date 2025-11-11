@@ -75,4 +75,11 @@ public class ArcaneScepterItem extends Item {
         PlayerExperience.addOnlyExperience(player, -amount);
         return experience;
     }
+
+    @Override
+    public boolean hasGlint(ItemStack stack) {
+        int experience = stack.getOrDefault(ModDataComponentTypes.SCEPTER_EXPERIENCE,
+                ScepterExperienceComponent.DEFAULT).experience();
+        return stack.hasEnchantments() || experience > 0;
+    }
 }
