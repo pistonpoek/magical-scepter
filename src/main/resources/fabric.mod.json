@@ -1,6 +1,6 @@
 {
     "schemaVersion": 1,
-    "id": "magicalscepter",
+    "id": "${id}",
     "version": "${version}",
     "name": "Magical Scepter",
     "description": "Adds a spell casting weapon that is wielded by an illager residing in an old taiga cabin.",
@@ -13,7 +13,6 @@
         "sources": "https://github.com/pistonpoek/magical-scepter",
         "issues": "https://github.com/pistonpoek/magical-scepter/issues"
     },
-    "license": "",
     "icon": "assets/magicalscepter/icon.png",
     "environment": "*",
     "entrypoints": {
@@ -35,11 +34,11 @@
         }
     ],
     "depends": {
-        "fabricloader": ">=0.17.3",
-        "minecraft": "1.21.10",
+        "fabricloader": ">=${loader_version}",
+        "minecraft": "${minecraft_version}",
         "java": ">=21",
         "fabric-api": "*",
-        "mixson": "1.4.0"
+        "mixson": "${mixson_version}"
     },
     "suggests": {
     }

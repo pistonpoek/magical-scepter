@@ -36,7 +36,7 @@ fabricApi {
     }
     configureTests {
         createSourceSet = true
-        modId = "${project.mod_id}test"
+        modId = "gametest"
         eula = true
     }
 }
@@ -73,10 +73,20 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property "id", mod_id
+    inputs.property "version", mod_version
+    inputs.property "loader_version", loader_version
+    inputs.property "minecraft_version", minecraft_version
+    inputs.property "mixson_version", mixson_version
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand([
+                "id"               : mod_id,
+                "version"          : mod_version,
+                "loader_version"   : loader_version,
+                "minecraft_version": minecraft_version,
+                "mixson_version"   : mixson_version
+        ])
     }
 }
 
