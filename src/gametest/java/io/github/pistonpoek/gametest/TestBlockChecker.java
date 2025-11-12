@@ -25,16 +25,14 @@ import java.util.function.Consumer;
 public record TestBlockChecker(TestContext context) {
 
     public void start() {
-        context.getBlockEntity(findStartBlockPos(), TestBlockEntity.class).trigger();
+        // Make each 'start' test block give a restone pulse.
+        for (BlockPos blockPos : findTestBlocks(TestBlockMode.START)) {
+            context.getBlockEntity(blockPos, TestBlockEntity.class).trigger();
+        }
 
+        // Make all other test blocks function for the remaining ticks of the test.
         context.forEachRemainingTick(() -> {
-            List<BlockPos> list = findTestBlocks(TestBlockMode.ACCEPT);
-
-            if (list.stream().map(this::getTestBlockEntity).anyMatch(TestBlockEntity::hasTriggered)) {
-                context.complete();
-                return;
-            }
-
+            handleTrigger(TestBlockMode.ACCEPT, testBlockEntity -> context.complete());
             handleTrigger(TestBlockMode.FAIL, testBlockEntity ->
                     context.throwGameTestException(Text.literal(testBlockEntity.getMessage())));
             handleTrigger(TestBlockMode.LOG, TestBlockEntity::trigger);
@@ -64,18 +62,5 @@ public record TestBlockChecker(TestContext context) {
                 testBlockEntity.reset();
             }
         }
-    }
-
-    private BlockPos findStartBlockPos() {
-        List<BlockPos> list = findTestBlocks(TestBlockMode.START);
-        if (list.isEmpty()) {
-            context.throwGameTestException(Text.translatable("test_block.error.missing", TestBlockMode.START.getName()));
-        }
-
-        if (list.size() != 1) {
-            context.throwGameTestException(Text.translatable("test_block.error.too_many", TestBlockMode.START.getName()));
-        }
-
-        return list.getFirst();
     }
 }
