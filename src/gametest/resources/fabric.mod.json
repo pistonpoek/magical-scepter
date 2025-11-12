@@ -15,7 +15,7 @@
     "entrypoints": {
         "fabric-gametest": [
             "io.github.pistonpoek.gametest.Template",
-            "io.github.pistonpoek.gametest.magicalscepter.SorcererEntity"
+            "io.github.pistonpoek.gametest.magicalscepter.Sorcerer"
         ],
         "fabric-client-gametest": [
             "io.github.pistonpoek.gametest.ClientTemplate"

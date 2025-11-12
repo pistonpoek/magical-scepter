@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.lang.reflect.Method;
 
-public class SorcererEntity implements CustomTestMethodInvoker {
+public class Sorcerer implements CustomTestMethodInvoker {
     @Override
     public void invokeTestMethod(TestContext context, Method method) throws ReflectiveOperationException {
         method.invoke(this, context);
