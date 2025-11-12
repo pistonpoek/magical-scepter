@@ -41,6 +41,17 @@ fabricApi {
     }
 }
 
+loom {
+    runs {
+        gameTestDev {
+            name "GameTest Dev"
+            inherit client
+            source sourceSets.gametest
+            runDir "build/gametest"
+        }
+    }
+}
+
 wiki {
     docs {
         create(mod) {
@@ -66,10 +77,10 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Mod menu to view mod meta data in development.
-    modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
     // Mixson for modifying json files in a mod compatible way.
-    modImplementation(include("com.github.ramixin:mixson:${project.mixson_version}"))
+    modImplementation include("com.github.ramixin:mixson:${project.mixson_version}")
 }
 
 processResources {
