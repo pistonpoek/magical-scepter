@@ -23,6 +23,8 @@ import net.minecraft.util.Rarity;
 import java.util.Set;
 import java.util.function.Function;
 
+import static io.github.pistonpoek.magicalscepter.util.SpawnEggDispenserBehavior.addSpawnEggDispenserBehavior;
+
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
@@ -50,6 +52,8 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(ModItems::addItemsToCombatItemGroup);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(ModItems::addItemsToIngredientsGroup);
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(ModItems::addItemsToSpawnEggsGroup);
+
+        addSpawnEggDispenserBehavior(SORCERER_SPAWN_EGG);
     }
 
     /**
