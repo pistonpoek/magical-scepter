@@ -14,10 +14,10 @@
     "environment": "*",
     "entrypoints": {
         "fabric-gametest": [
-            "io.github.pistonpoek.gametest.magicalscepter.MagicalScepterGametest"
+            "io.github.pistonpoek.gametest.magicalscepter.SorcererEntity"
         ],
         "fabric-client-gametest": [
-            "io.github.pistonpoek.gametest.magicalscepter.MagicalScepterClientGametest"
+            "io.github.pistonpoek.gametest.magicalscepter.MagicalScepterClientGameTest"
         ]
     }
 }
