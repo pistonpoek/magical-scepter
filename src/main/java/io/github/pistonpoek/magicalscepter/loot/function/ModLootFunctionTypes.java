@@ -14,6 +14,8 @@ import net.minecraft.registry.Registry;
  * @see net.minecraft.loot.function.LootFunctionTypes
  */
 public class ModLootFunctionTypes {
+    public static final LootFunctionType<SetExperienceLootFunction> SET_EXPERIENCE =
+            register("set_experience", SetExperienceLootFunction.CODEC);
     public static final LootFunctionType<SetScepterLootFunction> SET_SCEPTER =
             register("set_scepter", SetScepterLootFunction.CODEC);
 

@@ -24,8 +24,11 @@ import java.util.function.Consumer;
  */
 public record TestBlockChecker(TestContext context) {
 
+    /**
+     * Trigger start test blocks and activate the use of other test block modes.
+     */
     public void start() {
-        // Make each 'start' test block give a restone pulse.
+        // Make each start test block give a restone pulse.
         for (BlockPos blockPos : findTestBlocks(TestBlockMode.START)) {
             context.getBlockEntity(blockPos, TestBlockEntity.class).trigger();
         }
@@ -39,6 +42,12 @@ public record TestBlockChecker(TestContext context) {
         });
     }
 
+    /**
+     * Find test blocks in the test context.
+     *
+     * @param mode Mode of the test blocks to find.
+     * @return List of block positions for the found test blocks.
+     */
     public List<BlockPos> findTestBlocks(TestBlockMode mode) {
         List<BlockPos> list = new ArrayList<>();
         context.forEachRelativePos(pos -> {
@@ -50,10 +59,22 @@ public record TestBlockChecker(TestContext context) {
         return list;
     }
 
+    /**
+     * Get the test block entity at the specified block position.
+     *
+     * @param pos Block position to get the test block entity at.
+     * @return Test block entity that is retrieved.
+     */
     private TestBlockEntity getTestBlockEntity(BlockPos pos) {
         return context.getBlockEntity(pos, TestBlockEntity.class);
     }
 
+    /**
+     * Handle a trigger for a test block entity of a specific test block mode.
+     *
+     * @param mode Mode of the test block to trigger the entity with.
+     * @param callback Consumer that will be applied with the test block entity from the specified position.
+     */
     private void handleTrigger(TestBlockMode mode, Consumer<TestBlockEntity> callback) {
         for (BlockPos blockPos : findTestBlocks(mode)) {
             TestBlockEntity testBlockEntity = getTestBlockEntity(blockPos);
