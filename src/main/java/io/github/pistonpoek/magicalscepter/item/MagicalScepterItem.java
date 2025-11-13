@@ -67,7 +67,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
 
         Spell spell = optionalSpell.get();
 
-        if (!user.getAbilities().creativeMode) {
+        if (!user.isInCreativeMode()) {
             if (!scepterContent.hasEnoughExperience(user)) {
                 return ActionResult.PASS;
             }
@@ -77,7 +77,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
         }
         user.setCurrentHand(hand);
         user.getItemCooldownManager().set(itemStack,
-                user.getAbilities().creativeMode ?
+                user.isInCreativeMode() ?
                         10 : spell.getCooldown()
         );
         user.incrementStat(Stats.USED.getOrCreateStat(this));

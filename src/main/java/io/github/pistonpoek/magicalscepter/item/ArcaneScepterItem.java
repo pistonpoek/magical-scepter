@@ -35,25 +35,36 @@ public class ArcaneScepterItem extends Item {
         int scepterExperience = ScepterHelper.getExperience(itemStack);
         int step = ModEnchantmentHelper.getExperienceStep(itemStack, user, EXPERIENCE_STEP);
 
-        boolean collecting = false;
-        if (playerExperience >= step) {
-            collecting = true;
-        } else if (scepterExperience < step) {
-            return ActionResult.PASS;
+        boolean collecting = true;
+        if (playerExperience < step && !user.isInCreativeMode()) {
+            collecting = false;
+            if (scepterExperience < step) {
+                return ActionResult.PASS;
+            }
         }
 
-        scepterExperience = collectExperience(itemStack, user, collecting ? step : -step);
+        int change = collecting ? step : -step;
+        scepterExperience = ScepterHelper.getExperience(itemStack) + change;
+
+        if (!user.isInCreativeMode()) {
+                PlayerExperience.addOnlyExperience(user, -change);
+        }
+
+        itemStack.set(ModDataComponentTypes.SCEPTER_EXPERIENCE, new ScepterExperienceComponent(scepterExperience));
+
         user.playSound(collecting ?
                 ModSoundEvents.ITEM_ARCANE_SCEPTER_COLLECT_EXPERIENCE :
                 ModSoundEvents.ITEM_ARCANE_SCEPTER_RELEASE_EXPERIENCE);
 
-        user.getItemCooldownManager().set(itemStack, user.getAbilities().creativeMode ? 3 : 10);
+        user.getItemCooldownManager().set(itemStack, user.isInCreativeMode() ? 3 : 10);
+
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
         ItemStack replacementStack = ItemStack.EMPTY;
         if (itemStack.willBreakNextUse() && itemStack.isOf(ModItems.ARCANE_SCEPTER)) {
             replacementStack = ScepterHelper.createScepter(itemStack);
             replacementStack.setDamage(0);
+            replacementStack.remove(ModDataComponentTypes.SCEPTER_EXPERIENCE);
         }
         itemStack.damage(1, user, hand.getEquipmentSlot());
 
@@ -63,23 +74,15 @@ public class ArcaneScepterItem extends Item {
 
         if (!world.isClient()) {
             ExperienceOrbEntity.spawn((ServerWorld) world, user.getEntityPos(), scepterExperience);
-            replacementStack.remove(ModDataComponentTypes.SCEPTER_EXPERIENCE);
         }
 
         return ActionResult.SUCCESS.withNewHandStack(replacementStack);
-    }
-
-    private int collectExperience(ItemStack itemStack, PlayerEntity player, int amount) {
-        int experience = ScepterHelper.getExperience(itemStack) + amount;
-        itemStack.set(ModDataComponentTypes.SCEPTER_EXPERIENCE, new ScepterExperienceComponent(experience));
-        PlayerExperience.addOnlyExperience(player, -amount);
-        return experience;
     }
 
     @Override
     public boolean hasGlint(ItemStack stack) {
         int experience = stack.getOrDefault(ModDataComponentTypes.SCEPTER_EXPERIENCE,
                 ScepterExperienceComponent.DEFAULT).experience();
-        return stack.hasEnchantments() || experience > 0;
+        return experience > 0 || super.hasGlint(stack);
     }
 }
