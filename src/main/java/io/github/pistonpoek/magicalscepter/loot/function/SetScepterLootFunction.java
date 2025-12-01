@@ -4,12 +4,15 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
+import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.function.ConditionalLootFunction;
 import net.minecraft.loot.function.LootFunctionType;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 
 import java.util.List;
@@ -50,10 +53,13 @@ public class SetScepterLootFunction extends ConditionalLootFunction {
     /**
      * Create a set scepter loot function with specified scepter registry entry.
      *
-     * @param scepter Registry entry of the scepter to set with the loot function.
+     * @param key Registry key of the scepter to set with the loot function.
      * @return Set scepter loot function with the specified scepter.
      */
-    public static ConditionalLootFunction.Builder<?> builder(RegistryEntry<Scepter> scepter) {
+    public static ConditionalLootFunction.Builder<?> builder(RegistryWrapper.WrapperLookup  registries,
+                                                             RegistryKey<Scepter> key) {
+        RegistryWrapper.Impl<Scepter> impl = registries.getOrThrow(ModRegistryKeys.SCEPTER);
+        RegistryEntry<Scepter> scepter = impl.getOrThrow(key);
         return builder(conditions -> new SetScepterLootFunction(conditions, scepter));
     }
 }

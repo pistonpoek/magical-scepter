@@ -28,11 +28,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:lapis_lazuli"
+          "name": "minecraft:brown_mushroom"
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:brown_mushroom"
+          "name": "minecraft:lapis_lazuli"
         },
         {
           "type": "minecraft:item",
@@ -61,8 +61,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:rotten_flesh",
-          "weight": 3.0
+          "name": "minecraft:rotten_flesh"
         },
         {
           "type": "minecraft:item",
@@ -77,8 +76,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:bone",
-          "weight": 3.0
+          "name": "minecraft:bone"
         },
         {
           "type": "minecraft:item",
@@ -93,8 +91,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:string",
-          "weight": 2.0
+          "name": "minecraft:string"
         },
         {
           "type": "minecraft:item",
@@ -109,8 +106,7 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:gunpowder",
-          "weight": 1.0
+          "name": "minecraft:gunpowder"
         }
       ],
       "rolls": 1.0
@@ -132,12 +128,12 @@
             }
           ],
           "name": "minecraft:sweet_berries",
-          "weight": 3.0
+          "weight": 3
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:bread",
-          "weight": 3.0
+          "weight": 3
         },
         {
           "type": "minecraft:item",
@@ -153,7 +149,7 @@
             }
           ],
           "name": "minecraft:wheat",
-          "weight": 2.0
+          "weight": 2
         }
       ],
       "rolls": 1.0
@@ -175,13 +171,12 @@
             }
           ],
           "name": "minecraft:emerald",
-          "weight": 18.0
+          "weight": 18
         },
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "decoration": "minecraft:mansion",
               "destination": "minecraft:on_woodland_explorer_maps",
               "function": "minecraft:exploration_map",
               "skip_existing_chunks": false
@@ -194,8 +189,7 @@
               "target": "item_name"
             }
           ],
-          "name": "minecraft:map",
-          "weight": 1.0
+          "name": "minecraft:map"
         },
         {
           "type": "minecraft:item",
@@ -214,8 +208,7 @@
               "target": "item_name"
             }
           ],
-          "name": "minecraft:map",
-          "weight": 1.0
+          "name": "minecraft:map"
         },
         {
           "type": "minecraft:item",
@@ -234,8 +227,7 @@
               "target": "item_name"
             }
           ],
-          "name": "minecraft:map",
-          "weight": 1.0
+          "name": "minecraft:map"
         },
         {
           "type": "minecraft:item",
@@ -251,7 +243,7 @@
             }
           ],
           "name": "minecraft:coal",
-          "weight": 3.0
+          "weight": 3
         }
       ],
       "rolls": 1.0

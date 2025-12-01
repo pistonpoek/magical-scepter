@@ -1,5 +1,7 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
+import io.github.pistonpoek.magicalscepter.datagen.loot.ModEntityLootTableProvider;
+import io.github.pistonpoek.magicalscepter.datagen.loot.ModLootTableProviders;
 import io.github.pistonpoek.magicalscepter.datagen.tag.*;
 import io.github.pistonpoek.magicalscepter.datagen.type.DamageTypeProvider;
 import io.github.pistonpoek.magicalscepter.datagen.type.EnchantmentProvider;
@@ -24,6 +26,9 @@ public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
         pack.addProvider(ModModelProvider::new);
+
+        pack.addProvider(ModLootTableProviders::new);
+        pack.addProvider(ModEntityLootTableProvider::new);
 
         pack.addProvider(ModBiomeTagProvider::new);
         pack.addProvider(ModItemTagProvider::new);
