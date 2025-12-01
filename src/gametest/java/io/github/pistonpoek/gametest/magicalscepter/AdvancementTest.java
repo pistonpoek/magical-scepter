@@ -39,14 +39,14 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         method.invoke(this, context);
     }
 
-    @GameTest
+    @GameTest(structure="gametest:template/empty")
     public void existsCastScepter(TestContext context) {
         String advancementPath = "adventure/cast_scepter";
         getEntry(context, advancementPath);
         context.complete();
     }
 
-    @GameTest
+    @GameTest(structure="gametest:template/empty")
     public void obtainCastScepter(TestContext context) {
         // Get cast scepter advancement entry.
         String advancementPath = "adventure/cast_scepter";
@@ -69,14 +69,14 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         context.complete();
     }
 
-    @GameTest
+    @GameTest(structure="gametest:template/empty")
     public void existsAllScepterInfusions(TestContext context) {
         String advancementPath = "adventure/all_scepter_infusions";
         getEntry(context, advancementPath);
         context.complete();
     }
 
-    @GameTest
+    @GameTest(structure="gametest:template/empty")
     public void obtainAllScepterInfusions(TestContext context) {
         // Get all scepter infusions advancement entry.
         String advancementPath = "adventure/all_scepter_infusions";
@@ -230,7 +230,7 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         context.complete();
     }
 
-    public AdvancementEntry getEntry(TestContext context, String path) {
+    private AdvancementEntry getEntry(TestContext context, String path) {
         ServerAdvancementLoader loader = context.getWorld().getServer().getAdvancementLoader();
         AdvancementEntry entry = loader.get(ModIdentifier.of(path));
 
@@ -241,7 +241,7 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         return entry;
     }
 
-    public ServerPlayerEntity createMockServerPlayer(TestContext context, GameMode gameMode) {
+    private ServerPlayerEntity createMockServerPlayer(TestContext context, GameMode gameMode) {
         PlayerEntity player = context.createMockPlayer(gameMode);
         ServerPlayerEntity serverPlayer = new ServerPlayerEntity(context.getWorld().getServer(), context.getWorld(),
                 player.getGameProfile(), SyncedClientOptions.createDefault());
@@ -253,13 +253,13 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         return serverPlayer;
     }
 
-    public ItemStack setMagicalScepterInMainHand(TestContext context, PlayerEntity player) {
+    private ItemStack setMagicalScepterInMainHand(TestContext context, PlayerEntity player) {
         ItemStack stack = ScepterHelper.createMagicalScepter(getScepter(context, Scepters.MAGICAL_KEY));
         player.setStackInHand(Hand.MAIN_HAND, stack);
         return stack;
     }
 
-    public RegistryEntry<Scepter> getScepter(TestContext context, RegistryKey<Scepter> key) {
+    private RegistryEntry<Scepter> getScepter(TestContext context, RegistryKey<Scepter> key) {
         return context.getWorld().getRegistryManager().getEntryOrThrow(key);
     }
 }

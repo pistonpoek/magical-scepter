@@ -12,7 +12,7 @@ public class Template implements CustomTestMethodInvoker {
         method.invoke(this, context);
     }
 
-    @GameTest(structure="minecraft:empty")
+    @GameTest(structure="gametest:template/empty")
     public void empty(TestContext context) {
         new TestBlockChecker(context).start();
         context.complete();
