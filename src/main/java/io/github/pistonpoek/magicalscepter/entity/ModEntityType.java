@@ -2,10 +2,10 @@ package io.github.pistonpoek.magicalscepter.entity;
 
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
-import io.github.pistonpoek.magicalscepter.entity.projectile.BlazeFireChargeEntity;
-import io.github.pistonpoek.magicalscepter.entity.projectile.GhastFireballEntity;
+import io.github.pistonpoek.magicalscepter.entity.projectile.SpellFireChargeEntity;
+import io.github.pistonpoek.magicalscepter.entity.projectile.SpellFireballEntity;
 import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
-import io.github.pistonpoek.magicalscepter.entity.projectile.WitherSkullEntity;
+import io.github.pistonpoek.magicalscepter.entity.projectile.SpellWitherSkullEntity;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.entity.Entity;
@@ -49,25 +49,25 @@ public class ModEntityType {
                     .maxTrackingRange(4)
                     .trackingTickInterval(10)
     );
-    public static final EntityType<BlazeFireChargeEntity> BLAZE_FIRE_CHARGE = register(
-            "blaze_fire_charge",
-            EntityType.Builder.create(BlazeFireChargeEntity::new, SpawnGroup.MISC)
+    public static final EntityType<SpellFireChargeEntity> SPELL_FIRE_CHARGE = register(
+            "spell_fire_charge",
+            EntityType.Builder.create(SpellFireChargeEntity::new, SpawnGroup.MISC)
                     .dropsNothing()
                     .dimensions(0.3125F, 0.3125F)
                     .maxTrackingRange(4)
                     .trackingTickInterval(10)
     );
-    public static final EntityType<GhastFireballEntity> GHAST_FIREBALL = register(
-            "ghast_fireball",
-            EntityType.Builder.create(GhastFireballEntity::new, SpawnGroup.MISC)
+    public static final EntityType<SpellFireballEntity> SPELL_FIREBALL = register(
+            "spell_fireball",
+            EntityType.Builder.create(SpellFireballEntity::new, SpawnGroup.MISC)
                     .dropsNothing()
                     .dimensions(1.0F, 1.0F)
                     .maxTrackingRange(4)
                     .trackingTickInterval(10)
     );
-    public static final EntityType<WitherSkullEntity> WITHER_SKULL = register(
-            "wither_skull",
-            EntityType.Builder.create(WitherSkullEntity::new, SpawnGroup.MISC)
+    public static final EntityType<SpellWitherSkullEntity> SPELL_WITHER_SKULL = register(
+            "spell_wither_skull",
+            EntityType.Builder.create(SpellWitherSkullEntity::new, SpawnGroup.MISC)
                     .dropsNothing()
                     .dimensions(0.3125F, 0.3125F)
                     .maxTrackingRange(4)

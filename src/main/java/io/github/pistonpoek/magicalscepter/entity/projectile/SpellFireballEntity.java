@@ -10,8 +10,11 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
-public class GhastFireballEntity extends AbstractFireballEntity {
-    public GhastFireballEntity(EntityType<? extends GhastFireballEntity> entityType, World world) {
+/**
+ * TODO
+ */
+public class SpellFireballEntity extends AbstractFireballEntity {
+    public SpellFireballEntity(EntityType<? extends SpellFireballEntity> entityType, World world) {
         super(entityType, world);
     }
 

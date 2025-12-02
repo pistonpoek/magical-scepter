@@ -14,8 +14,11 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
-public class WitherSkullEntity extends ExplosiveProjectileEntity {
-    public WitherSkullEntity(EntityType<? extends WitherSkullEntity> entityType, World world) {
+/**
+ * TODO
+ */
+public class SpellWitherSkullEntity extends ExplosiveProjectileEntity {
+    public SpellWitherSkullEntity(EntityType<? extends SpellWitherSkullEntity> entityType, World world) {
         super(entityType, world);
     }
 

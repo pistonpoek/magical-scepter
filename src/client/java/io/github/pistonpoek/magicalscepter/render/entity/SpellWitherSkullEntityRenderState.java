@@ -6,6 +6,6 @@ import net.minecraft.client.render.block.entity.SkullBlockEntityModel;
 import net.minecraft.client.render.entity.state.EntityRenderState;
 
 @Environment(EnvType.CLIENT)
-public class WitherSkullEntityRenderState extends EntityRenderState {
+public class SpellWitherSkullEntityRenderState extends EntityRenderState {
     public final SkullBlockEntityModel.SkullModelState skullState = new SkullBlockEntityModel.SkullModelState();
 }

@@ -5,7 +5,7 @@ import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.network.ClientPlayPackets;
 import io.github.pistonpoek.magicalscepter.render.entity.GuardianBoltEntityRenderer;
 import io.github.pistonpoek.magicalscepter.render.entity.SorcererEntityRenderer;
-import io.github.pistonpoek.magicalscepter.render.entity.WitherSkullEntityRenderer;
+import io.github.pistonpoek.magicalscepter.render.entity.SpellWitherSkullEntityRenderer;
 import io.github.pistonpoek.magicalscepter.render.entity.model.GuardianBoltEntityModel;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
 import net.fabricmc.api.ClientModInitializer;
@@ -31,11 +31,11 @@ public class MagicalScepterClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GUARDIAN_BOLT,
                 GuardianBoltEntityModel::getTexturedModelData);
 
-        EntityRendererRegistry.register(ModEntityType.BLAZE_FIRE_CHARGE, context -> new FlyingItemEntityRenderer<>(context, 0.75F, true));
-        EntityRendererRegistry.register(ModEntityType.GHAST_FIREBALL, context -> new FlyingItemEntityRenderer<>(context, 3.0F, true));
-        EntityRendererRegistry.register(ModEntityType.WITHER_SKULL, WitherSkullEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntityType.SPELL_FIRE_CHARGE, context -> new FlyingItemEntityRenderer<>(context, 0.75F, true));
+        EntityRendererRegistry.register(ModEntityType.SPELL_FIREBALL, context -> new FlyingItemEntityRenderer<>(context, 3.0F, true));
+        EntityRendererRegistry.register(ModEntityType.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.WITHER_SKULL,
-                WitherSkullEntityRenderer::getTexturedModelData);
+                SpellWitherSkullEntityRenderer::getTexturedModelData);
 
         ClientPreAttackCallback.EVENT.register(new ItemAttackCallback());
     }

@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.render.entity;
 
 
-import io.github.pistonpoek.magicalscepter.entity.projectile.WitherSkullEntity;
+import io.github.pistonpoek.magicalscepter.entity.projectile.SpellWitherSkullEntity;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -18,11 +18,11 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 @Environment(EnvType.CLIENT)
-public class WitherSkullEntityRenderer extends EntityRenderer<WitherSkullEntity, WitherSkullEntityRenderState> {
+public class SpellWitherSkullEntityRenderer extends EntityRenderer<SpellWitherSkullEntity, SpellWitherSkullEntityRenderState> {
     private static final Identifier TEXTURE = Identifier.ofVanilla("textures/entity/wither/wither.png");
     private final SkullEntityModel model;
 
-    public WitherSkullEntityRenderer(EntityRendererFactory.Context context) {
+    public SpellWitherSkullEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
         this.model = new SkullEntityModel(context.getPart(ModEntityModelLayers.WITHER_SKULL));
     }
@@ -37,12 +37,12 @@ public class WitherSkullEntityRenderer extends EntityRenderer<WitherSkullEntity,
         return TexturedModelData.of(modelData, 64, 64);
     }
 
-    protected int getBlockLight(WitherSkullEntity witherSkullEntity, BlockPos blockPos) {
+    protected int getBlockLight(SpellWitherSkullEntity entity, BlockPos blockPos) {
         return 15;
     }
 
     @Override
-    public void render(WitherSkullEntityRenderState renderState, MatrixStack matrixStack,
+    public void render(SpellWitherSkullEntityRenderState renderState, MatrixStack matrixStack,
                        OrderedRenderCommandQueue orderedRenderCommandQueue, CameraRenderState cameraRenderState) {
         matrixStack.push();
         matrixStack.scale(-1.0F, -1.0F, 1.0F);
@@ -60,14 +60,14 @@ public class WitherSkullEntityRenderer extends EntityRenderer<WitherSkullEntity,
         super.render(renderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);
     }
 
-    public WitherSkullEntityRenderState createRenderState() {
-        return new WitherSkullEntityRenderState();
+    public SpellWitherSkullEntityRenderState createRenderState() {
+        return new SpellWitherSkullEntityRenderState();
     }
 
-    public void updateRenderState(WitherSkullEntity witherSkullEntity,
-                                  WitherSkullEntityRenderState witherSkullEntityRenderState, float f) {
-        super.updateRenderState(witherSkullEntity, witherSkullEntityRenderState, f);
-        witherSkullEntityRenderState.skullState.yaw = witherSkullEntity.getLerpedYaw(f);
-        witherSkullEntityRenderState.skullState.pitch = witherSkullEntity.getLerpedPitch(f);
+    public void updateRenderState(SpellWitherSkullEntity entity,
+                                  SpellWitherSkullEntityRenderState renderState, float f) {
+        super.updateRenderState(entity, renderState, f);
+        renderState.skullState.yaw = entity.getLerpedYaw(f);
+        renderState.skullState.pitch = entity.getLerpedPitch(f);
     }
 }
