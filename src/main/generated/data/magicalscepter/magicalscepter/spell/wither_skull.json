@@ -26,7 +26,7 @@
               "power": 1.0
             }
           ],
-          "entity": "magicalscepter:wither_skull"
+          "entity": "magicalscepter:spell_wither_skull"
         }
       ],
       "transformers": [
@@ -48,6 +48,6 @@
   ],
   "cooldown": 40,
   "description": {
-    "translate": "spell.magicalscepter.wither_skull"
+    "translate": "magicalscepter.spell.magicalscepter.wither_skull"
   }
 }

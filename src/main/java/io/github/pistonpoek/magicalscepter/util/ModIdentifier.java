@@ -2,6 +2,7 @@ package io.github.pistonpoek.magicalscepter.util;
 
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Util;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
@@ -63,5 +64,13 @@ public class ModIdentifier {
      */
     public static MutableText translatable(String path, Object... args) {
         return Text.translatable(of(path).toTranslationKey(), args);
+    }
+
+    public static String createTranslationKey(String type, String path) {
+        return Util.createTranslationKey(type, ModIdentifier.of(path));
+    }
+
+    public static String translationKey(String path) {
+        return String.join(".", MOD_IDENTIFIER, path.replace("/", "."));
     }
 }

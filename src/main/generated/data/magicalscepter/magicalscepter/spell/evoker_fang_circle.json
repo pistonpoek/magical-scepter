@@ -107,6 +107,6 @@
   ],
   "cooldown": 40,
   "description": {
-    "translate": "spell.magicalscepter.fang_circle"
+    "translate": "magicalscepter.spell.magicalscepter.evoker_fang_circle"
   }
 }

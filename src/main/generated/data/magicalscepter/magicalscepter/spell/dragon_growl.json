@@ -89,6 +89,6 @@
   ],
   "cooldown": 100,
   "description": {
-    "translate": "spell.magicalscepter.dragon_growl"
+    "translate": "magicalscepter.spell.magicalscepter.dragon_growl"
   }
 }

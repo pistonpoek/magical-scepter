@@ -3,6 +3,7 @@ package io.github.pistonpoek.magicalscepter.component;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
+import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
@@ -79,6 +80,11 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
             ScepterContentsComponent::customProtectSpell,
             ScepterContentsComponent::new
     );
+
+    public static final String MISSING_SPELL_KEY = createTranslationKey("missing_spell");
+    public static final String NO_SPELLS_KEY = createTranslationKey("no_spells");
+    public static final String ON_CAST_ATTACK_KEY = createTranslationKey("on_cast_attack");
+    public static final String ON_CAST_PROTECT_KEY = createTranslationKey("on_cast_protect");
 
     public ScepterContentsComponent(RegistryEntry<Scepter> scepter) {
         this(Optional.of(scepter), Optional.empty(), Optional.empty(),
@@ -195,9 +201,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return String key that may differentiate scepter content components.
      */
     public String getTranslationKey() {
-        return scepter.flatMap(RegistryEntry::getKey)
-                .map(key -> key.getValue().getPath().replace("/", "."))
-                .orElse("empty");
+        return Scepters.getTranslationKey(
+                scepter.flatMap(RegistryEntry::getKey).orElse(null));
     }
 
     /**
@@ -274,7 +279,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
 
     private static final Formatting ATTACK_SPELL_FORMATTING = Formatting.DARK_GREEN;
     private static final Formatting PROTECT_SPELL_FORMATTING = Formatting.BLUE;
-    private static final Text MISSING_SPELL_TEXT = ModIdentifier.translatable("scepter.missing_spell")
+    private static final Text MISSING_SPELL_TEXT = ModIdentifier.translatable(MISSING_SPELL_KEY)
             .formatted(Formatting.DARK_GRAY);
 
     /**
@@ -306,11 +311,11 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     }
 
     private static final Formatting TITLE_FORMATTING = Formatting.GRAY;
-    private static final Text NO_SPELLS_TEXT = ModIdentifier.translatable("scepter.no_spells")
+    private static final Text NO_SPELLS_TEXT = Text.translatable(NO_SPELLS_KEY)
             .formatted(TITLE_FORMATTING);
-    private static final Text CAST_ATTACK_TEXT = ModIdentifier.translatable("scepter.on_cast_attack")
+    private static final Text CAST_ATTACK_TEXT = Text.translatable(ON_CAST_ATTACK_KEY)
             .formatted(TITLE_FORMATTING);
-    private static final Text CAST_PROTECT_TEXT = ModIdentifier.translatable("scepter.on_cast_protect")
+    private static final Text CAST_PROTECT_TEXT = Text.translatable(ON_CAST_PROTECT_KEY)
             .formatted(TITLE_FORMATTING);
 
     @Override
@@ -335,5 +340,9 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
             tooltip.accept(CAST_PROTECT_TEXT);
             tooltip.accept(ScreenTexts.space().append(getProtectSpellName()));
         }
+    }
+
+    public static String createTranslationKey(String path) {
+        return ModIdentifier.translationKey("scepter." + path);
     }
 }

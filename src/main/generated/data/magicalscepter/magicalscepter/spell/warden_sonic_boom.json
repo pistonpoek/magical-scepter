@@ -121,6 +121,6 @@
   ],
   "cooldown": 60,
   "description": {
-    "translate": "spell.magicalscepter.sonic_boom"
+    "translate": "magicalscepter.spell.magicalscepter.warden_sonic_boom"
   }
 }

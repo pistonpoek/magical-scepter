@@ -79,6 +79,6 @@
   ],
   "cooldown": 40,
   "description": {
-    "translate": "spell.magicalscepter.fang_line"
+    "translate": "magicalscepter.spell.magicalscepter.evoker_fang_line"
   }
 }

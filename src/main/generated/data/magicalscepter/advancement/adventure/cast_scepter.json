@@ -12,14 +12,14 @@
   },
   "display": {
     "description": {
-      "translate": "magicalscepter.advancements.adventure.cast_scepter.description"
+      "translate": "advancements.magicalscepter.adventure.cast_scepter.description"
     },
     "icon": {
       "count": 1,
       "id": "magicalscepter:magical_scepter"
     },
     "title": {
-      "translate": "magicalscepter.advancements.adventure.cast_scepter.title"
+      "translate": "advancements.magicalscepter.adventure.cast_scepter.title"
     }
   },
   "requirements": [

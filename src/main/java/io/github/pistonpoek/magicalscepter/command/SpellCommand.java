@@ -17,15 +17,22 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.Text;
 
 import java.util.Collection;
 
 public class SpellCommand {
+    public static final String CAST_FAILED_KEY = createTranslationKey("cast.failed");
+    public static final String CLEAR_FAILED_KEY = createTranslationKey("clear.failed");
+    public static final String CAST_SUCCESS_SINGLE_KEY = createTranslationKey("cast.success.single");
+    public static final String CAST_SUCCESS_MULTIPLE_KEY = createTranslationKey("cast.success.multiple");
+    public static final String CLEAR_SUCCESS_SINGLE_KEY = createTranslationKey("clear.success.single");
+    public static final String CLEAR_SUCCESS_MULTIPLE_KEY = createTranslationKey("clear.success.multiple");
+
     private static final SimpleCommandExceptionType CAST_FAILED_EXCEPTION =
-            new SimpleCommandExceptionType(ModIdentifier.translatable("commands.spell.cast.failed"));
+            new SimpleCommandExceptionType(Text.translatable(CAST_FAILED_KEY));
     private static final SimpleCommandExceptionType CLEAR_FAILED_EXCEPTION =
-            new SimpleCommandExceptionType(ModIdentifier.translatable("commands.spell.clear.failed")
-            );
+            new SimpleCommandExceptionType(Text.translatable(CLEAR_FAILED_KEY));
 
     /**
      * Register the spell command.
@@ -102,12 +109,12 @@ public class SpellCommand {
         } else {
             if (entities.size() == 1) {
                 source.sendFeedback(
-                        () -> ModIdentifier.translatable("commands.spell.cast.success.single",
+                        () -> Text.translatable(CAST_SUCCESS_SINGLE_KEY,
                                 Spell.getName(spell), entities.iterator().next().getDisplayName()),
                         true
                 );
             } else {
-                source.sendFeedback(() -> ModIdentifier.translatable("commands.spell.cast.success.multiple",
+                source.sendFeedback(() -> Text.translatable(CAST_SUCCESS_MULTIPLE_KEY,
                         Spell.getName(spell), entities.size()), true);
             }
 
@@ -137,14 +144,17 @@ public class SpellCommand {
             throw CLEAR_FAILED_EXCEPTION.create();
         } else {
             if (entities.size() == 1) {
-                source.sendFeedback(() -> ModIdentifier.translatable("commands.spell.clear.success.single",
+                source.sendFeedback(() -> Text.translatable(CLEAR_SUCCESS_SINGLE_KEY,
                         entities.iterator().next().getDisplayName()), true);
             } else {
-                source.sendFeedback(() -> ModIdentifier.translatable("commands.spell.clear.success.multiple",
+                source.sendFeedback(() -> Text.translatable(CLEAR_SUCCESS_MULTIPLE_KEY,
                         entities.size()), true);
             }
 
             return successes;
         }
+    }
+    private static String createTranslationKey(String path) {
+        return ModIdentifier.createTranslationKey("commands", "spell." + path);
     }
 }

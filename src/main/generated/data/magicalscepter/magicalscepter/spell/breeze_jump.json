@@ -115,6 +115,6 @@
   ],
   "cooldown": 24,
   "description": {
-    "translate": "spell.magicalscepter.breeze_jump"
+    "translate": "magicalscepter.spell.magicalscepter.breeze_jump"
   }
 }

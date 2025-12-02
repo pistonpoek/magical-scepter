@@ -14,9 +14,11 @@ import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Scepters {
     public static final List<RegistryKey<Scepter>> SCEPTER_KEYS = new ArrayList<>();
@@ -251,5 +253,10 @@ public class Scepters {
     private static void register(Registerable<Scepter> registry, RegistryKey<Scepter> key, Scepter.Builder builder) {
         SCEPTER_KEYS.add(key);
         registry.register(key, builder.build());
+    }
+    public static String getTranslationKey(@Nullable RegistryKey<Scepter> scepter) {
+        return Optional.ofNullable(scepter)
+                .map(key -> key.getValue().getPath().replace("/", "."))
+                .orElse("empty");
     }
 }

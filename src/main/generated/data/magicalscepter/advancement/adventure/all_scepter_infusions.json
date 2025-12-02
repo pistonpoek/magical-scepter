@@ -76,7 +76,7 @@
   },
   "display": {
     "description": {
-      "translate": "magicalscepter.advancements.adventure.all_scepter_infusions.description"
+      "translate": "advancements.magicalscepter.adventure.all_scepter_infusions.description"
     },
     "frame": "goal",
     "icon": {
@@ -89,7 +89,7 @@
       "id": "magicalscepter:magical_scepter"
     },
     "title": {
-      "translate": "magicalscepter.advancements.adventure.all_scepter_infusions.title"
+      "translate": "advancements.magicalscepter.adventure.all_scepter_infusions.title"
     }
   },
   "requirements": [

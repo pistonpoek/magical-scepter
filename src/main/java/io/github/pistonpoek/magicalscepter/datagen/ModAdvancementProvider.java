@@ -7,7 +7,6 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
-import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
@@ -17,10 +16,15 @@ import net.minecraft.data.advancement.AdvancementTabGenerator;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+
+import static io.github.pistonpoek.magicalscepter.advancement.ModAdvancements.*;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
@@ -47,8 +51,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         AdvancementEntry castScepterAdvancement = Advancement.Builder.create().parent(adventureRootAdvancementReference)
                 .display(
                         ModItems.MAGICAL_SCEPTER,
-                        ModIdentifier.translatable("advancements.adventure.cast_scepter.title"),
-                        ModIdentifier.translatable("advancements.adventure.cast_scepter.description"),
+                        getTitleText(CAST_SCEPTER),
+                        getDescriptionText(CAST_SCEPTER),
                         null,
                         AdvancementFrame.TASK,
                         true,
@@ -56,14 +60,14 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         false
                 )
                 .criterion("cast_scepter", CastSpellCriterion.Conditions.create(ModItems.MAGICAL_SCEPTER))
-                .build(consumer, ModIdentifier.identifier("adventure/cast_scepter"));
+                .build(consumer, CAST_SCEPTER.toString());
 
         AdvancementEntry allScepterInfusionsAdvancement = requireListedSceptersInfused(
                 Advancement.Builder.create().parent(castScepterAdvancement)
                         .display(
                                 ScepterHelper.createMagicalScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY)),
-                                ModIdentifier.translatable("advancements.adventure.all_scepter_infusions.title"),
-                                ModIdentifier.translatable("advancements.adventure.all_scepter_infusions.description"),
+                                getTitleText(ALL_SCEPTER_INFUSIONS),
+                                getDescriptionText(ALL_SCEPTER_INFUSIONS),
                                 null,
                                 AdvancementFrame.GOAL,
                                 true,
@@ -72,7 +76,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         ),
                 registryLookup,
                 Scepters.ALL_INFUSED_SCEPTERS
-        ).build(consumer, ModIdentifier.identifier("adventure/all_scepter_infusions"));
+        ).build(consumer, ALL_SCEPTER_INFUSIONS.toString());
     }
 
     /**
@@ -96,5 +100,13 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         }
 
         return builder;
+    }
+
+    protected static MutableText getTitleText(Identifier identifier) {
+        return Text.translatable(createTitleTranslationKey(identifier));
+    }
+
+    protected static MutableText getDescriptionText(Identifier identifier) {
+        return Text.translatable(createDescriptionTranslationKey(identifier));
     }
 }

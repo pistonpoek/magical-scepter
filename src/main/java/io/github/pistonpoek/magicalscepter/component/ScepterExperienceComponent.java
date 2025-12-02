@@ -29,8 +29,14 @@ public record ScepterExperienceComponent(int experience) implements TooltipAppen
             ScepterExperienceComponent::experience
     );
 
+    public static final String EXPERIENCE_KEY = createTranslationKey("experience");
+
     @Override
     public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
-        textConsumer.accept(ModIdentifier.translatable("scepter.experience", experience));
+        textConsumer.accept(Text.translatable(EXPERIENCE_KEY, experience));
+    }
+
+    public static String createTranslationKey(String path) {
+        return ModIdentifier.translationKey("scepter." + path);
     }
 }

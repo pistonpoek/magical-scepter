@@ -33,7 +33,7 @@
               "power": 1.0
             }
           ],
-          "entity": "magicalscepter:blaze_fire_charge"
+          "entity": "magicalscepter:spell_fire_charge"
         }
       ],
       "transformers": [
@@ -76,6 +76,6 @@
   ],
   "cooldown": 40,
   "description": {
-    "translate": "spell.magicalscepter.fire_charges"
+    "translate": "magicalscepter.spell.magicalscepter.blaze_fire_charges"
   }
 }

@@ -33,11 +33,10 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +89,7 @@ public class Spells {
         final double SONIC_BOOM_RANGE = 20.0;
 
         register(registry, MAGICAL_ATTACK_KEY, Spell.builder(30,
-                        textOf("magical_attack"))
+                        Text.translatable(getTranslationKey(MAGICAL_ATTACK_KEY)))
                 .addCast(SpellCast.builder()
                         .addTransformer(new AnchorCastTransformer())
                         .addTransformer(
@@ -123,7 +122,7 @@ public class Spells {
                 )
         );
         register(registry, MAGICAL_RESISTANCE_KEY, Spell.builder(30,
-                        Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("resistance"))))
+                        StatusEffects.RESISTANCE.value().getName())
                 .addCast(SpellCast.builder()
                         .addEffect(new ApplyMobEffectSpellEffect(
                                 RegistryEntryList.of(StatusEffects.RESISTANCE),
@@ -134,7 +133,7 @@ public class Spells {
         );
 
         register(registry, BLAZE_FIRE_CHARGES, Spell.builder(40,
-                        textOf("fire_charges"))
+                        Text.translatable(getTranslationKey(BLAZE_FIRE_CHARGES)))
                 .addCast(SpellCast.builder()
                         .addTransformer(RepeatCastTransformer.builder(3).stepDelay(6.0F).build())
                         .addEffect(new PlaySoundSpellEffect(
@@ -158,7 +157,7 @@ public class Spells {
                         )
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(ModEntityType.BLAZE_FIRE_CHARGE)
+                                        entityTypeReferenceFunction.apply(ModEntityType.SPELL_FIRE_CHARGE)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
                                 ).build()
@@ -166,7 +165,7 @@ public class Spells {
                 )
         );
         register(registry, BLAZE_FIRE_RESISTANCE_KEY, Spell.builder(40,
-                        Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("fire_resistance"))))
+                        StatusEffects.FIRE_RESISTANCE.value().getName())
                 .addCast(SpellCast.builder()
                         .addEffect(new ApplyMobEffectSpellEffect(
                                 RegistryEntryList.of(StatusEffects.FIRE_RESISTANCE),
@@ -177,7 +176,7 @@ public class Spells {
         );
 
         register(registry, BREEZE_WIND_CHARGE_KEY, Spell.builder(24,
-                        textOf("wind_charge"))
+                        Text.translatable(getTranslationKey(BREEZE_WIND_CHARGE_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_BREEZE_SHOOT),
@@ -196,7 +195,7 @@ public class Spells {
                 )
         );
         register(registry, BREEZE_JUMP_KEY, Spell.builder(24,
-                        textOf("breeze_jump"))
+                        Text.translatable(getTranslationKey(BREEZE_JUMP_KEY)))
                 .addCast(SpellCast.builder()
                         .addTransformer(new FilterCastTransformer(
                                 LootContextPredicate.create(
@@ -253,7 +252,7 @@ public class Spells {
         );
 
         register(registry, DRAGON_FIREBALL_KEY, Spell.builder(100,
-                        textOf("dragon_fireball"))
+                        Text.translatable(getTranslationKey(DRAGON_FIREBALL_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_ENDER_DRAGON_SHOOT),
@@ -280,7 +279,7 @@ public class Spells {
         areaEffectCloudNbtCompound.put("Particle", ParticleTypes.TYPE_CODEC.encodeStart(NbtOps.INSTANCE,
                 DragonBreathParticleEffect.of(ParticleTypes.DRAGON_BREATH, 1)).getOrThrow());
         register(registry, DRAGON_GROWL_KEY, Spell.builder(100,
-                        textOf("dragon_growl"))
+                        Text.translatable(getTranslationKey(DRAGON_GROWL_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_ENDER_DRAGON_GROWL),
@@ -324,7 +323,7 @@ public class Spells {
         );
 
         register(registry, EVOKER_FANG_LINE_KEY, Spell.builder(40,
-                        textOf("fang_line"))
+                        Text.translatable(getTranslationKey(EVOKER_FANG_LINE_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_EVOKER_CAST_SPELL),
@@ -365,7 +364,7 @@ public class Spells {
                 )
         );
         register(registry, EVOKER_FANG_CIRCLE_KEY, Spell.builder(40,
-                        textOf("fang_circle"))
+                        Text.translatable(getTranslationKey(EVOKER_FANG_CIRCLE_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_EVOKER_CAST_SPELL),
@@ -423,7 +422,7 @@ public class Spells {
         );
 
         register(registry, GHAST_FIREBALL_KEY, Spell.builder(40,
-                        textOf("ghast_fireball"))
+                        Text.translatable(getTranslationKey(GHAST_FIREBALL_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_GHAST_SHOOT),
@@ -434,7 +433,7 @@ public class Spells {
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(ModEntityType.GHAST_FIREBALL)
+                                        entityTypeReferenceFunction.apply(ModEntityType.SPELL_FIREBALL)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
                                 ).build()
@@ -442,7 +441,7 @@ public class Spells {
                 )
         );
         register(registry, GHAST_REGENERATION_KEY, Spell.builder(40,
-                        Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("regeneration"))))
+                        StatusEffects.REGENERATION.value().getName())
                 .addCast(SpellCast.builder()
                         .addEffect(new ApplyMobEffectSpellEffect(
                                 RegistryEntryList.of(StatusEffects.REGENERATION),
@@ -453,7 +452,7 @@ public class Spells {
         );
 
         register(registry, GUARDIAN_BOLT_KEY, Spell.builder(30,
-                        textOf("guardian_bolt"))
+                        Text.translatable(getTranslationKey(GUARDIAN_BOLT_KEY)))
                 .addCast(SpellCast.builder()
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
@@ -467,7 +466,7 @@ public class Spells {
                 )
         );
         register(registry, GUARDIAN_HASTE_KEY, Spell.builder(40,
-                        Text.translatable(Util.createTranslationKey("effect", Identifier.ofVanilla("haste"))))
+                        StatusEffects.HASTE.value().getName())
                 .addCast(SpellCast.builder()
                         .addEffect(new ApplyMobEffectSpellEffect(
                                 RegistryEntryList.of(StatusEffects.HASTE),
@@ -481,7 +480,7 @@ public class Spells {
         );
 
         register(registry, SHULKER_BULLET_KEY, Spell.builder(40,
-                        textOf("shulker_bullet"))
+                        Text.translatable(getTranslationKey(SHULKER_BULLET_KEY)))
                 .addCast(SpellCast.builder()
                         .addTransformer(
                                 RayCastTransformer.builder(
@@ -510,7 +509,7 @@ public class Spells {
                 )
         );
         register(registry, SHULKER_TELEPORT_KEY, Spell.builder(40,
-                        textOf("teleport"))
+                        Text.translatable(getTranslationKey(SHULKER_TELEPORT_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_SHULKER_TELEPORT),
@@ -531,7 +530,7 @@ public class Spells {
         );
 
         register(registry, WARDEN_SONIC_BOOM_KEY, Spell.builder(60,
-                        textOf("sonic_boom"))
+                        Text.translatable(getTranslationKey(WARDEN_SONIC_BOOM_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_WARDEN_SONIC_BOOM),
@@ -603,7 +602,7 @@ public class Spells {
                 )
         );
         register(registry, WARDEN_STABILITY_KEY, Spell.builder(40,
-                        Text.translatable(Util.createTranslationKey("effect", ModIdentifier.of("stability"))))
+                        ModStatusEffects.STABILITY.value().getName())
                 .addCast(SpellCast.builder()
                         .addEffect(new ApplyMobEffectSpellEffect(
                                 RegistryEntryList.of(ModStatusEffects.STABILITY),
@@ -614,7 +613,7 @@ public class Spells {
         );
 
         register(registry, WITHER_SKULL_KEY, Spell.builder(40,
-                        textOf("wither_skull"))
+                        Text.translatable(getTranslationKey(WITHER_SKULL_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
                                 RegistryEntry.of(SoundEvents.ENTITY_WITHER_SHOOT),
@@ -625,7 +624,7 @@ public class Spells {
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(ModEntityType.WITHER_SKULL)
+                                        entityTypeReferenceFunction.apply(ModEntityType.SPELL_WITHER_SKULL)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
                                 ).build()
@@ -633,7 +632,7 @@ public class Spells {
                 )
         );
         register(registry, WITHER_REPULSION_KEY, Spell.builder(40,
-                        Text.translatable(Util.createTranslationKey("effect", ModIdentifier.of("repulsion"))))
+                        ModStatusEffects.REPULSION.value().getName())
                 .addCast(SpellCast.builder()
                         .addEffect(new ApplyMobEffectSpellEffect(
                                 RegistryEntryList.of(ModStatusEffects.REPULSION),
@@ -649,7 +648,7 @@ public class Spells {
         registry.register(key, builder.build());
     }
 
-    private static Text textOf(String nameKey) {
-        return Text.translatable(Util.createTranslationKey("spell", ModIdentifier.of(nameKey)));
+    public static String getTranslationKey(@NotNull RegistryKey<Spell> spell) {
+        return spell.getValue().toTranslationKey(ModIdentifier.of("spell").toTranslationKey());
     }
 }

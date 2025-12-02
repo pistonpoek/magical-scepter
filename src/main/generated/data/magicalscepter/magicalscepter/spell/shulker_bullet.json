@@ -55,6 +55,6 @@
   ],
   "cooldown": 40,
   "description": {
-    "translate": "spell.magicalscepter.shulker_bullet"
+    "translate": "magicalscepter.spell.magicalscepter.shulker_bullet"
   }
 }

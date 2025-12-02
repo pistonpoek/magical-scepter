@@ -32,6 +32,6 @@
   ],
   "cooldown": 30,
   "description": {
-    "translate": "spell.magicalscepter.guardian_bolt"
+    "translate": "magicalscepter.spell.magicalscepter.guardian_bolt"
   }
 }

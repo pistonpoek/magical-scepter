@@ -67,6 +67,6 @@
   ],
   "cooldown": 30,
   "description": {
-    "translate": "spell.magicalscepter.magical_attack"
+    "translate": "magicalscepter.spell.magicalscepter.magical_attack"
   }
 }

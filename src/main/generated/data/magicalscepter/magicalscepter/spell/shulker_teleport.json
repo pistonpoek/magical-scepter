@@ -48,6 +48,6 @@
   ],
   "cooldown": 40,
   "description": {
-    "translate": "spell.magicalscepter.teleport"
+    "translate": "magicalscepter.spell.magicalscepter.shulker_teleport"
   }
 }

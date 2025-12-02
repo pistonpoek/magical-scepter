@@ -43,6 +43,7 @@ public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(SpellProvider::new);
 
         pack.addProvider(ModAdvancementProvider::new);
+        pack.addProvider(ModLanguageProvider::new);
         pack.addProvider(ModRecipeProvider::new);
     }
 
