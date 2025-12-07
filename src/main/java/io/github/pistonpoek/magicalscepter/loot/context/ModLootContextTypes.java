@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 public class ModLootContextTypes {
     private static final BiMap<Identifier, ContextType> MAP = HashBiMap.create();
 
-    public static ContextType SPELL_CAST = register(
+    public static final ContextType SPELL_CAST = register(
             "spell_cast",
             builder -> builder.require(LootContextParameters.THIS_ENTITY)
                     .require(LootContextParameters.ORIGIN)
@@ -42,20 +42,20 @@ public class ModLootContextTypes {
     }
 
     /**
-     * Register a mod context type for the specified identifier.
+     * Register a mod context type for the specified name.
      *
-     * @param identifier String identifier to register for.
-     * @param type       Context type builder consumer to register.
+     * @param name String name to register for.
+     * @param type Context type builder consumer to register.
      * @return Registered context type.
      */
-    private static ContextType register(String identifier, Consumer<ContextType.Builder> type) {
+    private static ContextType register(String name, Consumer<ContextType.Builder> type) {
         ContextType.Builder builder = new ContextType.Builder();
         type.accept(builder);
         ContextType contextType = builder.build();
-        ContextType putContextType = MAP.put(ModIdentifier.of(identifier), contextType);
+        ContextType putContextType = MAP.put(ModIdentifier.of(name), contextType);
         if (putContextType != null) {
             throw new IllegalStateException("Loot table parameter set " +
-                    ModIdentifier.of(identifier) + " is already registered");
+                    ModIdentifier.of(name) + " is already registered");
         } else {
             return contextType;
         }

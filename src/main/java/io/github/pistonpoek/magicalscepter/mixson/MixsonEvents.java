@@ -67,7 +67,7 @@ public class MixsonEvents {
      *
      * @param resource List of identifier of files to change.
      * @param name Name of the mixson event.
-     * @param event Mixson event to spectify the change to make in the file data.
+     * @param event Mixson event to specify the change to make in the file data.
      */
     public static void registerMixsonEvent(List<Identifier> resource, String name, MixsonEvent<JsonElement> event) {
         Mixson.registerEvent(Mixson.DEFAULT_PRIORITY, resource::contains, name, event, false);

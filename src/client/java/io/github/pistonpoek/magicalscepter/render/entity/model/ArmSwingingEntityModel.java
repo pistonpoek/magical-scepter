@@ -43,7 +43,6 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
             case HIT -> magical_scepter$swingHandAttack(renderState, arm);
             case PROTECT -> magical_scepter$swingHandProtect(renderState, arm);
         }
-        ;
     }
 
     /**

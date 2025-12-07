@@ -26,13 +26,13 @@ public interface ModEnchantments {
     RegistryKey<Enchantment> INSIGHT_KEY = of("insight");
 
     /**
-     * Create the enchantment registry key for a specific identifier.
+     * Create the enchantment registry key for a specific name.
      *
-     * @param identifier String identifier to create registry key with.
-     * @return Enchantment registry key for the specified identifier.
+     * @param name String name to create registry key with.
+     * @return Enchantment registry key for the specified name.
      */
-    private static RegistryKey<Enchantment> of(String identifier) {
-        return RegistryKey.of(RegistryKeys.ENCHANTMENT, ModIdentifier.of(identifier));
+    private static RegistryKey<Enchantment> of(String name) {
+        return RegistryKey.of(RegistryKeys.ENCHANTMENT, ModIdentifier.of(name));
     }
 
     /**

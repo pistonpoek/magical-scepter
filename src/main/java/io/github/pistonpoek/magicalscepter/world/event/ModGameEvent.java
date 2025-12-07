@@ -24,21 +24,21 @@ public class ModGameEvent {
     /**
      * Register a game event with the default range.
      *
-     * @param identifier Identifier path of mod to register the game event for.
+     * @param name String name to register the game event for.
      * @return Registry entry reference for registered game event.
      */
-    private static RegistryEntry.Reference<GameEvent> register(String identifier) {
-        return register(identifier, GameEvent.DEFAULT_RANGE);
+    private static RegistryEntry.Reference<GameEvent> register(String name) {
+        return register(name, GameEvent.DEFAULT_RANGE);
     }
 
     /**
      * Register a game event with a specified range.
      *
-     * @param identifier Identifier path of mod to register the game event for.
-     * @param range      Range that the game event is detected at.
+     * @param name  String name to register the game event for.
+     * @param range Range that the game event is detected at.
      * @return Registry entry reference for registered game event.
      */
-    private static RegistryEntry.Reference<GameEvent> register(String identifier, int range) {
-        return Registry.registerReference(Registries.GAME_EVENT, ModIdentifier.of(identifier), new GameEvent(range));
+    private static RegistryEntry.Reference<GameEvent> register(String name, int range) {
+        return Registry.registerReference(Registries.GAME_EVENT, ModIdentifier.of(name), new GameEvent(range));
     }
 }

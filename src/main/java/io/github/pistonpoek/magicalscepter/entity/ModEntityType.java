@@ -90,28 +90,28 @@ public class ModEntityType {
     }
 
     /**
-     * Register an entity type for the specified identifier and add it as monster to the advancements.
+     * Register an entity type for the specified name and add it as monster to the advancements.
      *
-     * @param identifier String to create mod identifier with for the entity type.
+     * @param name String to create mod name with for the entity type.
      * @param type       Entity type to register.
      * @param <T>        Entity type to register.
      * @return Registered registry entry of the entity type.
      */
-    private static <T extends Entity> EntityType<T> registerMonster(String identifier, EntityType.Builder<T> type) {
-        MONSTERS.add(ModIdentifier.of(identifier));
-        return register(identifier, type);
+    private static <T extends Entity> EntityType<T> registerMonster(String name, EntityType.Builder<T> type) {
+        MONSTERS.add(ModIdentifier.of(name));
+        return register(name, type);
     }
 
     /**
-     * Register an entity type for the specified identifier.
+     * Register an entity type for the specified name.
      *
-     * @param identifier String to create mod identifier with for the entity type.
+     * @param name String to create mod name with for the entity type.
      * @param type       Entity type to register.
      * @param <T>        Entity type to register.
      * @return Registered registry entry of the entity type.
      */
-    private static <T extends Entity> EntityType<T> register(String identifier, EntityType.Builder<T> type) {
-        return Registry.register(Registries.ENTITY_TYPE, ModIdentifier.of(identifier),
-                type.build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, ModIdentifier.of(identifier))));
+    private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> type) {
+        return Registry.register(Registries.ENTITY_TYPE, ModIdentifier.of(name),
+                type.build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, ModIdentifier.of(name))));
     }
 }

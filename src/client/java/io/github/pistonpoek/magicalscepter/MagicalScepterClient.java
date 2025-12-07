@@ -12,8 +12,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
+import net.minecraft.client.render.entity.EntityRendererFactories;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.model.IllagerEntityModel;
 
@@ -23,17 +23,17 @@ public class MagicalScepterClient implements ClientModInitializer {
     public void onInitializeClient() {
         ClientPlayPackets.init();
 
-        EntityRendererRegistry.register(ModEntityType.SORCERER, SorcererEntityRenderer::new);
+        EntityRendererFactories.register(ModEntityType.SORCERER, SorcererEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.SORCERER,
                 IllagerEntityModel::getTexturedModelData);
 
-        EntityRendererRegistry.register(ModEntityType.GUARDIAN_BOLT, GuardianBoltEntityRenderer::new);
+        EntityRendererFactories.register(ModEntityType.GUARDIAN_BOLT, GuardianBoltEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.GUARDIAN_BOLT,
                 GuardianBoltEntityModel::getTexturedModelData);
 
-        EntityRendererRegistry.register(ModEntityType.SPELL_FIRE_CHARGE, context -> new FlyingItemEntityRenderer<>(context, 0.75F, true));
-        EntityRendererRegistry.register(ModEntityType.SPELL_FIREBALL, context -> new FlyingItemEntityRenderer<>(context, 3.0F, true));
-        EntityRendererRegistry.register(ModEntityType.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);
+        EntityRendererFactories.register(ModEntityType.SPELL_FIRE_CHARGE, context -> new FlyingItemEntityRenderer<>(context, 0.75F, true));
+        EntityRendererFactories.register(ModEntityType.SPELL_FIREBALL, context -> new FlyingItemEntityRenderer<>(context, 3.0F, true));
+        EntityRendererFactories.register(ModEntityType.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.WITHER_SKULL,
                 SpellWitherSkullEntityRenderer::getTexturedModelData);
 

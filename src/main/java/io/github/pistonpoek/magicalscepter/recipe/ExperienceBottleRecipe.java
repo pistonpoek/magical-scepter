@@ -5,7 +5,7 @@ import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
-import net.fabricmc.fabric.impl.recipe.ingredient.builtin.ComponentsIngredient;
+import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
 import net.minecraft.component.ComponentChanges;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -31,13 +31,13 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
     private final static IngredientPlacement INGREDIENT_PLACEMENT;
 
     static {
-        Ingredient ingredient = new ComponentsIngredient(
+        Ingredient ingredient = DefaultCustomIngredients.components(
                 Ingredient.ofItem(ModItems.ARCANE_SCEPTER),
                 ComponentChanges.builder().add(
                         ModDataComponentTypes.SCEPTER_EXPERIENCE,
                         new ScepterExperienceComponent(ArcaneScepterItem.EXPERIENCE_STEP)
                 ).build()
-        ).toVanilla();
+        );
         INGREDIENT_PLACEMENT = IngredientPlacement.forShapeless(List.of(
                 ingredient,
                 Ingredient.ofItem(Items.GLASS_BOTTLE)

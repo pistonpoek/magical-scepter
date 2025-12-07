@@ -21,13 +21,13 @@ public class ModLootTables {
     public static final RegistryKey<LootTable> OLD_TAIGA_CABIN_CHEST = register("chests/old_taiga_cabin");
 
     /**
-     * Register a loot table for the specified identifier.
+     * Register a loot table for the specified name.
      *
-     * @param identifier String identifier to register a loot table at.
-     * @return Loot table registry key for the specified identifier.
+     * @param name String name to register a loot table at.
+     * @return Loot table registry key for the specified name.
      */
-    private static RegistryKey<LootTable> register(String identifier) {
-        return registerLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, ModIdentifier.of(identifier)));
+    private static RegistryKey<LootTable> register(String name) {
+        return registerLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, ModIdentifier.of(name)));
     }
 
     /**

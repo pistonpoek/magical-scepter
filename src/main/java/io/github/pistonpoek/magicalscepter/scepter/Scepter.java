@@ -189,7 +189,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
         }
 
         /**
-         * Add an protect spell to the scepter.
+         * Add a protect spell to the scepter.
          *
          * @param protectSpell Optional spell entry to use for casting a spell on protect.
          * @return Scepter builder to continue with.
