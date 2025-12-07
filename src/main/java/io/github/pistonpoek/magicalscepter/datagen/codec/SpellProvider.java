@@ -1,4 +1,4 @@
-package io.github.pistonpoek.magicalscepter.datagen.type;
+package io.github.pistonpoek.magicalscepter.datagen.codec;
 
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
@@ -14,6 +14,11 @@ import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
+/**
+ * Mod data provider for spells.
+ *
+ * @see Spells
+ */
 public class SpellProvider extends FabricCodecDataProvider<Spell> {
     /**
      * Construct a mod spell provider for data generation.
@@ -30,7 +35,7 @@ public class SpellProvider extends FabricCodecDataProvider<Spell> {
     protected void configure(BiConsumer<Identifier, Spell> provider, RegistryWrapper.WrapperLookup registries) {
         RegistryEntryLookup<Spell> spellLookup = registries.getOrThrow(ModRegistryKeys.SPELL);
 
-        for (RegistryKey<Spell> spellKey : Spells.SPELL_KEYS) {
+        for (RegistryKey<Spell> spellKey : Spells.KEYS) {
             addSpell(provider, spellLookup, spellKey);
         }
     }

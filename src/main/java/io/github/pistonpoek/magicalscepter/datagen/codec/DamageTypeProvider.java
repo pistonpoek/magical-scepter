@@ -1,4 +1,4 @@
-package io.github.pistonpoek.magicalscepter.datagen.type;
+package io.github.pistonpoek.magicalscepter.datagen.codec;
 
 import io.github.pistonpoek.magicalscepter.entity.damage.ModDamageTypes;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
@@ -15,6 +15,11 @@ import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
+/**
+ * Mod data provider for damage types.
+ *
+ * @see ModDamageTypes
+ */
 public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
     /**
      * Construct a mod damage type provider for data generation.
@@ -31,7 +36,7 @@ public class DamageTypeProvider extends FabricCodecDataProvider<DamageType> {
     protected void configure(BiConsumer<Identifier, DamageType> provider, RegistryWrapper.WrapperLookup registries) {
         RegistryEntryLookup<DamageType> damageTypeLookup = registries.getOrThrow(RegistryKeys.DAMAGE_TYPE);
 
-        for (RegistryKey<DamageType> damageTypeKey : ModDamageTypes.DAMAGE_TYPE_KEYS) {
+        for (RegistryKey<DamageType> damageTypeKey : ModDamageTypes.KEYS) {
             addDamageType(provider, damageTypeLookup, damageTypeKey);
         }
     }

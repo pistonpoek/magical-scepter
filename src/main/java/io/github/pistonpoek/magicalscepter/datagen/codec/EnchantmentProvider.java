@@ -1,4 +1,4 @@
-package io.github.pistonpoek.magicalscepter.datagen.type;
+package io.github.pistonpoek.magicalscepter.datagen.codec;
 
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantments;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
@@ -15,6 +15,11 @@ import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
+/**
+ * Mod data provider for enchantments.
+ *
+ * @see ModEnchantments
+ */
 public class EnchantmentProvider extends FabricCodecDataProvider<Enchantment> {
     /**
      * Construct a mod enchantment provider for data generation.
@@ -31,7 +36,7 @@ public class EnchantmentProvider extends FabricCodecDataProvider<Enchantment> {
     protected void configure(BiConsumer<Identifier, Enchantment> provider, RegistryWrapper.WrapperLookup registries) {
         RegistryEntryLookup<Enchantment> enchantmentLookup = registries.getOrThrow(RegistryKeys.ENCHANTMENT);
 
-        for (RegistryKey<Enchantment> scepterKey : ModEnchantments.ENCHANTMENT_KEYS) {
+        for (RegistryKey<Enchantment> scepterKey : ModEnchantments.KEYS) {
             addEnchantment(provider, enchantmentLookup, scepterKey);
         }
     }

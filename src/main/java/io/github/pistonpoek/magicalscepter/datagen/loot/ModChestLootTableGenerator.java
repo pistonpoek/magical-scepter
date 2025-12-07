@@ -21,7 +21,10 @@ import net.minecraft.text.Text;
 
 import java.util.function.BiConsumer;
 
-public record ModChestLootTableProvider(RegistryWrapper.WrapperLookup registries) implements LootTableGenerator {
+/**
+ * Mod data generator for chest loot tables.
+ */
+public record ModChestLootTableGenerator(RegistryWrapper.WrapperLookup registries) implements LootTableGenerator {
     @Override
     public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> consumer) {
         consumer.accept(

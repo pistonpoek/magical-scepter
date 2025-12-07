@@ -1,4 +1,4 @@
-package io.github.pistonpoek.magicalscepter.datagen.type;
+package io.github.pistonpoek.magicalscepter.datagen.codec;
 
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
@@ -14,6 +14,11 @@ import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
+/**
+ * Mod data provider for scepters.
+ *
+ * @see Scepters
+ */
 public class ScepterProvider extends FabricCodecDataProvider<Scepter> {
     /**
      * Construct a scepter provider for data generation.
@@ -30,7 +35,7 @@ public class ScepterProvider extends FabricCodecDataProvider<Scepter> {
     protected void configure(BiConsumer<Identifier, Scepter> provider, RegistryWrapper.WrapperLookup registries) {
         RegistryEntryLookup<Scepter> scepterLookup = registries.getOrThrow(ModRegistryKeys.SCEPTER);
 
-        for (RegistryKey<Scepter> scepterKey : Scepters.SCEPTER_KEYS) {
+        for (RegistryKey<Scepter> scepterKey : Scepters.KEYS) {
             addScepter(provider, scepterLookup, scepterKey);
         }
     }
