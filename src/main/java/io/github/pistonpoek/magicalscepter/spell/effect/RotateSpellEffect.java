@@ -3,6 +3,9 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 
+/**
+ * TODO
+ */
 public record RotateSpellEffect() implements SpellEffect {
     public static final MapCodec<RotateSpellEffect> MAP_CODEC = MapCodec.unit(new RotateSpellEffect());
 

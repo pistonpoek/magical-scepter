@@ -7,14 +7,22 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param dx
+ * @param dy
+ * @param dz
+ * @param position
+ * @param rotation
+ */
 public record RandomPositionSource(double dx, double dy, double dz,
                                    Optional<PositionSource> position,
                                    Optional<RotationSource> rotation) implements PositionSource {
-    static MapCodec<RandomPositionSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<RandomPositionSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.DOUBLE.fieldOf("dx").forGetter(RandomPositionSource::dx),
                     Codec.DOUBLE.fieldOf("dy").forGetter(RandomPositionSource::dy),
@@ -25,12 +33,18 @@ public record RandomPositionSource(double dx, double dy, double dz,
     );
 
     @Override
-    public Vec3d getPosition(@NotNull SpellContext context) {
+    public Vec3d getPosition(SpellContext context) {
         Random random = context.caster().getRandom();
         PositionSource position = getRandomPositionSource(random);
         return position.getPosition(context);
     }
 
+    /**
+     * TODO
+     *
+     * @param random
+     * @return
+     */
     private PositionSource getRandomPositionSource(Random random) {
         RelativePositionSource.Builder builder =
                 RelativePositionSource.builder(
@@ -48,14 +62,31 @@ public record RandomPositionSource(double dx, double dy, double dz,
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
     public static Builder builder(double x, double y, double z) {
         return new Builder(x, y, z);
     }
 
+    /**
+     * TODO
+     *
+     * @param vector
+     * @return
+     */
     public static Builder builder(Vec3d vector) {
         return new Builder(vector.x, vector.y, vector.z);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final double x;
         private final double y;
@@ -63,22 +94,46 @@ public record RandomPositionSource(double dx, double dy, double dz,
         private PositionSource position = null;
         private RotationSource rotation = null;
 
+        /**
+         * TODO
+         *
+         * @param x
+         * @param y
+         * @param z
+         */
         public Builder(double x, double y, double z) {
             this.x = x;
             this.y = y;
             this.z = z;
         }
 
+        /**
+         * TODO
+         *
+         * @param position
+         * @return
+         */
         public Builder position(PositionSource position) {
             this.position = position;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param rotation
+         * @return
+         */
         public Builder rotation(RotationSource rotation) {
             this.rotation = rotation;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public RandomPositionSource build() {
             return new RandomPositionSource(
                     x, y, z,

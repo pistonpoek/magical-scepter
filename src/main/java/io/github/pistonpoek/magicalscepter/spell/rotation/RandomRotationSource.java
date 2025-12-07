@@ -6,10 +6,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.random.Random;
-import org.jetbrains.annotations.NotNull;
 
+/**
+ * TODO
+ *
+ * @param pitch
+ * @param yaw
+ */
 public record RandomRotationSource(float pitch, float yaw) implements RotationSource {
-    static MapCodec<RandomRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<RandomRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.FLOAT.optionalFieldOf("pitch", 180.0F).forGetter(RandomRotationSource::pitch),
                     Codec.FLOAT.optionalFieldOf("yaw", 360.0F).forGetter(RandomRotationSource::yaw)
@@ -17,12 +22,18 @@ public record RandomRotationSource(float pitch, float yaw) implements RotationSo
     );
 
     @Override
-    public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
+    public Pair<Float, Float> getRotation(SpellContext context) {
         Random random = context.caster().getRandom();
         RotationSource rotation = getRandomRotationSource(random);
         return rotation.getRotation(context);
     }
 
+    /**
+     * TODO
+     *
+     * @param random
+     * @return
+     */
     private RotationSource getRandomRotationSource(Random random) {
         return new RelativeRotationSource(
                 random.nextFloat() * pitch,

@@ -13,6 +13,11 @@ import net.minecraft.util.math.Vec2f;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param function
+ */
 public record RunFunctionSpellEffect(Identifier function) implements SpellEffect {
     public static final MapCodec<RunFunctionSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(Identifier.CODEC.fieldOf("function").forGetter(RunFunctionSpellEffect::function))

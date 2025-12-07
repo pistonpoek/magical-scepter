@@ -8,14 +8,21 @@ import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import io.github.pistonpoek.magicalscepter.spell.target.TargetSource;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.Registry;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+/**
+ * TODO
+ */
 public interface SpellContextSource {
     Codec<SpellContextSource> CODEC = ModRegistries.CAST_CONTEXT_SOURCE_TYPE.getCodec()
             .dispatch("source", SpellContextSource::getSourceCodec, Function.identity());
 
+    /**
+     * TODO
+     *
+     * @param registry
+     */
     static void register(Registry<MapCodec<? extends SpellContextSource>> registry) {
         Registry.register(registry, ModIdentifier.of("list"), ContextSourceList.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("position"), PositionSource.MAP_CODEC);
@@ -23,7 +30,18 @@ public interface SpellContextSource {
         Registry.register(registry, ModIdentifier.of("target"), TargetSource.MAP_CODEC);
     }
 
-    SpellContext getContext(@NotNull SpellContext spellContext);
+    /**
+     * TODO
+     *
+     * @param spellContext
+     * @return
+     */
+    SpellContext getContext(SpellContext spellContext);
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     MapCodec<? extends SpellContextSource> getSourceCodec();
 }

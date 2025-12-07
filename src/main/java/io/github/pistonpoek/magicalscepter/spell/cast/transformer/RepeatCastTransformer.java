@@ -4,11 +4,16 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.minecraft.util.dynamic.Codecs;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * TODO
+ *
+ * @param amount
+ * @param stepDelay
+ */
 public record RepeatCastTransformer(int amount, float stepDelay) implements CastTransformer {
     public static final MapCodec<RepeatCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
@@ -18,7 +23,7 @@ public record RepeatCastTransformer(int amount, float stepDelay) implements Cast
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+    public Collection<SpellCasting> transform(SpellCasting casting) {
         Collection<SpellCasting> casts = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             casts.add(DelayCastTransformer.delay(casting, (int) (i * stepDelay)));
@@ -31,23 +36,48 @@ public record RepeatCastTransformer(int amount, float stepDelay) implements Cast
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @param amount
+     * @return
+     */
     public static Builder builder(int amount) {
         return new Builder(amount);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final int amount;
         private float stepDelay;
 
+        /**
+         * TODO
+         *
+         * @param amount
+         */
         public Builder(int amount) {
             this.amount = amount;
         }
 
+        /**
+         * TODO
+         *
+         * @param stepDelay
+         * @return
+         */
         public Builder stepDelay(float stepDelay) {
             this.stepDelay = stepDelay;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public RepeatCastTransformer build() {
             return new RepeatCastTransformer(amount, stepDelay);
         }

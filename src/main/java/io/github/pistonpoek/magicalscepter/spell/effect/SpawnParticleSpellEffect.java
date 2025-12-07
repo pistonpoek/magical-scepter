@@ -10,6 +10,13 @@ import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
 
+/**
+ * TODO
+ *
+ * @param particle
+ * @param delta
+ * @param speed
+ */
 public record SpawnParticleSpellEffect(
         ParticleEffect particle,
         Vec3d delta,
@@ -50,29 +57,60 @@ public record SpawnParticleSpellEffect(
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @param particleEffect
+     * @return
+     */
     public static SpawnParticleSpellEffect.Builder builder(ParticleEffect particleEffect) {
         return new SpawnParticleSpellEffect.Builder(particleEffect);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final ParticleEffect particleEffect;
         private Vec3d delta = Vec3d.ZERO;
         private FloatProvider speed = ConstantFloatProvider.ZERO;
 
+        /**
+         * TODO
+         *
+         * @param particleEffect
+         */
         public Builder(ParticleEffect particleEffect) {
             this.particleEffect = particleEffect;
         }
 
+        /**
+         * TODO
+         *
+         * @param delta
+         * @return
+         */
         public Builder delta(Vec3d delta) {
             this.delta = delta;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param speed
+         * @return
+         */
         public Builder speed(FloatProvider speed) {
             this.speed = speed;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public SpawnParticleSpellEffect build() {
             return new SpawnParticleSpellEffect(particleEffect, delta, speed);
         }

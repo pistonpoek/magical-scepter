@@ -8,15 +8,22 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+/**
+ * TODO
+ */
 public interface PositionSource extends SpellContextSource {
     MapCodec<PositionSource> MAP_CODEC = ModRegistries.CAST_POSITION_SOURCE_TYPE.getCodec()
             .dispatchMap(PositionSource::getCodec, Function.identity());
     Codec<PositionSource> CODEC = MAP_CODEC.codec();
 
+    /**
+     * TODO
+     *
+     * @param registry
+     */
     static void register(Registry<MapCodec<? extends PositionSource>> registry) {
         Registry.register(registry, ModIdentifier.of("absolute"), AbsolutePositionSource.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("entity"), EntityPositionSource.MAP_CODEC);
@@ -25,22 +32,46 @@ public interface PositionSource extends SpellContextSource {
         Registry.register(registry, ModIdentifier.of("random"), RandomPositionSource.MAP_CODEC);
     }
 
-    Vec3d getPosition(@NotNull SpellContext context);
+    /**
+     * TODO
+     *
+     * @param context
+     * @return
+     */
+    Vec3d getPosition(SpellContext context);
 
     @Override
-    default SpellContext getContext(@NotNull SpellContext spellContext) {
+    default SpellContext getContext(SpellContext spellContext) {
         return new SpellContext(spellContext, getPosition(spellContext));
     }
 
-    default double getX(@NotNull SpellContext context) {
+    /**
+     * TODO
+     *
+     * @param context
+     * @return
+     */
+    default double getX(SpellContext context) {
         return getPosition(context).getX();
     }
 
-    default double getY(@NotNull SpellContext context) {
+    /**
+     * TODO
+     *
+     * @param context
+     * @return
+     */
+    default double getY(SpellContext context) {
         return getPosition(context).getY();
     }
 
-    default double getZ(@NotNull SpellContext context) {
+    /**
+     * TODO
+     *
+     * @param context
+     * @return
+     */
+    default double getZ(SpellContext context) {
         return getPosition(context).getZ();
     }
 
@@ -49,5 +80,10 @@ public interface PositionSource extends SpellContextSource {
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     MapCodec<? extends PositionSource> getCodec();
 }

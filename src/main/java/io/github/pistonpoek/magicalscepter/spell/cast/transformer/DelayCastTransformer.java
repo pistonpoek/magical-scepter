@@ -5,11 +5,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.DelayedSpellCasting;
 import net.minecraft.util.dynamic.Codecs;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * TODO
+ *
+ * @param delay
+ */
 public record DelayCastTransformer(int delay) implements CastTransformer {
     public static final MapCodec<DelayCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
@@ -24,7 +28,7 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
      * @param delay   Time to delay in ticks.
      * @return Spell casting that will have its invocation delayed.
      */
-    public static SpellCasting delay(@NotNull SpellCasting casting, int delay) {
+    public static SpellCasting delay(SpellCasting casting, int delay) {
         if (delay <= 0) {
             return casting.clone();
         }
@@ -32,7 +36,7 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
     }
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+    public Collection<SpellCasting> transform(SpellCasting casting) {
         return List.of(delay(casting, delay()));
     }
 
@@ -41,10 +45,19 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @param delay
+     * @return
+     */
     public static Builder builder(int delay) {
         return new Builder(delay);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final int delay;
 

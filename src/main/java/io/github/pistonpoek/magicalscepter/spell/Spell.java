@@ -15,11 +15,17 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.util.dynamic.Codecs;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO
+ *
+ * @param casts
+ * @param cooldown
+ * @param description
+ */
 public record Spell(List<SpellCast> casts, int cooldown, Text description) {
     public static final Codec<Spell> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -51,7 +57,7 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
      *
      * @param caster Living entity to cast the spell for.
      */
-    public void castSpell(@NotNull LivingEntity caster) {
+    public void castSpell(LivingEntity caster) {
         if (caster.getEntityWorld().isClient()) {
             return;
         }
@@ -63,37 +69,76 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
         caster.emitGameEvent(ModGameEvent.SPELL_CAST);
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public int getCooldown() {
         return cooldown;
     }
 
+    @Override
     public String toString() {
         return "Spell " + this.description.getString();
     }
 
+    /**
+     * TODO
+     *
+     * @param spell
+     * @return
+     */
     public static MutableText getName(RegistryEntry<Spell> spell) {
         return spell.value().description.copy();
     }
 
+    /**
+     * TODO
+     *
+     * @param cooldown
+     * @param description
+     * @return
+     */
     public static Spell.Builder builder(int cooldown, Text description) {
         return new Spell.Builder(cooldown, description);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final int cooldown;
         private final Text description;
         private final List<SpellCast> casts = new ArrayList<>();
 
+        /**
+         * TODO
+         *
+         * @param cooldown
+         * @param description
+         */
         public Builder(int cooldown, Text description) {
             this.cooldown = cooldown;
             this.description = description;
         }
 
+        /**
+         * TODO
+         *
+         * @param cast
+         * @return
+         */
         public Spell.Builder addCast(SpellCast.Builder cast) {
             casts.add(cast.build());
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public Spell build() {
             return new Spell(casts, cooldown, description);
         }

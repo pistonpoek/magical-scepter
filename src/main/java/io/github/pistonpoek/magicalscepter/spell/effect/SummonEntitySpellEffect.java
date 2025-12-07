@@ -31,6 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param entityTypes
+ * @param effects
+ * @param nbt
+ */
 public record SummonEntitySpellEffect(
         RegistryEntryList<EntityType<?>> entityTypes,
         List<SpellEffect> effects,
@@ -128,6 +135,12 @@ public record SummonEntitySpellEffect(
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @param nbtCompound
+     * @param context
+     */
     private static void initializeShulkerBulletNbtCompound(NbtCompound nbtCompound, SpellContext context) {
         Entity target = context.target();
         LivingEntity caster = context.caster();
@@ -147,34 +160,71 @@ public record SummonEntitySpellEffect(
         nbtCompound.putDouble("TZD", zOffset / distance * 0.15);
     }
 
+    /**
+     * TODO
+     *
+     * @param entityType
+     * @return
+     */
     public static Builder builder(RegistryEntry.Reference<EntityType<?>> entityType) {
         return new Builder(entityType);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final List<RegistryEntry.Reference<EntityType<?>>> entityTypes = new ArrayList<>();
         private final List<SpellEffect> effects = new ArrayList<>();
         private NbtCompound nbt = null;
 
+        /**
+         * TODO
+         *
+         * @param entityType
+         */
         public Builder(RegistryEntry.Reference<EntityType<?>> entityType) {
             entityTypes.add(entityType);
         }
 
+        /**
+         * TODO
+         *
+         * @param entityType
+         * @return
+         */
         public Builder addEntityType(RegistryEntry.Reference<EntityType<?>> entityType) {
             entityTypes.add(entityType);
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param effect
+         * @return
+         */
         public Builder addEffect(SpellEffect effect) {
             effects.add(effect);
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param nbt
+         * @return
+         */
         public Builder nbt(NbtCompound nbt) {
             this.nbt = nbt;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public SummonEntitySpellEffect build() {
             return new SummonEntitySpellEffect(RegistryEntryList.of(entityTypes), effects, Optional.ofNullable(nbt));
         }

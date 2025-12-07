@@ -14,11 +14,19 @@ import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.minecraft.util.Pair;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * TODO
+ *
+ * @param position
+ * @param direction
+ * @param arc
+ * @param amount
+ * @param stepDelay
+ */
 public record CircleCastTransformer(PositionSource position, float direction, float arc, int amount,
                                     float stepDelay) implements CastTransformer {
     public static final MapCodec<CircleCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
@@ -32,7 +40,7 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+    public Collection<SpellCasting> transform(SpellCasting casting) {
         SpellContext context = casting.getContext();
         RotationSource rotation = new FacingLocationRotationSource(position);
         Vec3d centerPos = context.position();
@@ -70,10 +78,20 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @param position
+     * @param amount
+     * @return
+     */
     public static Builder builder(PositionSource position, int amount) {
         return new Builder(position, amount);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final PositionSource position;
         private float direction = 0.0F;
@@ -81,26 +99,55 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
         private final int amount;
         private float stepDelay = 0.0F;
 
+        /**
+         * TODO
+         *
+         * @param position
+         * @param amount
+         */
         public Builder(PositionSource position, int amount) {
             this.position = position;
             this.amount = amount;
         }
 
+        /**
+         * TODO
+         *
+         * @param direction
+         * @return
+         */
         public Builder direction(float direction) {
             this.direction = direction;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param arc
+         * @return
+         */
         public Builder arc(float arc) {
             this.arc = arc;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param stepDelay
+         * @return
+         */
         public Builder stepDelay(float stepDelay) {
             this.stepDelay = stepDelay;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public CircleCastTransformer build() {
             return new CircleCastTransformer(position, direction, arc, amount, stepDelay);
         }

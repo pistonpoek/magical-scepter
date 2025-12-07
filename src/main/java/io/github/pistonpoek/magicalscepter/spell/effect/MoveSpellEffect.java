@@ -13,6 +13,12 @@ import net.minecraft.util.math.random.Random;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param power
+ * @param knockback
+ */
 public record MoveSpellEffect(FloatProvider power, boolean knockback) implements SpellEffect {
     public static final MapCodec<MoveSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(

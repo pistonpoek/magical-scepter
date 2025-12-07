@@ -13,6 +13,11 @@ import net.minecraft.util.math.random.Random;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param toRemove
+ */
 public record RemoveMobEffectSpellEffect(
         RegistryEntryList<StatusEffect> toRemove
 ) implements SpellEffect {

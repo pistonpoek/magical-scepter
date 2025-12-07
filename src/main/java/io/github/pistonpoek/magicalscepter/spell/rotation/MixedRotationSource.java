@@ -5,13 +5,18 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param pitch
+ * @param yaw
+ */
 public record MixedRotationSource(Optional<RotationSource> pitch,
                                   Optional<RotationSource> yaw) implements RotationSource {
-    static MapCodec<MixedRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<MixedRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     RotationSource.CODEC.optionalFieldOf("pitch").forGetter(MixedRotationSource::pitch),
                     RotationSource.CODEC.optionalFieldOf("yaw").forGetter(MixedRotationSource::yaw)
@@ -19,7 +24,7 @@ public record MixedRotationSource(Optional<RotationSource> pitch,
     );
 
     @Override
-    public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
+    public Pair<Float, Float> getRotation(SpellContext context) {
         return new Pair<>(
                 MathHelper.wrapDegrees(pitch.map(pitch -> pitch.getPitch(context)).orElse(context.pitch())),
                 MathHelper.wrapDegrees(yaw.map(yaw -> yaw.getYaw(context)).orElse(context.yaw())));
@@ -30,24 +35,49 @@ public record MixedRotationSource(Optional<RotationSource> pitch,
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public static Builder builder() {
         return new Builder();
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private RotationSource pitchRotation = null;
         private RotationSource yawRotation = null;
 
+        /**
+         * TODO
+         *
+         * @param rotation
+         * @return
+         */
         public Builder pitchRotation(RotationSource rotation) {
             this.pitchRotation = rotation;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param rotation
+         * @return
+         */
         public Builder yawRotation(RotationSource rotation) {
             this.yawRotation = rotation;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public MixedRotationSource build() {
             return new MixedRotationSource(Optional.ofNullable(pitchRotation), Optional.ofNullable(yawRotation));
         }

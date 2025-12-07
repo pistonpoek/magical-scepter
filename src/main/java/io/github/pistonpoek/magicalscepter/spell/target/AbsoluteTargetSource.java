@@ -7,20 +7,24 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Uuids;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * TODO
+ *
+ * @param targetUUID
+ */
 public record AbsoluteTargetSource(UUID targetUUID) implements TargetSource {
-    public static MapCodec<AbsoluteTargetSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<AbsoluteTargetSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Uuids.CODEC.fieldOf("target").forGetter(AbsoluteTargetSource::targetUUID)
             ).apply(instance, AbsoluteTargetSource::new)
     );
 
     @Override
-    public Entity getTarget(@NotNull SpellContext spellContext) {
+    public Entity getTarget(SpellContext spellContext) {
         MinecraftServer server = spellContext.caster().getEntityWorld().getServer();
         if (server == null) {
             return spellContext.target();
@@ -29,7 +33,13 @@ public record AbsoluteTargetSource(UUID targetUUID) implements TargetSource {
         return load(server).orElse(spellContext.target());
     }
 
-    public Optional<Entity> load(@NotNull MinecraftServer server) {
+    /**
+     * TODO
+     *
+     * @param server
+     * @return
+     */
+    public Optional<Entity> load(MinecraftServer server) {
         Entity target = null;
         for (ServerWorld world : server.getWorlds()) {
             target = world.getEntity(targetUUID);

@@ -12,12 +12,18 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param distance
+ * @param require
+ * @param position
+ */
 public record SurfaceCastTransformer(float distance, boolean require, Optional<PositionSource> position)
         implements CastTransformer {
     public static final MapCodec<SurfaceCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
@@ -29,7 +35,7 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+    public Collection<SpellCasting> transform(SpellCasting casting) {
         Optional<Vec3d> value = getSurfacePosition(casting);
 
         if (value.isEmpty()) {
@@ -43,7 +49,13 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
         return List.of(casting);
     }
 
-    private Optional<Vec3d> getSurfacePosition(@NotNull SpellCasting cast) {
+    /**
+     * TODO
+     *
+     * @param cast
+     * @return
+     */
+    private Optional<Vec3d> getSurfacePosition(SpellCasting cast) {
         World world = cast.getCaster().getEntityWorld();
         Vec3d castPosition = cast.getContext().position();
 
@@ -91,29 +103,60 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @param distance
+     * @return
+     */
     public static Builder builder(float distance) {
         return new Builder(distance);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final float distance;
         private boolean require = true;
         private PositionSource position = null;
 
+        /**
+         * TODO
+         *
+         * @param distance
+         */
         public Builder(float distance) {
             this.distance = distance;
         }
 
+        /**
+         * TODO
+         *
+         * @param position
+         * @return
+         */
         public Builder position(PositionSource position) {
             this.position = position;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param require
+         * @return
+         */
         public Builder require(boolean require) {
             this.require = require;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public SurfaceCastTransformer build() {
             return new SurfaceCastTransformer(distance, require, Optional.ofNullable(position));
         }

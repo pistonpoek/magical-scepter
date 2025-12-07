@@ -15,6 +15,13 @@ import net.minecraft.util.math.random.Random;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param toApply
+ * @param duration
+ * @param amplifier
+ */
 public record ApplyMobEffectSpellEffect(
         RegistryEntryList<StatusEffect> toApply,
         FloatProvider duration,
@@ -43,10 +50,22 @@ public record ApplyMobEffectSpellEffect(
         ));
     }
 
+    /**
+     * TODO
+     *
+     * @param random
+     * @return
+     */
     private int getDuration(Random random) {
         return Math.round(duration().get(random) * 20.0F);
     }
 
+    /**
+     * TODO
+     *
+     * @param random
+     * @return
+     */
     private int getAmplifier(Random random) {
         return Math.max(0, Math.round(amplifier().get(random)));
     }

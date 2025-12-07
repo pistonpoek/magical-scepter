@@ -8,23 +8,36 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.Registry;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+/**
+ * TODO
+ */
 public interface TargetSource extends SpellContextSource {
     MapCodec<TargetSource> MAP_CODEC = ModRegistries.CAST_TARGET_SOURCE_TYPE.getCodec()
             .dispatchMap(TargetSource::getCodec, Function.identity());
     Codec<TargetSource> CODEC = MAP_CODEC.codec();
 
+    /**
+     * TODO
+     *
+     * @param registry
+     */
     static void register(Registry<MapCodec<? extends TargetSource>> registry) {
         Registry.register(registry, ModIdentifier.of("absolute"), AbsoluteTargetSource.MAP_CODEC);
     }
 
-    Entity getTarget(@NotNull SpellContext spellContext);
+    /**
+     * TODO
+     *
+     * @param spellContext
+     * @return
+     */
+    Entity getTarget(SpellContext spellContext);
 
     @Override
-    default SpellContext getContext(@NotNull SpellContext spellContext) {
+    default SpellContext getContext(SpellContext spellContext) {
         return new SpellContext(spellContext, getTarget(spellContext));
     }
 
@@ -33,5 +46,10 @@ public interface TargetSource extends SpellContextSource {
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     MapCodec<? extends TargetSource> getCodec();
 }

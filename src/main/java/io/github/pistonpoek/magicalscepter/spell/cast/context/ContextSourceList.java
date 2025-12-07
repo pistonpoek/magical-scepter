@@ -5,10 +5,14 @@ import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.AbsoluteRotationSource;
 import io.github.pistonpoek.magicalscepter.spell.target.AbsoluteTargetSource;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * TODO
+ *
+ * @param sources
+ */
 public record ContextSourceList(List<SpellContextSource> sources) implements SpellContextSource {
     public static final MapCodec<ContextSourceList> MAP_CODEC =
             SpellContextSource.CODEC.listOf().xmap(
@@ -18,22 +22,32 @@ public record ContextSourceList(List<SpellContextSource> sources) implements Spe
     public static final Codec<ContextSourceList> CODEC = MAP_CODEC.codec();
 
     @Override
-    public SpellContext getContext(@NotNull SpellContext spellContext) {
+    public SpellContext getContext(SpellContext spellContext) {
         for (SpellContextSource contextSource : sources) {
             spellContext = contextSource.getContext(spellContext);
         }
         return spellContext;
     }
 
-    public ContextSourceList append(SpellContextSource contextSource) {
+    /**
+     * TODO
+     *
+     * @param contextSource
+     * @return
+     */
+    public void append(SpellContextSource contextSource) {
         if (contextSource instanceof ContextSourceList) {
             ((ContextSourceList) contextSource).sources.forEach(this::append);
-            return this;
+            return;
         }
         sources.add(contextSource);
-        return this;
     }
 
+    /**
+     * TODO
+     *
+     * @param context
+     */
     public ContextSourceList(SpellContext context) {
         this(List.of(
                         new AbsoluteTargetSource(context.target().getUuid()),

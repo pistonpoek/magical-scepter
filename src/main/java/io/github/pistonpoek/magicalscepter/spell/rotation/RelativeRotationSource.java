@@ -6,17 +6,23 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 
+/**
+ * TODO
+ *
+ * @param pitch
+ * @param yaw
+ */
 public record RelativeRotationSource(float pitch, float yaw) implements RotationSource {
-    static MapCodec<RelativeRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<RelativeRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.FLOAT.optionalFieldOf("pitch", 0.0F).forGetter(RelativeRotationSource::pitch),
                     Codec.FLOAT.optionalFieldOf("yaw", 0.0F).forGetter(RelativeRotationSource::yaw)
             ).apply(instance, RelativeRotationSource::new)
     );
 
-    public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
+    @Override
+    public Pair<Float, Float> getRotation(SpellContext context) {
         return new Pair<>(
                 MathHelper.wrapDegrees(context.pitch() + pitch),
                 MathHelper.wrapDegrees(context.yaw() + yaw));

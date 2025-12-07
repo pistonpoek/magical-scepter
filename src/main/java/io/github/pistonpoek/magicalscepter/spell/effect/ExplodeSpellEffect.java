@@ -26,6 +26,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param attributeToCaster
+ * @param damageType
+ * @param knockbackMultiplier
+ * @param immuneBlocks
+ * @param radius
+ * @param createFire
+ * @param blockInteraction
+ * @param particle
+ * @param sound
+ */
 public record ExplodeSpellEffect(
         boolean attributeToCaster,
         Optional<RegistryEntry<DamageType>> damageType,
@@ -81,6 +94,13 @@ public record ExplodeSpellEffect(
         );
     }
 
+    /**
+     * TODO
+     *
+     * @param caster
+     * @param position
+     * @return
+     */
     @Nullable
     private DamageSource getDamageSource(Entity caster, Vec3d position) {
         return this.damageType.map(damageTypeRegistryEntry -> this.attributeToCaster

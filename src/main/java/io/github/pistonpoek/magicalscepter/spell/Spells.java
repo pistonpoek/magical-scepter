@@ -36,14 +36,16 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * TODO
+ */
 public class Spells {
-    public static final List<RegistryKey<Spell>> SPELL_KEYS = new ArrayList<>();
+    public static final List<RegistryKey<Spell>> KEYS = new ArrayList<>();
     public static final RegistryKey<Spell> MAGICAL_ATTACK_KEY = of("magical_attack");
     public static final RegistryKey<Spell> MAGICAL_RESISTANCE_KEY = of("magical_resistance");
     public static final RegistryKey<Spell> BLAZE_FIRE_CHARGES = of("blaze_fire_charges");
@@ -65,11 +67,21 @@ public class Spells {
     public static final RegistryKey<Spell> WITHER_SKULL_KEY = of("wither_skull");
     public static final RegistryKey<Spell> WITHER_REPULSION_KEY = of("wither_repulsion");
 
-
+    /**
+     * TODO
+     *
+     * @param identifier
+     * @return
+     */
     private static RegistryKey<Spell> of(String identifier) {
         return RegistryKey.of(ModRegistryKeys.SPELL, ModIdentifier.of(identifier));
     }
 
+    /**
+     * TODO
+     *
+     * @param registry
+     */
     public static void bootstrap(Registerable<Spell> registry) {
         RegistryEntryLookup<DamageType> damageTypeLookup = registry.getRegistryLookup(RegistryKeys.DAMAGE_TYPE);
         RegistryEntryLookup<EntityType<?>> entityTypeLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
@@ -643,12 +655,25 @@ public class Spells {
         );
     }
 
+    /**
+     * TODO
+     *
+     * @param registry
+     * @param key
+     * @param builder
+     */
     private static void register(Registerable<Spell> registry, RegistryKey<Spell> key, Spell.Builder builder) {
-        SPELL_KEYS.add(key);
+        KEYS.add(key);
         registry.register(key, builder.build());
     }
 
-    public static String getTranslationKey(@NotNull RegistryKey<Spell> spell) {
+    /**
+     * TODO
+     *
+     * @param spell
+     * @return
+     */
+    public static String getTranslationKey(RegistryKey<Spell> spell) {
         return spell.getValue().toTranslationKey(ModIdentifier.of("spell").toTranslationKey());
     }
 }

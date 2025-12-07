@@ -5,10 +5,15 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.Pair;
-import org.jetbrains.annotations.NotNull;
 
+/**
+ * TODO
+ *
+ * @param pitch
+ * @param yaw
+ */
 public record AbsoluteRotationSource(float pitch, float yaw) implements RotationSource {
-    public static MapCodec<AbsoluteRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
+    public static final MapCodec<AbsoluteRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     Codec.FLOAT.optionalFieldOf("pitch", 0.0F).forGetter(AbsoluteRotationSource::pitch),
                     Codec.FLOAT.optionalFieldOf("yaw", 0.0F).forGetter(AbsoluteRotationSource::yaw)
@@ -16,7 +21,7 @@ public record AbsoluteRotationSource(float pitch, float yaw) implements Rotation
     );
 
     @Override
-    public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
+    public Pair<Float, Float> getRotation(SpellContext context) {
         return new Pair<>(pitch, yaw);
     }
 

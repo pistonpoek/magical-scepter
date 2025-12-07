@@ -11,13 +11,15 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * TODO
+ */
 public class SpellCastingManager extends PersistentState {
     private static final int MAX_CASTER_CASTINGS = Integer.MAX_VALUE;
     private static final String ID = ModIdentifier.key("spell_castings", "_");
@@ -33,6 +35,12 @@ public class SpellCastingManager extends PersistentState {
     private final Map<UUID, Map<Integer, ScheduledSpellCasting>> scheduledCastings;
     private int startKey;
 
+    /**
+     * TODO
+     *
+     * @param scheduledCastings
+     * @param startKey
+     */
     private SpellCastingManager(Map<UUID, Map<Integer, ScheduledSpellCasting>> scheduledCastings, int startKey) {
         this.scheduledCastings = new HashMap<>(scheduledCastings);
         for (Map.Entry<UUID, Map<Integer, ScheduledSpellCasting>>
@@ -42,15 +50,31 @@ public class SpellCastingManager extends PersistentState {
         this.startKey = startKey;
     }
 
+    /**
+     * TODO
+     */
     public SpellCastingManager() {
         this(new HashMap<>(), 0);
     }
 
+    /**
+     * TODO
+     *
+     * @param server
+     * @return
+     */
     public static SpellCastingManager load(MinecraftServer server) {
         return server.getOverworld().getPersistentStateManager()
                 .getOrCreate(SpellCastingManager.getPersistentStateType());
     }
 
+    /**
+     * TODO
+     *
+     * @param world
+     * @param spellCasting
+     * @param delay
+     */
     public void schedule(ServerWorld world, SpellCasting spellCasting, int delay) {
         ScheduledSpellCasting scheduledSpellCasting = new ScheduledSpellCasting(spellCasting.clone());
         UUID casterUuid = spellCasting.getCaster().getUuid();
@@ -65,6 +89,13 @@ public class SpellCastingManager extends PersistentState {
         SpellCastingScheduler.schedule(world, new SpellCastingTimerCallback(casterUuid, key), delay);
     }
 
+    /**
+     * TODO
+     *
+     * @param scheduledSpellCasting
+     * @param casterUuid
+     * @param key
+     */
     private void store(ScheduledSpellCasting scheduledSpellCasting, UUID casterUuid, int key) {
         if (!scheduledCastings.containsKey(casterUuid)) {
             scheduledCastings.put(casterUuid, new HashMap<>());
@@ -73,6 +104,14 @@ public class SpellCastingManager extends PersistentState {
         this.markDirty();
     }
 
+    /**
+     * TODO
+     *
+     * @param server
+     * @param casterUuid
+     * @param key
+     * @return
+     */
     Optional<SpellCasting> retrieve(MinecraftServer server, UUID casterUuid, int key) {
         if (!scheduledCastings.containsKey(casterUuid)) {
             return Optional.empty();
@@ -87,6 +126,13 @@ public class SpellCastingManager extends PersistentState {
         return scheduledCastings.get(casterUuid).remove(key).load(server);
     }
 
+    /**
+     * TODO
+     *
+     * @param server
+     * @param casterUuid
+     * @return
+     */
     public boolean clear(MinecraftServer server, UUID casterUuid) {
         if (!scheduledCastings.containsKey(casterUuid)) {
             return false;
@@ -101,6 +147,12 @@ public class SpellCastingManager extends PersistentState {
         return true;
     }
 
+    /**
+     * TODO
+     *
+     * @param casterUuid
+     * @return
+     */
     private int generateKey(UUID casterUuid) {
         int nextKey = startKey;
         if (!scheduledCastings.containsKey(casterUuid)) {
@@ -120,12 +172,23 @@ public class SpellCastingManager extends PersistentState {
         return -1;
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public static PersistentStateType<SpellCastingManager> getPersistentStateType() {
         return new PersistentStateType<>(ID,
                 SpellCastingManager::new, CODEC, null);
     }
 
-    public static boolean clear(@NotNull LivingEntity entity) {
+    /**
+     * TODO
+     *
+     * @param entity
+     * @return
+     */
+    public static boolean clear(LivingEntity entity) {
         MinecraftServer server = entity.getEntityWorld().getServer();
         if (server == null) {
             return false;

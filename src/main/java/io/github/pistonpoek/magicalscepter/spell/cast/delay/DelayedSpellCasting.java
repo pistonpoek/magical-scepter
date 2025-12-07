@@ -3,6 +3,9 @@ package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import net.minecraft.server.world.ServerWorld;
 
+/**
+ * TODO
+ */
 public class DelayedSpellCasting extends SpellCasting {
     private final int delay;
     private boolean scheduled = false;

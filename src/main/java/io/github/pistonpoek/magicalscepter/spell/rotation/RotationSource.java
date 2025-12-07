@@ -9,15 +9,22 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Direction;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
+/**
+ * TODO
+ */
 public interface RotationSource extends SpellContextSource {
     MapCodec<RotationSource> MAP_CODEC = ModRegistries.CAST_ROTATION_SOURCE_TYPE.getCodec()
             .dispatchMap(RotationSource::getCodec, Function.identity());
     Codec<RotationSource> CODEC = MAP_CODEC.codec();
 
+    /**
+     * TODO
+     *
+     * @param registry
+     */
     static void register(Registry<MapCodec<? extends RotationSource>> registry) {
         Registry.register(registry, ModIdentifier.of("absolute"), AbsoluteRotationSource.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("relative"), RelativeRotationSource.MAP_CODEC);
@@ -27,23 +34,47 @@ public interface RotationSource extends SpellContextSource {
         Registry.register(registry, ModIdentifier.of("facing"), FacingLocationRotationSource.MAP_CODEC);
     }
 
-    Pair<Float, Float> getRotation(@NotNull SpellContext context);
+    /**
+     * TODO
+     *
+     * @param context
+     * @return
+     */
+    Pair<Float, Float> getRotation(SpellContext context);
 
     @Override
-    default SpellContext getContext(@NotNull SpellContext context) {
+    default SpellContext getContext(SpellContext context) {
         Pair<Float, Float> rotationPair = getRotation(context);
         return new SpellContext(context, rotationPair.getLeft(), rotationPair.getRight());
     }
 
-    default float getPitch(@NotNull SpellContext context) {
+    /**
+     * TODO
+     *
+     * @param context
+     * @return
+     */
+    default float getPitch(SpellContext context) {
         return getRotation(context).getLeft();
     }
 
-    default float getYaw(@NotNull SpellContext context) {
+    /**
+     * TODO
+     *
+     * @param context
+     * @return
+     */
+    default float getYaw(SpellContext context) {
         return getRotation(context).getRight();
     }
 
-    static Direction getDirection(@NotNull SpellContext context) {
+    /**
+     * TODO
+     *
+     * @param context
+     * @return
+     */
+    static Direction getDirection(SpellContext context) {
         return Direction.getFacing(context.getRotationVector());
     }
 
@@ -52,5 +83,10 @@ public interface RotationSource extends SpellContextSource {
         return MAP_CODEC;
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     MapCodec<? extends RotationSource> getCodec();
 }

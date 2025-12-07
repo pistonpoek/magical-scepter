@@ -12,6 +12,9 @@ import net.minecraft.world.event.GameEvent;
 
 import java.util.Set;
 
+/**
+ * TODO
+ */
 public record TeleportSpellEffect() implements SpellEffect {
     public static final MapCodec<TeleportSpellEffect> MAP_CODEC = MapCodec.unit(new TeleportSpellEffect());
 

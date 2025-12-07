@@ -15,6 +15,12 @@ import net.minecraft.world.timer.TimerCallback;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * TODO
+ *
+ * @param caster
+ * @param key
+ */
 public record SpellCastingTimerCallback(UUID caster, Integer key)
         implements TimerCallback<MinecraftServer> {
     public static final Identifier ID = ModIdentifier.of("spell_cast");

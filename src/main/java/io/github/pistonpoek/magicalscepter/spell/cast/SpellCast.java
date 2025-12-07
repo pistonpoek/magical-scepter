@@ -6,11 +6,16 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
 import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import net.minecraft.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO
+ *
+ * @param effects
+ * @param transformers
+ */
 public record SpellCast(List<SpellEffect> effects, List<CastTransformer> transformers) {
     public static final Codec<SpellCast> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -26,28 +31,53 @@ public record SpellCast(List<SpellEffect> effects, List<CastTransformer> transfo
      *
      * @param caster Living entity that casts the spell effects.
      */
-    public void invoke(@NotNull LivingEntity caster) {
+    public void invoke(LivingEntity caster) {
         new SpellCasting(this, caster).invoke();
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public static SpellCast.Builder builder() {
         return new SpellCast.Builder();
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final List<SpellEffect> effects = new ArrayList<>();
         private final List<CastTransformer> transformers = new ArrayList<>();
 
+        /**
+         * TODO
+         *
+         * @param effect
+         * @return
+         */
         public SpellCast.Builder addEffect(SpellEffect effect) {
             effects.add(effect);
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @param transformer
+         * @return
+         */
         public SpellCast.Builder addTransformer(CastTransformer transformer) {
             transformers.add(transformer);
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public SpellCast build() {
             return new SpellCast(effects, transformers);
         }

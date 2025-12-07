@@ -8,6 +8,12 @@ import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 
+/**
+ * TODO
+ *
+ * @param amount
+ * @param damageType
+ */
 public record DamageSpellEffect(FloatProvider amount, RegistryEntry<DamageType> damageType) implements SpellEffect {
     public static final MapCodec<DamageSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(

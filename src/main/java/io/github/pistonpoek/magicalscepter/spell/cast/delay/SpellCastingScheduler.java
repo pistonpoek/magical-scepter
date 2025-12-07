@@ -3,8 +3,10 @@ package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.timer.Timer;
-import org.jetbrains.annotations.NotNull;
 
+/**
+ * TODO
+ */
 public abstract class SpellCastingScheduler {
     private static final String EVENT_NAME_PREFIX = "spell_casting_";
 
@@ -15,7 +17,7 @@ public abstract class SpellCastingScheduler {
      * @param callback Spell cast timer callback to schedule.
      * @param delay    Positive time delay to set for the callback in ticks.
      */
-    static void schedule(@NotNull ServerWorld world, @NotNull SpellCastingTimerCallback callback, int delay) {
+    static void schedule(ServerWorld world, SpellCastingTimerCallback callback, int delay) {
         if (delay <= 0) {
             throw new IllegalArgumentException("Delay is %d when trying to schedule spell cast".formatted(delay));
         }
@@ -32,11 +34,23 @@ public abstract class SpellCastingScheduler {
         );
     }
 
-    private static String getEventName(@NotNull SpellCastingTimerCallback callback) {
+    /**
+     * TODO
+     *
+     * @param callback
+     * @return
+     */
+    private static String getEventName(SpellCastingTimerCallback callback) {
         return EVENT_NAME_PREFIX + "%d%s".formatted(callback.key(), callback.caster());
     }
 
-    static void clear(@NotNull MinecraftServer server, @NotNull SpellCastingTimerCallback callback) {
+    /**
+     * TODO
+     *
+     * @param server
+     * @param callback
+     */
+    static void clear(MinecraftServer server, SpellCastingTimerCallback callback) {
         Timer<MinecraftServer> timer = server.getSaveProperties().getMainWorldProperties().getScheduledEvents();
         timer.remove(getEventName(callback));
     }

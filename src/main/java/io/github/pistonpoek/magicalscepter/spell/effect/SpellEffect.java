@@ -9,9 +9,17 @@ import net.minecraft.registry.Registry;
 
 import java.util.function.Function;
 
+/**
+ * TODO
+ */
 public interface SpellEffect {
     Codec<SpellEffect> CODEC = ModRegistries.SPELL_EFFECT_TYPE.getCodec().dispatch(SpellEffect::getCodec, Function.identity());
 
+    /**
+     * TODO
+     *
+     * @param registry
+     */
     static void register(Registry<MapCodec<? extends SpellEffect>> registry) {
         Registry.register(registry, ModIdentifier.of("play_sound"), PlaySoundSpellEffect.MAP_CODEC);
         Registry.register(registry, ModIdentifier.of("spawn_particles"), SpawnParticleSpellEffect.MAP_CODEC);
@@ -28,7 +36,17 @@ public interface SpellEffect {
         Registry.register(registry, ModIdentifier.of("run_function"), RunFunctionSpellEffect.MAP_CODEC);
     }
 
+    /**
+     * TODO
+     *
+     * @param context
+     */
     void apply(SpellContext context);
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     MapCodec<? extends SpellEffect> getCodec();
 }

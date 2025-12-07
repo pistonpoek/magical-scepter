@@ -6,17 +6,21 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 
+/**
+ * TODO
+ *
+ * @param position
+ */
 public record FacingLocationRotationSource(PositionSource position) implements RotationSource {
-    static MapCodec<FacingLocationRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
+    public final static MapCodec<FacingLocationRotationSource> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(FacingLocationRotationSource::position)
             ).apply(instance, FacingLocationRotationSource::new)
     );
 
     @Override
-    public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
+    public Pair<Float, Float> getRotation(SpellContext context) {
         Vec3d start = context.position();
         Vec3d end = position.getPosition(context);
 

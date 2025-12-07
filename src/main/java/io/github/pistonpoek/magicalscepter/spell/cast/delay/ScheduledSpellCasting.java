@@ -12,6 +12,13 @@ import net.minecraft.server.MinecraftServer;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param spellCast
+ * @param caster
+ * @param context
+ */
 public record ScheduledSpellCasting(SpellCast spellCast, AbsoluteTargetSource caster, SpellContextSource context) {
     public static final Codec<ScheduledSpellCasting> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -21,12 +28,23 @@ public record ScheduledSpellCasting(SpellCast spellCast, AbsoluteTargetSource ca
             ).apply(instance, ScheduledSpellCasting::new)
     );
 
+    /**
+     * TODO
+     *
+     * @param spellCasting
+     */
     public ScheduledSpellCasting(SpellCasting spellCasting) {
         this(spellCasting.getSpellCast(),
                 new AbsoluteTargetSource(spellCasting.getCaster().getUuid()),
                 spellCasting.getContextSource());
     }
 
+    /**
+     * TODO
+     *
+     * @param server
+     * @return
+     */
     public Optional<SpellCasting> load(MinecraftServer server) {
         Optional<Entity> loadedEntity = caster().load(server);
         if (loadedEntity.isEmpty()) {

@@ -6,6 +6,11 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 
+/**
+ * TODO
+ *
+ * @param blockState
+ */
 public record ReplaceBlockSpellEffect(BlockStateProvider blockState) implements SpellEffect {
     public static final MapCodec<ReplaceBlockSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(

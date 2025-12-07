@@ -8,11 +8,17 @@ import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * TODO
+ *
+ * @param position
+ * @param amount
+ * @param stepDelay
+ */
 public record LineCastTransformer(PositionSource position,
                                   int amount,
                                   float stepDelay) implements CastTransformer {
@@ -25,7 +31,7 @@ public record LineCastTransformer(PositionSource position,
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+    public Collection<SpellCasting> transform(SpellCasting casting) {
         SpellContext context = casting.getContext();
         Vec3d startPos = context.position();
         Vec3d lineVector = position.getPosition(context).subtract(startPos);
@@ -39,26 +45,53 @@ public record LineCastTransformer(PositionSource position,
         return casts;
     }
 
+    /**
+     * TODO
+     *
+     * @param amount
+     * @param position
+     * @return
+     */
     public static Builder builder(int amount, PositionSource position) {
         return new Builder(position, amount);
     }
 
+    /**
+     * TODO
+     */
     public static class Builder {
         private final PositionSource position;
         private final int amount;
         private float stepDelay = 0.0F;
 
+        /**
+         * TODO
+         *
+         * @param position
+         * @param amount
+         */
         public Builder(PositionSource position,
                        int amount) {
             this.position = position;
             this.amount = amount;
         }
 
+        /**
+         * TODO
+         *
+         * @param stepDelay
+         * @return
+         */
         public Builder stepDelay(float stepDelay) {
             this.stepDelay = stepDelay;
             return this;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public LineCastTransformer build() {
             return new LineCastTransformer(position, amount, stepDelay);
         }

@@ -11,6 +11,13 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
 
+/**
+ * TODO
+ *
+ * @param soundEvent
+ * @param volume
+ * @param pitch
+ */
 public record PlaySoundSpellEffect(RegistryEntry<SoundEvent> soundEvent, FloatProvider volume, FloatProvider pitch)
         implements SpellEffect {
     public static final MapCodec<PlaySoundSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(

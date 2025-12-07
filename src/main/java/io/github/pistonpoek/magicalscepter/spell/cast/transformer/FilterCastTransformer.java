@@ -14,12 +14,16 @@ import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TODO
+ *
+ * @param filters
+ */
 public record FilterCastTransformer(LootContextPredicate filters) implements CastTransformer {
     public static final MapCodec<FilterCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
@@ -28,7 +32,7 @@ public record FilterCastTransformer(LootContextPredicate filters) implements Cas
     );
 
     @Override
-    public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
+    public Collection<SpellCasting> transform(SpellCasting casting) {
         SpellContext context = casting.getContext();
         ServerWorld serverWorld = context.getWorld();
         Vec3d position = context.position();
