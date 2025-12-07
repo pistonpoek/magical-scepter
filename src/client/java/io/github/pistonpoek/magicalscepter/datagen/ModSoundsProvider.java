@@ -13,12 +13,27 @@ import net.minecraft.sound.SoundEvent;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
+/**
+ * Mod data provider for sounds.
+ */
 @Environment(EnvType.CLIENT)
 public class ModSoundsProvider extends FabricSoundsProvider {
+    /**
+     * Construct a sounds provider for data generation.
+     *
+     * @param output           Data output to generate sounds data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
     public ModSoundsProvider(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
     }
 
+    /**
+     * Create a sound type entry builder for the specified path.
+     *
+     * @param path String path to create sound type entry builder with.
+     * @return Constructed sound type entry builder for the specified path.
+     */
     public static SoundTypeBuilder.EntryBuilder of(String path) {
         return SoundTypeBuilder.EntryBuilder.ofFile(ModIdentifier.of(path));
     }
@@ -67,6 +82,13 @@ public class ModSoundsProvider extends FabricSoundsProvider {
         );
     }
 
+    /**
+     * Add a sound to the specified exporter for the specified event and type builder.
+     *
+     * @param exporter Sound exporter to export to.
+     * @param sound Sound event to add a sound for.
+     * @param builder Sound type builder to specify sound settings.
+     */
     private void addSound(SoundExporter exporter, SoundEvent sound,
                           Function<SoundTypeBuilder, SoundTypeBuilder> builder) {
         exporter.add(sound, builder.apply(SoundTypeBuilder.of(sound)));

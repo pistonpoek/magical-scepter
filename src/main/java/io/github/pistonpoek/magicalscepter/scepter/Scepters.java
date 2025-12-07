@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class Scepters {
-    public static final List<RegistryKey<Scepter>> SCEPTER_KEYS = new ArrayList<>();
+    public static final List<RegistryKey<Scepter>> KEYS = new ArrayList<>();
     public static final RegistryKey<Scepter> MAGICAL_KEY = of("magical");
 
     public static final RegistryKey<Scepter> BLAZE_KEY = of("blaze");
@@ -251,7 +251,7 @@ public class Scepters {
     }
 
     private static void register(Registerable<Scepter> registry, RegistryKey<Scepter> key, Scepter.Builder builder) {
-        SCEPTER_KEYS.add(key);
+        KEYS.add(key);
         registry.register(key, builder.build());
     }
     public static String getTranslationKey(@Nullable RegistryKey<Scepter> scepter) {

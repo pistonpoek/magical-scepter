@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.enchantment;
 
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.component.ComponentType;
 import net.minecraft.enchantment.effect.EnchantmentValueEffect;
 import net.minecraft.registry.Registries;
@@ -16,11 +17,12 @@ public interface ModEnchantmentEffectComponentTypes {
     }
 
     ComponentType<EnchantmentValueEffect> EXPERIENCE_STEP = register(
-            "experience_step", builder -> builder.codec(EnchantmentValueEffect.CODEC)
+            ModIdentifier.identifier("experience_step"),
+            builder -> builder.codec(EnchantmentValueEffect.CODEC)
     );
 
-    private static <T> ComponentType<T> register(String id, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
-        return Registry.register(Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, id,
+    private static <T> ComponentType<T> register(String identifier, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
+        return Registry.register(Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, identifier,
                 builderOperator.apply(ComponentType.builder()).build());
     }
 }
