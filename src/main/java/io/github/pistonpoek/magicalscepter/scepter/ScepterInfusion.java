@@ -18,8 +18,11 @@ import net.minecraft.util.Hand;
 
 import java.util.Optional;
 
-import static io.github.pistonpoek.magicalscepter.scepter.ScepterHelper.IS_INFUSABLE_SCEPTER;
+import static io.github.pistonpoek.magicalscepter.scepter.ScepterHelper.INFUSABLE_SCEPTER;
 
+/**
+ * Helper class for infusing a scepter.
+ */
 public class ScepterInfusion {
 
     /**
@@ -46,14 +49,14 @@ public class ScepterInfusion {
      */
     public static void tryInfuseScepter(LivingEntity entity, DamageSource damageSource) {
         // Check if the living entity is holding an infusable scepter
-        if (!entity.isHolding(IS_INFUSABLE_SCEPTER)) {
+        if (!entity.isHolding(INFUSABLE_SCEPTER)) {
             return;
         }
 
         // Get the item stack that is the infusable scepter.
         Hand hand = Hand.MAIN_HAND;
         ItemStack itemStack = entity.getMainHandStack();
-        if (!IS_INFUSABLE_SCEPTER.test(itemStack)) {
+        if (!INFUSABLE_SCEPTER.test(itemStack)) {
             hand = Hand.OFF_HAND;
             itemStack = entity.getOffHandStack();
         }

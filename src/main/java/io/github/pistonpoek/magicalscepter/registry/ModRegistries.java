@@ -32,6 +32,9 @@ public class ModRegistries {
     public static final Registry<MapCodec<? extends SpellContextSource>> CAST_CONTEXT_SOURCE_TYPE =
             FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_CONTEXT_SOURCE_TYPE).buildAndRegister();
 
+    /**
+     * Initialize the class for the static fields.
+     */
     public static void init() {
         SpellEffect.register(SPELL_EFFECT_TYPE);
         CastTransformer.register(CAST_TRANSFORMER_TYPE);

@@ -16,6 +16,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
+/**
+ * Scepter item that can charge with experience.
+ */
 public class ArcaneScepterItem extends Item {
     /**
      * Construct an arcane scepter itemStack with the specified itemStack settings.

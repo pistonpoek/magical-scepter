@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Collection of scepters.
+ */
 public class Scepters {
     public static final List<RegistryKey<Scepter>> KEYS = new ArrayList<>();
     public static final RegistryKey<Scepter> MAGICAL_KEY = of("magical");
@@ -37,10 +40,21 @@ public class Scepters {
             List.of(BLAZE_KEY, BREEZE_KEY, DRAGON_KEY, EVOKER_KEY,
                     GHAST_KEY, GUARDIAN_KEY, SHULKER_KEY, WARDEN_KEY, WITHER_KEY);
 
-    private static RegistryKey<Scepter> of(String identifier) {
-        return RegistryKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(identifier));
+    /**
+     * Get a scepter registry key for the specified name.
+     *
+     * @param name String name to get scepter registry key for.
+     * @return Scepter registry key with the specified name.
+     */
+    private static RegistryKey<Scepter> of(String name) {
+        return RegistryKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(name));
     }
 
+    /**
+     * Bootstrap the scepter registry.
+     *
+     * @param registry Scepter registry to bootstrap.
+     */
     public static void bootstrap(Registerable<Scepter> registry) {
         RegistryEntryLookup<Spell> spellRegistryEntryLookup = registry.getRegistryLookup(ModRegistryKeys.SPELL);
         RegistryEntryLookup<EntityType<?>> entityTypeRegistryEntryLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
@@ -250,10 +264,24 @@ public class Scepters {
         );
     }
 
+    /**
+     * Register a scepter to the scepter registry under the specified registry key.
+     *
+     * @param registry Scepter registry to register in.
+     * @param key Scepter registry key to register under.
+     * @param builder Scepter builder to register.
+     */
     private static void register(Registerable<Scepter> registry, RegistryKey<Scepter> key, Scepter.Builder builder) {
         KEYS.add(key);
         registry.register(key, builder.build());
     }
+
+    /**
+     * Get the translation key for the specified scepter registry key.
+     *
+     * @param scepter Scepter registry key to get translation key for.
+     * @return String translation key for the specified scepter registry key.
+     */
     public static String getTranslationKey(@Nullable RegistryKey<Scepter> scepter) {
         return Optional.ofNullable(scepter)
                 .map(key -> key.getValue().getPath().replace("/", "."))

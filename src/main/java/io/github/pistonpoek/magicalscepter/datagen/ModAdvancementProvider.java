@@ -51,8 +51,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         AdvancementEntry castScepterAdvancement = Advancement.Builder.create().parent(adventureRootAdvancementReference)
                 .display(
                         ModItems.MAGICAL_SCEPTER,
-                        getTitleText(CAST_SCEPTER),
-                        getDescriptionText(CAST_SCEPTER),
+                        createTitleText(CAST_SCEPTER),
+                        createDescriptionText(CAST_SCEPTER),
                         null,
                         AdvancementFrame.TASK,
                         true,
@@ -66,8 +66,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                 Advancement.Builder.create().parent(castScepterAdvancement)
                         .display(
                                 ScepterHelper.createMagicalScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY)),
-                                getTitleText(ALL_SCEPTER_INFUSIONS),
-                                getDescriptionText(ALL_SCEPTER_INFUSIONS),
+                                createTitleText(ALL_SCEPTER_INFUSIONS),
+                                createDescriptionText(ALL_SCEPTER_INFUSIONS),
                                 null,
                                 AdvancementFrame.GOAL,
                                 true,
@@ -102,11 +102,23 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         return builder;
     }
 
-    protected static MutableText getTitleText(Identifier identifier) {
-        return Text.translatable(createTitleTranslationKey(identifier));
+    /**
+     * Create an advancements title text with the specified advancement.
+     *
+     * @param advancement Identifier of an advancement to create translatable text for.
+     * @return Translatable text for the title of the specified advancement.
+     */
+    protected static MutableText createTitleText(Identifier advancement) {
+        return Text.translatable(createTitleTranslationKey(advancement));
     }
 
-    protected static MutableText getDescriptionText(Identifier identifier) {
-        return Text.translatable(createDescriptionTranslationKey(identifier));
+    /**
+     * Create an advancements description text with the specified advancement.
+     *
+     * @param advancement Identifier of an advancement to create translatable text for.
+     * @return Translatable text for the description of the specified advancement.
+     */
+    protected static MutableText createDescriptionText(Identifier advancement) {
+        return Text.translatable(createDescriptionTranslationKey(advancement));
     }
 }

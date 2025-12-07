@@ -10,6 +10,9 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Mod data generator for scepter tags.
+ */
 public class ScepterTagProvider extends SimpleTagProvider<Scepter> {
     /**
      * Construct a mod scepter tag provider for data generation.

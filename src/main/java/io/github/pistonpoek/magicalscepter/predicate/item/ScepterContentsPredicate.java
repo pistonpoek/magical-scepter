@@ -13,6 +13,11 @@ import net.minecraft.registry.entry.RegistryEntryList;
 
 import java.util.Optional;
 
+/**
+ * Predicate for the scepter contents component.
+ *
+ * @param scepters List of scepter registry entries to test scepter contents with.
+ */
 public record ScepterContentsPredicate(
         RegistryEntryList<Scepter> scepters) implements ComponentSubPredicate<ScepterContentsComponent> {
     public static final Codec<ScepterContentsPredicate> CODEC = RegistryCodecs.entryList(ModRegistryKeys.SCEPTER)
@@ -23,6 +28,7 @@ public record ScepterContentsPredicate(
         return ModDataComponentTypes.SCEPTER_CONTENTS;
     }
 
+    @Override
     public boolean test(ScepterContentsComponent scepterContentsComponent) {
         Optional<RegistryEntry<Scepter>> optional = scepterContentsComponent.scepter();
         return optional.isPresent() && this.scepters.contains(optional.get());

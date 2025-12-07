@@ -24,22 +24,49 @@ public class ModSoundEvents {
     public static final SoundEvent ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL = register("item.magical_scepter.cast_protect_spell");
     public static final SoundEvent ITEM_MAGICAL_SCEPTER_INFUSE = register("item.magical_scepter.infuse");
 
+    /**
+     * Initialize the class for the static fields.
+     */
     public static void init() {
 
     }
 
-    private static SoundEvent register(String identifier) {
-        return register(ModIdentifier.of(identifier));
+    /**
+     * Register a sound event for the specified name.
+     *
+     * @param name String name to register a sound event for.
+     * @return Sound event registered for the specified name.
+     */
+    private static SoundEvent register(String name) {
+        return register(ModIdentifier.of(name));
     }
 
-    private static RegistryEntry.Reference<SoundEvent> registerReference(String identifier) {
-        return registerReference(ModIdentifier.of(identifier));
+    /**
+     * Register a sound event for the specified name.
+     *
+     * @param name String name to register a sound event for.
+     * @return Reference of the sound event registered.
+     */
+    private static RegistryEntry.Reference<SoundEvent> registerReference(String name) {
+        return registerReference(ModIdentifier.of(name));
     }
 
+    /**
+     * Register a sound event for the specified identifier.
+     *
+     * @param identifier Identifier to register a sound event for.
+     * @return Sound event registered for the specified identifier.
+     */
     private static SoundEvent register(Identifier identifier) {
         return Registry.register(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
     }
 
+    /**
+     * Register a sound event for the specified identifier.
+     *
+     * @param identifier Identifier to register a sound event for.
+     * @return Reference of the sound event registered.
+     */
     private static RegistryEntry.Reference<SoundEvent> registerReference(Identifier identifier) {
         return Registry.registerReference(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
     }

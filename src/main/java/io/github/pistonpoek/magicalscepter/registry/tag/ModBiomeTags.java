@@ -13,7 +13,13 @@ import net.minecraft.world.biome.Biome;
 public class ModBiomeTags {
     public static final TagKey<Biome> OLD_TAIGA_CABIN_HAS_STRUCTURE = of("has_structure/old_taiga_cabin");
 
-    private static TagKey<Biome> of(String identifier) {
-        return TagKey.of(RegistryKeys.BIOME, ModIdentifier.of(identifier));
+    /**
+     * Get the biome tag key for the specified name.
+     *
+     * @param name String name to get biome tag for.
+     * @return Biome tag key for the specified name.
+     */
+    private static TagKey<Biome> of(String name) {
+        return TagKey.of(RegistryKeys.BIOME, ModIdentifier.of(name));
     }
 }

@@ -3,6 +3,9 @@ package io.github.pistonpoek.magicalscepter.util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 
+/**
+ * Util class related to the experience of a player.
+ */
 public class PlayerExperience {
     /**
      * Get the amount of experience points in the current level of the specified player.

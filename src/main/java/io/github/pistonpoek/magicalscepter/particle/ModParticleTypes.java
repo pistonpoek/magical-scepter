@@ -24,6 +24,16 @@ public class ModParticleTypes {
 
     }
 
+    /**
+     * Register a particle type.
+     *
+     * @param name Name to register the particle type with.
+     * @param alwaysShow Truth assignment, if the particle should always show.
+     * @param codecGetter Function to get the codec from the particle type.
+     * @param packetCodecGetter Function to get the packet codec from the particle type.
+     * @return Particle effect registered.
+     * @param <T> Particle effect being registered.
+     */
     private static <T extends ParticleEffect> ParticleType<T> register(
             String name,
             boolean alwaysShow,

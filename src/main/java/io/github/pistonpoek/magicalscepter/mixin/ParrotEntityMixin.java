@@ -20,8 +20,13 @@ public class ParrotEntityMixin {
     @Final
     static Map<EntityType<?>, SoundEvent> MOB_SOUNDS;
 
+    /**
+     * Add mod parrot mob sounds at static initialization.
+     *
+     * @param callbackInfo Callback info to return values to static initialization.
+     */
     @Inject(method = "<clinit>", at = @At("TAIL"))
-    private static void addMobSounds(CallbackInfo ci) {
+    private static void addMobSounds(CallbackInfo callbackInfo) {
         MOB_SOUNDS.put(ModEntityType.SORCERER, ModSoundEvents.ENTITY_PARROT_IMITATE_SORCERER);
     }
 }

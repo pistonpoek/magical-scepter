@@ -23,10 +23,19 @@ import java.util.function.Function;
 
 import static io.github.pistonpoek.magicalscepter.advancement.ModAdvancements.*;
 
+/**
+ * Mod data provider for language.
+ */
 public class ModLanguageProvider extends FabricLanguageProvider {
-    protected ModLanguageProvider(FabricDataOutput dataOutput,
-                                  CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
-        super(dataOutput, registryLookup);
+    /**
+     * Construct a mod language provider for data generation.
+     *
+     * @param output           Data output to generate language data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
+    protected ModLanguageProvider(FabricDataOutput output,
+                                  CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture);
     }
 
     @Override

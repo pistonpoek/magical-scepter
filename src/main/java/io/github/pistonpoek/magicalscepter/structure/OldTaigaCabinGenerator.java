@@ -15,9 +15,18 @@ import net.minecraft.structure.pool.StructurePools;
 import net.minecraft.structure.processor.StructureProcessorList;
 import net.minecraft.structure.processor.StructureProcessorLists;
 
+/**
+ * Structure pool generator for the old taiga cabin structure.
+ */
 public class OldTaigaCabinGenerator {
     public static final RegistryKey<StructurePool> STRUCTURE_POOL = ModStructurePools.of("old_taiga_cabin");
 
+    /**
+     * Boostrap the structure pool registry with old taiga cabin structure pools.
+     *
+     * @param registry Structure pool registry to bootstrap.
+     * @return Structure pool registry key of the generator that is registered.
+     */
     public static RegistryKey<StructurePool> bootstrap(Registerable<StructurePool> registry) {
         RegistryEntryLookup<StructureProcessorList> processorListLookup = registry.getRegistryLookup(RegistryKeys.PROCESSOR_LIST);
         RegistryEntry<StructureProcessorList> mossifyProcessorEntry = processorListLookup.getOrThrow(StructureProcessorLists.MOSSIFY_70_PERCENT);

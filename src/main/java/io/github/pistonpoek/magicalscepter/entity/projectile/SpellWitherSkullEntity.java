@@ -15,7 +15,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 
 /**
- * TODO
+ * Wither skull entity that has modified behavior to be suitable as spell projectile.
  */
 public class SpellWitherSkullEntity extends ExplosiveProjectileEntity {
     public SpellWitherSkullEntity(EntityType<? extends SpellWitherSkullEntity> entityType, World world) {

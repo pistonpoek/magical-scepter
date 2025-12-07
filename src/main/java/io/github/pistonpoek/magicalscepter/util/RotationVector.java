@@ -4,6 +4,9 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * Util class related to vector rotation.
+ */
 public class RotationVector {
     /**
      * Get the rotation vector going into the specified rotation direction.

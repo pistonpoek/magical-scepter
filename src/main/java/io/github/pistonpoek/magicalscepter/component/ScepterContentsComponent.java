@@ -342,6 +342,12 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
         }
     }
 
+    /**
+     * Create a scepter contents component translation key for the specified path.
+     *
+     * @param path String path to create the translation key with.
+     * @return String translation key based on the specified path for a scepter contents component.
+     */
     public static String createTranslationKey(String path) {
         return ModIdentifier.translationKey("scepter." + path);
     }

@@ -8,6 +8,9 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 
+/**
+ * Serializer for the magical scepter recipe.
+ */
 public class MagicalScepterRecipeSerializer
         implements RecipeSerializer<MagicalScepterRecipe> {
     private static final MapCodec<MagicalScepterRecipe> CODEC = RecordCodecBuilder.mapCodec(

@@ -35,12 +35,25 @@ public abstract class LivingEntityMixin extends Entity implements SwingHandLivin
     @Unique
     public SwingType magicalscepter$swingType = SwingType.HIT;
 
+    /**
+     * Constructs a living entity mixin to match the entity constructor.
+     *
+     * @param type Entity type to create the living entity mixin with.
+     * @param world World to create the living entity mixin in.
+     */
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 
+    /**
+     * Update the current swing type to a basic hit when the swing hand method is called.
+     *
+     * @param hand Hand that is triggered to swing.
+     * @param fromServerPlayer Truth assignment, if the player is server side.
+     * @param callbackInfo Callback info to return values back to the swing hand method.
+     */
     @Inject(method = "swingHand(Lnet/minecraft/util/Hand;Z)V", at = @At("HEAD"))
-    public void swingHand(Hand hand, boolean fromServerPlayer, CallbackInfo callbackInfo) {
+    public void updateSwingType(Hand hand, boolean fromServerPlayer, CallbackInfo callbackInfo) {
         if (this.handSwinging && this.handSwingTicks < this.getHandSwingDuration() / 2 && this.handSwingTicks >= 0) {
             return;
         }

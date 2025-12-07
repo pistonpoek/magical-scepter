@@ -8,6 +8,11 @@ import net.minecraft.component.ComponentType;
 import net.minecraft.predicate.NumberRange;
 import net.minecraft.predicate.component.ComponentSubPredicate;
 
+/**
+ * Predicate for the scepter experience component.
+ *
+ * @param experience Integer range to test the scepter experience with.
+ */
 public record ScepterExperiencePredicate(
         NumberRange.IntRange experience) implements ComponentSubPredicate<ScepterExperienceComponent> {
     public static final Codec<ScepterExperiencePredicate> CODEC = RecordCodecBuilder.create(

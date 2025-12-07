@@ -28,6 +28,9 @@ import net.minecraft.world.timer.TimerCallbackSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Initializer of the magical scepter mod.
+ */
 public class MagicalScepter implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(ModIdentifier.MOD_NAME);
 

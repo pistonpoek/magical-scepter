@@ -40,6 +40,15 @@ public abstract class RaidMixin {
     @Unique
     private RaiderEntity magicalscepter$raiderEntity = null;
 
+    /**
+     * Capture local variables at the entity creation during the spawning of a next wave.
+     *
+     * @param world        Server world to create entity in.
+     * @param pos          Block position to spawn entity at.
+     * @param callbackInfo Callback info to return values to the entity creation.
+     * @param wave         Integer that is the current wave indicator.
+     * @param count        Integer count of the amount of entities to spawn for the current type.
+     */
     @Inject(
             method = "spawnNextWave",
             at = @At(
@@ -56,7 +65,15 @@ public abstract class RaidMixin {
         this.magicalscepter$count = count;
     }
 
-
+    /**
+     * Create a raider entity based on the current raider entity being created.
+     *
+     * @param instance Entity type of the raider entity currently being created.
+     * @param world World to create the raider entity in.
+     * @param reason Spawn reason for the raider entity.
+     * @param <T> Type of raider entity currently being created.
+     * @return Entity created based on the current raider entity being created.
+     */
     @Redirect(
             method = "spawnNextWave",
             at = @At(
@@ -85,6 +102,12 @@ public abstract class RaidMixin {
         return instance.create(world, reason);
     }
 
+    /**
+     * Create a sorcerer raider entity with a 50% chance.
+     *
+     * @param world World to create raider entity in.
+     * @param reason Spawn reason to create raider entity with.
+     */
     @Unique
     private void magicalscepter$setOptionalSorcererRaiderEntity(World world, SpawnReason reason) {
         if (this.random.nextBoolean()) {
@@ -92,11 +115,23 @@ public abstract class RaidMixin {
         }
     }
 
+    /**
+     * Create a sorcerer raider entity.
+     *
+     * @param world World to create raider entity in.
+     * @param reason Spawn reason to create raider entity with.
+     */
     @Unique
     private void magicalscepter$setSorcererRaiderEntity(World world, SpawnReason reason) {
         this.magicalscepter$raiderEntity = ModEntityType.SORCERER.create(world, reason);
     }
 
+    /**
+     * Replace the current raider entity with the raider entity of this class, if it exists.
+     *
+     * @param raiderEntity Raider entity to update with created raider entity.
+     * @return Raider entity that is updated with a new raider entity, if it exists.
+     */
     @ModifyVariable(
             method = "spawnNextWave",
             at = @At(
@@ -113,6 +148,12 @@ public abstract class RaidMixin {
         return raiderEntity;
     }
 
+    /**
+     * Get the ravager passenger based on the current raider entity that is set to be passenger.
+     *
+     * @param raiderEntity Raider entity set to be the ravager passenger.
+     * @return Raider entity to be the ravager passenger.
+     */
     @ModifyVariable(
             method = "spawnNextWave",
             at = @At(
@@ -142,6 +183,12 @@ public abstract class RaidMixin {
         }
     }
 
+    /**
+     * Prevent ravager passenger assignment by making get max waves return the value it is being compared against.
+     *
+     * @param maxWaves Current max waves value to override.
+     * @return Integer value being compared against to prevent further ravager assignment.
+     */
     @ModifyExpressionValue(
             method = "spawnNextWave",
             at = @At(

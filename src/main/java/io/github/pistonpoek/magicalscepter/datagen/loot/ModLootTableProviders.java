@@ -9,15 +9,29 @@ import net.minecraft.registry.RegistryWrapper;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Mod data provider that contains generic generators for loot tables.
+ */
 public class ModLootTableProviders extends LootTableProvider {
+    /**
+     * Construct a mod loot table provider for data generation.
+     *
+     * @param output           Data output to generate loot table data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
     public ModLootTableProviders(FabricDataOutput output,
                                  CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, ModLootTables.getAll(), getModLootTables(), registriesFuture);
     }
 
+    /**
+     * Get the list of generators for loot tables to provide in the mod.
+     *
+     * @return List of loot table generators.
+     */
     private static List<LootTableProvider.LootTypeGenerator> getModLootTables() {
         return List.of(
-                new LootTableProvider.LootTypeGenerator(ModChestLootTableProvider::new, LootContextTypes.CHEST)
+                new LootTableProvider.LootTypeGenerator(ModChestLootTableGenerator::new, LootContextTypes.CHEST)
         );
     }
 }

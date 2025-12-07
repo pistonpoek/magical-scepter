@@ -18,6 +18,11 @@ public class LootContextTypesMixin {
     @Final
     private static BiMap<Identifier, ContextType> MAP;
 
+    /**
+     * Register mod loot context types during initialization.
+     *
+     * @param callbackInfo Callback info to return values to initialization.
+     */
     @Inject(method = "<init>", at = @At("TAIL"))
     public void registerModLootContextTypes(CallbackInfo callbackInfo) {
         MAP.putAll(ModLootContextTypes.getLootContextMap());

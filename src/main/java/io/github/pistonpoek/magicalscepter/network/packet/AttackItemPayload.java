@@ -6,6 +6,12 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 
+/**
+ * Payload to try to attack with an item with the specified yaw and pitch.
+ *
+ * @param yaw Float yaw angle of the player during the attack.
+ * @param pitch Float pitch angle of the player during the attack.
+ */
 public record AttackItemPayload(float yaw, float pitch) implements CustomPayload {
     public static final CustomPayload.Id<AttackItemPayload> ID =
             new CustomPayload.Id<>(ModIdentifier.of("attack_item"));

@@ -6,6 +6,11 @@ import net.minecraft.util.Identifier;
 import net.ramixin.mixson.inline.EventContext;
 import net.ramixin.mixson.inline.MixsonEvent;
 
+/**
+ * Add an effect to the all effects advancement using the specified identifier.
+ *
+ * @param effectIdentifier Identifier of the effect to add to the advancement.
+ */
 public record AllEffectsMixson(Identifier effectIdentifier) implements MixsonEvent<JsonElement> {
     @Override
     public void runEvent(EventContext<JsonElement> context) {

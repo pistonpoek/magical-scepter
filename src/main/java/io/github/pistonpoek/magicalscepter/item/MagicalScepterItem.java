@@ -18,10 +18,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/**
+ * Magical scepter item that can cast spells.
+ */
 public class MagicalScepterItem extends Item implements AttackItem {
     /**
      * Construct a magical scepter item with the specified item settings.
@@ -96,8 +98,8 @@ public class MagicalScepterItem extends Item implements AttackItem {
      * @param hand      Hand being used to cast the spell.
      * @return Damaged item stack that was used to cast the spell.
      */
-    public static ItemStack castSpell(@NotNull Spell spell, @NotNull LivingEntity caster,
-                                      @NotNull ItemStack itemStack,
+    public static ItemStack castSpell(Spell spell, LivingEntity caster,
+                                      ItemStack itemStack,
                                       boolean isAttack, Hand hand) {
         caster.playSound(isAttack ?
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_ATTACK_SPELL :

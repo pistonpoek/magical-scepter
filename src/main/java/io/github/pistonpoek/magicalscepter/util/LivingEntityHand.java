@@ -8,6 +8,9 @@ import net.minecraft.util.Hand;
 
 import java.util.function.Predicate;
 
+/**
+ * Util class related to the hand of a living entity.
+ */
 public class LivingEntityHand {
     /**
      * Get the hand of the specified entity that contains the specified predicate assuming it holds for at least one hand.

@@ -14,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+/**
+ * Advancement criterion that triggers when a player infuses a scepter.
+ */
 public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCriterion.Conditions> {
     @Override
     public Codec<InfuseScepterCriterion.Conditions> getConditionsCodec() {

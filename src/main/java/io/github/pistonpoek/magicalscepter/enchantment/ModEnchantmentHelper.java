@@ -1,33 +1,29 @@
 package io.github.pistonpoek.magicalscepter.enchantment;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ *
+ * @see net.minecraft.enchantment.EnchantmentHelper
+ */
 public class ModEnchantmentHelper {
+    /**
+     * Get a modified experience step value with the enchantments on the specified item stack and for a specified user.
+     *
+     * @param stack Item stack to get enchantments from that may modify the experience step value.
+     * @param user Living entity to get the modified experience step value for.
+     * @param baseExperienceStep Integer value to be modified based on the stack and user.
+     * @return Integer that is a modified value from the specified base experience step.
+     */
     public static int getExperienceStep(ItemStack stack, LivingEntity user, int baseExperienceStep) {
         MutableFloat mutableFloat = new MutableFloat(baseExperienceStep);
-        forEachEnchantment(stack, (enchantment, level) ->
+        EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) ->
                 ((ModEnchantment) (Object) enchantment.value()).magicalscepter$modifyExperienceStep(
                         user.getRandom(), level, mutableFloat));
         return Math.max(0, mutableFloat.intValue());
-    }
-
-    private static void forEachEnchantment(ItemStack stack, ModEnchantmentHelper.Consumer consumer) {
-        ItemEnchantmentsComponent itemEnchantmentsComponent = stack.getOrDefault(DataComponentTypes.ENCHANTMENTS, ItemEnchantmentsComponent.DEFAULT);
-
-        for (Object2IntMap.Entry<RegistryEntry<Enchantment>> entry : itemEnchantmentsComponent.getEnchantmentEntries()) {
-            consumer.accept(entry.getKey(), entry.getIntValue());
-        }
-    }
-
-    @FunctionalInterface
-    interface Consumer {
-        void accept(RegistryEntry<Enchantment> enchantment, int level);
     }
 }

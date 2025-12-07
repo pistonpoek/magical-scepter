@@ -17,9 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ *
+ * @see net.minecraft.structure.StructureSets
+ */
 public interface ModStructureSets {
     List<RegistryKey<StructureSet>> KEYS = new ArrayList<>();
 
+    /**
+     * Bootstrap the structure set registry.
+     *
+     * @param registry Structure set registry to bootstrap.
+     */
     static void bootstrap(Registerable<StructureSet> registry) {
         RegistryEntryLookup<Structure> structureLookup = registry.getRegistryLookup(RegistryKeys.STRUCTURE);
         RegistryEntryLookup<StructureSet> structureSetLookup = registry.getRegistryLookup(RegistryKeys.STRUCTURE_SET);
@@ -42,6 +52,13 @@ public interface ModStructureSets {
         );
     }
 
+    /**
+     * Register the specified structure set to the registry under the specified registry key.
+     *
+     * @param registry Structure set registry to register in.
+     * @param key Structure set registry key to register under.
+     * @param structureSet Structure set to register.
+     */
     private static void register(Registerable<StructureSet> registry,
                                  RegistryKey<StructureSet> key, StructureSet structureSet) {
         KEYS.add(key);

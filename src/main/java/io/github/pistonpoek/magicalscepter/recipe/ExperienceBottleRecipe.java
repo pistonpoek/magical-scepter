@@ -24,6 +24,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+/**
+ * Custom crafting recipe to craft experience bottles from scepter experience component.
+ */
 public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
     private final static IngredientPlacement INGREDIENT_PLACEMENT;
 
@@ -41,6 +44,11 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
         ));
     }
 
+    /**
+     * Construct the experience bottle recipe for the specified crafting recipe category.
+     *
+     * @param category Crafting recipe category to create recipe with.
+     */
     public ExperienceBottleRecipe(CraftingRecipeCategory category) {
         super(category);
 
@@ -54,7 +62,7 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
         for (int i = 0; i < input.size(); i++) {
             ItemStack itemStack = input.getStackInSlot(i);
             if (!itemStack.isEmpty()) {
-                if (ScepterHelper.IS_FILLED_ARCANE_SCEPTER.test(itemStack) && !containsFilledArcaneScepter) {
+                if (ScepterHelper.CHARGED_SCEPTER.test(itemStack) && !containsFilledArcaneScepter) {
                     containsFilledArcaneScepter = true;
                 } else if (itemStack.isOf(Items.GLASS_BOTTLE) && !containsGlassBottle) {
                     containsGlassBottle = true;
@@ -77,7 +85,7 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
 
         for (int i = 0; i < remainders.size(); i++) {
             ItemStack itemStack = input.getStackInSlot(i).copy();
-            if (ScepterHelper.IS_FILLED_ARCANE_SCEPTER.test(itemStack)) {
+            if (ScepterHelper.CHARGED_SCEPTER.test(itemStack)) {
                 int experience = ScepterHelper.getExperience(itemStack) - ArcaneScepterItem.EXPERIENCE_STEP;
                 itemStack.set(ModDataComponentTypes.SCEPTER_EXPERIENCE, new ScepterExperienceComponent(experience));
                 remainders.set(i, itemStack);

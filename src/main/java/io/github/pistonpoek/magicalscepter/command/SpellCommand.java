@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
 import io.github.pistonpoek.magicalscepter.command.argument.ModRegistryEntryReferenceArgumentType;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
@@ -14,13 +15,18 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 import java.util.Collection;
 
+/**
+ * Command that can be used by living entities to cast or clear spells.
+ */
 public class SpellCommand {
     public static final String CAST_FAILED_KEY = createTranslationKey("cast.failed");
     public static final String CLEAR_FAILED_KEY = createTranslationKey("clear.failed");
@@ -101,6 +107,9 @@ public class SpellCommand {
             if (entity instanceof LivingEntity livingEntity) {
                 spellInstance.castSpell(livingEntity);
                 successes++;
+                if (livingEntity instanceof ServerPlayerEntity serverPlayerEntity) {
+                    ModCriteria.CAST_SCEPTER.trigger(serverPlayerEntity, ItemStack.EMPTY);
+                }
             }
         }
 
@@ -154,6 +163,13 @@ public class SpellCommand {
             return successes;
         }
     }
+
+    /**
+     * Create a spell commands translation key for the specified path.
+     *
+     * @param path String path to create the translation key with.
+     * @return String translation key based on the specified path for the spell command.
+     */
     private static String createTranslationKey(String path) {
         return ModIdentifier.createTranslationKey("commands", "spell." + path);
     }

@@ -10,6 +10,11 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 
+/**
+ * Packet handler for triggering the attack of attack items.
+ *
+ * @see AttackItem
+ */
 public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandler<AttackItemPayload> {
     @Override
     public void receive(AttackItemPayload payload, ServerPlayNetworking.Context context) {
@@ -37,6 +42,12 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         }
     }
 
+    /**
+     * Try to attack with the current item of the specified player.
+     *
+     * @param player Server player entity that should try to attack.
+     * @return Action result of the attack.
+     */
     private ActionResult attackWithItem(ServerPlayerEntity player) {
         ItemStack stack = player.getMainHandStack();
         Hand hand = Hand.MAIN_HAND;

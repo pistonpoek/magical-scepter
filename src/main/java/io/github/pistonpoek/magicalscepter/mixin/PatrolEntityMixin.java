@@ -21,10 +21,26 @@ public abstract class PatrolEntityMixin extends HostileEntity {
     @Shadow
     private boolean patrolLeader;
 
-    protected PatrolEntityMixin(EntityType<? extends HostileEntity> entityType, World world) {
-        super(entityType, world);
+    /**
+     * Constructs a patrol entity mixin to match the hostile entity constructor.
+     *
+     * @param type Entity type to create the patrol entity mixin with.
+     * @param world World to create the patrol entity mixin in.
+     */
+    protected PatrolEntityMixin(EntityType<? extends HostileEntity> type, World world) {
+        super(type, world);
     }
 
+    /**
+     * Modify the patrol leader value at the initialize method
+     * to be false when a sorcerer spawns naturally in the world.
+     *
+     * @param world World the patrol entity is being initialized in.
+     * @param difficulty Local difficulty at the initialization place.
+     * @param spawnReason Spawn reason to initialize with.
+     * @param entityData Entity data to initialize with.
+     * @param callbackInfoReturnable Callback into returnable to return a different value of the initialize method.
+     */
     @Inject(method = "initialize", at = @At(value = "FIELD",
             target = "Lnet/minecraft/entity/mob/PatrolEntity;patrolLeader:Z",
             opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))

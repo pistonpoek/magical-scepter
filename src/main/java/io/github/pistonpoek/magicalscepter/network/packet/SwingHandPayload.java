@@ -9,6 +9,13 @@ import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.Hand;
 
+/**
+ * Payload to swing the specified hand with specified swing type.
+ *
+ * @param identifier Integer network identifier of the entity to swing hand for.
+ * @param hand Hand of the entity to swing.
+ * @param swingType Swing type to use when swinging the hand.
+ */
 public record SwingHandPayload(int identifier, Hand hand, SwingType swingType) implements CustomPayload {
     public static final CustomPayload.Id<SwingHandPayload> ID =
             new CustomPayload.Id<>(ModIdentifier.of("swing_type"));

@@ -14,7 +14,16 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Mod data provider for entity loot tables.
+ */
 public class ModEntityLootTableProvider extends FabricEntityLootTableProvider {
+    /**
+     * Construct a mod entity loot table provider for data generation.
+     *
+     * @param output           Data output to generate entity loot table data into.
+     * @param registriesFuture Registry lookup to initialize the data provider with.
+     */
     public ModEntityLootTableProvider(FabricDataOutput output,
                                       CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);

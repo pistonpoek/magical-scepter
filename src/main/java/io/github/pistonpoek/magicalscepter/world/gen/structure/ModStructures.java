@@ -27,9 +27,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Mod specific class that provides similar functionality to respective vanilla class.
+ *
+ * @see net.minecraft.world.gen.structure.Structures
+ */
 public class ModStructures {
     public static final List<RegistryKey<Structure>> KEYS = new ArrayList<>();
 
+    /**
+     * Bootstrap the structure registry.
+     *
+     * @param registry Structure registry to bootstrap.
+     */
     public static void bootstrap(Registerable<Structure> registry) {
         RegistryEntryLookup<StructurePool> structurePoolLookup = registry.getRegistryLookup(RegistryKeys.TEMPLATE_POOL);
         RegistryEntryLookup<Biome> biomeLookup = registry.getRegistryLookup(RegistryKeys.BIOME);
@@ -57,6 +67,13 @@ public class ModStructures {
         );
     }
 
+    /**
+     * Register the specified structure to the registry under the specified registry key.
+     *
+     * @param registry Structure registry to register in.
+     * @param key Structure registry key to register under.
+     * @param structure Structure to register.
+     */
     private static void register(Registerable<Structure> registry, RegistryKey<Structure> key, Structure structure) {
         KEYS.add(key);
         registry.register(key, structure);

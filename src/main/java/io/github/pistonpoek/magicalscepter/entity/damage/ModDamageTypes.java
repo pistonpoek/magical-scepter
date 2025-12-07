@@ -15,7 +15,7 @@ import java.util.List;
  * @see net.minecraft.entity.damage.DamageTypes
  */
 public class ModDamageTypes {
-    public static final List<RegistryKey<DamageType>> DAMAGE_TYPE_KEYS = List.of();
+    public static final List<RegistryKey<DamageType>> KEYS = List.of();
 
     /**
      * Create a damage source for the specified damage type registry key.

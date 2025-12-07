@@ -20,11 +20,25 @@ public class ModLootTables {
 
     public static final RegistryKey<LootTable> OLD_TAIGA_CABIN_CHEST = register("chests/old_taiga_cabin");
 
-    private static RegistryKey<LootTable> register(String id) {
-        return registerLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, ModIdentifier.of(id)));
+    /**
+     * Register a loot table for the specified identifier.
+     *
+     * @param identifier String identifier to register a loot table at.
+     * @return Loot table registry key for the specified identifier.
+     */
+    private static RegistryKey<LootTable> register(String identifier) {
+        return registerLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, ModIdentifier.of(identifier)));
     }
 
-    private static RegistryKey<LootTable> registerLootTable(RegistryKey<LootTable> key) {
+    /**
+     * Register a loot table for the specified registry key.
+     *
+     * @param key Loot table registry key to register a loot table at.
+     * @return Loot table registry key specified.
+     * @throws IllegalArgumentException Exception thrown if the registry key was already registered.
+     */
+    private static RegistryKey<LootTable> registerLootTable(RegistryKey<LootTable> key)
+            throws IllegalArgumentException {
         if (LOOT_TABLES.add(key)) {
             return key;
         } else {
@@ -32,6 +46,11 @@ public class ModLootTables {
         }
     }
 
+    /**
+     * Get all loot table registry keys.
+     *
+     * @return Set of all loot table registry keys.
+     */
     public static Set<RegistryKey<LootTable>> getAll() {
         return LOOT_TABLES_READ_ONLY;
     }

@@ -25,7 +25,16 @@ public interface ModRecipeSerializer {
 
     }
 
-    static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(String identifier, S serializer) {
-        return Registry.register(Registries.RECIPE_SERIALIZER, ModIdentifier.of(identifier), serializer);
+    /**
+     * Register a recipe serializer that can be used by a custom recipe.
+     *
+     * @param name String name to use for the recipe serializer.
+     * @param serializer Serializer to register for the name.
+     * @return Recipe serializer that is registered.
+     * @param <S> Serializer type to register.
+     * @param <T> Recipe type to register serializer for.
+     */
+    static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(String name, S serializer) {
+        return Registry.register(Registries.RECIPE_SERIALIZER, ModIdentifier.of(name), serializer);
     }
 }

@@ -15,6 +15,12 @@ public class ModItemTags {
     public static final TagKey<Item> SCEPTERS = of("scepters");
     public static final TagKey<Item> SCEPTER_ENCHANTABLE = of("enchantable/scepter");
 
+    /**
+     * Get the item tag key for the specified name.
+     *
+     * @param name String name to get item tag for.
+     * @return Item tag key for the specified name.
+     */
     public static TagKey<Item> of(String name) {
         return TagKey.of(RegistryKeys.ITEM, ModIdentifier.of(name));
     }

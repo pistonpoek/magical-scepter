@@ -36,6 +36,12 @@ public record ScepterExperienceComponent(int experience) implements TooltipAppen
         textConsumer.accept(Text.translatable(EXPERIENCE_KEY, experience));
     }
 
+    /**
+     * Create a scepter experience component translation key for the specified path.
+     *
+     * @param path String path to create the translation key with.
+     * @return String translation key based on the specified path for a scepter experience component.
+     */
     public static String createTranslationKey(String path) {
         return ModIdentifier.translationKey("scepter." + path);
     }

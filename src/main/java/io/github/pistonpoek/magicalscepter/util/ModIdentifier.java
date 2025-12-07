@@ -66,10 +66,23 @@ public class ModIdentifier {
         return Text.translatable(of(path).toTranslationKey(), args);
     }
 
+    /**
+     * Create a translation key with the specified type and path.
+     *
+     * @param type String type of the translation to start the translation key with.
+     * @param path String path of the translation key to end the translation key with.
+     * @return String translation key with the specified type and path.
+     */
     public static String createTranslationKey(String type, String path) {
         return Util.createTranslationKey(type, ModIdentifier.of(path));
     }
 
+    /**
+     * Create a translation key with the specified path.
+     *
+     * @param path String path of the translation key to end the translation key with.
+     * @return String translation key with the specified path.
+     */
     public static String translationKey(String path) {
         return String.join(".", MOD_IDENTIFIER, path.replace("/", "."));
     }

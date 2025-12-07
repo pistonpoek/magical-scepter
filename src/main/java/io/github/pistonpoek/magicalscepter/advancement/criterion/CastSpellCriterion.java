@@ -15,6 +15,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+/**
+ * Advancement criterion that triggers when a spell is cast by a player.
+ */
 public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Conditions> {
     @Override
     public Codec<CastSpellCriterion.Conditions> getConditionsCodec() {

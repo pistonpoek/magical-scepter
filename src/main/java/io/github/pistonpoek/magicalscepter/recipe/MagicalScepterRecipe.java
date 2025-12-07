@@ -23,14 +23,30 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
+/**
+ * Custom crafting recipe to craft a magical scepter from a scepter.
+ */
 public class MagicalScepterRecipe extends SpecialCraftingRecipe {
     public final RegistryEntry<Scepter> resultScepter;
 
+    /**
+     * Construct the magical scepter recipe for the specified crafting recipe category.
+     *
+     * @param result Result scepter for the magical scepter to contain.
+     * @param category Crafting recipe category to create recipe with.
+     */
     public MagicalScepterRecipe(RegistryEntry<Scepter> result, CraftingRecipeCategory category) {
         super(category);
         this.resultScepter = result;
     }
 
+    /**
+     * Check if the crafting recipe input matches the crafting recipe.
+     *
+     * @param input Crafting recipe input to check.
+     * @param world World to use as context.
+     * @return Truth assignment, if the input matches the crafting recipe.
+     */
     public boolean matches(CraftingRecipeInput input, World world) {
         boolean containsLapisLazuli = false;
         boolean containsBrownMushroom = false;
@@ -39,7 +55,7 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
         for (int i = 0; i < input.size(); i++) {
             ItemStack itemStack = input.getStackInSlot(i);
             if (!itemStack.isEmpty()) {
-                if (ScepterHelper.IS_SCEPTER.test(itemStack) && !containsScepter) {
+                if (ScepterHelper.SCEPTER.test(itemStack) && !containsScepter) {
                     containsScepter = true;
                 } else if (itemStack.isOf(Blocks.BROWN_MUSHROOM.asItem()) && !containsBrownMushroom) {
                     containsBrownMushroom = true;
@@ -53,6 +69,13 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
         return containsScepter && containsLapisLazuli && containsBrownMushroom;
     }
 
+    /**
+     * Craft the recipe using the specified input.
+     *
+     * @param input Crafting recipe input to use.
+     * @param registries Registries to use when crafting.
+     * @return Item stack result from crafting the recipe.
+     */
     public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup registries) {
         ItemStack craftedScepter = ModItems.MAGICAL_SCEPTER.getDefaultStack();
         for (int i = 0; i < input.size(); i++) {

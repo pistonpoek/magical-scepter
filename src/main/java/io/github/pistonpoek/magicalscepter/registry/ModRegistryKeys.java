@@ -35,10 +35,23 @@ public class ModRegistryKeys {
     public static final RegistryKey<Registry<MapCodec<? extends SpellContextSource>>> CAST_CONTEXT_SOURCE_TYPE =
             of("cast_context_source_type");
 
-    private static <T> RegistryKey<Registry<T>> of(String identifier) {
-        return RegistryKey.ofRegistry(ModIdentifier.of(identifier));
+    /**
+     * Get a registry key for a mod registry of the specified name.
+     *
+     * @param name String name of the registry to get a registry key for.
+     * @return Registry key of the registry with the specified name.
+     * @param <T> Type of the registry to get the registry key for.
+     */
+    private static <T> RegistryKey<Registry<T>> of(String name) {
+        return RegistryKey.ofRegistry(ModIdentifier.of(name));
     }
 
+    /**
+     * Get the directory for the specified registry key.
+     *
+     * @param registryKey Registry key to get the directory for.
+     * @return String directory path of the registry key.
+     */
     public static String directory(RegistryKey<?> registryKey) {
         Identifier identifier = registryKey.getValue();
         return identifier.getNamespace().equals(Identifier.DEFAULT_NAMESPACE) ?
