@@ -13,6 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class ItemAttackCallback implements ClientPreAttackCallback {
     @Override

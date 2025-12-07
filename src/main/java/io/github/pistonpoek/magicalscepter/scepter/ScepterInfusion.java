@@ -28,6 +28,7 @@ public class ScepterInfusion {
     /**
      * Get the infusion for the damage source
      *
+     * @param scepterRegistry TODO
      * @param lootContext Loot context to check infusion conditions with.
      * @return Optional scepter for the damage source infusion.
      */
@@ -45,6 +46,7 @@ public class ScepterInfusion {
     /***
      * Try to infuse a scepter for the living entity.
      *
+     * @param entity TODO
      * @param damageSource Damage source to potentially infuse the scepter with.
      */
     public static void tryInfuseScepter(LivingEntity entity, DamageSource damageSource) {
@@ -101,6 +103,11 @@ public class ScepterInfusion {
     /**
      * Try to infuse a scepter after damage was taken by a living entity.
      *
+     * @param entity TODO
+     * @param source TODO
+     * @param baseDamageTaken TODO
+     * @param damageTaken TODO
+     * @param blocked TODO
      * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AfterDamage
      */
     public static void afterDamage(LivingEntity entity, DamageSource source,

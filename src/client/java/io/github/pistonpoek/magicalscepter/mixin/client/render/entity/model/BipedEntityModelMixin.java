@@ -17,6 +17,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * TODO
+ *
+ * @param <T>
+ */
 @Environment(EnvType.CLIENT)
 @Mixin(BipedEntityModel.class)
 public abstract class BipedEntityModelMixin<T extends BipedEntityRenderState & ArmSwingingEntityRenderState>
@@ -28,6 +33,11 @@ public abstract class BipedEntityModelMixin<T extends BipedEntityRenderState & A
     @Shadow
     protected abstract ModelPart getArm(Arm arm);
 
+    /**
+     * TODO
+     *
+     * @param modelPart
+     */
     public BipedEntityModelMixin(ModelPart modelPart) {
         super(modelPart);
     }

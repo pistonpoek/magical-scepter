@@ -11,6 +11,9 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.function.Consumer;
 
+/**
+ * TODO
+ */
 @Mixin(Vibrations.class)
 public interface VibrationsMixin {
     /**

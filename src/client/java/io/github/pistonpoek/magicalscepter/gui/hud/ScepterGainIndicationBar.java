@@ -6,6 +6,9 @@ import net.minecraft.client.gui.hud.bar.Bar;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 
+/**
+ * TODO
+ */
 public class ScepterGainIndicationBar {
     private static final Identifier TEXTURE = ModIdentifier.of("hud/experience_bar_gain");
 

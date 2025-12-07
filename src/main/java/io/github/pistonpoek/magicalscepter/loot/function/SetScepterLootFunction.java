@@ -53,6 +53,7 @@ public class SetScepterLootFunction extends ConditionalLootFunction {
     /**
      * Create a set scepter loot function with specified scepter registry entry.
      *
+     * @param registries TODO
      * @param key Registry key of the scepter to set with the loot function.
      * @return Set scepter loot function with the specified scepter.
      */

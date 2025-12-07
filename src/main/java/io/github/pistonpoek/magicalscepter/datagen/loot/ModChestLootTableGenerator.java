@@ -23,6 +23,8 @@ import java.util.function.BiConsumer;
 
 /**
  * Mod data generator for chest loot tables.
+ *
+ * @param registries TODO
  */
 public record ModChestLootTableGenerator(RegistryWrapper.WrapperLookup registries) implements LootTableGenerator {
     @Override

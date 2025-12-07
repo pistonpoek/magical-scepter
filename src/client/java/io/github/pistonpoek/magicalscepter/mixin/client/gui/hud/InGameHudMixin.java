@@ -13,6 +13,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
@@ -20,6 +23,11 @@ public abstract class InGameHudMixin {
     @Shadow
     private MinecraftClient client;
 
+    /**
+     * TODO
+     *
+     * @param callbackReturnable
+     */
     @Inject(at = @At("RETURN"), method = "shouldShowExperienceBar", cancellable = true)
     public void shouldShowExperienceBarOverlay(CallbackInfoReturnable<Boolean> callbackReturnable) {
         boolean show = callbackReturnable.getReturnValue();

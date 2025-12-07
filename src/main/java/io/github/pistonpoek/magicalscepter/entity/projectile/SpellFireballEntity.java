@@ -14,6 +14,12 @@ import net.minecraft.world.World;
  * Fireball entity that has modified behavior to be suitable as spell projectile.
  */
 public class SpellFireballEntity extends AbstractFireballEntity {
+    /**
+     * TODO
+     *
+     * @param entityType
+     * @param world
+     */
     public SpellFireballEntity(EntityType<? extends SpellFireballEntity> entityType, World world) {
         super(entityType, world);
     }

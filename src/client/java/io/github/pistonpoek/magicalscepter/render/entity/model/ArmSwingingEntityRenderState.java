@@ -4,6 +4,9 @@ import io.github.pistonpoek.magicalscepter.item.SwingType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public interface ArmSwingingEntityRenderState {
     /**

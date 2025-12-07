@@ -61,10 +61,20 @@ public record DelayCastTransformer(int delay) implements CastTransformer {
     public static class Builder {
         private final int delay;
 
+        /**
+         * TODO
+         *
+         * @param delay
+         */
         public Builder(int delay) {
             this.delay = delay;
         }
 
+        /**
+         * TODO
+         *
+         * @return
+         */
         public DelayCastTransformer build() {
             return new DelayCastTransformer(delay);
         }

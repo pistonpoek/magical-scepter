@@ -21,6 +21,7 @@ public class SpawnEggDispenserBehavior {
     /**
      * Register the vanilla spawn egg dispenser behavior for the specified spawn egg.
      *
+     * @param spawnEgg TODO
      * @see DispenserBehavior#registerDefaults()
      */
     public static void addSpawnEggDispenserBehavior(Item spawnEgg) {

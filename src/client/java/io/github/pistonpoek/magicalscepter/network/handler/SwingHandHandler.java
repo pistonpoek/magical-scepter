@@ -7,6 +7,9 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.Entity;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class SwingHandHandler implements ClientPlayNetworking.PlayPayloadHandler<SwingHandPayload> {
     @Override

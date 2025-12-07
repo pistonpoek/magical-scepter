@@ -9,6 +9,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 @Mixin(IllagerEntityRenderState.class)
 public class IllagerEntityRenderStateMixin implements ArmSwingingEntityRenderState {

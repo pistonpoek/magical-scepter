@@ -11,6 +11,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.function.BiConsumer;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 @Mixin(ItemModelGenerator.class)
 public interface ItemModelGeneratorMixin {

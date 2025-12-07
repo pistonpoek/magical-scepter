@@ -11,6 +11,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
+/**
+ * TODO
+ */
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMixin implements ModEnchantment {
     @Unique

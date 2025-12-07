@@ -6,6 +6,9 @@ import net.minecraft.test.TestContext;
 
 import java.lang.reflect.Method;
 
+/**
+ * TODO
+ */
 public class Template implements CustomTestMethodInvoker {
     @Override
     public void invokeTestMethod(TestContext context, Method method) throws ReflectiveOperationException {

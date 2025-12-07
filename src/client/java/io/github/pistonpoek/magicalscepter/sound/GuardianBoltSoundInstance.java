@@ -7,6 +7,9 @@ import net.minecraft.client.sound.MovingSoundInstance;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.sound.SoundEvents;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class GuardianBoltSoundInstance extends MovingSoundInstance {
     private static final float BASE_VOLUME = 0.0F;

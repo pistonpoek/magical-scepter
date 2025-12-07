@@ -18,6 +18,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.Consumer;
 
+/**
+ * TODO
+ */
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
     @Shadow

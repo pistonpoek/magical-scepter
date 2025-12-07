@@ -7,6 +7,9 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Optional;
 
+/**
+ * TODO
+ */
 public class SpellExperienceBarOverlay {
     /**
      * Render spell experience bar for a player holding a scepter.

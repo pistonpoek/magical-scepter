@@ -17,16 +17,29 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class SpellWitherSkullEntityRenderer extends EntityRenderer<SpellWitherSkullEntity, SpellWitherSkullEntityRenderState> {
     private static final Identifier TEXTURE = Identifier.ofVanilla("textures/entity/wither/wither.png");
     private final SkullEntityModel model;
 
+    /**
+     * TODO
+     *
+     * @param context
+     */
     public SpellWitherSkullEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
         this.model = new SkullEntityModel(context.getPart(ModEntityModelLayers.WITHER_SKULL));
     }
 
+    /**
+     * TODO
+     *
+     * @return
+     */
     public static TexturedModelData getTexturedModelData() {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();

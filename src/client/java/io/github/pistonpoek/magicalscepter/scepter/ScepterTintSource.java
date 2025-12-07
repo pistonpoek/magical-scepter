@@ -14,6 +14,11 @@ import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.ColorHelper;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * TODO
+ *
+ * @param defaultColor
+ */
 @Environment(EnvType.CLIENT)
 public record ScepterTintSource(int defaultColor) implements TintSource {
     public static final MapCodec<ScepterTintSource> CODEC = RecordCodecBuilder.mapCodec(

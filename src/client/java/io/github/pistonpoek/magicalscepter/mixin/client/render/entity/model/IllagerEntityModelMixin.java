@@ -17,6 +17,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * TODO
+ *
+ * @param <T>
+ */
 @Environment(EnvType.CLIENT)
 @Mixin(IllagerEntityModel.class)
 public abstract class IllagerEntityModelMixin<T extends IllagerEntityRenderState & ArmSwingingEntityRenderState>

@@ -14,6 +14,12 @@ import net.minecraft.world.World;
  * Fire charge entity that has modified behavior to be suitable as spell projectile.
  */
 public class SpellFireChargeEntity extends AbstractFireballEntity {
+    /**
+     * TODO
+     *
+     * @param entityType
+     * @param world
+     */
     public SpellFireChargeEntity(EntityType<? extends SpellFireChargeEntity> entityType, World world) {
         super(entityType, world);
     }

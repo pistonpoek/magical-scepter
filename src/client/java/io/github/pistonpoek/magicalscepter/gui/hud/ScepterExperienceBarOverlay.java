@@ -8,6 +8,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 
+/**
+ * TODO
+ */
 public class ScepterExperienceBarOverlay {
     /**
      * Render spell experience bar for a player holding a scepter.

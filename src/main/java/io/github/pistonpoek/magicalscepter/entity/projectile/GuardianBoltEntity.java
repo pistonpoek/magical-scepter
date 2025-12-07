@@ -181,6 +181,12 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
         return null;
     }
 
+    /**
+     * TODO
+     *
+     * @param tickDelta
+     * @return
+     */
     public float getProgress(float tickDelta) {
         return (this.getAge() + tickDelta) / DURATION;
     }

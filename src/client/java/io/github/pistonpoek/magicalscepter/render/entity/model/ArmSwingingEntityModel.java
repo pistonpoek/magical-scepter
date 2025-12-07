@@ -9,6 +9,11 @@ import net.minecraft.util.Arm;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Unique;
 
+/**
+ * TODO
+ *
+ * @param <T>
+ */
 @Environment(EnvType.CLIENT)
 public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSwingingEntityRenderState>
         extends ModelWithHead {
@@ -33,6 +38,7 @@ public interface ArmSwingingEntityModel<T extends ArmedEntityRenderState & ArmSw
      * Swing the arm of the entity model for the specified render state.
      *
      * @param renderState Render state used to swing arm for.
+     * @param arm Arm to swing.
      */
     default void magical_scepter$swingArm(T renderState, Arm arm) {
         if (renderState.magical_scepter$getHandSwingProgress() <= 0.0F) {

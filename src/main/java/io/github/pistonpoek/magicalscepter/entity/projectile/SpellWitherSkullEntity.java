@@ -18,6 +18,12 @@ import net.minecraft.world.World;
  * Wither skull entity that has modified behavior to be suitable as spell projectile.
  */
 public class SpellWitherSkullEntity extends ExplosiveProjectileEntity {
+    /**
+     * TODO
+     *
+     * @param entityType
+     * @param world
+     */
     public SpellWitherSkullEntity(EntityType<? extends SpellWitherSkullEntity> entityType, World world) {
         super(entityType, world);
     }

@@ -11,6 +11,9 @@ import net.minecraft.util.math.BlockPos;
 
 import java.lang.reflect.Method;
 
+/**
+ * TODO
+ */
 public class SorcererTest implements CustomTestMethodInvoker {
     @Override
     public void invokeTestMethod(TestContext context, Method method) throws ReflectiveOperationException {

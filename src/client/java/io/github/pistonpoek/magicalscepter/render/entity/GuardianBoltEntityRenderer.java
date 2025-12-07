@@ -19,11 +19,19 @@ import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class GuardianBoltEntityRenderer extends EntityRenderer<GuardianBoltEntity, GuardianBoltEntityRenderState> {
     private static final Identifier TEXTURE = ModIdentifier.of("textures/entity/projectiles/guardian_bolt.png");
     private final GuardianBoltEntityModel model;
 
+    /**
+     * TODO
+     *
+     * @param context
+     */
     public GuardianBoltEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
         this.model = new GuardianBoltEntityModel(context.getPart(ModEntityModelLayers.GUARDIAN_BOLT));

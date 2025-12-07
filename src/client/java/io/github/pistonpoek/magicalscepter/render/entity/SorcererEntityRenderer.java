@@ -15,10 +15,18 @@ import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class SorcererEntityRenderer extends IllagerEntityRenderer<SorcererEntity, IllagerEntityRenderState> {
     private static final Identifier TEXTURE = ModIdentifier.of("textures/entity/illager/sorcerer.png");
 
+    /**
+     * TODO
+     *
+     * @param context
+     */
     public SorcererEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new IllagerEntityModel<>(context.getPart(ModEntityModelLayers.SORCERER)), 0.5F);
         this.addFeature(

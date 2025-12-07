@@ -86,6 +86,11 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     public static final String ON_CAST_ATTACK_KEY = createTranslationKey("on_cast_attack");
     public static final String ON_CAST_PROTECT_KEY = createTranslationKey("on_cast_protect");
 
+    /**
+     * TODO
+     *
+     * @param scepter
+     */
     public ScepterContentsComponent(RegistryEntry<Scepter> scepter) {
         this(Optional.of(scepter), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty());

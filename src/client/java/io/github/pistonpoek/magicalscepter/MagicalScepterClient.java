@@ -17,6 +17,9 @@ import net.minecraft.client.render.entity.EntityRendererFactories;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.model.IllagerEntityModel;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class MagicalScepterClient implements ClientModInitializer {
     @Override

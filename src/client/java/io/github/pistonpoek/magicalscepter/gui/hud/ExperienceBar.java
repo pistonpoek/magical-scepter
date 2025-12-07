@@ -6,6 +6,9 @@ import net.minecraft.client.gui.hud.bar.Bar;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.Identifier;
 
+/**
+ * TODO
+ */
 public class ExperienceBar {
     /**
      * Render an experience bar section with the specified texture and positions.

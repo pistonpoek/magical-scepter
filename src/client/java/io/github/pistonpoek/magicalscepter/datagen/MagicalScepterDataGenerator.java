@@ -19,6 +19,9 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
     @Override

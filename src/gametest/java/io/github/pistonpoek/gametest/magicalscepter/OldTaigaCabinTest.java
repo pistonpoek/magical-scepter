@@ -20,6 +20,9 @@ import net.minecraft.world.GameMode;
 import java.lang.reflect.Method;
 import java.util.List;
 
+/**
+ * TODO
+ */
 public class OldTaigaCabinTest implements CustomTestMethodInvoker {
     @Override
     public void invokeTestMethod(TestContext context, Method method) throws ReflectiveOperationException {

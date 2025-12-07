@@ -11,6 +11,9 @@ import net.minecraft.util.math.MathHelper;
 
 import java.util.EnumSet;
 
+/**
+ * TODO
+ */
 @Environment(EnvType.CLIENT)
 public class GuardianBoltEntityModel extends EntityModel<GuardianBoltEntityRenderState> {
     private final ModelPart bolt;

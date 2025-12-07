@@ -12,10 +12,28 @@ import net.minecraft.util.Identifier;
  */
 @Environment(EnvType.CLIENT)
 public abstract class ModRenderLayer extends RenderLayer {
+    /**
+     * TODO
+     *
+     * @param name
+     * @param size
+     * @param hasCrumbling
+     * @param translucent
+     * @param begin
+     * @param end
+     */
     public ModRenderLayer(String name, int size, boolean hasCrumbling, boolean translucent, Runnable begin, Runnable end) {
         super(name, size, hasCrumbling, translucent, begin, end);
     }
 
+    /**
+     * TODO
+     *
+     * @param texture
+     * @param x
+     * @param y
+     * @return
+     */
     public static RenderLayer getGuardianBolt(Identifier texture, float x, float y) {
         return RenderLayer.getEntityTranslucent(texture);
     }
