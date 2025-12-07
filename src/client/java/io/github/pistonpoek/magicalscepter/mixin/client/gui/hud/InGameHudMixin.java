@@ -26,8 +26,8 @@ public abstract class InGameHudMixin {
         ClientPlayerEntity player = this.client.player;
 
         assert player != null;
-        boolean renderOverlay = player.isHolding(ScepterHelper.IS_ARCANE_SCEPTER) ||
-                player.isHolding(ScepterHelper.IS_MAGICAL_SCEPTER);
+        boolean renderOverlay = player.isHolding(ScepterHelper.ARCANE_SCEPTER) ||
+                player.isHolding(ScepterHelper.MAGICAL_SCEPTER);
 
         callbackReturnable.setReturnValue(show || renderOverlay);
     }

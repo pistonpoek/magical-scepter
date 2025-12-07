@@ -12,7 +12,6 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 import java.util.Optional;
@@ -61,7 +60,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      * @return Truth assignment, if actor is holding a scepter with a spell.
      */
     protected boolean isHoldingScepterWithSpell() {
-        return this.actor.isHolding(ScepterHelper.IS_SCEPTER_WITH_SPELL);
+        return this.actor.isHolding(ScepterHelper.SCEPTER_WITH_SPELL);
     }
 
     /**
@@ -118,26 +117,26 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
         this.cooldown = this.castInterval;
 
         // Get the scepter stack and spells to prepare for casting.
-        Hand hand = LivingEntityHand.get(actor, ScepterHelper.IS_SCEPTER_WITH_SPELL);
+        Hand hand = LivingEntityHand.get(actor, ScepterHelper.SCEPTER_WITH_SPELL);
         ItemStack scepterStack = this.actor.getStackInHand(hand);
         Optional<Spell> attackSpell = ScepterContentsComponent.getAttackSpell(scepterStack);
         Optional<Spell> protectSpell = ScepterContentsComponent.getProtectSpell(scepterStack);
 
         // Determine the spell to cast
         Optional<Spell> scepterSpell;
-        final boolean isAttack;
+        final boolean attack;
         if (useProtectSpell(target)) {
-            isAttack = protectSpell.isEmpty();
+            attack = protectSpell.isEmpty();
             scepterSpell = protectSpell.or(() -> attackSpell);
         } else {
-            isAttack = attackSpell.isPresent();
+            attack = attackSpell.isPresent();
             scepterSpell = attackSpell.or(() -> protectSpell);
         }
 
         // Cast the spell and update the stack used by the actor.
         scepterSpell.ifPresent(spell -> {
             ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, this.actor,
-                    scepterStack, isAttack, Hand.MAIN_HAND);
+                    scepterStack, attack, Hand.MAIN_HAND);
             this.actor.setStackInHand(hand, usedScepterStack);
         });
     }
@@ -148,7 +147,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      * @param target Current target of the actor.
      * @return Truth assignment, if the actor should use the protect spell.
      */
-    private boolean useProtectSpell(@NotNull LivingEntity target) {
+    private boolean useProtectSpell(LivingEntity target) {
         boolean targetNearby = actor.squaredDistanceTo(target) < squaredRange * 0.3F;
         boolean recentlyDamaged = this.actor.getRecentDamageSource() != null;
         boolean inProtectInterval = this.actor.age % this.protectInterval < this.castInterval;
@@ -160,7 +159,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      *
      * @param target Current target of the actor to update the value with.
      */
-    private void updateTargetSeeingTicker(@NotNull LivingEntity target) {
+    private void updateTargetSeeingTicker(LivingEntity target) {
         boolean targetVisible = this.actor.getVisibilityCache().canSee(target);
         boolean targetAware = this.targetSeeingTicker > 0;
         if (targetVisible != targetAware) {
@@ -179,7 +178,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      *
      * @param target Current target of the actor to update navigation with.
      */
-    private void updateNavigation(@NotNull LivingEntity target) {
+    private void updateNavigation(LivingEntity target) {
         double squaredDistance = this.actor.squaredDistanceTo(target);
         if (squaredDistance <= this.squaredRange && this.targetSeeingTicker >= 5) {
             this.actor.getNavigation().stop();
@@ -193,7 +192,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      *
      * @param target Current target of the actor to update look control with.
      */
-    private void updateLookControl(@NotNull LivingEntity target) {
+    private void updateLookControl(LivingEntity target) {
         if (this.actor.getControllingVehicle() instanceof MobEntity mobEntity) {
             mobEntity.lookAtEntity(target, 30.0F, 30.0F);
             mobEntity.getLookControl().lookAt(target, 30.0F, 30.0F);

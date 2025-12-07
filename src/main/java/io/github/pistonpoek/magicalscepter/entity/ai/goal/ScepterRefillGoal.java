@@ -39,7 +39,7 @@ public class ScepterRefillGoal<T extends LivingEntity> extends Goal {
     @Override
     public void start() {
         // Get the scepter stack to refill.
-        Hand hand = LivingEntityHand.get(this.actor, ScepterHelper.IS_SCEPTER);
+        Hand hand = LivingEntityHand.get(this.actor, ScepterHelper.SCEPTER);
         ItemStack scepterStack = this.actor.getStackInHand(hand);
 
         // Get the scepter entry that should be added to the scepter stack.
@@ -64,6 +64,6 @@ public class ScepterRefillGoal<T extends LivingEntity> extends Goal {
      * @return Truth assignment, if actor is holding a scepter.
      */
     protected boolean isHoldingScepter() {
-        return this.actor.isHolding(ScepterHelper.IS_SCEPTER);
+        return this.actor.isHolding(ScepterHelper.SCEPTER);
     }
 }

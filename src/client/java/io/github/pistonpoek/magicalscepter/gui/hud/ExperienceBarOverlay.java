@@ -17,9 +17,9 @@ public class ExperienceBarOverlay {
      * @return Truth assignment, if overlay was added.
      */
     public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x, int y) {
-        if (ScepterHelper.IS_MAGICAL_SCEPTER.test(item)) {
+        if (ScepterHelper.MAGICAL_SCEPTER.test(item)) {
             return SpellExperienceBarOverlay.render(context, item, player, x, y);
-        } else if (ScepterHelper.IS_ARCANE_SCEPTER.test(item)) {
+        } else if (ScepterHelper.ARCANE_SCEPTER.test(item)) {
             return ScepterExperienceBarOverlay.render(context, item, player, x, y);
         }
         return false;
