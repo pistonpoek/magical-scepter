@@ -42,7 +42,7 @@ jobs:
           distribution: 'microsoft'
           java-version: '21'
       - name: run production client gametest
-        run: ./gradlew runClientGameTest
+        run: ./gradlew runProductionClientGameTest
       - name: upload test screenshots
         uses: actions/upload-artifact@v4
         with:
