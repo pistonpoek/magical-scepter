@@ -1,11 +1,15 @@
 package io.github.pistonpoek.gametest.magicalscepter;
 
+import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellCriterion;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterCriterion;
+import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.gametest.v1.CustomTestMethodInvoker;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
+import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.advancement.criterion.CriterionProgress;
@@ -16,9 +20,11 @@ import net.minecraft.entity.mob.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.ServerAdvancementLoader;
@@ -65,6 +71,19 @@ public class AdvancementTest implements CustomTestMethodInvoker {
 
         context.assertTrue(tracker.getProgress(entry).isDone(),
                 Text.of("Cast scepter advancement is not obtained after using a magical scepter with experience."));
+
+        context.complete();
+    }
+
+    @GameTest(structure="gametest:template/empty")
+    public void matchesCastSpellCriterionConditions(TestContext context) {
+        AdvancementCriterion<CastSpellCriterion.Conditions> criterion =
+                CastSpellCriterion.Conditions.create(Items.DIRT);
+
+        context.assertTrue(criterion.conditions().matches(Items.DIRT.getDefaultStack()),
+                Text.of("Conditions does not match for expected item stack."));
+        context.assertFalse(criterion.conditions().matches(Items.WHEAT.getDefaultStack()),
+                Text.of("Conditions incorrectly matches for item stack."));
 
         context.complete();
     }
@@ -226,6 +245,20 @@ public class AdvancementTest implements CustomTestMethodInvoker {
 
         context.assertTrue(tracker.getProgress(entry).isDone(),
                 Text.of("All scepter infusions advancement is not obtained after infusing 9 scepters."));
+
+        context.complete();
+    }
+
+    @GameTest(structure="gametest:template/empty")
+    public void matchesInfuseScepterCriterionConditions(TestContext context) {
+        Registry<Scepter> registry = context.getWorld().getRegistryManager().getOrThrow(ModRegistryKeys.SCEPTER);
+        AdvancementCriterion<InfuseScepterCriterion.Conditions> criterion =
+                InfuseScepterCriterion.Conditions.create(registry.getOrThrow(Scepters.GUARDIAN_KEY));
+
+        context.assertTrue(criterion.conditions().matches(registry.getOrThrow(Scepters.GUARDIAN_KEY)),
+                Text.of("Conditions does not match for expected scepter."));
+        context.assertFalse(criterion.conditions().matches(registry.getOrThrow(Scepters.WITHER_KEY)),
+                Text.of("Conditions incorrectly matches for scepter."));
 
         context.complete();
     }
