@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class Spells {
-    public static final List<RegistryKey<Spell>> SPELL_KEYS = new ArrayList<>();
+    public static final List<RegistryKey<Spell>> KEYS = new ArrayList<>();
     public static final RegistryKey<Spell> MAGICAL_ATTACK_KEY = of("magical_attack");
     public static final RegistryKey<Spell> MAGICAL_RESISTANCE_KEY = of("magical_resistance");
     public static final RegistryKey<Spell> BLAZE_FIRE_CHARGES = of("blaze_fire_charges");
@@ -644,7 +644,7 @@ public class Spells {
     }
 
     private static void register(Registerable<Spell> registry, RegistryKey<Spell> key, Spell.Builder builder) {
-        SPELL_KEYS.add(key);
+        KEYS.add(key);
         registry.register(key, builder.build());
     }
 
