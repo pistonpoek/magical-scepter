@@ -16,6 +16,7 @@
         "fabric-gametest": [
             "io.github.pistonpoek.gametest.magicalscepter.SorcererTest",
             "io.github.pistonpoek.gametest.magicalscepter.OldTaigaCabinTest",
+            "io.github.pistonpoek.gametest.magicalscepter.SpellCommandTest",
             "io.github.pistonpoek.gametest.magicalscepter.AdvancementTest",
             "io.github.pistonpoek.gametest.Template"
         ],
