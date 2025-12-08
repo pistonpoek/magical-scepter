@@ -1,11 +1,13 @@
 package io.github.pistonpoek.magicalscepter.scepter;
 
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import io.github.pistonpoek.magicalscepter.registry.tag.ModDamageTypeTags;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.Spells;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.entity.EntityType;
 import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
+import net.minecraft.predicate.TagPredicate;
 import net.minecraft.predicate.entity.DamageSourcePredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.EntityTypePredicate;
@@ -88,6 +90,10 @@ public class Scepters {
                                                 .sourceEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.BLAZE)))
+                                                .directEntity(EntityPredicate.Builder.create()
+                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                                EntityType.SMALL_FIREBALL)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.BLAZE_INFUSION))
                                 ).build()
                         ))
         );
@@ -109,6 +115,10 @@ public class Scepters {
                                                 .sourceEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.BREEZE)))
+                                                .directEntity(EntityPredicate.Builder.create()
+                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                                EntityType.WIND_CHARGE)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.BREEZE_INFUSION))
                                 ).build()
                         ))
         );
@@ -130,6 +140,10 @@ public class Scepters {
                                                 .sourceEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.ENDER_DRAGON)))
+                                                .directEntity(EntityPredicate.Builder.create()
+                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                                EntityType.AREA_EFFECT_CLOUD)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.DRAGON_INFUSION))
                                 ).build()
                         ))
         );
@@ -154,6 +168,7 @@ public class Scepters {
                                                 .directEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.EVOKER_FANGS)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.EVOKER_INFUSION))
                                 ).build()
                         ))
         );
@@ -175,6 +190,10 @@ public class Scepters {
                                                 .sourceEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.GHAST)))
+                                                .directEntity(EntityPredicate.Builder.create()
+                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                                EntityType.FIREBALL)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.GHAST_INFUSION))
                                 ).build()
                         ))
         );
@@ -196,6 +215,10 @@ public class Scepters {
                                                 .sourceEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.ELDER_GUARDIAN)))
+                                                .directEntity(EntityPredicate.Builder.create()
+                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                                EntityType.ELDER_GUARDIAN)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.GUARDIAN_INFUSION))
                                 ).build()
                         ))
         );
@@ -217,6 +240,10 @@ public class Scepters {
                                                 .sourceEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.SHULKER)))
+                                                .directEntity(EntityPredicate.Builder.create()
+                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                                EntityType.SHULKER_BULLET)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.SHULKER_INFUSION))
                                 ).build()
                         ))
         );
@@ -238,6 +265,10 @@ public class Scepters {
                                                 .sourceEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.WARDEN)))
+                                                .directEntity(EntityPredicate.Builder.create()
+                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                                EntityType.WARDEN)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.WARDEN_INFUSION))
                                 ).build()
                         ))
         );
@@ -259,6 +290,10 @@ public class Scepters {
                                                 .sourceEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
                                                                 EntityType.WITHER)))
+                                                .directEntity(EntityPredicate.Builder.create()
+                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                                EntityType.WITHER_SKULL)))
+                                                .tag(TagPredicate.expected(ModDamageTypeTags.WITHER_INFUSION))
                                 ).build()
                         ))
         );

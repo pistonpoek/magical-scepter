@@ -10,7 +10,13 @@
         },
         "source_entity": {
           "type": "minecraft:evoker"
-        }
+        },
+        "tags": [
+          {
+            "expected": true,
+            "id": "magicalscepter:infuses_evoker_scepter"
+          }
+        ]
       }
     }
   ],

@@ -5,9 +5,18 @@
     {
       "condition": "minecraft:damage_source_properties",
       "predicate": {
+        "direct_entity": {
+          "type": "minecraft:shulker_bullet"
+        },
         "source_entity": {
           "type": "minecraft:shulker"
-        }
+        },
+        "tags": [
+          {
+            "expected": true,
+            "id": "magicalscepter:infuses_shulker_scepter"
+          }
+        ]
       }
     }
   ],

@@ -5,9 +5,18 @@
     {
       "condition": "minecraft:damage_source_properties",
       "predicate": {
+        "direct_entity": {
+          "type": "minecraft:wind_charge"
+        },
         "source_entity": {
           "type": "minecraft:breeze"
-        }
+        },
+        "tags": [
+          {
+            "expected": true,
+            "id": "magicalscepter:infuses_breeze_scepter"
+          }
+        ]
       }
     }
   ],

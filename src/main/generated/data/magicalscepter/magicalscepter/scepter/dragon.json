@@ -5,9 +5,18 @@
     {
       "condition": "minecraft:damage_source_properties",
       "predicate": {
+        "direct_entity": {
+          "type": "minecraft:area_effect_cloud"
+        },
         "source_entity": {
           "type": "minecraft:ender_dragon"
-        }
+        },
+        "tags": [
+          {
+            "expected": true,
+            "id": "magicalscepter:infuses_dragon_scepter"
+          }
+        ]
       }
     }
   ],

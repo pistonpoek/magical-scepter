@@ -5,9 +5,18 @@
     {
       "condition": "minecraft:damage_source_properties",
       "predicate": {
+        "direct_entity": {
+          "type": "minecraft:small_fireball"
+        },
         "source_entity": {
           "type": "minecraft:blaze"
-        }
+        },
+        "tags": [
+          {
+            "expected": true,
+            "id": "magicalscepter:infuses_blaze_scepter"
+          }
+        ]
       }
     }
   ],

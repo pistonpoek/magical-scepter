@@ -13,6 +13,7 @@ import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.PlayerAdvancementTracker;
 import net.minecraft.advancement.criterion.CriterionProgress;
+import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -150,7 +151,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         {
             setMagicalScepterInMainHand(context, player);
             EnderDragonEntity dragon = new EnderDragonEntity(EntityType.ENDER_DRAGON, world);
-            player.damage(world, world.getDamageSources().mobAttack(dragon), 3);
+            AreaEffectCloudEntity effectCloud = new AreaEffectCloudEntity(EntityType.AREA_EFFECT_CLOUD, world);
+            player.damage(world, world.getDamageSources().indirectMagic(effectCloud, dragon), 3);
 
             CriterionProgress criterion = tracker.getProgress(entry)
                     .getCriterionProgress("magicalscepter:dragon");
