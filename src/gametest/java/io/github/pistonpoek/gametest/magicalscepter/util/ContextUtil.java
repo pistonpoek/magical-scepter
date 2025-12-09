@@ -5,6 +5,7 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -29,6 +30,10 @@ public class ContextUtil {
     }
 
     public static RegistryEntry<Scepter> getScepter(TestContext context, RegistryKey<Scepter> key) {
+        return getRegistries(context).getEntryOrThrow(key);
+    }
+
+    public static RegistryEntry<Enchantment> getEnchantment(TestContext context, RegistryKey<Enchantment> key) {
         return getRegistries(context).getEntryOrThrow(key);
     }
 
