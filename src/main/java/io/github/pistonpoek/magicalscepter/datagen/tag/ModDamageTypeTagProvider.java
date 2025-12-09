@@ -26,6 +26,13 @@ public class ModDamageTypeTagProvider extends VanillaDamageTypeTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+        this.getTagBuilder(ModDamageTypeTags.BYPASSES_REPULSION)
+                .add(DamageTypes.GENERIC_KILL.getValue())
+                .add(DamageTypes.OUT_OF_WORLD.getValue());
+        this.getTagBuilder(ModDamageTypeTags.BYPASSES_STABILITY)
+                .add(DamageTypes.GENERIC_KILL.getValue())
+                .add(DamageTypes.OUT_OF_WORLD.getValue());
+
         this.getTagBuilder(ModDamageTypeTags.BLAZE_INFUSION)
                 .add(DamageTypes.FIREBALL.getValue());
         this.getTagBuilder(ModDamageTypeTags.BREEZE_INFUSION)

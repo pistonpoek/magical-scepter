@@ -28,5 +28,7 @@ public class ModEntityTypeTagProvider extends VanillaEntityTypeTagProvider {
     protected void configure(RegistryWrapper.WrapperLookup arg) {
         this.builder(EntityTypeTags.ILLAGER)
                 .add(ModEntityType.SORCERER);
+        this.builder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
+                .add(ModEntityType.SPELL_FIREBALL);
     }
 }

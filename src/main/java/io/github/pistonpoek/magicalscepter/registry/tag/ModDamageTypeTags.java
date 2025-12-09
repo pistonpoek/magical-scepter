@@ -11,6 +11,9 @@ import net.minecraft.registry.tag.TagKey;
  * @see net.minecraft.registry.tag.DamageTypeTags
  */
 public class ModDamageTypeTags {
+    public static final TagKey<DamageType> BYPASSES_REPULSION = of("bypasses_repulsion");
+    public static final TagKey<DamageType> BYPASSES_STABILITY = of("bypasses_stability");
+
     public static final TagKey<DamageType> BLAZE_INFUSION = of("infuses_blaze_scepter");
     public static final TagKey<DamageType> BREEZE_INFUSION = of("infuses_breeze_scepter");
     public static final TagKey<DamageType> DRAGON_INFUSION = of("infuses_dragon_scepter");

@@ -1,6 +1,7 @@
 package io.github.pistonpoek.magicalscepter.entity.effect;
 
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
+import io.github.pistonpoek.magicalscepter.registry.tag.ModDamageTypeTags;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -35,10 +36,10 @@ public class ModStatusEffects {
             new ModStatusEffect(StatusEffectCategory.BENEFICIAL, 0x074857)
                     .addAttributeModifier(EntityAttributes.KNOCKBACK_RESISTANCE,
                             ModIdentifier.of("effect.stability"),
-                            0.3f, EntityAttributeModifier.Operation.ADD_VALUE)
+                            0.3, EntityAttributeModifier.Operation.ADD_VALUE)
                     .addAttributeModifier(EntityAttributes.EXPLOSION_KNOCKBACK_RESISTANCE,
                             ModIdentifier.of("effect.stability"),
-                            0.3f, EntityAttributeModifier.Operation.ADD_VALUE));
+                            0.3, EntityAttributeModifier.Operation.ADD_VALUE));
 
     /**
      * Status effect that blocks projectiles from hitting the applied entity.
@@ -66,13 +67,14 @@ public class ModStatusEffects {
      */
     public static boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
         if (TagPredicate.expected(DamageTypeTags.IS_EXPLOSION).test(source.getTypeRegistryEntry())
-                && TagPredicate.unexpected(DamageTypeTags.BYPASSES_INVULNERABILITY).test(source.getTypeRegistryEntry())
+                && TagPredicate.unexpected(ModDamageTypeTags.BYPASSES_STABILITY).test(source.getTypeRegistryEntry())
                 && entity.hasStatusEffect(ModStatusEffects.STABILITY)) {
             return false;
         }
 
         Entity sourceEntity = source.getSource();
         if (sourceEntity instanceof PersistentProjectileEntity
+                && TagPredicate.unexpected(ModDamageTypeTags.BYPASSES_REPULSION).test(source.getTypeRegistryEntry())
                 && entity.hasStatusEffect(ModStatusEffects.REPULSION)) {
             return false;
         }
