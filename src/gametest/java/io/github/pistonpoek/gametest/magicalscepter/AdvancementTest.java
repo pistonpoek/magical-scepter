@@ -4,7 +4,6 @@ import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellCriter
 import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterCriterion;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
-import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.gametest.v1.CustomTestMethodInvoker;
@@ -26,8 +25,6 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.ServerAdvancementLoader;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -39,6 +36,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.GameMode;
 
 import java.lang.reflect.Method;
+
+import static io.github.pistonpoek.gametest.magicalscepter.util.ContextUtil.setMagicalScepterInMainHand;
 
 public class AdvancementTest implements CustomTestMethodInvoker {
     @Override
@@ -286,15 +285,5 @@ public class AdvancementTest implements CustomTestMethodInvoker {
                 new ClientConnection(NetworkSide.CLIENTBOUND), serverPlayer,
                 ConnectedClientData.createDefault(player.getGameProfile(), false));
         return serverPlayer;
-    }
-
-    private ItemStack setMagicalScepterInMainHand(TestContext context, PlayerEntity player) {
-        ItemStack stack = ScepterHelper.createMagicalScepter(getScepter(context, Scepters.MAGICAL_KEY));
-        player.setStackInHand(Hand.MAIN_HAND, stack);
-        return stack;
-    }
-
-    private RegistryEntry<Scepter> getScepter(TestContext context, RegistryKey<Scepter> key) {
-        return context.getWorld().getRegistryManager().getEntryOrThrow(key);
     }
 }

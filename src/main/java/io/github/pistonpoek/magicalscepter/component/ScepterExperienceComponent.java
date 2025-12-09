@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  */
 public record ScepterExperienceComponent(int experience) implements TooltipAppender {
     public static final ScepterExperienceComponent DEFAULT = new ScepterExperienceComponent(0);
-    public static final Codec<ScepterExperienceComponent> CODEC = Codec.INT.xmap(
+    public static final Codec<ScepterExperienceComponent> CODEC = Codec.intRange(0, Integer.MAX_VALUE).xmap(
             ScepterExperienceComponent::new,
             ScepterExperienceComponent::experience
     );
