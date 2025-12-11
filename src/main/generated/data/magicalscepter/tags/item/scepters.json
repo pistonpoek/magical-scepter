@@ -1,7 +1,7 @@
 {
   "values": [
-    "magicalscepter:arcane_scepter",
     "magicalscepter:scepter",
-    "magicalscepter:magical_scepter"
+    "magicalscepter:magical_scepter",
+    "#magicalscepter:arcane_scepters"
   ]
 }

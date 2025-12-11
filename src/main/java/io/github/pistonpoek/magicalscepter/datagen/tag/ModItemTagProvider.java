@@ -4,6 +4,7 @@ import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.tag.vanilla.VanillaItemTagProvider;
+import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
 
@@ -32,9 +33,16 @@ public class ModItemTagProvider extends VanillaItemTagProvider {
                 .add(ModItems.MAGICAL_SCEPTER);
 
         this.builder(ModItemTags.SCEPTERS)
-                .add(ModItems.ARCANE_SCEPTER)
                 .add(ModItems.SCEPTER)
-                .add(ModItems.MAGICAL_SCEPTER);
+                .add(ModItems.MAGICAL_SCEPTER)
+                .addTag(ModItemTags.ARCANE_SCEPTERS);
+
+        this.builder(ModItemTags.ARCANE_SCEPTERS)
+                .add(ModItems.ARCANE_SCEPTER)
+                .add(ModItems.CHARGED_ARCANE_SCEPTER);
+
+        this.builder(ModItemTags.SCEPTER_MATERIALS)
+                .add(Items.LAPIS_LAZULI);
 
         this.builder(ModItemTags.SCEPTER_ENCHANTABLE)
                 .addTag(ModItemTags.SCEPTERS);

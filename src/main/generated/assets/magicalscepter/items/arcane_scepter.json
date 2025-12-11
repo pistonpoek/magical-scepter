@@ -1,20 +1,6 @@
 {
   "model": {
-    "type": "minecraft:condition",
-    "on_false": {
-      "type": "minecraft:model",
-      "model": "magicalscepter:item/arcane_scepter"
-    },
-    "on_true": {
-      "type": "minecraft:model",
-      "model": "magicalscepter:item/arcane_scepter_filled"
-    },
-    "predicate": "minecraft:scepter_experience",
-    "property": "minecraft:component",
-    "value": {
-      "experience": {
-        "min": 7
-      }
-    }
+    "type": "minecraft:model",
+    "model": "magicalscepter:item/arcane_scepter"
   }
 }

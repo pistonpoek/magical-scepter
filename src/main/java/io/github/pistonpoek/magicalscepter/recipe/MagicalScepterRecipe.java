@@ -18,8 +18,8 @@ import net.minecraft.recipe.display.SlotDisplay;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -28,6 +28,8 @@ import java.util.List;
  */
 public class MagicalScepterRecipe extends SpecialCraftingRecipe {
     public final RegistryEntry<Scepter> resultScepter;
+    @Nullable
+    private IngredientPlacement ingredientPlacement;
 
     /**
      * Construct the magical scepter recipe for the specified crafting recipe category.
@@ -95,11 +97,14 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
 
     @Override
     public IngredientPlacement getIngredientPlacement() {
-        DefaultedList<Ingredient> ingredients = DefaultedList.of();
-        ingredients.add(Ingredient.ofItems(ModItems.SCEPTER));
-        ingredients.add(Ingredient.ofItems(Items.BROWN_MUSHROOM));
-        ingredients.add(Ingredient.ofItems(Items.LAPIS_LAZULI));
-        return IngredientPlacement.forShapeless(ingredients);
+        if (this.ingredientPlacement == null) {
+            this.ingredientPlacement = IngredientPlacement.forShapeless(List.of(
+                    Ingredient.ofItem(ModItems.SCEPTER),
+                    Ingredient.ofItem(Items.BROWN_MUSHROOM),
+                    Ingredient.ofItem(Items.LAPIS_LAZULI)
+            ));
+        }
+        return this.ingredientPlacement;
     }
 
     @Override

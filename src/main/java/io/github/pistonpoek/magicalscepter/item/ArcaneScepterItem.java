@@ -1,6 +1,5 @@
 package io.github.pistonpoek.magicalscepter.item;
 
-import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentHelper;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
@@ -20,6 +19,8 @@ import net.minecraft.world.World;
  * Scepter item that can charge with experience.
  */
 public class ArcaneScepterItem extends Item {
+    public static final int EXPERIENCE_STEP = 7;
+
     /**
      * Construct an arcane scepter itemStack with the specified itemStack settings.
      *
@@ -29,63 +30,69 @@ public class ArcaneScepterItem extends Item {
         super(settings);
     }
 
-    public static final int EXPERIENCE_STEP = 7;
-
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         int playerExperience = PlayerExperience.getTotalExperience(user);
-        int scepterExperience = ScepterHelper.getExperience(itemStack);
+        int scepterExperience = ScepterExperienceComponent.getExperience(itemStack);
         int step = ModEnchantmentHelper.getExperienceStep(itemStack, user, EXPERIENCE_STEP);
 
-        boolean collecting = true;
-        if (playerExperience < step && !user.isInCreativeMode()) {
-            collecting = false;
-            if (scepterExperience < step) {
-                return ActionResult.PASS;
-            }
-        }
-
-        int change = collecting ? step : -step;
-        scepterExperience = ScepterHelper.getExperience(itemStack) + change;
-
-        if (!user.isInCreativeMode()) {
-                PlayerExperience.addOnlyExperience(user, -change);
-        }
-
-        itemStack.set(ModDataComponentTypes.SCEPTER_EXPERIENCE, new ScepterExperienceComponent(scepterExperience));
-
-        user.playSound(collecting ?
-                ModSoundEvents.ITEM_ARCANE_SCEPTER_COLLECT_EXPERIENCE :
-                ModSoundEvents.ITEM_ARCANE_SCEPTER_RELEASE_EXPERIENCE);
-
-        user.getItemCooldownManager().set(itemStack, user.isInCreativeMode() ? 3 : 10);
+        if (playerExperience >= step || user.isInCreativeMode()) chargeScepter(user, itemStack, step);
+        else if (scepterExperience >= step) drainScepter(user, itemStack, step);
+        else return ActionResult.PASS;
 
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
         ItemStack replacementStack = ItemStack.EMPTY;
-        if (itemStack.willBreakNextUse() && itemStack.isOf(ModItems.ARCANE_SCEPTER)) {
+        // Set replacement stack to scepter if the item will break.
+        if (itemStack.willBreakNextUse() && ScepterHelper.ARCANE_SCEPTER.test(itemStack)) {
             replacementStack = ScepterHelper.createScepter(itemStack);
-            replacementStack.setDamage(0);
-            replacementStack.remove(ModDataComponentTypes.SCEPTER_EXPERIENCE);
         }
+
         itemStack.damage(1, user, hand.getEquipmentSlot());
 
-        if (!itemStack.isEmpty()) {
-            return ActionResult.SUCCESS;
-        }
+        // Get replacement stack scepter based on changed experience.
+        if (replacementStack.isEmpty()) replacementStack = getReplacementStack(itemStack);
 
-        if (!world.isClient()) {
+        // Drop all experience when the arcane scepter is used up.
+        if (!world.isClient() && itemStack.isEmpty()) {
             ExperienceOrbEntity.spawn((ServerWorld) world, user.getEntityPos(), scepterExperience);
         }
 
-        return ActionResult.SUCCESS.withNewHandStack(replacementStack);
+        // Set success with potential replacement stack.
+        return replacementStack == ItemStack.EMPTY ? ActionResult.SUCCESS :
+                ActionResult.SUCCESS.withNewHandStack(replacementStack);
     }
 
-    @Override
-    public boolean hasGlint(ItemStack stack) {
-        int experience = stack.getOrDefault(ModDataComponentTypes.SCEPTER_EXPERIENCE,
-                ScepterExperienceComponent.DEFAULT).experience();
-        return experience > 0 || super.hasGlint(stack);
+    public static ItemStack getReplacementStack(ItemStack itemStack) {
+        ItemStack replacementStack = ItemStack.EMPTY;
+        int experience = ScepterExperienceComponent.getExperience(itemStack);
+        // Set replacement stack to charged scepter if arcane scepter has sufficient experience to be charged.
+        if (itemStack.isOf(ModItems.ARCANE_SCEPTER) && experience >= EXPERIENCE_STEP) {
+            replacementStack = itemStack.copyComponentsToNewStack(ModItems.CHARGED_ARCANE_SCEPTER, 1);
+        }
+
+        // Set replacement stack to arcane scepter if charged scepter has insufficient experience to be charged.
+        if (itemStack.isOf(ModItems.CHARGED_ARCANE_SCEPTER) && experience < EXPERIENCE_STEP) {
+            replacementStack = itemStack.copyComponentsToNewStack(ModItems.ARCANE_SCEPTER, 1);
+        }
+        return replacementStack;
+    }
+
+    private static void chargeScepter(PlayerEntity user, ItemStack itemStack, int change) {
+        transferExperience(user, itemStack, change);
+        user.playSound(ModSoundEvents.ITEM_ARCANE_SCEPTER_COLLECT_EXPERIENCE);
+    }
+
+    private static void drainScepter(PlayerEntity user, ItemStack itemStack, int change) {
+        transferExperience(user, itemStack, -change);
+        user.playSound(ModSoundEvents.ITEM_ARCANE_SCEPTER_RELEASE_EXPERIENCE);
+    }
+
+    private static void transferExperience(PlayerEntity user, ItemStack itemStack, int change) {
+        if (!user.isInCreativeMode()) {
+            PlayerExperience.addOnlyExperience(user, -change);
+        }
+        ScepterExperienceComponent.add(itemStack, change);
     }
 }

@@ -3,7 +3,6 @@ package io.github.pistonpoek.magicalscepter.loot.function;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.condition.LootCondition;
@@ -16,7 +15,7 @@ import net.minecraft.loot.provider.number.LootNumberProviderTypes;
 import java.util.List;
 
 /**
- * Loot function to set the experience in the scepter experience component of an item stack.
+ * Loot function to set the experience in the scepter experience component of an item itemStack.
  */
 public class SetExperienceLootFunction extends ConditionalLootFunction {
     public static final MapCodec<SetExperienceLootFunction> CODEC = RecordCodecBuilder.mapCodec(
@@ -53,14 +52,13 @@ public class SetExperienceLootFunction extends ConditionalLootFunction {
     }
 
     @Override
-    public ItemStack process(ItemStack stack, LootContext context) {
+    public ItemStack process(ItemStack itemStack, LootContext context) {
         int experience = count.nextInt(context);
         if (add) {
-            experience += stack.getOrDefault(ModDataComponentTypes.SCEPTER_EXPERIENCE,
-                    ScepterExperienceComponent.DEFAULT).experience();
+            experience += ScepterExperienceComponent.getExperience(itemStack);
         }
-        stack.set(ModDataComponentTypes.SCEPTER_EXPERIENCE, new ScepterExperienceComponent(experience));
-        return stack;
+        ScepterExperienceComponent.set(itemStack, experience);
+        return itemStack;
     }
 
     /**

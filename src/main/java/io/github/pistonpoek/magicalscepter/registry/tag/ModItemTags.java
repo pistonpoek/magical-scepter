@@ -13,6 +13,8 @@ import net.minecraft.registry.tag.TagKey;
 public class ModItemTags {
     public static final TagKey<Item> SORCERER_PREFERRED_WEAPONS = of("sorcerer_preferred_weapons");
     public static final TagKey<Item> SCEPTERS = of("scepters");
+    public static final TagKey<Item> ARCANE_SCEPTERS = of("arcane_scepters");
+    public static final TagKey<Item> SCEPTER_MATERIALS = of("scepter_materials");
     public static final TagKey<Item> SCEPTER_ENCHANTABLE = of("enchantable/scepter");
 
     /**

@@ -1,12 +1,8 @@
 package io.github.pistonpoek.magicalscepter.recipe;
 
-import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
-import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
-import net.fabricmc.fabric.api.recipe.v1.ingredient.DefaultCustomIngredients;
-import net.minecraft.component.ComponentChanges;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
@@ -21,6 +17,7 @@ import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -28,21 +25,8 @@ import java.util.List;
  * Custom crafting recipe to craft experience bottles from scepter experience component.
  */
 public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
-    private final static IngredientPlacement INGREDIENT_PLACEMENT;
-
-    static {
-        Ingredient ingredient = DefaultCustomIngredients.components(
-                Ingredient.ofItem(ModItems.ARCANE_SCEPTER),
-                ComponentChanges.builder().add(
-                        ModDataComponentTypes.SCEPTER_EXPERIENCE,
-                        new ScepterExperienceComponent(ArcaneScepterItem.EXPERIENCE_STEP)
-                ).build()
-        );
-        INGREDIENT_PLACEMENT = IngredientPlacement.forShapeless(List.of(
-                ingredient,
-                Ingredient.ofItem(Items.GLASS_BOTTLE)
-        ));
-    }
+    @Nullable
+    private IngredientPlacement ingredientPlacement;
 
     /**
      * Construct the experience bottle recipe for the specified crafting recipe category.
@@ -51,19 +35,18 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
      */
     public ExperienceBottleRecipe(CraftingRecipeCategory category) {
         super(category);
-
     }
 
     @Override
     public boolean matches(CraftingRecipeInput input, World world) {
-        boolean containsFilledArcaneScepter = false;
+        boolean containsChargedArcaneScepter = false;
         boolean containsGlassBottle = false;
 
         for (int i = 0; i < input.size(); i++) {
             ItemStack itemStack = input.getStackInSlot(i);
             if (!itemStack.isEmpty()) {
-                if (ScepterHelper.CHARGED_SCEPTER.test(itemStack) && !containsFilledArcaneScepter) {
-                    containsFilledArcaneScepter = true;
+                if (itemStack.isOf(ModItems.CHARGED_ARCANE_SCEPTER) && !containsChargedArcaneScepter) {
+                    containsChargedArcaneScepter = true;
                 } else if (itemStack.isOf(Items.GLASS_BOTTLE) && !containsGlassBottle) {
                     containsGlassBottle = true;
                 } else {
@@ -71,7 +54,7 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
                 }
             }
         }
-        return containsFilledArcaneScepter && containsGlassBottle;
+        return containsChargedArcaneScepter && containsGlassBottle;
     }
 
     @Override
@@ -85,10 +68,10 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
 
         for (int i = 0; i < remainders.size(); i++) {
             ItemStack itemStack = input.getStackInSlot(i).copy();
-            if (ScepterHelper.CHARGED_SCEPTER.test(itemStack)) {
-                int experience = ScepterHelper.getExperience(itemStack) - ArcaneScepterItem.EXPERIENCE_STEP;
-                itemStack.set(ModDataComponentTypes.SCEPTER_EXPERIENCE, new ScepterExperienceComponent(experience));
-                remainders.set(i, itemStack);
+            if (itemStack.isOf(ModItems.CHARGED_ARCANE_SCEPTER)) {
+                ScepterExperienceComponent.add(itemStack, -ArcaneScepterItem.EXPERIENCE_STEP);
+                ItemStack remainder = ArcaneScepterItem.getReplacementStack(itemStack);
+                remainders.set(i, remainder.isEmpty() ? itemStack : remainder);
             } else {
                 remainders.set(i, itemStack.getItem().getRecipeRemainder());
             }
@@ -104,7 +87,13 @@ public class ExperienceBottleRecipe extends SpecialCraftingRecipe {
 
     @Override
     public IngredientPlacement getIngredientPlacement() {
-        return INGREDIENT_PLACEMENT;
+        if (this.ingredientPlacement == null) {
+            this.ingredientPlacement = IngredientPlacement.forShapeless(List.of(
+                    Ingredient.ofItem(ModItems.CHARGED_ARCANE_SCEPTER),
+                    Ingredient.ofItem(Items.GLASS_BOTTLE)
+            ));
+        }
+        return this.ingredientPlacement;
     }
 
     @Override

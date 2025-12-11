@@ -1,20 +1,14 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
-import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.mixin.client.data.ItemModelGeneratorMixin;
-import io.github.pistonpoek.magicalscepter.predicate.component.ModComponentPredicateTypes;
-import io.github.pistonpoek.magicalscepter.predicate.item.ScepterExperiencePredicate;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterTintSource;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.*;
-import net.minecraft.client.render.item.property.bool.ComponentBooleanProperty;
 import net.minecraft.item.Item;
-import net.minecraft.predicate.NumberRange;
-import net.minecraft.predicate.component.ComponentPredicate;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -46,21 +40,9 @@ public class ModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
+        itemModelGenerator.register(ModItems.ARCANE_SCEPTER, Models.HANDHELD);
+        itemModelGenerator.register(ModItems.CHARGED_ARCANE_SCEPTER, Models.HANDHELD);
         itemModelGenerator.register(ModItems.SCEPTER, Models.HANDHELD);
-
-        Identifier filledArcaneScepter = itemModelGenerator.registerSubModel(ModItems.ARCANE_SCEPTER, "_filled", Models.HANDHELD);
-        Identifier arcaneScepter = itemModelGenerator.upload(ModItems.ARCANE_SCEPTER, Models.HANDHELD);
-        itemModelGenerator.registerCondition(
-                ModItems.ARCANE_SCEPTER,
-                new ComponentBooleanProperty(
-                    new ComponentPredicate.Typed<>(
-                            ModComponentPredicateTypes.SCEPTER_EXPERIENCE,
-                            new ScepterExperiencePredicate(NumberRange.IntRange.atLeast(ArcaneScepterItem.EXPERIENCE_STEP))
-                    )
-                ),
-                ItemModels.basic(filledArcaneScepter),
-                ItemModels.basic(arcaneScepter)
-        );
 
         if (itemModelGenerator instanceof ItemModelGeneratorMixin scepterItemModelGenerator) {
             registerScepter(scepterItemModelGenerator, ModItems.MAGICAL_SCEPTER, HANDHELD_SCEPTER);

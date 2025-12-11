@@ -6,6 +6,7 @@ import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
 import io.github.pistonpoek.magicalscepter.registry.tag.ScepterTags;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
@@ -13,6 +14,8 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.UseCooldownComponent;
 import net.minecraft.item.*;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -20,6 +23,7 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Rarity;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -31,13 +35,26 @@ import static io.github.pistonpoek.magicalscepter.util.SpawnEggDispenserBehavior
  * @see net.minecraft.item.Items
  */
 public class ModItems {
-    public static final Item SCEPTER = register("scepter", new Item.Settings().maxCount(1).rarity(Rarity.RARE));
+    private static final Function<Item.Settings, Item.Settings> SCEPTER_SETTINGS = (settings) ->
+            settings.rarity(Rarity.RARE);
+    private static final Function<Item.Settings, Item.Settings> USABLE_SCEPTER_SETTINGS = SCEPTER_SETTINGS
+            .andThen((settings) -> settings.maxDamage(64).repairable(ModItemTags.SCEPTER_MATERIALS));
+    private static final Function<Item.Settings, Item.Settings> ARCANE_SCEPTER_SETTINGS = USABLE_SCEPTER_SETTINGS
+            .andThen((settings) -> settings.component(DataComponentTypes.USE_COOLDOWN,
+                    new UseCooldownComponent(0.5F, Optional.of(ModIdentifier.of("arcane_scepters")))));
+
+    public static final Item SCEPTER = register("scepter", SCEPTER_SETTINGS.apply(new Item.Settings().maxCount(1)));
     public static final Item ARCANE_SCEPTER = register("arcane_scepter", ArcaneScepterItem::new,
-            new Item.Settings().maxDamage(64).repairable(Items.LAPIS_LAZULI).rarity(Rarity.RARE)
-                    .component(ModDataComponentTypes.SCEPTER_EXPERIENCE, ScepterExperienceComponent.DEFAULT));
+            ARCANE_SCEPTER_SETTINGS.apply(new Item.Settings()
+                    .component(ModDataComponentTypes.SCEPTER_EXPERIENCE, ScepterExperienceComponent.DEFAULT)));
+    public static final Item CHARGED_ARCANE_SCEPTER = register("charged_arcane_scepter", ArcaneScepterItem::new,
+            ARCANE_SCEPTER_SETTINGS.apply(new Item.Settings()
+                    .component(ModDataComponentTypes.SCEPTER_EXPERIENCE,
+                            ScepterExperienceComponent.of(ArcaneScepterItem.EXPERIENCE_STEP))
+                    .component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
     public static final Item MAGICAL_SCEPTER = register("magical_scepter", MagicalScepterItem::new,
-            new Item.Settings().maxDamage(64).repairable(Items.LAPIS_LAZULI).rarity(Rarity.RARE)
-                    .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT));
+            USABLE_SCEPTER_SETTINGS.apply(new Item.Settings()
+                    .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT)));
 
     public static final Item SORCERER_SPAWN_EGG = register("sorcerer_spawn_egg", SpawnEggItem::new,
             new Item.Settings().spawnEgg(ModEntityType.SORCERER));

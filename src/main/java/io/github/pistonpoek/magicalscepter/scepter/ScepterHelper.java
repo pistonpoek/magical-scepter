@@ -2,10 +2,9 @@ package io.github.pistonpoek.magicalscepter.scepter;
 
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
-import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
+import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
@@ -28,12 +27,7 @@ public class ScepterHelper {
      * Predicate to check if an item stack is an arcane scepter.
      */
     public static final Predicate<ItemStack> ARCANE_SCEPTER = itemStack ->
-            itemStack.isOf(ModItems.ARCANE_SCEPTER);
-    /**
-     * Predicate to check if an item stack is a charged scepter.
-     */
-    public static final Predicate<ItemStack> CHARGED_SCEPTER = itemStack ->
-            ARCANE_SCEPTER.test(itemStack) && getExperience(itemStack) >= ArcaneScepterItem.EXPERIENCE_STEP;
+            itemStack.isIn(ModItemTags.ARCANE_SCEPTERS);
     /**
      * Predicate to check if an item stack is a magical scepter.
      */
@@ -83,6 +77,8 @@ public class ScepterHelper {
         ItemStack scepterStack = ModItems.SCEPTER.getDefaultStack();
         scepterStack.applyChanges(stack.getComponentChanges());
         scepterStack.remove(ModDataComponentTypes.SCEPTER_CONTENTS);
+        scepterStack.setDamage(0);
+        scepterStack.remove(ModDataComponentTypes.SCEPTER_EXPERIENCE);
         return scepterStack;
     }
 
@@ -97,10 +93,10 @@ public class ScepterHelper {
     }
 
     /**
-     * Get the scepter contents component from the specified player main hand stack.
+     * Get the scepter contents component from the specified player.
      *
      * @param player Player entity to get the scepter contents component from.
-     * @return Optional Scepter contents component from the specified players main hand stack.
+     * @return Optional Scepter contents component from the specified player.
      */
     public static Optional<ScepterContentsComponent> getScepterContentsComponent(PlayerEntity player) {
         if (SCEPTER_WITH_SPELL.test(player.getMainHandStack())) {
@@ -111,16 +107,5 @@ public class ScepterHelper {
             return ScepterContentsComponent.get(player.getMainHandStack())
                     .or(() -> ScepterContentsComponent.get(player.getOffHandStack()));
         }
-    }
-
-    /**
-     * Get the scepter experience value from the specified item stack.
-     *
-     * @param itemStack Item stack to get the scepter experience value from.
-     * @return Integer experience value from the specified item stack.
-     */
-    public static int getExperience(ItemStack itemStack) {
-        return itemStack.getOrDefault(ModDataComponentTypes.SCEPTER_EXPERIENCE,
-                ScepterExperienceComponent.DEFAULT).experience();
     }
 }

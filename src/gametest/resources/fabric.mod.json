@@ -15,6 +15,7 @@
     "entrypoints": {
         "fabric-gametest": [
             "io.github.pistonpoek.gametest.magicalscepter.AdvancementTest",
+            "io.github.pistonpoek.gametest.magicalscepter.ArcaneScepterTest",
             "io.github.pistonpoek.gametest.magicalscepter.EnchantmentTest",
             "io.github.pistonpoek.gametest.magicalscepter.InfusionTest",
             "io.github.pistonpoek.gametest.magicalscepter.OldTaigaCabinTest",

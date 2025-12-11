@@ -53,6 +53,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModEntityType.SPELL_WITHER_SKULL, "Spell Wither Skull");
 
         translationBuilder.add(ModItems.ARCANE_SCEPTER, "Arcane Scepter");
+        translationBuilder.add(ModItems.CHARGED_ARCANE_SCEPTER, "Charged Arcane Scepter");
         translationBuilder.add(ModItems.SCEPTER, "Scepter");
         translationBuilder.add(ModItems.MAGICAL_SCEPTER, "Magical Scepter");
         translationBuilder.add(ModItems.SORCERER_SPAWN_EGG, "Sorcerer Spawn Egg");
@@ -109,7 +110,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(Spells.getTranslationKey(Spells.GHAST_FIREBALL_KEY), "Fireball");
         translationBuilder.add(Spells.getTranslationKey(Spells.GUARDIAN_BOLT_KEY), "Guardian Bolt");
         translationBuilder.add(Spells.getTranslationKey(Spells.MAGICAL_ATTACK_KEY), "Magical Attack");
-        translationBuilder.add(Spells.getTranslationKey(Spells.SHULKER_BULLET_KEY), "Levitation Bullet");
+        translationBuilder.add(Spells.getTranslationKey(Spells.SHULKER_BULLET_KEY), "Shulker Bullet");
         translationBuilder.add(Spells.getTranslationKey(Spells.SHULKER_TELEPORT_KEY), "Teleport");
         translationBuilder.add(Spells.getTranslationKey(Spells.WARDEN_SONIC_BOOM_KEY), "Sonic Boom");
         translationBuilder.add(Spells.getTranslationKey(Spells.WITHER_SKULL_KEY), "Wither Skull");
@@ -120,13 +121,15 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModSoundEvents.ENTITY_SORCERER_DEATH, "Sorcerer dies");
         translationBuilder.add(ModSoundEvents.ENTITY_SORCERER_HURT, "Sorcerer hurts");
         translationBuilder.add(ModSoundEvents.ITEM_ARCANE_SCEPTER_COLLECT_EXPERIENCE, "Scepter charges");
-        translationBuilder.add(ModSoundEvents.ITEM_ARCANE_SCEPTER_RELEASE_EXPERIENCE, "Scepter discharges");
+        translationBuilder.add(ModSoundEvents.ITEM_ARCANE_SCEPTER_RELEASE_EXPERIENCE, "Scepter drains");
         translationBuilder.add(ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_ATTACK_SPELL, "Scepter casts");
         translationBuilder.add(ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL, "Scepter shields");
         translationBuilder.add(ModSoundEvents.ITEM_MAGICAL_SCEPTER_INFUSE, "Magical Scepter infuses");
 
         translationBuilder.add(ModItemTags.SCEPTER_ENCHANTABLE, "Scepter Enchantable");
         translationBuilder.add(ModItemTags.SCEPTERS, "Scepters");
+        translationBuilder.add(ModItemTags.ARCANE_SCEPTERS, "Arcane Scepters");
+        translationBuilder.add(ModItemTags.SCEPTER_MATERIALS, "Scepter Materials");
         translationBuilder.add(ModItemTags.SORCERER_PREFERRED_WEAPONS, "Sorcerer preferred weapons");
         translationBuilder.add(ModBiomeTags.OLD_TAIGA_CABIN_HAS_STRUCTURE, "Has Structure Old Taiga Cabin");
     }

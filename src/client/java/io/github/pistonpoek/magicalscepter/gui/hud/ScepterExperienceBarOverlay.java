@@ -1,8 +1,8 @@
 package io.github.pistonpoek.magicalscepter.gui.hud;
 
+import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentHelper;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
-import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -21,7 +21,7 @@ public class ScepterExperienceBarOverlay {
      */
     public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x, int y) {
         int playerExperience = PlayerExperience.getTotalExperience(player);
-        int scepterExperience = ScepterHelper.getExperience(item);
+        int scepterExperience = ScepterExperienceComponent.getExperience(item);
         int step = ModEnchantmentHelper.getExperienceStep(item, player, ArcaneScepterItem.EXPERIENCE_STEP);
 
         // Check if the player and scepter has sufficient experience to transfer to determine what indication to render.
