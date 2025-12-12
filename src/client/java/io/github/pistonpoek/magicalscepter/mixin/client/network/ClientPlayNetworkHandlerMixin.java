@@ -1,8 +1,6 @@
 package io.github.pistonpoek.magicalscepter.mixin.client.network;
 
-import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
 import io.github.pistonpoek.magicalscepter.entity.projectile.SpellGuardianBeamEntity;
-import io.github.pistonpoek.magicalscepter.sound.GuardianBoltSoundInstance;
 import io.github.pistonpoek.magicalscepter.sound.SpellGuardianBeamSoundInstance;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -33,9 +31,6 @@ public abstract class ClientPlayNetworkHandlerMixin extends ClientCommonNetworkH
      */
     @Inject(method = "playSpawnSound", at = @At("TAIL"))
     private void playSpawnSound(Entity entity, CallbackInfo callbackInfo) {
-        if (entity instanceof GuardianBoltEntity guardianBoltEntity) {
-            this.client.getSoundManager().play(new GuardianBoltSoundInstance(guardianBoltEntity));
-        }
         if (entity instanceof SpellGuardianBeamEntity spellGuardianBeamEntity) {
             this.client.getSoundManager().play(new SpellGuardianBeamSoundInstance(spellGuardianBeamEntity));
         }

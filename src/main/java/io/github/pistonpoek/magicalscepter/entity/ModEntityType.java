@@ -38,15 +38,6 @@ public class ModEntityType {
                     .vehicleAttachment(-0.6F)
                     .maxTrackingRange(8)
     );
-    public static final EntityType<GuardianBoltEntity> GUARDIAN_BOLT = register(
-            "guardian_bolt",
-            EntityType.Builder.create(GuardianBoltEntity::new, SpawnGroup.MISC)
-                    .dropsNothing()
-                    .dimensions(0.3125F, 0.3125F)
-                    .eyeHeight(0.0F)
-                    .maxTrackingRange(4)
-                    .trackingTickInterval(10)
-    );
     public static final EntityType<SpellFireChargeEntity> SPELL_FIRE_CHARGE = register(
             "spell_fire_charge",
             EntityType.Builder.create(SpellFireChargeEntity::new, SpawnGroup.MISC)

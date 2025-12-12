@@ -47,7 +47,6 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.addEnchantment(ModEnchantments.INSIGHT_KEY, "Insight");
 
         translationBuilder.add(ModEntityType.SORCERER, "Sorcerer");
-        translationBuilder.add(ModEntityType.GUARDIAN_BOLT, "Guardian Bolt");
         translationBuilder.add(ModEntityType.SPELL_FIRE_CHARGE, "Spell Fire Charge");
         translationBuilder.add(ModEntityType.SPELL_FIREBALL, "Spell Fireball");
         translationBuilder.add(ModEntityType.SPELL_GUARDIAN_BEAM, "Spell Guardian Beam");
