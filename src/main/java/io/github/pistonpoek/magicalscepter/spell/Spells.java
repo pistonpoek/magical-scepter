@@ -2,6 +2,7 @@ package io.github.pistonpoek.magicalscepter.spell;
 
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
+import io.github.pistonpoek.magicalscepter.entity.projectile.SpellGuardianBeamEntity;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.*;
@@ -84,7 +85,7 @@ public class Spells {
 
         final double MAGICAL_ATTACK_RANGE = 8.0;
         final double DRAGON_GROWL_RANGE = 8.0;
-        final double GUARDIAN_BEAM_RANGE = 15.0;
+        final double GUARDIAN_BEAM_RANGE = SpellGuardianBeamEntity.MAX_DISTANCE;
         final double SHULKER_BULLET_RANGE = 24.0;
         final double SONIC_BOOM_RANGE = 20.0;
 

@@ -28,6 +28,7 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     private LivingEntity cachedOwner;
     @Nullable
     private Entity cachedTarget;
+    public static final float MAX_DISTANCE = 15.0F;
 
     public SpellGuardianBeamEntity(EntityType<? extends SpellGuardianBeamEntity> type, World world) {
         super(type, world);
@@ -198,7 +199,7 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
             return;
         }
 
-        if (!owner.canSee(target)) {
+        if (!owner.canSee(target) || owner.distanceTo(target) > MAX_DISTANCE) {
             discard();
             return;
         }
