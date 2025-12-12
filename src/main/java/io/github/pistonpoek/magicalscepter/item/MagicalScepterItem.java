@@ -76,11 +76,9 @@ public class MagicalScepterItem extends Item implements AttackItem {
             int experienceCost = scepterContent.getExperienceCost();
             PlayerExperience.addOnlyExperience(user, -experienceCost);
         }
+
         user.setCurrentHand(hand);
-        user.getItemCooldownManager().set(itemStack,
-                user.isInCreativeMode() ?
-                        10 : spell.getCooldown()
-        );
+        user.getItemCooldownManager().set(itemStack, spell.getCooldown());
         user.incrementStat(Stats.USED.getOrCreateStat(this));
 
         ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, user, itemStack, isAttack, hand);

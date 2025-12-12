@@ -32,7 +32,7 @@ public class SpawnEggDispenserBehavior {
      *
      * @see DispenserBehavior#registerDefaults()
      */
-    private static final ItemDispenserBehavior spawnEggDispenserBehavior= new ItemDispenserBehavior() {
+    private static final ItemDispenserBehavior spawnEggDispenserBehavior = new ItemDispenserBehavior() {
         @Override
         public ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
             Direction direction = pointer.state().get(DispenserBlock.FACING);
