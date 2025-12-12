@@ -56,7 +56,7 @@ public class Spells {
     public static final RegistryKey<Spell> EVOKER_FANG_CIRCLE_KEY = of("evoker_fang_circle");
     public static final RegistryKey<Spell> GHAST_FIREBALL_KEY = of("ghast_fireball");
     public static final RegistryKey<Spell> GHAST_REGENERATION_KEY = of("ghast_regeneration");
-    public static final RegistryKey<Spell> GUARDIAN_BOLT_KEY = of("guardian_bolt");
+    public static final RegistryKey<Spell> GUARDIAN_BEAM_KEY = of("guardian_beam");
     public static final RegistryKey<Spell> GUARDIAN_HASTE_KEY = of("guardian_haste");
     public static final RegistryKey<Spell> SHULKER_BULLET_KEY = of("shulker_bullet");
     public static final RegistryKey<Spell> SHULKER_TELEPORT_KEY = of("shulker_teleport");
@@ -64,7 +64,6 @@ public class Spells {
     public static final RegistryKey<Spell> WARDEN_STABILITY_KEY = of("warden_stability");
     public static final RegistryKey<Spell> WITHER_SKULL_KEY = of("wither_skull");
     public static final RegistryKey<Spell> WITHER_REPULSION_KEY = of("wither_repulsion");
-
 
     private static RegistryKey<Spell> of(String identifier) {
         return RegistryKey.of(ModRegistryKeys.SPELL, ModIdentifier.of(identifier));
@@ -85,6 +84,7 @@ public class Spells {
 
         final double MAGICAL_ATTACK_RANGE = 8.0;
         final double DRAGON_GROWL_RANGE = 8.0;
+        final double GUARDIAN_BEAM_RANGE = 15.0;
         final double SHULKER_BULLET_RANGE = 24.0;
         final double SONIC_BOOM_RANGE = 20.0;
 
@@ -451,16 +451,17 @@ public class Spells {
                 )
         );
 
-        register(registry, GUARDIAN_BOLT_KEY, Spell.builder(30,
-                        Text.translatable(getTranslationKey(GUARDIAN_BOLT_KEY)))
+        register(registry, GUARDIAN_BEAM_KEY, Spell.builder(40,
+                        Text.translatable(getTranslationKey(GUARDIAN_BEAM_KEY)))
                 .addCast(SpellCast.builder()
-                        .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
+                        .addTransformer(
+                                RayCastTransformer.builder(
+                                        RayCastTransformer.Target.ENTITY, GUARDIAN_BEAM_RANGE
+                                ).build()
+                        )
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                                entityTypeReferenceFunction.apply(ModEntityType.GUARDIAN_BOLT))
-                                        .addEffect(
-                                                new MoveSpellEffect(ConstantFloatProvider.create(0.2F), false)
-                                        )
+                                                entityTypeReferenceFunction.apply(ModEntityType.SPELL_GUARDIAN_BEAM))
                                         .build()
                         )
                 )

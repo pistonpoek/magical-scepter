@@ -3,6 +3,7 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
+import io.github.pistonpoek.magicalscepter.entity.projectile.SpellGuardianBeamEntity;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.minecraft.entity.*;
@@ -51,7 +52,6 @@ public record SummonEntitySpellEffect(
         Vec3d position = context.position();
         Random random = context.getRandom();
         ServerWorld world = context.getWorld();
-        Entity target = context.target();
         LivingEntity caster = context.caster();
 
         BlockPos blockPos = BlockPos.ofFloored(position);
@@ -101,7 +101,7 @@ public record SummonEntitySpellEffect(
         }
 
         if (entity != null) {
-            if (entity instanceof LightningEntity lightningEntity && target instanceof ServerPlayerEntity serverPlayerEntity) {
+            if (entity instanceof LightningEntity lightningEntity && caster instanceof ServerPlayerEntity serverPlayerEntity) {
                 lightningEntity.setChanneler(serverPlayerEntity);
             }
 
@@ -110,6 +110,10 @@ public record SummonEntitySpellEffect(
             }
             if (entity instanceof AreaEffectCloudEntity areaEffectCloudEntity) {
                 areaEffectCloudEntity.setOwner(caster);
+            }
+            if (entity instanceof SpellGuardianBeamEntity spellGuardianBeamEntity) {
+                spellGuardianBeamEntity.setOwner(caster);
+                spellGuardianBeamEntity.setTarget(context.target());
             }
             if (entity instanceof EvokerFangsEntity evokerFangsEntity) {
                 evokerFangsEntity.setOwner(caster);

@@ -50,6 +50,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModEntityType.GUARDIAN_BOLT, "Guardian Bolt");
         translationBuilder.add(ModEntityType.SPELL_FIRE_CHARGE, "Spell Fire Charge");
         translationBuilder.add(ModEntityType.SPELL_FIREBALL, "Spell Fireball");
+        translationBuilder.add(ModEntityType.SPELL_GUARDIAN_BEAM, "Spell Guardian Beam");
         translationBuilder.add(ModEntityType.SPELL_WITHER_SKULL, "Spell Wither Skull");
 
         translationBuilder.add(ModItems.ARCANE_SCEPTER, "Arcane Scepter");
@@ -108,7 +109,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(Spells.getTranslationKey(Spells.EVOKER_FANG_LINE_KEY), "Evoke Fang Line");
         translationBuilder.add(Spells.getTranslationKey(Spells.EVOKER_FANG_CIRCLE_KEY), "Evoke Fang Circle");
         translationBuilder.add(Spells.getTranslationKey(Spells.GHAST_FIREBALL_KEY), "Fireball");
-        translationBuilder.add(Spells.getTranslationKey(Spells.GUARDIAN_BOLT_KEY), "Guardian Bolt");
+        translationBuilder.add(Spells.getTranslationKey(Spells.GUARDIAN_BEAM_KEY), "Guardian Beam");
         translationBuilder.add(Spells.getTranslationKey(Spells.MAGICAL_ATTACK_KEY), "Magical Attack");
         translationBuilder.add(Spells.getTranslationKey(Spells.SHULKER_BULLET_KEY), "Shulker Bullet");
         translationBuilder.add(Spells.getTranslationKey(Spells.SHULKER_TELEPORT_KEY), "Teleport");

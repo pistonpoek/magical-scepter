@@ -2,12 +2,10 @@ package io.github.pistonpoek.magicalscepter.entity;
 
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellFireChargeEntity;
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellFireballEntity;
-import io.github.pistonpoek.magicalscepter.entity.projectile.GuardianBoltEntity;
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellWitherSkullEntity;
+import io.github.pistonpoek.magicalscepter.entity.projectile.*;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -65,6 +63,14 @@ public class ModEntityType {
                     .maxTrackingRange(4)
                     .trackingTickInterval(10)
     );
+    public static final EntityType<SpellGuardianBeamEntity> SPELL_GUARDIAN_BEAM = register(
+            "spell_guardian_beam",
+            EntityType.Builder.create(SpellGuardianBeamEntity::new, SpawnGroup.MISC)
+                    .dropsNothing()
+                    .dimensions(0.0F, 0.0F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(10)
+    );
     public static final EntityType<SpellWitherSkullEntity> SPELL_WITHER_SKULL = register(
             "spell_wither_skull",
             EntityType.Builder.create(SpellWitherSkullEntity::new, SpawnGroup.MISC)
@@ -87,6 +93,7 @@ public class ModEntityType {
             MixsonEvents.registerMonsterSpawnEntry(biome, SpawnGroup.MONSTER, 5,
                     new SpawnSettings.SpawnEntry(SORCERER, 1, 1));
         }
+        FabricDefaultAttributeRegistry.register(SORCERER, SorcererEntity.createSorcererAttributes());
     }
 
     /**

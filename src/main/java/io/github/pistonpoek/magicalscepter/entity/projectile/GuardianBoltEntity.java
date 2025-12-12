@@ -18,8 +18,6 @@ import net.minecraft.storage.WriteView;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,13 +73,6 @@ public class GuardianBoltEntity extends ExplosiveProjectileEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         builder.add(AGE, 0);
-    }
-
-    @Override
-    protected Box calculateDefaultBoundingBox(Vec3d pos) {
-        float width = this.getType().getDimensions().width();
-        float height = this.getType().getDimensions().height();
-        return Box.of(pos, width, height, width);
     }
 
     @Override

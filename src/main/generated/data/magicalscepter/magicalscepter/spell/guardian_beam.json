@@ -1,0 +1,24 @@
+{
+  "casts": [
+    {
+      "effects": [
+        {
+          "type": "magicalscepter:summon_entity",
+          "effects": [],
+          "entity": "magicalscepter:spell_guardian_beam"
+        }
+      ],
+      "transformers": [
+        {
+          "type": "magicalscepter:ray",
+          "range": 15.0,
+          "target": "entity"
+        }
+      ]
+    }
+  ],
+  "cooldown": 40,
+  "description": {
+    "translate": "magicalscepter.spell.magicalscepter.guardian_beam"
+  }
+}
