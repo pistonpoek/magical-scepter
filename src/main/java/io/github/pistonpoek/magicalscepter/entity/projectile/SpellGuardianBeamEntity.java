@@ -5,11 +5,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
@@ -28,6 +24,7 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     private LivingEntity cachedOwner;
     @Nullable
     private Entity cachedTarget;
+    private static final int DEFAULT_WARMUP_TIME = 30;
     public static final float MAX_DISTANCE = 15.0F;
 
     public SpellGuardianBeamEntity(EntityType<? extends SpellGuardianBeamEntity> type, World world) {
@@ -35,94 +32,35 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     }
 
     @Override
-    public Packet<ClientPlayPacketListener> createSpawnPacket(EntityTrackerEntry entityTrackerEntry) {
-        Entity entity = this.getTarget();
-        return new EntitySpawnS2CPacket(this, entityTrackerEntry, entity == null ? 0 : entity.getId());
-    }
-
-    @Override
-    public void onSpawnPacket(EntitySpawnS2CPacket packet) {
-        super.onSpawnPacket(packet);
-        Entity entity = this.getEntityWorld().getEntityById(packet.getEntityData());
-        if (entity != null) {
-            this.setTarget(entity);
-        }
-    }
-
-    @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         builder.add(OWNER_ID, 0);
         builder.add(TARGET_ID, 0);
-        builder.add(WARMUP_TIME, 30);
-    }
-
-    void setOwnerId(int entityId) {
-        this.dataTracker.set(OWNER_ID, entityId);
-    }
-
-    void setTargetId(int entityId) {
-        this.dataTracker.set(TARGET_ID, entityId);
-    }
-
-    public boolean hasOwner() {
-        return this.dataTracker.get(OWNER_ID) != 0;
-    }
-
-    public boolean hasTarget() {
-        return this.dataTracker.get(TARGET_ID) != 0;
-    }
-
-    @Nullable
-    public LivingEntity getOwner() {
-        if (!this.hasOwner()) {
-            return null;
-        } else if (this.getEntityWorld().isClient()) {
-            if (this.cachedOwner != null) {
-                return this.cachedOwner;
-            } else {
-                Entity entity = this.getEntityWorld().getEntityById(this.dataTracker.get(OWNER_ID));
-                if (entity instanceof LivingEntity livingEntity) {
-                    this.cachedOwner = livingEntity;
-                    return this.cachedOwner;
-                } else {
-                    return null;
-                }
-            }
-        } else {
-            return LazyEntityReference.getLivingEntity(this.owner, this.getEntityWorld());
-        }
-    }
-
-    @Nullable
-    public Entity getTarget() {
-        if (!this.hasTarget()) {
-            return null;
-        } else if (this.getEntityWorld().isClient()) {
-            if (this.cachedTarget != null) {
-                return this.cachedTarget;
-            } else {
-                Entity entity = this.getEntityWorld().getEntityById(this.dataTracker.get(TARGET_ID));
-                if (entity != null) {
-                    this.cachedTarget = entity;
-                    return this.cachedTarget;
-                } else {
-                    return null;
-                }
-            }
-        } else {
-            return LazyEntityReference.getEntity(this.target, this.getEntityWorld());
-        }
+        builder.add(WARMUP_TIME, DEFAULT_WARMUP_TIME);
     }
 
     @Override
-    public void onTrackedDataSet(TrackedData<?> data) {
-        super.onTrackedDataSet(data);
-        if (OWNER_ID.equals(data)) {
-            this.cachedOwner = null;
+    public void tick() {
+        super.tick();
+        LivingEntity owner = getOwner();
+        Entity target = getTarget();
+        if (owner == null || target == null) {
+            if (!getEntityWorld().isClient()) {
+                discard();
+            }
+            return;
         }
-        if (TARGET_ID.equals(data)) {
-            this.cachedTarget = null;
+
+        setPosition(owner.getX(), owner.getEyeY(), owner.getZ());
+
+        if (getEntityWorld().isClient()) {
+            clientTick(owner, target);
+            return;
         }
+        serverTick(owner, target);
+    }
+
+    private void clientTick(LivingEntity owner, Entity target) {
+        addParticles(owner, target);
     }
 
     private void addParticles(LivingEntity owner, Entity target) {
@@ -146,59 +84,7 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
         }
     }
 
-    @Override
-    public boolean isAttackable() {
-        return false;
-    }
-
-    @Override
-    public boolean damage(ServerWorld world, DamageSource source, float amount) {
-        return false;
-    }
-
-    @Override
-    protected void readCustomData(ReadView view) {
-        this.setOwner(LazyEntityReference.fromData(view, "owner"));
-        this.setTarget(LazyEntityReference.fromData(view, "target"));
-        this.setWarmupTime(view.getInt("warmup_time", 30));
-    }
-
-    @Override
-    protected void writeCustomData(WriteView view) {
-        LazyEntityReference.writeData(this.owner, view, "owner");
-        LazyEntityReference.writeData(this.target, view, "target");
-        view.putInt("warmup_time", this.getWarmupTime());
-    }
-
-    @Override
-    public void copyFrom(Entity original) {
-        super.copyFrom(original);
-        if (original instanceof SpellGuardianBeamEntity guardianBeamEntity) {
-            this.owner = guardianBeamEntity.owner;
-        }
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        LivingEntity owner = getOwner();
-        Entity target = getTarget();
-        if (owner == null || target == null) {
-            if (!getEntityWorld().isClient()) {
-                discard();
-            }
-            return;
-        }
-
-        // TODO discard if distance is too big.
-
-        setPosition(owner.getX(), owner.getEyeY(), owner.getZ());
-
-        if (getEntityWorld().isClient()) {
-            addParticles(owner, target);
-            return;
-        }
-
+    private void serverTick(LivingEntity owner, Entity target) {
         if (!owner.canSee(target) || owner.distanceTo(target) > MAX_DISTANCE) {
             discard();
             return;
@@ -214,6 +100,41 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
         setSilent(owner.isSilent());
     }
 
+    @Override
+    public void onTrackedDataSet(TrackedData<?> data) {
+        super.onTrackedDataSet(data);
+        if (OWNER_ID.equals(data)) {
+            this.cachedOwner = null;
+        }
+        if (TARGET_ID.equals(data)) {
+            this.cachedTarget = null;
+        }
+    }
+
+    @Override
+    public void copyFrom(Entity original) {
+        super.copyFrom(original);
+        if (original instanceof SpellGuardianBeamEntity guardianBeamEntity) {
+            setOwner(guardianBeamEntity.getOwner());
+            setTarget(guardianBeamEntity.getTarget());
+            setWarmupTime(guardianBeamEntity.getWarmupTime());
+        }
+    }
+
+    @Override
+    protected void readCustomData(ReadView view) {
+        this.setOwner(LazyEntityReference.fromData(view, "owner"));
+        this.setTarget(LazyEntityReference.fromData(view, "target"));
+        this.setWarmupTime(view.getInt("warmup_time", DEFAULT_WARMUP_TIME));
+    }
+
+    @Override
+    protected void writeCustomData(WriteView view) {
+        LazyEntityReference.writeData(this.owner, view, "owner");
+        LazyEntityReference.writeData(this.target, view, "target");
+        view.putInt("warmup_time", this.getWarmupTime());
+    }
+
     public float getProgress(float tickProgress) {
         return (age + tickProgress) / getWarmupTime();
     }
@@ -226,8 +147,75 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
         this.dataTracker.set(WARMUP_TIME, warmupTime);
     }
 
+    public boolean hasOwner() {
+        return this.dataTracker.get(OWNER_ID) != 0;
+    }
+
+    @Nullable
+    public LivingEntity getOwner() {
+        if (!this.hasOwner()) {
+            return null;
+        } else if (this.getEntityWorld().isClient()) {
+            if (this.cachedOwner != null) {
+                return this.cachedOwner;
+            } else {
+                Entity entity = this.getEntityWorld().getEntityById(this.dataTracker.get(OWNER_ID));
+                if (entity instanceof LivingEntity livingEntity) {
+                    this.cachedOwner = livingEntity;
+                    return this.cachedOwner;
+                } else {
+                    return null;
+                }
+            }
+        } else {
+            return LazyEntityReference.getLivingEntity(this.owner, this.getEntityWorld());
+        }
+    }
+
+    protected void setOwner(@Nullable LazyEntityReference<LivingEntity> owner) {
+        this.owner = owner;
+    }
+
+    void setOwnerId(int entityId) {
+        this.dataTracker.set(OWNER_ID, entityId);
+    }
+
+    public void setOwner(@Nullable LivingEntity owner) {
+        this.setOwner(LazyEntityReference.of(owner));
+        if (owner != null) setOwnerId(owner.getId());
+    }
+
+    public boolean hasTarget() {
+        return this.dataTracker.get(TARGET_ID) != 0;
+    }
+
+    @Nullable
+    public Entity getTarget() {
+        if (!this.hasTarget()) {
+            return null;
+        } else if (this.getEntityWorld().isClient()) {
+            if (this.cachedTarget != null) {
+                return this.cachedTarget;
+            } else {
+                Entity entity = this.getEntityWorld().getEntityById(this.dataTracker.get(TARGET_ID));
+                if (entity != null) {
+                    this.cachedTarget = entity;
+                    return this.cachedTarget;
+                } else {
+                    return null;
+                }
+            }
+        } else {
+            return LazyEntityReference.getEntity(this.target, this.getEntityWorld());
+        }
+    }
+
     protected void setTarget(@Nullable LazyEntityReference<Entity> target) {
         this.target = target;
+    }
+
+    void setTargetId(int entityId) {
+        this.dataTracker.set(TARGET_ID, entityId);
     }
 
     public void setTarget(@Nullable Entity target) {
@@ -235,12 +223,13 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
         if (target != null) setTargetId(target.getId());
     }
 
-    protected void setOwner(@Nullable LazyEntityReference<LivingEntity> owner) {
-        this.owner = owner;
+    @Override
+    public boolean isAttackable() {
+        return false;
     }
 
-    public void setOwner(@Nullable LivingEntity owner) {
-        this.setOwner(LazyEntityReference.of(owner));
-        if (owner != null) setOwnerId(owner.getId());
+    @Override
+    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+        return false;
     }
 }

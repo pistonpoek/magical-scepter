@@ -10,7 +10,6 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.state.CameraRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -31,17 +30,19 @@ public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamE
             return true;
         } else {
             Entity target = entity.getTarget();
-            LivingEntity owner = entity.getOwner();
-            if (target != null && owner != null) {
-                Vec3d vec3d = this.fromLerpedPosition(target, target.getHeight() * 0.5, 1.0F);
-                Vec3d vec3d2 = this.fromLerpedPosition(owner, owner.getStandingEyeHeight(), 1.0F);
-                return frustum.isVisible(new Box(vec3d2.x, vec3d2.y, vec3d2.z, vec3d.x, vec3d.y, vec3d.z));
+            if (target != null) {
+                Vec3d targetPos = this.getPosition(target, target.getHeight() * 0.5, 1.0F);
+                Vec3d entityPos = this.getPosition(entity, 0.0F, 1.0F);
+                return frustum.isVisible(new Box(
+                        entityPos.x, entityPos.y, entityPos.z,
+                        targetPos.x, targetPos.y, targetPos.z)
+                );
             }
             return false;
         }
     }
 
-    private Vec3d fromLerpedPosition(Entity entity, double yOffset, float delta) {
+    private Vec3d getPosition(Entity entity, double yOffset, float delta) {
         double d = MathHelper.lerp(delta, entity.lastRenderX, entity.getX());
         double e = MathHelper.lerp(delta, entity.lastRenderY, entity.getY()) + yOffset;
         double f = MathHelper.lerp(delta, entity.lastRenderZ, entity.getZ());
@@ -55,14 +56,14 @@ public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamE
             CameraRenderState cameraRenderState
     ) {
         super.render(state, matrixStack, orderedRenderCommandQueue, cameraRenderState);
-        Vec3d vec3d = state.targetPos;
-        if (vec3d != null) {
+        Vec3d targetPos = state.targetPos;
+        if (targetPos != null) {
             float f = state.age * 0.5F % 1.0F;
             matrixStack.push();
             renderBeam(
                     matrixStack,
                     orderedRenderCommandQueue,
-                    vec3d.subtract(state.x, state.y, state.z),
+                    targetPos.subtract(state.x, state.y, state.z),
                     state.age,
                     state.progress,
                     f
@@ -71,7 +72,8 @@ public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamE
         }
     }
 
-    private static void renderBeam(MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue, Vec3d vec3d, float age, float progress, float g) {
+    private static void renderBeam(MatrixStack matrixStack, OrderedRenderCommandQueue orderedRenderCommandQueue,
+                                   Vec3d vec3d, float age, float progress, float g) {
         float h = (float)(vec3d.length() + 1.0);
         vec3d = vec3d.normalize();
         float i = (float)Math.acos(vec3d.y);
@@ -140,7 +142,7 @@ public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamE
         Entity target = spellGuardianBeamEntity.getTarget();
         if (target != null) {
             state.progress = spellGuardianBeamEntity.getProgress(tickProgress);
-            state.targetPos = this.fromLerpedPosition(target, target.getHeight() * 0.5, tickProgress);
+            state.targetPos = this.getPosition(target, target.getHeight() * 0.5, tickProgress);
         } else {
             state.targetPos = null;
         }
