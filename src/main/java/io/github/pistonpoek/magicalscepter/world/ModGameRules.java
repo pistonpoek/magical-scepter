@@ -10,7 +10,7 @@ import net.minecraft.world.GameRules;
  */
 public class ModGameRules {
     public static final GameRules.Key<GameRules.IntRule> MAX_SPELL_CASTS = register(
-            "maxSpellCasts", GameRules.Category.MISC, GameRules.IntRule.create(65536)
+            "max_spell_casts", GameRules.Category.MISC, GameRules.IntRule.create(65536)
     );
 
     /**
