@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.world.ModGameRules;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.MinecraftServer;
@@ -19,7 +20,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class SpellCastingManager extends PersistentState {
-    private static final int MAX_CASTER_CASTINGS = Integer.MAX_VALUE;
     private static final String ID = ModIdentifier.key("spell_castings", "_");
     public static final Codec<SpellCastingManager> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -54,7 +54,7 @@ public class SpellCastingManager extends PersistentState {
     public void schedule(ServerWorld world, SpellCasting spellCasting, int delay) {
         ScheduledSpellCasting scheduledSpellCasting = new ScheduledSpellCasting(spellCasting.clone());
         UUID casterUuid = spellCasting.getCaster().getUuid();
-        int key = generateKey(casterUuid);
+        int key = generateKey(world, casterUuid);
 
         if (key == -1) {
             MagicalScepter.LOGGER.info("Max casting amount reached for caster {}", casterUuid);
@@ -101,22 +101,23 @@ public class SpellCastingManager extends PersistentState {
         return true;
     }
 
-    private int generateKey(UUID casterUuid) {
+    private int generateKey(ServerWorld world, UUID casterUuid) {
+        final int maxSpellCasts = world.getGameRules().getInt(ModGameRules.MAX_SPELL_CASTS);
         int nextKey = startKey;
         if (!scheduledCastings.containsKey(casterUuid)) {
-            startKey = nextKey + 1 % MAX_CASTER_CASTINGS;
+            startKey = nextKey + 1 % maxSpellCasts;
             return nextKey;
         }
 
         do {
             if (!scheduledCastings.get(casterUuid).containsKey(nextKey)) {
-                startKey = nextKey + 1 % MAX_CASTER_CASTINGS;
+                startKey = nextKey + 1 % maxSpellCasts;
                 return nextKey;
             }
-            nextKey = nextKey + 1 % MAX_CASTER_CASTINGS;
+            nextKey = nextKey + 1 % maxSpellCasts;
         } while (nextKey != startKey);
 
-        MagicalScepter.LOGGER.warn("Caster reached scheduled casting limit of {}", MAX_CASTER_CASTINGS);
+        MagicalScepter.LOGGER.warn("Caster reached scheduled spell casting limit of {}", maxSpellCasts);
         return -1;
     }
 

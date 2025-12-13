@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import static io.github.pistonpoek.magicalscepter.advancement.ModAdvancements.*;
+import static io.github.pistonpoek.magicalscepter.world.ModGameRules.*;
 
 /**
  * Mod data provider for language.
@@ -41,23 +42,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup,
                                      TranslationBuilder translationBuilder) {
-        translationBuilder.add(ModStatusEffects.REPULSION.value(), "Repulsion");
-        translationBuilder.add(ModStatusEffects.STABILITY.value(), "Stability");
-
-        translationBuilder.addEnchantment(ModEnchantments.INSIGHT_KEY, "Insight");
-
-        translationBuilder.add(ModEntityType.SORCERER, "Sorcerer");
-        translationBuilder.add(ModEntityType.SPELL_FIRE_CHARGE, "Spell Fire Charge");
-        translationBuilder.add(ModEntityType.SPELL_FIREBALL, "Spell Fireball");
-        translationBuilder.add(ModEntityType.SPELL_GUARDIAN_BEAM, "Spell Guardian Beam");
-        translationBuilder.add(ModEntityType.SPELL_WITHER_SKULL, "Spell Wither Skull");
-
-        translationBuilder.add(ModItems.ARCANE_SCEPTER, "Arcane Scepter");
-        translationBuilder.add(ModItems.CHARGED_ARCANE_SCEPTER, "Charged Arcane Scepter");
-        translationBuilder.add(ModItems.SCEPTER, "Scepter");
-        translationBuilder.add(ModItems.MAGICAL_SCEPTER, "Magical Scepter");
-        translationBuilder.add(ModItems.SORCERER_SPAWN_EGG, "Sorcerer Spawn Egg");
-
+        // Advancements
         translationBuilder.add(createTitleTranslationKey(CAST_SCEPTER), "Wizardry");
         translationBuilder.add(createDescriptionTranslationKey(CAST_SCEPTER),
                 "Cast a Spell with a Magical Scepter");
@@ -65,6 +50,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(createDescriptionTranslationKey(ALL_SCEPTER_INFUSIONS),
                 "Acquire each Scepter variant by infusing a Magical Scepter");
 
+        // Commands
         translationBuilder.add(SpellCommand.CAST_FAILED_KEY,
                 "Unable to cast spell for target");
         translationBuilder.add(SpellCommand.CAST_SUCCESS_MULTIPLE_KEY,
@@ -78,6 +64,33 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(SpellCommand.CLEAR_SUCCESS_SINGLE_KEY,
                 "Removed all future spell casts for %s");
 
+        // Effect
+        translationBuilder.add(ModStatusEffects.REPULSION.value(), "Repulsion");
+        translationBuilder.add(ModStatusEffects.STABILITY.value(), "Stability");
+
+        // Enchantment
+        translationBuilder.addEnchantment(ModEnchantments.INSIGHT_KEY, "Insight");
+
+        // Entity
+        translationBuilder.add(ModEntityType.SORCERER, "Sorcerer");
+        translationBuilder.add(ModEntityType.SPELL_FIRE_CHARGE, "Spell Fire Charge");
+        translationBuilder.add(ModEntityType.SPELL_FIREBALL, "Spell Fireball");
+        translationBuilder.add(ModEntityType.SPELL_GUARDIAN_BEAM, "Spell Guardian Beam");
+        translationBuilder.add(ModEntityType.SPELL_WITHER_SKULL, "Spell Wither Skull");
+
+        // Gamerule
+        translationBuilder.add(getTranslationKey(MAX_SPELL_CASTS), "Spell cast limit");
+        translationBuilder.add(getDescriptionTranslationKey(MAX_SPELL_CASTS),
+                "Maximum number of spell casts a caster can have scheduled in the world.");
+
+        // Item
+        translationBuilder.add(ModItems.ARCANE_SCEPTER, "Arcane Scepter");
+        translationBuilder.add(ModItems.CHARGED_ARCANE_SCEPTER, "Charged Arcane Scepter");
+        translationBuilder.add(ModItems.SCEPTER, "Scepter");
+        translationBuilder.add(ModItems.MAGICAL_SCEPTER, "Magical Scepter");
+        translationBuilder.add(ModItems.SORCERER_SPAWN_EGG, "Sorcerer Spawn Egg");
+
+        // Scepter
         final Function<RegistryKey<Scepter>, String> SCEPTER_TRANSLATION_KEY =
                 (scepter) -> ModItems.MAGICAL_SCEPTER.getTranslationKey() + "." +
                         Scepters.getTranslationKey(scepter);
@@ -100,6 +113,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 
         translationBuilder.add(ScepterExperienceComponent.EXPERIENCE_KEY, "Experience: %s");
 
+        // Spell
         translationBuilder.add(Spells.getTranslationKey(Spells.BLAZE_FIRE_CHARGES), "Fire Charges");
         translationBuilder.add(Spells.getTranslationKey(Spells.BREEZE_WIND_CHARGE_KEY), "Wind Charge");
         translationBuilder.add(Spells.getTranslationKey(Spells.BREEZE_JUMP_KEY), "Breeze Jump");
@@ -115,6 +129,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(Spells.getTranslationKey(Spells.WARDEN_SONIC_BOOM_KEY), "Sonic Boom");
         translationBuilder.add(Spells.getTranslationKey(Spells.WITHER_SKULL_KEY), "Wither Skull");
 
+        // Subtitles
         translationBuilder.add(ModSoundEvents.ENTITY_PARROT_IMITATE_SORCERER, "Parrot murmurs");
         translationBuilder.add(ModSoundEvents.ENTITY_SORCERER_AMBIENT, "Sorcerer murmurs");
         translationBuilder.add(ModSoundEvents.ENTITY_SORCERER_CELEBRATE, "Sorcerer cheers");
@@ -126,6 +141,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL, "Scepter shields");
         translationBuilder.add(ModSoundEvents.ITEM_MAGICAL_SCEPTER_INFUSE, "Magical Scepter infuses");
 
+        // Tag
         translationBuilder.add(ModItemTags.SCEPTER_ENCHANTABLE, "Scepter Enchantable");
         translationBuilder.add(ModItemTags.SCEPTERS, "Scepters");
         translationBuilder.add(ModItemTags.ARCANE_SCEPTERS, "Arcane Scepters");

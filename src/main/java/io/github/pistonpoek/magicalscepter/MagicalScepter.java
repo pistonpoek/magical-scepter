@@ -19,6 +19,7 @@ import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastingManager;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastingTimerCallback;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.world.ModGameRules;
 import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -47,6 +48,7 @@ public class MagicalScepter implements ModInitializer {
         ModPlayPackets.init();
         ModCriteria.init();
         ModGameEvent.init();
+        ModGameRules.init();
         ModSoundEvents.init();
         ModParticleTypes.init();
         ModEnchantmentEffectComponentTypes.init();
