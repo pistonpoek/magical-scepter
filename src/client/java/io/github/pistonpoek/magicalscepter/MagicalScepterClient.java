@@ -4,6 +4,7 @@ import io.github.pistonpoek.magicalscepter.attack.ItemAttackCallback;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.network.ClientPlayPackets;
 import io.github.pistonpoek.magicalscepter.render.entity.SorcererEntityRenderer;
+import io.github.pistonpoek.magicalscepter.render.entity.SpellDragonFireballRenderer;
 import io.github.pistonpoek.magicalscepter.render.entity.SpellGuardianBeamRenderer;
 import io.github.pistonpoek.magicalscepter.render.entity.SpellWitherSkullEntityRenderer;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
@@ -27,6 +28,7 @@ public class MagicalScepterClient implements ClientModInitializer {
                 IllagerEntityModel::getTexturedModelData);
 
         EntityRendererFactories.register(ModEntityType.SPELL_GUARDIAN_BEAM, SpellGuardianBeamRenderer::new);
+        EntityRendererFactories.register(ModEntityType.SPELL_DRAGON_FIREBALL, SpellDragonFireballRenderer::new);
         EntityRendererFactories.register(ModEntityType.SPELL_FIRE_CHARGE, context -> new FlyingItemEntityRenderer<>(context, 0.75F, true));
         EntityRendererFactories.register(ModEntityType.SPELL_FIREBALL, context -> new FlyingItemEntityRenderer<>(context, 3.0F, true));
         EntityRendererFactories.register(ModEntityType.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);

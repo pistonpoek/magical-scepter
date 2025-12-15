@@ -73,6 +73,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
 
         // Entity
         translationBuilder.add(ModEntityType.SORCERER, "Sorcerer");
+        translationBuilder.add(ModEntityType.SPELL_DRAGON_FIREBALL, "Spell Dragon Fireball");
         translationBuilder.add(ModEntityType.SPELL_FIRE_CHARGE, "Spell Fire Charge");
         translationBuilder.add(ModEntityType.SPELL_FIREBALL, "Spell Fireball");
         translationBuilder.add(ModEntityType.SPELL_GUARDIAN_BEAM, "Spell Guardian Beam");

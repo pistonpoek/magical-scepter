@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellFireballEntity;
+import io.github.pistonpoek.magicalscepter.entity.spell.SpellFireballEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.GhastEntity;
 import org.spongepowered.asm.mixin.Mixin;

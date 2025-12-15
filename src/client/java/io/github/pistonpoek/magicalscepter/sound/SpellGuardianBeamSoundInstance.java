@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.sound;
 
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellGuardianBeamEntity;
+import io.github.pistonpoek.magicalscepter.entity.spell.SpellGuardianBeamEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.sound.MovingSoundInstance;

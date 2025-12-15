@@ -1,5 +1,6 @@
-package io.github.pistonpoek.magicalscepter.entity.projectile;
+package io.github.pistonpoek.magicalscepter.entity.spell;
 
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
@@ -231,5 +232,10 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     @Override
     public boolean damage(ServerWorld world, DamageSource source, float amount) {
         return false;
+    }
+
+    @Override
+    public PistonBehavior getPistonBehavior() {
+        return PistonBehavior.IGNORE;
     }
 }

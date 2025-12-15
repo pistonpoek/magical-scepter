@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.render.entity;
 
 
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellWitherSkullEntity;
+import io.github.pistonpoek.magicalscepter.entity.spell.SpellWitherSkullEntity;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

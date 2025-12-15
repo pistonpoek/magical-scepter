@@ -30,5 +30,10 @@ public class ModEntityTypeTagProvider extends VanillaEntityTypeTagProvider {
                 .add(ModEntityType.SORCERER);
         this.builder(EntityTypeTags.REDIRECTABLE_PROJECTILE)
                 .add(ModEntityType.SPELL_FIREBALL);
+        this.builder(EntityTypeTags.IMPACT_PROJECTILES)
+                .add(ModEntityType.SPELL_DRAGON_FIREBALL)
+                .add(ModEntityType.SPELL_FIRE_CHARGE)
+                .add(ModEntityType.SPELL_FIREBALL)
+                .add(ModEntityType.SPELL_WITHER_SKULL);
     }
 }

@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.mixin.client.network;
 
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellGuardianBeamEntity;
+import io.github.pistonpoek.magicalscepter.entity.spell.SpellGuardianBeamEntity;
 import io.github.pistonpoek.magicalscepter.sound.SpellGuardianBeamSoundInstance;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

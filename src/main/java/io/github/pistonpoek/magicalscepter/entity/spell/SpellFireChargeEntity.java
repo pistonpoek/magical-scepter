@@ -1,4 +1,4 @@
-package io.github.pistonpoek.magicalscepter.entity.projectile;
+package io.github.pistonpoek.magicalscepter.entity.spell;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;

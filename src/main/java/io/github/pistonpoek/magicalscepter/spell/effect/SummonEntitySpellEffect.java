@@ -3,7 +3,7 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellGuardianBeamEntity;
+import io.github.pistonpoek.magicalscepter.entity.spell.SpellGuardianBeamEntity;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import net.minecraft.entity.*;

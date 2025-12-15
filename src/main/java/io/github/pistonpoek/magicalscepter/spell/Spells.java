@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.spell;
 
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
-import io.github.pistonpoek.magicalscepter.entity.projectile.SpellGuardianBeamEntity;
+import io.github.pistonpoek.magicalscepter.entity.spell.SpellGuardianBeamEntity;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.*;
@@ -252,7 +252,7 @@ public class Spells {
                 )
         );
 
-        register(registry, DRAGON_FIREBALL_KEY, Spell.builder(100,
+        register(registry, DRAGON_FIREBALL_KEY, Spell.builder(80,
                         Text.translatable(getTranslationKey(DRAGON_FIREBALL_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
@@ -264,7 +264,7 @@ public class Spells {
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(EntityType.DRAGON_FIREBALL)
+                                        entityTypeReferenceFunction.apply(ModEntityType.SPELL_DRAGON_FIREBALL)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloatProvider.create(1.0F), false)
                                 ).build()
@@ -274,12 +274,13 @@ public class Spells {
         NbtCompound areaEffectCloudNbtCompound = new NbtCompound();
         areaEffectCloudNbtCompound.putInt("Duration", 60);
         areaEffectCloudNbtCompound.putFloat("Radius", 1.2F);
-        areaEffectCloudNbtCompound.putDouble("RadiusPerTick", -0.01);
-        NbtElement nbtElement = PotionContentsComponent.CODEC.encodeStart(NbtOps.INSTANCE, new PotionContentsComponent(Potions.STRONG_HARMING)).getOrThrow();
+        areaEffectCloudNbtCompound.putFloat("RadiusPerTick", -0.004F);
+        NbtElement nbtElement = PotionContentsComponent.CODEC.encodeStart(NbtOps.INSTANCE,
+                new PotionContentsComponent(Potions.STRONG_HARMING)).getOrThrow();
         areaEffectCloudNbtCompound.put("potion_contents", nbtElement);
-        areaEffectCloudNbtCompound.put("Particle", ParticleTypes.TYPE_CODEC.encodeStart(NbtOps.INSTANCE,
+        areaEffectCloudNbtCompound.put("custom_particle", ParticleTypes.TYPE_CODEC.encodeStart(NbtOps.INSTANCE,
                 DragonBreathParticleEffect.of(ParticleTypes.DRAGON_BREATH, 1)).getOrThrow());
-        register(registry, DRAGON_GROWL_KEY, Spell.builder(100,
+        register(registry, DRAGON_GROWL_KEY, Spell.builder(80,
                         Text.translatable(getTranslationKey(DRAGON_GROWL_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(
@@ -481,7 +482,7 @@ public class Spells {
                 )
         );
 
-        register(registry, SHULKER_BULLET_KEY, Spell.builder(40,
+        register(registry, SHULKER_BULLET_KEY, Spell.builder(30,
                         Text.translatable(getTranslationKey(SHULKER_BULLET_KEY)))
                 .addCast(SpellCast.builder()
                         .addTransformer(
@@ -510,7 +511,7 @@ public class Spells {
                         )
                 )
         );
-        register(registry, SHULKER_TELEPORT_KEY, Spell.builder(40,
+        register(registry, SHULKER_TELEPORT_KEY, Spell.builder(30,
                         Text.translatable(getTranslationKey(SHULKER_TELEPORT_KEY)))
                 .addCast(SpellCast.builder()
                         .addEffect(new PlaySoundSpellEffect(

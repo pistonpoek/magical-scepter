@@ -29,7 +29,7 @@ public class ContextUtil {
     }
 
     public static <T> RegistryOps<T> getRegistryOps(TestContext context, DynamicOps<T> ops) {
-        return RegistryOps.of(ops, getRegistries(context));
+        return getRegistries(context).getOps(ops);
     }
 
     public static RegistryEntry<Spell> getSpell(TestContext context, RegistryKey<Spell> key) {

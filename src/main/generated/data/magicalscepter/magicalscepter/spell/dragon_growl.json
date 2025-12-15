@@ -24,12 +24,12 @@
           "entity": "minecraft:area_effect_cloud",
           "nbt": {
             "Duration": 60,
-            "Particle": {
+            "Radius": 1.2,
+            "RadiusPerTick": -0.004,
+            "custom_particle": {
               "type": "minecraft:dragon_breath",
               "power": 1.0
             },
-            "Radius": 1.2,
-            "RadiusPerTick": -0.01,
             "potion_contents": {
               "potion": "minecraft:strong_harming"
             }
@@ -87,7 +87,7 @@
       ]
     }
   ],
-  "cooldown": 100,
+  "cooldown": 80,
   "description": {
     "translate": "magicalscepter.spell.magicalscepter.dragon_growl"
   }

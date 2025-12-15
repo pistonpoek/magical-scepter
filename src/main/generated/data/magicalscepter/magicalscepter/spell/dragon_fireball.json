@@ -26,7 +26,7 @@
               "power": 1.0
             }
           ],
-          "entity": "minecraft:dragon_fireball"
+          "entity": "magicalscepter:spell_dragon_fireball"
         }
       ],
       "transformers": [
@@ -46,7 +46,7 @@
       ]
     }
   ],
-  "cooldown": 100,
+  "cooldown": 80,
   "description": {
     "translate": "magicalscepter.spell.magicalscepter.dragon_fireball"
   }

@@ -2,12 +2,15 @@ package io.github.pistonpoek.magicalscepter.spell.position;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
+import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -29,6 +32,10 @@ public interface PositionSource extends SpellContextSource {
 
     @Override
     default SpellContext getContext(@NotNull SpellContext spellContext) {
+        if (!World.isValid(BlockPos.ofFloored(getPosition(spellContext)))) {
+            MagicalScepter.LOGGER.debug("Spell position is not valid");
+            return spellContext;
+        }
         return new SpellContext(spellContext, getPosition(spellContext));
     }
 

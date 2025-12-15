@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.entity;
 
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
-import io.github.pistonpoek.magicalscepter.entity.projectile.*;
+import io.github.pistonpoek.magicalscepter.entity.spell.*;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -37,6 +37,14 @@ public class ModEntityType {
                     .passengerAttachments(2.0F)
                     .vehicleAttachment(-0.6F)
                     .maxTrackingRange(8)
+    );
+    public static final EntityType<SpellDragonFireballEntity> SPELL_DRAGON_FIREBALL = register(
+            "spell_dragon_fireball",
+            EntityType.Builder.create(SpellDragonFireballEntity::new, SpawnGroup.MISC)
+                    .dropsNothing()
+                    .dimensions(1.0F, 1.0F)
+                    .maxTrackingRange(4)
+                    .trackingTickInterval(10)
     );
     public static final EntityType<SpellFireChargeEntity> SPELL_FIRE_CHARGE = register(
             "spell_fire_charge",
