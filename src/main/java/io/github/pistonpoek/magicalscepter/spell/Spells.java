@@ -103,7 +103,7 @@ public class Spells {
                         )
                         .addEffect(
                                 new DamageSpellEffect(
-                                        UniformFloatProvider.create(4.0F, 6.0F),
+                                        ConstantFloatProvider.create(5.0F),
                                         damageTypeLookup.getOrThrow(DamageTypes.INDIRECT_MAGIC)
                                 )
                         )
@@ -453,7 +453,7 @@ public class Spells {
                 )
         );
 
-        register(registry, GUARDIAN_BEAM_KEY, Spell.builder(40,
+        register(registry, GUARDIAN_BEAM_KEY, Spell.builder(30,
                         Text.translatable(getTranslationKey(GUARDIAN_BEAM_KEY)))
                 .addCast(SpellCast.builder()
                         .addTransformer(
@@ -468,7 +468,7 @@ public class Spells {
                         )
                 )
         );
-        register(registry, GUARDIAN_HASTE_KEY, Spell.builder(40,
+        register(registry, GUARDIAN_HASTE_KEY, Spell.builder(30,
                         StatusEffects.HASTE.value().getName())
                 .addCast(SpellCast.builder()
                         .addEffect(new ApplyMobEffectSpellEffect(

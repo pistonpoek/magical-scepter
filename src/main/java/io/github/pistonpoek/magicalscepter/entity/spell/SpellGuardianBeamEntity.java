@@ -25,7 +25,7 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     private LivingEntity cachedOwner;
     @Nullable
     private Entity cachedTarget;
-    private static final int DEFAULT_WARMUP_TIME = 30;
+    private static final int DEFAULT_WARMUP_TIME = 24;
     public static final float MAX_DISTANCE = 15.0F;
 
     public SpellGuardianBeamEntity(EntityType<? extends SpellGuardianBeamEntity> type, World world) {

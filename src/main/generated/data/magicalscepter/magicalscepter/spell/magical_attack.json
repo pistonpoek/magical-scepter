@@ -4,11 +4,7 @@
       "effects": [
         {
           "type": "magicalscepter:damage",
-          "amount": {
-            "type": "minecraft:uniform",
-            "max_exclusive": 6.0,
-            "min_inclusive": 4.0
-          },
+          "amount": 5.0,
           "damage_type": "minecraft:indirect_magic"
         }
       ],

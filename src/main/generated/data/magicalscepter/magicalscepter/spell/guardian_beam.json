@@ -17,7 +17,7 @@
       ]
     }
   ],
-  "cooldown": 40,
+  "cooldown": 30,
   "description": {
     "translate": "magicalscepter.spell.magicalscepter.guardian_beam"
   }

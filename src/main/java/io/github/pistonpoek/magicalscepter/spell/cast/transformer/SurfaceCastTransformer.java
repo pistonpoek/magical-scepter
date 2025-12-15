@@ -51,11 +51,11 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
         double top, bottom;
         if (position.isPresent()) {
             Vec3d diffPosition = position.get().getPosition(cast.getContext());
-            top = Math.max(castPosition.y, diffPosition.y) + distance;
-            bottom = Math.min(castPosition.y, diffPosition.y) - distance;
+            top = Math.max(castPosition.y, diffPosition.y);
+            bottom = Math.min(castPosition.y, diffPosition.y);
         } else {
-            top = castPosition.y + distance;
-            bottom = castPosition.y - distance;
+            top = castPosition.y;
+            bottom = castPosition.y;
         }
 
         // Initialize the top block position to search down from.
@@ -65,9 +65,31 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
         double blockHeight = 0.0;
 
         do {
-            BlockPos LoweredBlockPos = blockPosition.down();
-            BlockState LoweredBlockState = world.getBlockState(LoweredBlockPos);
-            if (!LoweredBlockState.isSideSolidFullSquare(world, LoweredBlockPos, Direction.UP)) continue;
+            if (checkForSurface(world, blockPosition)) {
+                foundSurface = true;
+                break;
+            }
+        } while ((blockPosition = blockPosition.down()).getY() >= bottom);
+
+        if (!foundSurface) {
+            for (int i = 0; i <= distance(); i++) {
+                BlockPos aboveTopPosition = BlockPos.ofFloored(castPosition.getX(), top + i, castPosition.getZ());
+                if (checkForSurface(world, aboveTopPosition)) {
+                    blockPosition = aboveTopPosition;
+                    foundSurface = true;
+                    break;
+                }
+                BlockPos belowBottomPosition = BlockPos.ofFloored(castPosition.getX(), bottom - i, castPosition.getZ());
+                if (checkForSurface(world, belowBottomPosition)) {
+                    blockPosition = belowBottomPosition;
+                    foundSurface = true;
+                    break;
+                }
+            }
+        }
+
+        if (foundSurface) {
+            // Update block height
             if (!world.isAir(blockPosition)) {
                 BlockState blockState = world.getBlockState(blockPosition);
                 VoxelShape voxelShape = blockState.getCollisionShape(world, blockPosition);
@@ -75,15 +97,17 @@ public record SurfaceCastTransformer(float distance, boolean require, Optional<P
                     blockHeight = voxelShape.getMax(Direction.Axis.Y);
                 }
             }
-            foundSurface = true;
-            break;
-        } while ((blockPosition = blockPosition.down()).getY() >= bottom);
 
-        if (foundSurface) {
             return Optional.of(new Vec3d(castPosition.getX(),
                     blockPosition.getY() + blockHeight, castPosition.getZ()));
         }
         return Optional.empty();
+    }
+
+    private boolean checkForSurface(World world, BlockPos pos) {
+        BlockPos LoweredBlockPos = pos.down();
+        BlockState LoweredBlockState = world.getBlockState(LoweredBlockPos);
+        return LoweredBlockState.isSideSolidFullSquare(world, LoweredBlockPos, Direction.UP);
     }
 
     @Override
