@@ -1,4 +1,7 @@
 {
     "sorcerer.mdx": "Sorcerer",
-    "guardian_bolt.mdx": "Guardian Bolt"
+    "spell_guardian_beam.mdx": "Spell Guardian Beam",
+    "spell_fire_charge.mdx": "Spell Fire Charge",
+    "spell_fireball.mdx": "Spell Fireball",
+    "spell_wither_skull.mdx": "Spell Wither Skull"
 }
