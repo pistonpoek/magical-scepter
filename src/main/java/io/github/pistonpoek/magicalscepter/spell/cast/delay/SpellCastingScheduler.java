@@ -26,7 +26,7 @@ public abstract class SpellCastingScheduler {
         Timer<MinecraftServer> timer = server.getSaveProperties()
                 .getMainWorldProperties().getScheduledEvents();
 
-        timer.setEvent(getEventName(callback),
+        timer.setEventIfAbsent(getEventName(callback),
                 cast_time,
                 callback
         );

@@ -24,6 +24,7 @@ import net.minecraft.item.Items;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
+import net.minecraft.network.packet.c2s.play.PlayerLoadedC2SPacket;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.ServerAdvancementLoader;
 import net.minecraft.server.network.ConnectedClientData;
@@ -114,7 +115,7 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         ServerWorld world = context.getWorld();
 
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
 
         // Infuse a magical scepter to each of the 9 scepters from the criteria.

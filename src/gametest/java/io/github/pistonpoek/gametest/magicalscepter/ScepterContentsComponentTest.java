@@ -29,7 +29,7 @@ public class ScepterContentsComponentTest implements CustomTestMethodInvoker {
             Optional.of(getSpell(context, Spells.WITHER_SKULL_KEY)),
             Optional.of(getSpell(context, Spells.GUARDIAN_HASTE_KEY))
     );
-    private static final String FILLED = "{\"infusable\":true,\"custom_attack_spell\":\"magicalscepter:wither_skull\",\"custom_protect_spell\":\"magicalscepter:guardian_haste\",\"scepter\":\"magicalscepter:shulker\",\"custom_color\":123456,\"custom_experience_cost\":10}";
+    private static final String FILLED = "{\"scepter\":\"magicalscepter:shulker\",\"custom_color\":123456,\"custom_experience_cost\":10,\"infusable\":true,\"custom_attack_spell\":\"magicalscepter:wither_skull\",\"custom_protect_spell\":\"magicalscepter:guardian_haste\"}";
     private static final ScepterContentsComponentFromContext OPPOSITE_COMPONENT = (context) -> new ScepterContentsComponent(
             Optional.of(getScepter(context, Scepters.MAGICAL_KEY)),
             Optional.of(0),
@@ -38,7 +38,7 @@ public class ScepterContentsComponentTest implements CustomTestMethodInvoker {
             Optional.of(getSpell(context, Spells.WARDEN_SONIC_BOOM_KEY)),
             Optional.of(getSpell(context, Spells.DRAGON_FIREBALL_KEY))
     );
-    private static final String OPPOSITE = "{\"infusable\":false,\"custom_attack_spell\":\"magicalscepter:warden_sonic_boom\",\"custom_protect_spell\":\"magicalscepter:dragon_fireball\",\"scepter\":\"magicalscepter:magical\",\"custom_color\":0,\"custom_experience_cost\":0}";
+    private static final String OPPOSITE = "{\"scepter\":\"magicalscepter:magical\",\"custom_color\":0,\"custom_experience_cost\":0,\"infusable\":false,\"custom_attack_spell\":\"magicalscepter:warden_sonic_boom\",\"custom_protect_spell\":\"magicalscepter:dragon_fireball\"}";
 
     @Override
     public void invokeTestMethod(TestContext context, Method method) throws ReflectiveOperationException {

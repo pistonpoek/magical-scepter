@@ -5,6 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.command.OrderedRenderCommandQueue;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -19,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 @Environment(EnvType.CLIENT)
 public class SpellDragonFireballRenderer extends EntityRenderer<SpellDragonFireballEntity, EntityRenderState> {
         private static final Identifier TEXTURE = Identifier.ofVanilla("textures/entity/enderdragon/dragon_fireball.png");
-        private static final RenderLayer LAYER = RenderLayer.getEntityCutoutNoCull(TEXTURE);
+        private static final RenderLayer LAYER = RenderLayers.entityCutoutNoCull(TEXTURE);
 
 	public SpellDragonFireballRenderer(EntityRendererFactory.Context context) {
         super(context);

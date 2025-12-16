@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
+import net.minecraft.command.permission.LeveledPermissionPredicate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.function.CommandFunction;
@@ -31,7 +32,7 @@ public record RunFunctionSpellEffect(Identifier function) implements SpellEffect
         }
 
         ServerCommandSource serverCommandSource = minecraftServer.getCommandSource()
-                .withLevel(2)
+                .withPermissions(LeveledPermissionPredicate.GAMEMASTERS)
                 .withSilent()
                 .withEntity(context.target())
                 .withWorld(context.getWorld())

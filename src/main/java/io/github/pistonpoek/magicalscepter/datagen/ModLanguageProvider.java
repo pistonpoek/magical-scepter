@@ -13,6 +13,7 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.spell.Spells;
+import io.github.pistonpoek.magicalscepter.world.ModGameRules;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryKey;
@@ -80,8 +81,8 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModEntityType.SPELL_WITHER_SKULL, "Spell Wither Skull");
 
         // Gamerule
-        translationBuilder.add(getTranslationKey(MAX_SPELL_CASTS), "Spell cast limit");
-        translationBuilder.add(getDescriptionTranslationKey(MAX_SPELL_CASTS),
+        translationBuilder.add(MAX_SPELL_CASTS.getTranslationKey(), "Spell cast limit");
+        translationBuilder.add(ModGameRules.getDescriptionTranslationKey(MAX_SPELL_CASTS),
                 "Maximum number of spell casts a caster can have scheduled in the world.");
 
         // Item

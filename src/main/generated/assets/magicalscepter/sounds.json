@@ -1,6 +1,5 @@
 {
   "entity.parrot.imitate.sorcerer": {
-    "category": "neutral",
     "sounds": [
       {
         "type": "event",
@@ -10,7 +9,6 @@
     "subtitle": "subtitles.magicalscepter.entity.parrot.imitate.sorcerer"
   },
   "entity.sorcerer.ambient": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:sorcerer_idle1",
       "magicalscepter:sorcerer_idle2",
@@ -20,7 +18,6 @@
     "subtitle": "subtitles.magicalscepter.entity.sorcerer.ambient"
   },
   "entity.sorcerer.celebrate": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:sorcerer_idle1",
       "magicalscepter:sorcerer_idle2",
@@ -30,14 +27,12 @@
     "subtitle": "subtitles.magicalscepter.entity.sorcerer.celebrate"
   },
   "entity.sorcerer.death": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:sorcerer_death2"
     ],
     "subtitle": "subtitles.magicalscepter.entity.sorcerer.death"
   },
   "entity.sorcerer.hurt": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:sorcerer_hurt1",
       "magicalscepter:sorcerer_hurt2",
@@ -46,21 +41,18 @@
     "subtitle": "subtitles.magicalscepter.entity.sorcerer.hurt"
   },
   "item.arcane_scepter.charges": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:arcane_scepter_charges"
     ],
     "subtitle": "subtitles.magicalscepter.item.arcane_scepter.charges"
   },
   "item.arcane_scepter.discharges": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:arcane_scepter_discharges"
     ],
     "subtitle": "subtitles.magicalscepter.item.arcane_scepter.discharges"
   },
   "item.magical_scepter.cast_attack_spell": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:magical_scepter_cast1",
       "magicalscepter:magical_scepter_cast2"
@@ -68,14 +60,12 @@
     "subtitle": "subtitles.magicalscepter.item.magical_scepter.cast_attack_spell"
   },
   "item.magical_scepter.cast_protect_spell": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:magical_scepter_shield1"
     ],
     "subtitle": "subtitles.magicalscepter.item.magical_scepter.cast_protect_spell"
   },
   "item.magical_scepter.infuse": {
-    "category": "neutral",
     "sounds": [
       "magicalscepter:magical_scepter_infuse1",
       "magicalscepter:magical_scepter_infuse2",

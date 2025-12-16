@@ -27,7 +27,6 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
         }
 
         player.updateLastActionTime();
-        player.resetLastAttackedTicks();
 
         // Update player rotation before attacking with item.
         float yaw = MathHelper.wrapDegrees(payload.yaw());

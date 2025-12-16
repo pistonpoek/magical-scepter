@@ -12,6 +12,7 @@ import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.network.packet.c2s.play.PlayerLoadedC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.test.TestContext;
@@ -35,7 +36,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
         player.addStatusEffect(new StatusEffectInstance(ModStatusEffects.REPULSION));
         player.damage(world, world.getDamageSources().magic(), DAMAGE_AMOUNT);
@@ -48,7 +49,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
         SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, world);
         ArrowEntity arrow = new ArrowEntity(EntityType.ARROW, world);
@@ -62,7 +63,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
         player.addStatusEffect(new StatusEffectInstance(ModStatusEffects.REPULSION));
         SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, world);
@@ -77,7 +78,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
         player.addStatusEffect(new StatusEffectInstance(ModStatusEffects.REPULSION));
         ArrowEntity arrow = new ArrowEntity(EntityType.ARROW, world);
@@ -91,7 +92,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
         player.addStatusEffect(new StatusEffectInstance(ModStatusEffects.STABILITY));
         player.damage(world, world.getDamageSources().magic(), DAMAGE_AMOUNT);
@@ -104,7 +105,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
         CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, world);
         player.damage(world, world.getDamageSources().explosion(creeper, creeper), DAMAGE_AMOUNT);
@@ -119,7 +120,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
         player.addStatusEffect(new StatusEffectInstance(ModStatusEffects.STABILITY));
         CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, world);

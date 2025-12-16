@@ -12,6 +12,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.projectile.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.c2s.play.PlayerLoadedC2SPacket;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -37,7 +38,7 @@ public class InfusionTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
 
         setMagicalScepterInMainHand(context, player);
@@ -55,7 +56,7 @@ public class InfusionTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
 
         setMagicalScepterInMainHand(context, player);
@@ -73,7 +74,7 @@ public class InfusionTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
 
         setMagicalScepterInHand(context, player, Hand.OFF_HAND);
@@ -91,7 +92,7 @@ public class InfusionTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
 
         setMagicalScepterInMainHand(context, player);
@@ -111,7 +112,7 @@ public class InfusionTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
 
         setMagicalScepterInMainHand(context, player);
@@ -135,7 +136,7 @@ public class InfusionTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
 
         {
@@ -217,7 +218,7 @@ public class InfusionTest implements CustomTestMethodInvoker {
         ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
         ServerWorld world = context.getWorld();
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.setLoaded(true);
+        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
         player.getAbilities().invulnerable = false;
 
         {

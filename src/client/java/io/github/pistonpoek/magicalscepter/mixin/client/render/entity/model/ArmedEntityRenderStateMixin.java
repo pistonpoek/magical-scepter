@@ -25,7 +25,8 @@ public class ArmedEntityRenderStateMixin {
      */
     @Inject(method = "updateRenderState", at = @At("TAIL"))
     private static void updateRenderState(LivingEntity entity, ArmedEntityRenderState state,
-                                          ItemModelManager itemModelManager, CallbackInfo callbackInfo) {
+                                          ItemModelManager itemModelManager, float tickProgress,
+                                          CallbackInfo callbackInfo) {
         if (state instanceof ArmSwingingEntityRenderState armSwingingState) {
             armSwingingState.magical_scepter$setSwingType(
                     ((SwingHandLivingEntity) entity).magical_scepter$getSwingType()

@@ -102,7 +102,7 @@ public class SpellCastingManager extends PersistentState {
     }
 
     private int generateKey(ServerWorld world, UUID casterUuid) {
-        final int maxSpellCasts = world.getGameRules().getInt(ModGameRules.MAX_SPELL_CASTS);
+        final int maxSpellCasts = world.getGameRules().getValue(ModGameRules.MAX_SPELL_CASTS);
         int nextKey = startKey;
         if (!scheduledCastings.containsKey(casterUuid)) {
             startKey = nextKey + 1 % maxSpellCasts;

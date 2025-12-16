@@ -46,11 +46,10 @@ public abstract class BipedEntityModelMixin<T extends BipedEntityRenderState & A
      * Animate the arms depending on the swing type of the render state.
      *
      * @param renderState       Render state to get swing type and arm from.
-     * @param animationProgress Progress of arm animations.
      * @param callbackInfo      Callback info of the method injection.
      */
     @Inject(at = @At("HEAD"), method = "animateArms", cancellable = true)
-    protected void animateArms(T renderState, float animationProgress, CallbackInfo callbackInfo) {
+    protected void animateArms(T renderState, CallbackInfo callbackInfo) {
         if (renderState.magical_scepter$getSwingType() == SwingType.HIT) {
             return; // Allow vanilla hand swing code to perform.
         }

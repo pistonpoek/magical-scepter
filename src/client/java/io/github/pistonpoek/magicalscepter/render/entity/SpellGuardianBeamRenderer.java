@@ -19,7 +19,7 @@ import net.minecraft.util.math.Vec3d;
 @Environment(EnvType.CLIENT)
 public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamEntity, SpellGuardianBeamRenderState> {
     private static final Identifier EXPLOSION_BEAM_TEXTURE = Identifier.ofVanilla("textures/entity/guardian_beam.png");
-    private static final RenderLayer LAYER = RenderLayer.getEntityCutoutNoCull(EXPLOSION_BEAM_TEXTURE);
+    private static final RenderLayer LAYER = RenderLayers.entityCutoutNoCull(EXPLOSION_BEAM_TEXTURE);
 
     public SpellGuardianBeamRenderer(EntityRendererFactory.Context context) {
         super(context);

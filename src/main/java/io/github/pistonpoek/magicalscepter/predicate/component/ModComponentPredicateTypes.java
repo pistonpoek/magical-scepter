@@ -3,6 +3,7 @@ package io.github.pistonpoek.magicalscepter.predicate.component;
 import com.mojang.serialization.Codec;
 import io.github.pistonpoek.magicalscepter.predicate.item.ScepterContentsPredicate;
 import io.github.pistonpoek.magicalscepter.predicate.item.ScepterExperiencePredicate;
+import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.predicate.component.ComponentPredicate;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -26,14 +27,14 @@ public class ModComponentPredicateTypes {
     }
 
     /**
-     * Register a mod data component type for a specified identifier.
+     * Register a mod data component type for a specified name.
      *
-     * @param identifier String identifier to register component predicate type for.
+     * @param name       String name to register component predicate type for.
      * @param codec      Codec to register as component predicate reference.
      * @param <T>        Type of the component predicate type to register.
      */
-    private static <T extends ComponentPredicate> ComponentPredicate.Type<T> register(String identifier, Codec<T> codec) {
+    private static <T extends ComponentPredicate> ComponentPredicate.Type<T> register(String name, Codec<T> codec) {
         return Registry.register(Registries.DATA_COMPONENT_PREDICATE_TYPE,
-                identifier, new ComponentPredicate.Type<>(codec));
+                ModIdentifier.of(name), new ComponentPredicate.OfValue<>(codec));
     }
 }
