@@ -30,10 +30,10 @@ public record MoveSpellEffect(FloatProvider power, boolean knockback) implements
             target.get().takeKnockback(power.get(random), -rotation.getX(), -rotation.getZ());
         } else {
             Entity entityTarget = context.target();
-            entityTarget.velocityDirty = true;
             Vec3d force = rotation.multiply(power.get(random));
-            Vec3d velocity = entityTarget.getVelocity().add(force);
-            entityTarget.setVelocity(velocity);
+            entityTarget.addVelocityInternal(force);
+            entityTarget.knockedBack = true;
+            entityTarget.velocityDirty = true;
         }
     }
 
