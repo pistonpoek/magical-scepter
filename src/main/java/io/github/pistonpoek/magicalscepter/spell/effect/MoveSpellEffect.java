@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.random.Random;
@@ -34,6 +35,9 @@ public record MoveSpellEffect(FloatProvider power, boolean knockback) implements
             entityTarget.addVelocityInternal(force);
             entityTarget.knockedBack = true;
             entityTarget.velocityDirty = true;
+            if (entityTarget instanceof PlayerEntity playerEntity) {
+                playerEntity.setCurrentExplosionResetGraceTime(10);
+            }
         }
     }
 

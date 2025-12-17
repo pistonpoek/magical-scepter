@@ -54,10 +54,11 @@ loom {
 
 wiki {
     docs {
-        create(mod) {
+        create("magical-scepter") {
             root = file('docs')
         }
     }
+    wikiAccessToken = System.getenv("GITHUB_TOKEN")
 }
 
 repositories {
