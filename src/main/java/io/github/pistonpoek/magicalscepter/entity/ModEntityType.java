@@ -4,7 +4,9 @@ import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
 import io.github.pistonpoek.magicalscepter.entity.spell.*;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
+import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import io.github.pistonpoek.magicalscepter.util.ParrotEntityUtil;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -92,32 +94,72 @@ public class ModEntityType {
             MixsonEvents.registerMonsterSpawnEntry(biome, SpawnGroup.MONSTER, 5,
                     new SpawnSettings.SpawnEntry(SORCERER, 1, 1));
         }
+        registerDefaultAttributes();
+        registerParrotMimicSounds();
+    }
+
+    /**
+     * Register default attributes for all living entity types.
+     */
+    private static void registerDefaultAttributes() {
         FabricDefaultAttributeRegistry.register(SORCERER, SorcererEntity.createSorcererAttributes());
     }
 
     /**
-     * Register an entity type for the specified name and add it as monster to the advancements.
-     *
-     * @param name String to create mod name with for the entity type.
-     * @param type       Entity type to register.
-     * @param <T>        Entity type to register.
-     * @return Registered registry entry of the entity type.
+     * Register parrot mimic sounds for some entity types.
      */
-    private static <T extends Entity> EntityType<T> registerMonster(String name, EntityType.Builder<T> type) {
-        MONSTERS.add(ModIdentifier.of(name));
-        return register(name, type);
+    private static void registerParrotMimicSounds() {
+        ParrotEntityUtil.AddMobSound(ModEntityType.SORCERER, ModSoundEvents.ENTITY_PARROT_IMITATE_SORCERER);
     }
 
     /**
-     * Register an entity type for the specified name.
+     * Register a mod entity type for the specified name and add it as monster to the advancements.
      *
-     * @param name String to create mod name with for the entity type.
+     * @param id         String id to register under.
      * @param type       Entity type to register.
      * @param <T>        Entity type to register.
      * @return Registered registry entry of the entity type.
      */
-    private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> type) {
-        return Registry.register(Registries.ENTITY_TYPE, ModIdentifier.of(name),
-                type.build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, ModIdentifier.of(name))));
+    private static <T extends Entity> EntityType<T> registerMonster(String id, EntityType.Builder<T> type) {
+        MONSTERS.add(ModIdentifier.of(id));
+        return register(id, type);
+    }
+
+    /**
+     * Register a mod entity type for the specified id.
+     *
+     * @param id         String id to register under.
+     * @param type       Entity type to register.
+     * @param <T>        Entity type to register.
+     * @return Registered registry entry of the entity type.
+     */
+    private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
+        return register(keyOf(id), type);
+    }
+
+    /**
+     * Get the registry key for the specified id.
+     *
+     * @param id Mod entity type id to get key for.
+     * @return Registry key for the specified id.
+     */
+    private static RegistryKey<EntityType<?>> keyOf(String id) {
+        return RegistryKey.of(RegistryKeys.ENTITY_TYPE, ModIdentifier.of(id));
+    }
+
+    /**
+     * Register a mod entity type for the specified key.
+     *
+     * @param key        Registry key to register under.
+     * @param type       Entity type to register.
+     * @param <T>        Entity type to register.
+     * @return Registered registry entry of the entity type.
+     */
+    private static <T extends Entity> EntityType<T> register(
+            RegistryKey<EntityType<?>> key,
+            EntityType.Builder<T> type
+    ) {
+        return Registry.register(Registries.ENTITY_TYPE, key,
+                type.build(key));
     }
 }
