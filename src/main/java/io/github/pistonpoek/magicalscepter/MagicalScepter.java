@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter;
 
 import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
-import io.github.pistonpoek.magicalscepter.command.SpellCommand;
+import io.github.pistonpoek.magicalscepter.command.ModCommands;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentEffectComponentTypes;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
@@ -21,7 +21,6 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.world.ModGameRules;
 import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.timer.TimerCallbackSerializer;
 import org.slf4j.Logger;
@@ -50,11 +49,11 @@ public class MagicalScepter implements ModInitializer {
         ModSoundEvents.init();
         ModParticleTypes.init();
         ModEnchantmentEffectComponentTypes.init();
+        ModCommands.init();
 
         ServerLivingEntityEvents.AFTER_DEATH.register(SpellCastingManager::afterDeath);
         ServerLivingEntityEvents.ALLOW_DAMAGE.register(ModStatusEffects::allowDamage);
         ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
-        CommandRegistrationCallback.EVENT.register(SpellCommand::register);
 
         TimerCallbackSerializer.INSTANCE.registerSerializer(SpellCastingTimerCallback.ID,
                 SpellCastingTimerCallback.MAP_CODEC);
