@@ -11,10 +11,8 @@ import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastingManager;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.DefaultPermissions;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
-import net.minecraft.command.permission.PermissionCheck;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -30,7 +28,6 @@ import java.util.Collection;
  * Command that can be used by living entities to cast or clear spells.
  */
 public class SpellCommand {
-    public static final PermissionCheck PERMISSION = new PermissionCheck.Require(DefaultPermissions.GAMEMASTERS);
     public static final String CAST_FAILED_KEY = createTranslationKey("cast.failed");
     public static final String CLEAR_FAILED_KEY = createTranslationKey("clear.failed");
     public static final String CAST_SUCCESS_SINGLE_KEY = createTranslationKey("cast.success.single");
@@ -56,7 +53,7 @@ public class SpellCommand {
                                 CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 CommandManager.literal("spell")
-                        .requires(CommandManager.requirePermissionLevel(PERMISSION))
+                        .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                         .then(
                                 CommandManager.literal("clear")
                                         .executes(context -> executeClear(
