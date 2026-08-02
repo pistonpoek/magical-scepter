@@ -3,7 +3,7 @@ plugins {
     id 'org.moddedmc.wiki.toolkit' version "$wiki_version"
 }
 
-version = project.mod_version + "+mc." + project.minecraft_version
+version = project.mod_version + "+" + project.minecraft_version
 group = project.domain + "." + project.mod_id
 def mod = project.mod_id
 
@@ -11,20 +11,13 @@ base {
     archivesName = project.mod_id
 }
 
-repositories {
-    maven {
-        name = 'JitPack'
-        url = 'https://jitpack.io'
-    }
-}
-
 loom {
     splitEnvironmentSourceSets()
 
     mods {
         create(mod) {
-            sourceSet('main')
-            sourceSet('client')
+            sourceSet 'main'
+            sourceSet 'client'
         }
     }
 }
@@ -46,7 +39,7 @@ loom {
         gameTestDev {
             name "GameTest Dev"
             inherit client
-            source sourceSets.gametest
+            source 'gametest'
             runDir "build/gametest"
         }
     }
@@ -63,9 +56,14 @@ wiki {
 
 repositories {
     maven {
+        name = 'JitPack'
+        url = 'https://jitpack.io'
+    }
+    maven {
         name = "Terraformers"
         url = "https://maven.terraformersmc.com/releases"
     }
+    mavenLocal()
 }
 
 dependencies {
@@ -103,6 +101,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
     it.options.release = 21
 }
 
