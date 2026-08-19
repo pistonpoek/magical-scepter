@@ -1,11 +1,14 @@
 package io.github.pistonpoek.magicalscepter.recipe;
 
+import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
@@ -20,17 +23,13 @@ import java.util.List;
  * Custom crafting recipe to craft experience bottles from scepter experience component.
  */
 public class ExperienceBottleRecipe extends CustomRecipe {
+    public static final ExperienceBottleRecipe INSTANCE = new ExperienceBottleRecipe();
+    public static final MapCodec<ExperienceBottleRecipe> MAP_CODEC = MapCodec.unit(INSTANCE);
+    public static final StreamCodec<RegistryFriendlyByteBuf, ExperienceBottleRecipe> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final RecipeSerializer<ExperienceBottleRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
     @Nullable
     private PlacementInfo ingredientPlacement;
-
-    /**
-     * Construct the experience bottle recipe for the specified crafting recipe category.
-     *
-     * @param category Crafting recipe category to create recipe with.
-     */
-    public ExperienceBottleRecipe(CraftingBookCategory category) {
-        super(category);
-    }
 
     @Override
     public boolean matches(CraftingInput input, Level world) {
@@ -53,7 +52,7 @@ public class ExperienceBottleRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+    public ItemStack assemble(CraftingInput input) {
         return Items.EXPERIENCE_BOTTLE.getDefaultInstance();
     }
 
@@ -68,7 +67,10 @@ public class ExperienceBottleRecipe extends CustomRecipe {
                 ItemStack remainder = ArcaneScepterItem.getReplacementStack(itemStack);
                 remainders.set(i, remainder.isEmpty() ? itemStack : remainder);
             } else {
-                remainders.set(i, itemStack.getItem().getCraftingRemainder());
+                ItemStackTemplate remainder = itemStack.getItem().getCraftingRemainder();
+                if (remainder != null) {
+                    remainders.set(i, remainder.create());
+                }
             }
         }
 

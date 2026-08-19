@@ -3,7 +3,7 @@ package io.github.pistonpoek.magicalscepter.datagen.codec;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.Spells;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -25,7 +25,7 @@ public class SpellProvider extends FabricCodecDataProvider<Spell> {
      * @param output           Data output to generate spell data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public SpellProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public SpellProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture, PackOutput.Target.DATA_PACK,
                 ModRegistryKeys.directory(ModRegistryKeys.SPELL), Spell.CODEC);
     }

@@ -4,14 +4,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
-import java.util.List;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
+
+import java.util.List;
 
 /**
  * Loot function to set the experience in the scepter experience component of an item itemStack.
@@ -46,7 +46,7 @@ public class SetExperienceLootFunction extends LootItemConditionalFunction {
     }
 
     @Override
-    public LootItemFunctionType<SetExperienceLootFunction> getType() {
+    public MapCodec<SetExperienceLootFunction> codec() {
         return ModLootFunctionTypes.SET_EXPERIENCE;
     }
 

@@ -35,7 +35,7 @@ public class ModPlayPackets {
      */
     private static <T extends CustomPacketPayload> CustomPacketPayload.TypeAndCodec<? super RegistryFriendlyByteBuf, T>
     registerServerToClientPayload(CustomPacketPayload.Type<T> identifier, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
-        return PayloadTypeRegistry.playS2C().register(identifier, codec);
+        return PayloadTypeRegistry.clientboundPlay().register(identifier, codec);
     }
 
     /**
@@ -48,7 +48,7 @@ public class ModPlayPackets {
      */
     private static <T extends CustomPacketPayload> CustomPacketPayload.TypeAndCodec<? super RegistryFriendlyByteBuf, T>
     registerClientToServerPayload(CustomPacketPayload.Type<T> identifier, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
-        return PayloadTypeRegistry.playC2S().register(identifier, codec);
+        return PayloadTypeRegistry.serverboundPlay().register(identifier, codec);
     }
 
 }

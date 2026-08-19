@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.datagen.codec;
 
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.structure.ModStructureSets;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -26,7 +26,7 @@ public class StructureSetProvider extends FabricCodecDataProvider<StructureSet> 
      * @param output           Data output to generate structure set data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public StructureSetProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public StructureSetProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture, PackOutput.Target.DATA_PACK,
                 ModRegistryKeys.directory(Registries.STRUCTURE_SET), StructureSet.DIRECT_CODEC);
     }

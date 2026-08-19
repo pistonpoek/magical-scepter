@@ -1,13 +1,14 @@
 package io.github.pistonpoek.magicalscepter.datagen.loot;
 
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootTableProvider;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootSubProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -16,14 +17,14 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Mod data provider for entity loot tables.
  */
-public class ModEntityLootTableProvider extends FabricEntityLootTableProvider {
+public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
     /**
      * Construct a mod entity loot table provider for data generation.
      *
      * @param output           Data output to generate entity loot table data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModEntityLootTableProvider(FabricDataOutput output,
+    public ModEntityLootTableProvider(FabricPackOutput output,
                                       CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }

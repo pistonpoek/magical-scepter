@@ -23,8 +23,7 @@ public abstract class SpellCastingScheduler {
 
         MinecraftServer server = world.getServer();
 
-        TimerQueue<MinecraftServer> timer = server.getWorldData()
-                .overworldData().getScheduledEvents();
+        TimerQueue<MinecraftServer> timer = server.getScheduledEvents();
 
         timer.schedule(getEventName(callback),
                 cast_time,
@@ -37,7 +36,7 @@ public abstract class SpellCastingScheduler {
     }
 
     static void clear(@NotNull MinecraftServer server, @NotNull SpellCastingTimerCallback callback) {
-        TimerQueue<MinecraftServer> timer = server.getWorldData().overworldData().getScheduledEvents();
+        TimerQueue<MinecraftServer> timer = server.getScheduledEvents();
         timer.remove(getEventName(callback));
     }
 }

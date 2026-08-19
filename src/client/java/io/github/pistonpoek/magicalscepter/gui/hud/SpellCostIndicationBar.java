@@ -3,7 +3,7 @@ package io.github.pistonpoek.magicalscepter.gui.hud;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
@@ -20,7 +20,7 @@ public class SpellCostIndicationBar {
      * @param x               Horizontal position of the experience bar on the screen.
      * @param y               Vertical position of the experience bar on the screen.
      */
-    public static void render(GuiGraphics context, LocalPlayer player,
+    public static void render(GuiGraphicsExtractor context, LocalPlayer player,
                               ScepterContentsComponent scepterContents, int x, int y) {
         int progress = ExperienceBar.getPixelProgress(player);
         float cost_progress = (scepterContents.getExperienceCost() - PlayerExperience.getTotalExperience(player))

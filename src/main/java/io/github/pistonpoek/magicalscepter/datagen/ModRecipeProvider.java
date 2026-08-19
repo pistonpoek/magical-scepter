@@ -7,7 +7,7 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
@@ -42,7 +42,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
      * @param output           Data output to generate recipe data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ModRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
@@ -54,8 +54,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 HolderLookup<Scepter> scepterRegistry = registries.lookupOrThrow(ModRegistryKeys.SCEPTER);
                 Holder<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
 
-                exportRecipe("magical_scepter", category ->
-                                new MagicalScepterRecipe(magicalScepter, category), RecipeCategory.COMBAT,
+                exportRecipe("magical_scepter", _ ->
+                                new MagicalScepterRecipe(magicalScepter), RecipeCategory.COMBAT,
                         output, output.advancement()
                                 .addCriterion("has_scepter", this.has(ModItems.SCEPTER))
                 );
@@ -67,7 +67,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .unlockedBy("has_scepter", this.has(ModItems.SCEPTER))
                         .save(this.output);
 
-                exportRecipe("experience_bottle", ExperienceBottleRecipe::new, RecipeCategory.MISC,
+                exportRecipe("experience_bottle", _ -> new ExperienceBottleRecipe(), RecipeCategory.MISC,
                         output, output.advancement()
                                 .addCriterion("has_arcane_scepter", this.has(ModItems.ARCANE_SCEPTER))
                 );
@@ -108,7 +108,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     ) {
         ResourceKey<Recipe<?>> recipeRegistryKey = getRecipeRegistryKey(id);
         exporter.accept(recipeRegistryKey,
-                recipe.apply(RecipeBuilder.determineBookCategory(category)),
+                recipe.apply(RecipeBuilder.determineCraftingBookCategory(category)),
                 advancementBuilder
                         .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeRegistryKey))
                         .rewards(AdvancementRewards.Builder.recipe(recipeRegistryKey))

@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.datagen.tag;
 
 import io.github.pistonpoek.magicalscepter.registry.tag.ModDamageTypeTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -19,7 +19,7 @@ public class ModDamageTypeTagProvider extends DamageTypeTagsProvider {
      * @param output           Data output to generate damage type tag data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModDamageTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ModDamageTypeTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

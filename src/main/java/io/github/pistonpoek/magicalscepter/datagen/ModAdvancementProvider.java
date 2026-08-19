@@ -7,7 +7,7 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
@@ -19,6 +19,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStackTemplate;
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -37,7 +39,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
      * @param output           Data output to generate mod advancement data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    protected ModAdvancementProvider(FabricDataOutput output,
+    protected ModAdvancementProvider(FabricPackOutput output,
                                      CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
@@ -64,7 +66,9 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder allScepterInfusionsAdvancement = requireListedSceptersInfused(
                 Advancement.Builder.advancement().parent(castScepterAdvancement)
                         .display(
-                                ScepterHelper.createMagicalScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY)),
+                                ItemStackTemplate.fromNonEmptyStack(
+                                    ScepterHelper.createMagicalScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY))
+                                ),
                                 createTitleText(ALL_SCEPTER_INFUSIONS),
                                 createDescriptionText(ALL_SCEPTER_INFUSIONS),
                                 null,

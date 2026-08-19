@@ -17,7 +17,8 @@ public record ReplaceBlockSpellEffect(BlockStateProvider blockState) implements 
     @Override
     public void apply(SpellContext context) {
         BlockPos blockPos = BlockPos.containing(context.position());
-        context.getWorld().setBlockAndUpdate(blockPos, this.blockState.getState(context.getRandom(), blockPos));
+        context.getWorld().setBlockAndUpdate(blockPos,
+                this.blockState.getState(context.getWorld(), context.getRandom(), blockPos));
     }
 
     @Override

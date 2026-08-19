@@ -20,17 +20,17 @@ import net.minecraft.core.Registry;
  */
 public class ModRegistries {
     public static final Registry<MapCodec<? extends SpellEffect>> SPELL_EFFECT_TYPE =
-            FabricRegistryBuilder.createSimple(ModRegistryKeys.SPELL_EFFECT_TYPE).buildAndRegister();
+            FabricRegistryBuilder.create(ModRegistryKeys.SPELL_EFFECT_TYPE).buildAndRegister();
     public static final Registry<MapCodec<? extends CastTransformer>> CAST_TRANSFORMER_TYPE =
-            FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_TRANSFORMER_TYPE).buildAndRegister();
+            FabricRegistryBuilder.create(ModRegistryKeys.CAST_TRANSFORMER_TYPE).buildAndRegister();
     public static final Registry<MapCodec<? extends PositionSource>> CAST_POSITION_SOURCE_TYPE =
-            FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_POSITION_SOURCE_TYPE).buildAndRegister();
+            FabricRegistryBuilder.create(ModRegistryKeys.CAST_POSITION_SOURCE_TYPE).buildAndRegister();
     public static final Registry<MapCodec<? extends RotationSource>> CAST_ROTATION_SOURCE_TYPE =
-            FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_ROTATION_SOURCE_TYPE).buildAndRegister();
+            FabricRegistryBuilder.create(ModRegistryKeys.CAST_ROTATION_SOURCE_TYPE).buildAndRegister();
     public static final Registry<MapCodec<? extends TargetSource>> CAST_TARGET_SOURCE_TYPE =
-            FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_TARGET_SOURCE_TYPE).buildAndRegister();
+            FabricRegistryBuilder.create(ModRegistryKeys.CAST_TARGET_SOURCE_TYPE).buildAndRegister();
     public static final Registry<MapCodec<? extends SpellContextSource>> CAST_CONTEXT_SOURCE_TYPE =
-            FabricRegistryBuilder.createSimple(ModRegistryKeys.CAST_CONTEXT_SOURCE_TYPE).buildAndRegister();
+            FabricRegistryBuilder.create(ModRegistryKeys.CAST_CONTEXT_SOURCE_TYPE).buildAndRegister();
 
     /**
      * Initialize the class for the static fields.

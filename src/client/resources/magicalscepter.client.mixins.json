@@ -1,7 +1,7 @@
 {
     "required": true,
     "package": "io.github.pistonpoek.magicalscepter.mixin.client",
-    "compatibilityLevel": "JAVA_21",
+    "compatibilityLevel": "JAVA_25",
     "client": [
         "data.ItemModelGeneratorMixin",
         "gui.hud.InGameHudMixin",

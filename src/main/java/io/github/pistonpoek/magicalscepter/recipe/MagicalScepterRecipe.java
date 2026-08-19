@@ -1,12 +1,16 @@
 package io.github.pistonpoek.magicalscepter.recipe;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
@@ -22,6 +26,20 @@ import java.util.List;
  * Custom crafting recipe to craft a magical scepter from a scepter.
  */
 public class MagicalScepterRecipe extends CustomRecipe {
+    private static final MapCodec<MagicalScepterRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                            Scepter.ENTRY_CODEC.fieldOf("scepter")
+                                    .forGetter(recipe -> recipe.resultScepter)
+                    )
+                    .apply(instance, MagicalScepterRecipe::new)
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, MagicalScepterRecipe> STREAM_CODEC = StreamCodec.composite(
+            Scepter.ENTRY_PACKET_CODEC,
+            recipe -> recipe.resultScepter,
+            MagicalScepterRecipe::new
+    );
+    public static final RecipeSerializer<MagicalScepterRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
     public final Holder<Scepter> resultScepter;
     @Nullable
     private PlacementInfo ingredientPlacement;
@@ -30,10 +48,8 @@ public class MagicalScepterRecipe extends CustomRecipe {
      * Construct the magical scepter recipe for the specified crafting recipe category.
      *
      * @param result Result scepter for the magical scepter to contain.
-     * @param category Crafting recipe category to create recipe with.
      */
-    public MagicalScepterRecipe(Holder<Scepter> result, CraftingBookCategory category) {
-        super(category);
+    public MagicalScepterRecipe(Holder<Scepter> result) {
         this.resultScepter = result;
     }
 
@@ -70,10 +86,10 @@ public class MagicalScepterRecipe extends CustomRecipe {
      * Craft the recipe using the specified input.
      *
      * @param input Crafting recipe input to use.
-     * @param registries Registries to use when crafting.
      * @return Item stack result from crafting the recipe.
      */
-    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+    @Override
+    public ItemStack assemble(CraftingInput input) {
         ItemStack craftedScepter = ModItems.MAGICAL_SCEPTER.getDefaultInstance();
         for (int i = 0; i < input.size(); i++) {
             ItemStack itemStack = input.getItem(i);
@@ -103,11 +119,17 @@ public class MagicalScepterRecipe extends CustomRecipe {
     }
 
     @Override
+    public CraftingBookCategory category() {
+        return CraftingBookCategory.EQUIPMENT;
+    }
+
+    @Override
     public List<RecipeDisplay> display() {
         return List.of(
                 new ShapelessCraftingRecipeDisplay(
                         placementInfo().ingredients().stream().map(Ingredient::display).toList(),
-                        new SlotDisplay.ItemStackSlotDisplay(ScepterHelper.createMagicalScepter(resultScepter)),
+                        new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(
+                                ScepterHelper.createMagicalScepter(resultScepter))),
                         new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
                 )
         );

@@ -4,15 +4,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.resources.Identifier;
-import net.ramixin.mixson.inline.EventContext;
-import net.ramixin.mixson.inline.MixsonEvent;
+import net.ramixin.mixson.EventContext;
+import net.ramixin.mixson.util.functions.Event;
 
 /**
  * Add a mob to the kill a mobs advancement using the specified identifier.
  *
  * @param mobIdentifier Identifier of the mob to add to the advancement.
  */
-public record KillAMobMixson(Identifier mobIdentifier) implements MixsonEvent<JsonElement> {
+public record KillAMobMixson(Identifier mobIdentifier) implements Event<JsonElement> {
     @Override
     public void runEvent(EventContext<JsonElement> context) {
         JsonObject root = context.getFile().getAsJsonObject();

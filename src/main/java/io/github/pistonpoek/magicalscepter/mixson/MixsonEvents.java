@@ -6,13 +6,17 @@ import io.github.pistonpoek.magicalscepter.mixson.advancement.adventure.KillAllM
 import io.github.pistonpoek.magicalscepter.mixson.advancement.nether.AllEffectsMixson;
 import io.github.pistonpoek.magicalscepter.mixson.world.BiomeSpawnEntryMixson;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import net.minecraft.SharedConstants;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.ramixin.mixson.inline.Mixson;
-import net.ramixin.mixson.inline.MixsonEvent;
+import net.ramixin.mixson.Mixson;
+import net.ramixin.mixson.enums.ErrorPolicy;
+import net.ramixin.mixson.enums.Lifetime;
+import net.ramixin.mixson.util.Index;
+import net.ramixin.mixson.util.functions.Event;
 
 import java.util.List;
 
@@ -26,10 +30,10 @@ public class MixsonEvents {
      * @param mobIdentifier Identifier of the mob to register a mob modification for.
      */
     public static void registerMobModification(Identifier mobIdentifier) {
-        registerMixsonEvent(List.of(Identifier.parse("advancement/adventure/kill_a_mob")),
+        registerMixsonEvent(List.of(new Index(Identifier.parse("advancement/adventure/kill_a_mob"))),
                 ModIdentifier.identifier("kill_a_mob_" + mobIdentifier.getPath()),
                 new KillAMobMixson(mobIdentifier));
-        registerMixsonEvent(List.of(Identifier.parse("advancement/adventure/kill_all_mobs")),
+        registerMixsonEvent(List.of(new Index(Identifier.parse("advancement/adventure/kill_all_mobs"))),
                 ModIdentifier.identifier("kill_all_mobs_" + mobIdentifier.getPath()),
                 new KillAllMobsMixson(mobIdentifier));
     }
@@ -40,7 +44,7 @@ public class MixsonEvents {
      * @param effectIdentifier Identifier of the effect to register an effect modification for.
      */
     public static void registerEffectModification(Identifier effectIdentifier) {
-        registerMixsonEvent(List.of(Identifier.parse("advancement/nether/all_effects")),
+        registerMixsonEvent(List.of(new Index(Identifier.parse("advancement/nether/all_effects"))),
                 ModIdentifier.identifier("all_effects_" + effectIdentifier.getPath()),
                 new AllEffectsMixson(effectIdentifier));
     }
@@ -56,7 +60,7 @@ public class MixsonEvents {
     public static void registerMonsterSpawnEntry(ResourceKey<Biome> biome, MobCategory group,
                                                  int weight, MobSpawnSettings.SpawnerData entry) {
         String biomePath = biome.identifier().getPath();
-        registerMixsonEvent(List.of(Identifier.parse("worldgen/biome/" + biomePath)),
+        registerMixsonEvent(List.of(new Index(Identifier.parse("worldgen/biome/" + biomePath))),
                 ModIdentifier.identifier(String.join("_", "biome_spawn_entry",
                         biomePath, entry.type().toShortString())),
                 new BiomeSpawnEntryMixson(group, weight, entry));
@@ -65,11 +69,17 @@ public class MixsonEvents {
     /**
      * Register a mixson event to change json file data.
      *
-     * @param resource List of identifier of files to change.
+     * @param resource List of indexes, which reference to files, to change.
      * @param name Name of the mixson event.
      * @param event Mixson event to specify the change to make in the file data.
      */
-    public static void registerMixsonEvent(List<Identifier> resource, String name, MixsonEvent<JsonElement> event) {
-        Mixson.registerEvent(Mixson.DEFAULT_PRIORITY, resource::contains, name, event, false);
+    public static void registerMixsonEvent(List<Index> resource, String name, Event<JsonElement> event) {
+        Mixson.registerEvent(Mixson.DEFAULT_PRIORITY, Lifetime.ONCE, getErrorPolicy(), name, resource::contains, event);
+    }
+
+    private static ErrorPolicy getErrorPolicy() {
+        return SharedConstants.IS_RUNNING_IN_IDE ?
+                ErrorPolicy.THROW :
+                ErrorPolicy.LOG;
     }
 }

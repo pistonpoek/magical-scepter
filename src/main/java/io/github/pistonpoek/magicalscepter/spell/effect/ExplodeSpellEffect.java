@@ -4,9 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
@@ -18,6 +15,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.FloatProvider;
+import net.minecraft.util.valueproviders.FloatProviders;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +23,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SimpleExplosionDamageCalculator;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public record ExplodeSpellEffect(
         boolean attributeToCaster,
@@ -41,9 +42,9 @@ public record ExplodeSpellEffect(
             instance -> instance.group(
                             Codec.BOOL.optionalFieldOf("attribute_to_caster", false).forGetter(ExplodeSpellEffect::attributeToCaster),
                             DamageType.CODEC.optionalFieldOf("damage_type").forGetter(ExplodeSpellEffect::damageType),
-                            FloatProvider.CODEC.optionalFieldOf("knockback_multiplier").forGetter(ExplodeSpellEffect::knockbackMultiplier),
+                            FloatProviders.CODEC.optionalFieldOf("knockback_multiplier").forGetter(ExplodeSpellEffect::knockbackMultiplier),
                             RegistryCodecs.homogeneousList(Registries.BLOCK).optionalFieldOf("immune_blocks").forGetter(ExplodeSpellEffect::immuneBlocks),
-                            FloatProvider.CODEC.fieldOf("radius").forGetter(ExplodeSpellEffect::radius),
+                            FloatProviders.CODEC.fieldOf("radius").forGetter(ExplodeSpellEffect::radius),
                             Codec.BOOL.optionalFieldOf("create_fire", false).forGetter(ExplodeSpellEffect::createFire),
                             Level.ExplosionInteraction.CODEC.fieldOf("block_interaction").forGetter(ExplodeSpellEffect::blockInteraction),
                             ParticleTypes.CODEC.fieldOf("particle").forGetter(ExplodeSpellEffect::particle),

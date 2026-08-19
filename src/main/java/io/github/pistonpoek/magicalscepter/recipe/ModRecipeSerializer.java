@@ -3,7 +3,6 @@ package io.github.pistonpoek.magicalscepter.recipe;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
@@ -14,9 +13,9 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
  */
 public interface ModRecipeSerializer {
     RecipeSerializer<ExperienceBottleRecipe> EXPERIENCE_BOTTLE = register("crafting_experience_bottle",
-            new CustomRecipe.Serializer<>(ExperienceBottleRecipe::new));
+            ExperienceBottleRecipe.SERIALIZER);
     RecipeSerializer<MagicalScepterRecipe> MAGICAL_SCEPTER = register("crafting_magical_scepter",
-            new MagicalScepterRecipeSerializer());
+            MagicalScepterRecipe.SERIALIZER);
 
     /**
      * Initialize the class for the static fields.

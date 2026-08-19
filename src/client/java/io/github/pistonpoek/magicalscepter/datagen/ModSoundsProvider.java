@@ -33,15 +33,15 @@ public class ModSoundsProvider extends FabricSoundsProvider {
      * @param path String path to create sound type entry builder with.
      * @return Constructed sound type entry builder for the specified path.
      */
-    public static SoundTypeBuilder.EntryBuilder of(String path) {
-        return SoundTypeBuilder.EntryBuilder.ofFile(ModIdentifier.of(path));
+    public static SoundTypeBuilder.RegistrationBuilder of(String path) {
+        return SoundTypeBuilder.RegistrationBuilder.ofFile(ModIdentifier.of(path));
     }
 
     @Override
     protected void configure(HolderLookup.Provider registries, SoundExporter exporter) {
         addSound(exporter, ModSoundEvents.ENTITY_PARROT_IMITATE_SORCERER, 
                 builder -> builder
-                        .sound(SoundTypeBuilder.EntryBuilder.ofEvent(ModSoundEvents.ENTITY_SORCERER_AMBIENT))
+                        .sound(SoundTypeBuilder.RegistrationBuilder.ofEvent(ModSoundEvents.ENTITY_SORCERER_AMBIENT))
         );
         addSound(exporter, ModSoundEvents.ENTITY_SORCERER_AMBIENT,
                 builder -> builder

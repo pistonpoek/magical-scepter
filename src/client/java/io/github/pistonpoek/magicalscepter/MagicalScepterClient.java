@@ -11,7 +11,7 @@ import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLay
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
 import net.minecraft.client.model.monster.illager.IllagerModel;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -24,7 +24,7 @@ public class MagicalScepterClient implements ClientModInitializer {
         ClientPlayPackets.init();
 
         EntityRenderers.register(ModEntityType.SORCERER, SorcererEntityRenderer::new);
-        EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.SORCERER,
+        ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.SORCERER,
                 IllagerModel::createBodyLayer);
 
         EntityRenderers.register(ModEntityType.SPELL_GUARDIAN_BEAM, SpellGuardianBeamRenderer::new);
@@ -32,7 +32,7 @@ public class MagicalScepterClient implements ClientModInitializer {
         EntityRenderers.register(ModEntityType.SPELL_FIRE_CHARGE, context -> new ThrownItemRenderer<>(context, 0.75F, true));
         EntityRenderers.register(ModEntityType.SPELL_FIREBALL, context -> new ThrownItemRenderer<>(context, 3.0F, true));
         EntityRenderers.register(ModEntityType.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);
-        EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.WITHER_SKULL,
+        ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.WITHER_SKULL,
                 SpellWitherSkullEntityRenderer::getTexturedModelData);
 
         ClientPreAttackCallback.EVENT.register(new ItemAttackCallback());

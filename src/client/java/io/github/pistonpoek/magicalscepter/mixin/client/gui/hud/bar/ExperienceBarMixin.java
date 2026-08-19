@@ -3,7 +3,7 @@ package io.github.pistonpoek.magicalscepter.mixin.client.gui.hud.bar;
 import io.github.pistonpoek.magicalscepter.gui.hud.ExperienceBarOverlay;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 import net.minecraft.client.gui.contextualbar.ExperienceBarRenderer;
 import net.minecraft.client.player.LocalPlayer;
@@ -21,8 +21,8 @@ public abstract class ExperienceBarMixin implements ContextualBarRenderer {
     @Shadow
     private Minecraft minecraft;
 
-    @Inject(at = @At("TAIL"), method = "renderBackground")
-    public void renderExperienceBarOverlay(GuiGraphics context, DeltaTracker tickCounter, CallbackInfo callback) {
+    @Inject(at = @At("TAIL"), method = "extractBackground")
+    public void renderExperienceBarOverlay(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker, CallbackInfo callback) {
         LocalPlayer player = this.minecraft.player;
         int x = this.left(this.minecraft.getWindow());
         int y = this.top(this.minecraft.getWindow());
@@ -34,11 +34,11 @@ public abstract class ExperienceBarMixin implements ContextualBarRenderer {
         boolean offHandCooldown = player.getCooldowns().isOnCooldown(offHandStack);
 
         if (!offHandCooldown && mainHandCooldown) {
-            if (ExperienceBarOverlay.render(context, offHandStack, player, x, y)) return;
+            if (ExperienceBarOverlay.render(graphics, offHandStack, player, x, y)) return;
         }
 
-        if (ExperienceBarOverlay.render(context, mainHandStack, player, x, y)) return;
+        if (ExperienceBarOverlay.render(graphics, mainHandStack, player, x, y)) return;
 
-        ExperienceBarOverlay.render(context, offHandStack, player, x, y);
+        ExperienceBarOverlay.render(graphics, offHandStack, player, x, y);
     }
 }

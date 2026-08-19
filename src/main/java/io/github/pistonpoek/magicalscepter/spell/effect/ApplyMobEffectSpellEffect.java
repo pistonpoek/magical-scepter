@@ -3,16 +3,18 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.FloatProvider;
+import net.minecraft.util.valueproviders.FloatProviders;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+
+import java.util.Optional;
 
 public record ApplyMobEffectSpellEffect(
         HolderSet<MobEffect> toApply,
@@ -22,8 +24,8 @@ public record ApplyMobEffectSpellEffect(
     public static final MapCodec<ApplyMobEffectSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             RegistryCodecs.homogeneousList(Registries.MOB_EFFECT).fieldOf("to_apply").forGetter(ApplyMobEffectSpellEffect::toApply),
-                            FloatProvider.CODEC.fieldOf("duration").forGetter(ApplyMobEffectSpellEffect::duration),
-                            FloatProvider.CODEC.fieldOf("amplifier").forGetter(ApplyMobEffectSpellEffect::amplifier)
+                            FloatProviders.CODEC.fieldOf("duration").forGetter(ApplyMobEffectSpellEffect::duration),
+                            FloatProviders.CODEC.fieldOf("amplifier").forGetter(ApplyMobEffectSpellEffect::amplifier)
                     )
                     .apply(instance, ApplyMobEffectSpellEffect::new)
     );

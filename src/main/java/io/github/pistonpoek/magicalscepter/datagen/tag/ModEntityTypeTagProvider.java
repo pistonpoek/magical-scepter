@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.datagen.tag;
 
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
@@ -19,7 +19,7 @@ public class ModEntityTypeTagProvider extends EntityTypeTagsProvider {
      * @param output           Data output to generate entity type tag data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModEntityTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ModEntityTypeTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

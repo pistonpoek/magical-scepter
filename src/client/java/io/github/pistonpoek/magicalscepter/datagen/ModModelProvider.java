@@ -6,18 +6,14 @@ import io.github.pistonpoek.magicalscepter.scepter.ScepterTintSource;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.data.*;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
-import net.minecraft.client.data.models.model.ItemModelUtils;
-import net.minecraft.client.data.models.model.ModelLocationUtils;
-import net.minecraft.client.data.models.model.ModelTemplate;
-import net.minecraft.client.data.models.model.ModelTemplates;
-import net.minecraft.client.data.models.model.TextureMapping;
-import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+
 import java.util.Optional;
 
 /**
@@ -37,7 +33,7 @@ public class ModModelProvider extends FabricModelProvider {
      *
      * @param output Data output to generate mod model data into.
      */
-    public ModModelProvider(FabricDataOutput output) {
+    public ModModelProvider(FabricPackOutput output) {
         super(output);
     }
 
@@ -101,6 +97,10 @@ public class ModModelProvider extends FabricModelProvider {
     public static Identifier uploadTwoLayers(ItemModelGeneratorMixin itemModelGenerator,
                                              Item item, ModelTemplate model,
                                              Identifier layer0, Identifier layer1) {
-        return model.create(item, TextureMapping.layered(layer0, layer1), itemModelGenerator.getModelOutput());
+        return model.create(
+                item,
+                TextureMapping.layered(new Material(layer0), new Material(layer1)),
+                itemModelGenerator.getModelOutput()
+        );
     }
 }

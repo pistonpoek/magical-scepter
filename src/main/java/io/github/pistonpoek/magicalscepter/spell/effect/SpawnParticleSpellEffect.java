@@ -8,6 +8,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.FloatProvider;
+import net.minecraft.util.valueproviders.FloatProviders;
 import net.minecraft.world.phys.Vec3;
 
 public record SpawnParticleSpellEffect(
@@ -21,7 +22,7 @@ public record SpawnParticleSpellEffect(
                                     .forGetter(SpawnParticleSpellEffect::particle),
                             Vec3.CODEC.optionalFieldOf("delta", Vec3.ZERO)
                                     .forGetter(SpawnParticleSpellEffect::delta),
-                            FloatProvider.CODEC.optionalFieldOf("speed",
+                            FloatProviders.CODEC.optionalFieldOf("speed",
                                     ConstantFloat.ZERO).forGetter(SpawnParticleSpellEffect::speed)
                     )
                     .apply(instance, SpawnParticleSpellEffect::new)

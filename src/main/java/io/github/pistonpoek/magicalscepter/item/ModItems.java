@@ -12,22 +12,18 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTabOutput;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackLinkedSet;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.UseCooldown;
+
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -70,10 +66,10 @@ public class ModItems {
     public static void init() {
         MagicalScepter.LOGGER.info("Registering Mod Items for " + ModIdentifier.MOD_NAME);
 
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(ModItems::addItemsToToolsItemGroup);
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.COMBAT).register(ModItems::addItemsToCombatItemGroup);
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.INGREDIENTS).register(ModItems::addItemsToIngredientsGroup);
-        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(ModItems::addItemsToSpawnEggsGroup);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(ModItems::addItemsToToolsItemGroup);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(ModItems::addItemsToCombatItemGroup);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(ModItems::addItemsToIngredientsGroup);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.SPAWN_EGGS).register(ModItems::addItemsToSpawnEggsGroup);
 
         addSpawnEggDispenserBehavior(SORCERER_SPAWN_EGG);
     }
@@ -97,8 +93,8 @@ public class ModItems {
      *
      * @param entries Tools item group entries to add items to.
      */
-    private static void addItemsToToolsItemGroup(FabricItemGroupEntries entries) {
-        entries.addAfter(Items.FISHING_ROD, ARCANE_SCEPTER);
+    private static void addItemsToToolsItemGroup(FabricCreativeModeTabOutput entries) {
+        entries.insertAfter(Items.FISHING_ROD, ARCANE_SCEPTER);
     }
 
     /**
@@ -106,12 +102,12 @@ public class ModItems {
      *
      * @param entries Combat item group entries to add items to.
      */
-    private static void addItemsToCombatItemGroup(FabricItemGroupEntries entries) {
+    private static void addItemsToCombatItemGroup(FabricCreativeModeTabOutput entries) {
         entries.getContext().holders().lookup(ModRegistryKeys.SCEPTER)
                 .ifPresent(registryWrapper -> {
                     Holder<Scepter> magicalScepter = registryWrapper.getOrThrow(Scepters.MAGICAL_KEY);
-                    entries.addAfter(Items.MACE, ScepterHelper.createMagicalScepter(magicalScepter));
-                    entries.addAfter(Items.WIND_CHARGE, getInfusedScepters(registryWrapper),
+                    entries.insertAfter(Items.MACE, ScepterHelper.createMagicalScepter(magicalScepter));
+                    entries.insertAfter(Items.WIND_CHARGE, getInfusedScepters(registryWrapper),
                             CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                 });
     }
@@ -121,10 +117,10 @@ public class ModItems {
      *
      * @param entries Ingredients item group entries to add items to.
      */
-    private static void addItemsToIngredientsGroup(FabricItemGroupEntries entries) {
-        entries.addAfter(Items.HEAVY_CORE, SCEPTER);
-        entries.addBefore(Items.BOWL, Items.BROWN_MUSHROOM);
-        entries.addBefore(Items.BOWL, Items.RED_MUSHROOM);
+    private static void addItemsToIngredientsGroup(FabricCreativeModeTabOutput entries) {
+        entries.insertAfter(Items.HEAVY_CORE, SCEPTER);
+        entries.insertBefore(Items.BOWL, Items.BROWN_MUSHROOM);
+        entries.insertBefore(Items.BOWL, Items.RED_MUSHROOM);
     }
 
     /**
@@ -132,8 +128,8 @@ public class ModItems {
      *
      * @param entries Spawn eggs item group entries to add items to.
      */
-    private static void addItemsToSpawnEggsGroup(FabricItemGroupEntries entries) {
-        entries.addAfter(Items.RAVAGER_SPAWN_EGG, SORCERER_SPAWN_EGG);
+    private static void addItemsToSpawnEggsGroup(FabricCreativeModeTabOutput entries) {
+        entries.insertAfter(Items.RAVAGER_SPAWN_EGG, SORCERER_SPAWN_EGG);
     }
 
     /**
@@ -177,6 +173,23 @@ public class ModItems {
      * @return Item registered.
      */
     private static Item register(String identifier, Function<Item.Properties, Item> factory, Item.Properties settings) {
-        return Items.registerItem(keyOf(identifier), factory, settings.useItemDescriptionPrefix());
+        return registerItem(keyOf(identifier), factory, settings.useItemDescriptionPrefix());
+    }
+
+    /**
+     * Register an item.
+     *
+     * @param key         Resource key to register the item for.
+     * @param itemFactory Item factory to create item with.
+     * @param properties  Properties to give item.
+     * @return Item registered
+     */
+    private static Item registerItem(final ResourceKey<Item> key, final Function<Item.Properties, Item> itemFactory, final Item.Properties properties) {
+        Item item = itemFactory.apply(properties.setId(key));
+        if (item instanceof BlockItem blockItem) {
+            blockItem.registerBlocks(Item.BY_BLOCK, item);
+        }
+
+        return Registry.register(BuiltInRegistries.ITEM, key, item);
     }
 }

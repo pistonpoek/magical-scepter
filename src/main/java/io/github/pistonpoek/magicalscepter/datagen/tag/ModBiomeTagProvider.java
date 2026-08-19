@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.datagen.tag;
 
 import io.github.pistonpoek.magicalscepter.registry.tag.ModBiomeTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.world.level.biome.Biomes;
@@ -19,7 +19,7 @@ public class ModBiomeTagProvider extends BiomeTagsProvider {
      * @param output           Data output to generate biome tag data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModBiomeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ModBiomeTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 

@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.datagen.codec;
 
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.structure.pool.ModStructurePools;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -26,7 +26,7 @@ public class StructurePoolProvider extends FabricCodecDataProvider<StructureTemp
      * @param output           Data output to generate structure pool data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public StructurePoolProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public StructurePoolProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture, PackOutput.Target.DATA_PACK,
                 ModRegistryKeys.directory(Registries.TEMPLATE_POOL), StructureTemplatePool.DIRECT_CODEC);
     }

@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.gui.hud;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
@@ -18,7 +18,7 @@ public class ScepterGainIndicationBar {
      * @param x              Horizontal position of the experience bar on the screen.
      * @param y              Vertical position of the experience bar on the screen.
      */
-    public static void render(GuiGraphics context, LocalPlayer player,
+    public static void render(GuiGraphicsExtractor context, LocalPlayer player,
                               int experienceStep, int x, int y) {
         int progress = ExperienceBar.getPixelProgress(player);
         float gain_progress = experienceStep / (float) player.getXpNeededForNextLevel();

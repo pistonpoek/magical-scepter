@@ -6,6 +6,7 @@ import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.world.ModGameRules;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class SpellCastingManager extends SavedData {
-    private static final String ID = ModIdentifier.key("spell_castings", "_");
+    private static final Identifier ID = ModIdentifier.of("spell_castings");
     public static final Codec<SpellCastingManager> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Codec.unboundedMap(Codec.STRING.xmap(UUID::fromString, UUID::toString),

@@ -8,15 +8,15 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
-import net.ramixin.mixson.inline.EventContext;
-import net.ramixin.mixson.inline.MixsonEvent;
+import net.ramixin.mixson.EventContext;
+import net.ramixin.mixson.util.functions.Event;
 
 /**
  * Add a mob to the kill all mobs advancement using the specified identifier.
  *
  * @param mobIdentifier Identifier of the mob to add to the advancement.
  */
-public record KillAllMobsMixson(Identifier mobIdentifier) implements MixsonEvent<JsonElement> {
+public record KillAllMobsMixson(Identifier mobIdentifier) implements Event<JsonElement> {
     @Override
     public void runEvent(EventContext<JsonElement> context) {
         JsonObject root = context.getFile().getAsJsonObject();

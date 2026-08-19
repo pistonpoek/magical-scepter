@@ -14,7 +14,7 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.spell.Spells;
 import io.github.pistonpoek.magicalscepter.world.ModGameRules;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
@@ -34,7 +34,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
      * @param output           Data output to generate language data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    protected ModLanguageProvider(FabricDataOutput output,
+    protected ModLanguageProvider(FabricPackOutput output,
                                   CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }

@@ -6,15 +6,15 @@ import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
-import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+
+import java.util.List;
 
 /**
  * Loot function to set a scepter in the scepter contents component of an item stack.
@@ -38,7 +38,7 @@ public class SetScepterLootFunction extends LootItemConditionalFunction {
     }
 
     @Override
-    public LootItemFunctionType<SetScepterLootFunction> getType() {
+    public MapCodec<SetScepterLootFunction> codec() {
         return ModLootFunctionTypes.SET_SCEPTER;
     }
 

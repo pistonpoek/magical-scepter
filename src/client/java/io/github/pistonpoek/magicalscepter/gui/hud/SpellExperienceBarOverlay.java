@@ -1,10 +1,11 @@
 package io.github.pistonpoek.magicalscepter.gui.hud;
 
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import java.util.Optional;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.Optional;
 
 public class SpellExperienceBarOverlay {
     /**
@@ -17,7 +18,7 @@ public class SpellExperienceBarOverlay {
      * @param y       Vertical position of the experience bar on the screen.
      * @return Truth assignment, if overlay was added excluding cost indication.
      */
-    public static boolean render(GuiGraphics context, ItemStack item, LocalPlayer player, int x, int y) {
+    public static boolean render(GuiGraphicsExtractor context, ItemStack item, LocalPlayer player, int x, int y) {
         // Only when the scepter has spells to cast do we render the overlay.
         Optional<ScepterContentsComponent> optionalScepterContents = ScepterContentsComponent.get(item);
 

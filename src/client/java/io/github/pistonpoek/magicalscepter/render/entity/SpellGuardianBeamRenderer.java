@@ -6,16 +6,16 @@ import com.mojang.math.Axis;
 import io.github.pistonpoek.magicalscepter.entity.spell.SpellGuardianBeamEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 @Environment(EnvType.CLIENT)
 public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamEntity, SpellGuardianBeamRenderState> {
     private static final Identifier EXPLOSION_BEAM_TEXTURE = Identifier.withDefaultNamespace("textures/entity/guardian_beam.png");
-    private static final RenderType LAYER = RenderTypes.entityCutoutNoCull(EXPLOSION_BEAM_TEXTURE);
+    private static final RenderType LAYER = RenderTypes.entityCutout(EXPLOSION_BEAM_TEXTURE);
 
     public SpellGuardianBeamRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -134,7 +134,7 @@ public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamE
                 .setColor(red, green, blue, 255)
                 .setUv(u, v)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
+                .setLight(LightCoordsUtil.FULL_BRIGHT)
                 .setNormal(matrix, 0.0F, 1.0F, 0.0F);
     }
 

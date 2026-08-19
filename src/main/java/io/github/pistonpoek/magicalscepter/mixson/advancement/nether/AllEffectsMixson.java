@@ -3,15 +3,15 @@ package io.github.pistonpoek.magicalscepter.mixson.advancement.nether;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.Identifier;
-import net.ramixin.mixson.inline.EventContext;
-import net.ramixin.mixson.inline.MixsonEvent;
+import net.ramixin.mixson.EventContext;
+import net.ramixin.mixson.util.functions.Event;
 
 /**
  * Add an effect to the all effects advancement using the specified identifier.
  *
  * @param effectIdentifier Identifier of the effect to add to the advancement.
  */
-public record AllEffectsMixson(Identifier effectIdentifier) implements MixsonEvent<JsonElement> {
+public record AllEffectsMixson(Identifier effectIdentifier) implements Event<JsonElement> {
     @Override
     public void runEvent(EventContext<JsonElement> context) {
         JsonObject root = context.getFile().getAsJsonObject();

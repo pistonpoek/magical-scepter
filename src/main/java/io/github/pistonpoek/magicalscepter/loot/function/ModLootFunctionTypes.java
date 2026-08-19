@@ -6,7 +6,6 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
@@ -14,9 +13,9 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
  * @see net.minecraft.world.level.storage.loot.functions.LootItemFunctions
  */
 public class ModLootFunctionTypes {
-    public static final LootItemFunctionType<SetExperienceLootFunction> SET_EXPERIENCE =
+    public static final MapCodec<SetExperienceLootFunction> SET_EXPERIENCE =
             register("set_experience", SetExperienceLootFunction.CODEC);
-    public static final LootItemFunctionType<SetScepterLootFunction> SET_SCEPTER =
+    public static final MapCodec<SetScepterLootFunction> SET_SCEPTER =
             register("set_scepter", SetScepterLootFunction.CODEC);
 
     /**
@@ -34,8 +33,8 @@ public class ModLootFunctionTypes {
      * @param <T>        Loot function to register.
      * @return Registered loot function type.
      */
-    private static <T extends LootItemFunction> LootItemFunctionType<T> register(String identifier, MapCodec<T> codec) {
+    private static <T extends LootItemFunction> MapCodec<T> register(String identifier, MapCodec<T> codec) {
         return Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE,
-                ModIdentifier.of(identifier), new LootItemFunctionType<>(codec));
+                ModIdentifier.of(identifier), codec);
     }
 }

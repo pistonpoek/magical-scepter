@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.FloatProvider;
+import net.minecraft.util.valueproviders.FloatProviders;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -16,8 +17,8 @@ public record PlaySoundSpellEffect(Holder<SoundEvent> soundEvent, FloatProvider 
     public static final MapCodec<PlaySoundSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             SoundEvent.CODEC.fieldOf("sound").forGetter(PlaySoundSpellEffect::soundEvent),
-                            FloatProvider.codec(1.0E-5F, 10.0F).fieldOf("volume").forGetter(PlaySoundSpellEffect::volume),
-                            FloatProvider.codec(1.0E-5F, 2.0F).fieldOf("pitch").forGetter(PlaySoundSpellEffect::pitch)
+                            FloatProviders.codec(1.0E-5F, 10.0F).fieldOf("volume").forGetter(PlaySoundSpellEffect::volume),
+                            FloatProviders.codec(1.0E-5F, 2.0F).fieldOf("pitch").forGetter(PlaySoundSpellEffect::pitch)
                     )
                     .apply(instance, PlaySoundSpellEffect::new)
     );

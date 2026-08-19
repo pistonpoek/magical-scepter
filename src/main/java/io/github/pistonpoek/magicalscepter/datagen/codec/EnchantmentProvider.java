@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.datagen.codec;
 
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantments;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -26,7 +26,7 @@ public class EnchantmentProvider extends FabricCodecDataProvider<Enchantment> {
      * @param output           Data output to generate enchantment data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public EnchantmentProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public EnchantmentProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture, PackOutput.Target.DATA_PACK,
                 ModRegistryKeys.directory(Registries.ENCHANTMENT), Enchantment.DIRECT_CODEC);
     }
