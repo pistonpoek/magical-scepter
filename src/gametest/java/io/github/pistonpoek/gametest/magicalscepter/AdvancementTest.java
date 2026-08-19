@@ -137,7 +137,7 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         {
             setMagicalScepterInMainHand(context, player);
             BreezeEntity breeze = new BreezeEntity(EntityType.BREEZE, world);
-            WindChargeEntity windCharge = new WindChargeEntity(EntityType.WIND_CHARGE, world);
+            BreezeWindChargeEntity windCharge = new BreezeWindChargeEntity(EntityType.BREEZE_WIND_CHARGE, world);
             player.damage(world, world.getDamageSources().windCharge(windCharge, breeze), 2);
 
             CriterionProgress criterion = tracker.getProgress(entry)

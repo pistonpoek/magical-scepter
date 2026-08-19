@@ -117,7 +117,7 @@ public class Scepters {
                                                                 EntityType.BREEZE)))
                                                 .directEntity(EntityPredicate.Builder.create()
                                                         .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
-                                                                EntityType.WIND_CHARGE)))
+                                                                EntityType.BREEZE_WIND_CHARGE)))
                                                 .tag(TagPredicate.expected(ModDamageTypeTags.BREEZE_INFUSION))
                                 ).build()
                         ))

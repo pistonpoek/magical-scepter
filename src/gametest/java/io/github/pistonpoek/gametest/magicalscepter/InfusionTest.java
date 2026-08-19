@@ -150,7 +150,7 @@ public class InfusionTest implements CustomTestMethodInvoker {
         {
             setMagicalScepterInMainHand(context, player);
             BreezeEntity breeze = new BreezeEntity(EntityType.BREEZE, world);
-            WindChargeEntity windCharge = new WindChargeEntity(EntityType.WIND_CHARGE, world);
+            BreezeWindChargeEntity windCharge = new BreezeWindChargeEntity(EntityType.BREEZE_WIND_CHARGE, world);
             player.damage(world, world.getDamageSources().windCharge(windCharge, breeze), 2);
 
             expectScepter(context, player.getMainHandStack(), Scepters.BREEZE_KEY);
