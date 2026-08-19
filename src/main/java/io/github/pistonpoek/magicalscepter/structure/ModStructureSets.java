@@ -44,7 +44,7 @@ public interface ModStructureSets {
                                 Optional.of(new StructurePlacement.ExclusionZone(
                                                 structureSetLookup.getOrThrow(StructureSetKeys.VILLAGES), 10
                                         )),
-                                32,
+                                28,
                                 8,
                                 SpreadType.LINEAR
                         )
