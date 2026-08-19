@@ -3,7 +3,7 @@ package io.github.pistonpoek.magicalscepter.mixson.advancement.adventure;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import net.ramixin.mixson.inline.EventContext;
 import net.ramixin.mixson.inline.MixsonEvent;
 

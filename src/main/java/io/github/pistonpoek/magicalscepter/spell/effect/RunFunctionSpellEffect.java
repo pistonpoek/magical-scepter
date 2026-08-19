@@ -4,14 +4,13 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.command.permission.LeveledPermissionPredicate;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.functions.CommandFunction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.function.CommandFunction;
-import net.minecraft.server.function.CommandFunctionManager;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec2f;
-
+import net.minecraft.server.ServerFunctionManager;
+import net.minecraft.server.permissions.LevelBasedPermissionSet;
+import net.minecraft.world.phys.Vec2;
 import java.util.Optional;
 
 public record RunFunctionSpellEffect(Identifier function) implements SpellEffect {
@@ -23,21 +22,21 @@ public record RunFunctionSpellEffect(Identifier function) implements SpellEffect
     @Override
     public void apply(SpellContext context) {
         MinecraftServer minecraftServer = context.getWorld().getServer();
-        CommandFunctionManager commandFunctionManager = minecraftServer.getCommandFunctionManager();
-        Optional<CommandFunction<ServerCommandSource>> optional = commandFunctionManager.getFunction(this.function);
+        ServerFunctionManager commandFunctionManager = minecraftServer.getFunctions();
+        Optional<CommandFunction<CommandSourceStack>> optional = commandFunctionManager.get(this.function);
 
         if (optional.isEmpty()) {
             MagicalScepter.LOGGER.error("Spell function effect failed for non-existent function {}", this.function);
             return;
         }
 
-        ServerCommandSource serverCommandSource = minecraftServer.getCommandSource()
-                .withPermissions(LeveledPermissionPredicate.GAMEMASTERS)
-                .withSilent()
+        CommandSourceStack serverCommandSource = minecraftServer.createCommandSourceStack()
+                .withPermission(LevelBasedPermissionSet.GAMEMASTER)
+                .withSuppressedOutput()
                 .withEntity(context.target())
-                .withWorld(context.getWorld())
+                .withLevel(context.getWorld())
                 .withPosition(context.position())
-                .withRotation(new Vec2f(context.pitch(), context.yaw()));
+                .withRotation(new Vec2(context.pitch(), context.yaw()));
         commandFunctionManager.execute(optional.get(), serverCommandSource);
     }
 

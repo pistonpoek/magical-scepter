@@ -6,15 +6,15 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Direction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.util.Tuple;
 
 public interface RotationSource extends SpellContextSource {
-    MapCodec<RotationSource> MAP_CODEC = ModRegistries.CAST_ROTATION_SOURCE_TYPE.getCodec()
+    MapCodec<RotationSource> MAP_CODEC = ModRegistries.CAST_ROTATION_SOURCE_TYPE.byNameCodec()
             .dispatchMap(RotationSource::getCodec, Function.identity());
     Codec<RotationSource> CODEC = MAP_CODEC.codec();
 
@@ -27,24 +27,24 @@ public interface RotationSource extends SpellContextSource {
         Registry.register(registry, ModIdentifier.of("facing"), FacingLocationRotationSource.MAP_CODEC);
     }
 
-    Pair<Float, Float> getRotation(@NotNull SpellContext context);
+    Tuple<Float, Float> getRotation(@NotNull SpellContext context);
 
     @Override
     default SpellContext getContext(@NotNull SpellContext context) {
-        Pair<Float, Float> rotationPair = getRotation(context);
-        return new SpellContext(context, rotationPair.getLeft(), rotationPair.getRight());
+        Tuple<Float, Float> rotationPair = getRotation(context);
+        return new SpellContext(context, rotationPair.getA(), rotationPair.getB());
     }
 
     default float getPitch(@NotNull SpellContext context) {
-        return getRotation(context).getLeft();
+        return getRotation(context).getA();
     }
 
     default float getYaw(@NotNull SpellContext context) {
-        return getRotation(context).getRight();
+        return getRotation(context).getB();
     }
 
     static Direction getDirection(@NotNull SpellContext context) {
-        return Direction.getFacing(context.getRotationVector());
+        return Direction.getApproximateNearest(context.getRotationVector());
     }
 
     @Override

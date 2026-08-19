@@ -4,21 +4,16 @@ import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.IngredientPlacement;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.display.RecipeDisplay;
-import net.minecraft.recipe.display.ShapelessCraftingRecipeDisplay;
-import net.minecraft.recipe.display.SlotDisplay;
-import net.minecraft.recipe.input.CraftingRecipeInput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.world.World;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -26,10 +21,10 @@ import java.util.List;
 /**
  * Custom crafting recipe to craft a magical scepter from a scepter.
  */
-public class MagicalScepterRecipe extends SpecialCraftingRecipe {
-    public final RegistryEntry<Scepter> resultScepter;
+public class MagicalScepterRecipe extends CustomRecipe {
+    public final Holder<Scepter> resultScepter;
     @Nullable
-    private IngredientPlacement ingredientPlacement;
+    private PlacementInfo ingredientPlacement;
 
     /**
      * Construct the magical scepter recipe for the specified crafting recipe category.
@@ -37,7 +32,7 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
      * @param result Result scepter for the magical scepter to contain.
      * @param category Crafting recipe category to create recipe with.
      */
-    public MagicalScepterRecipe(RegistryEntry<Scepter> result, CraftingRecipeCategory category) {
+    public MagicalScepterRecipe(Holder<Scepter> result, CraftingBookCategory category) {
         super(category);
         this.resultScepter = result;
     }
@@ -49,19 +44,19 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
      * @param world World to use as context.
      * @return Truth assignment, if the input matches the crafting recipe.
      */
-    public boolean matches(CraftingRecipeInput input, World world) {
+    public boolean matches(CraftingInput input, Level world) {
         boolean containsLapisLazuli = false;
         boolean containsBrownMushroom = false;
         boolean containsScepter = false;
 
         for (int i = 0; i < input.size(); i++) {
-            ItemStack itemStack = input.getStackInSlot(i);
+            ItemStack itemStack = input.getItem(i);
             if (!itemStack.isEmpty()) {
                 if (ScepterHelper.SCEPTER.test(itemStack) && !containsScepter) {
                     containsScepter = true;
-                } else if (itemStack.isOf(Blocks.BROWN_MUSHROOM.asItem()) && !containsBrownMushroom) {
+                } else if (itemStack.is(Blocks.BROWN_MUSHROOM.asItem()) && !containsBrownMushroom) {
                     containsBrownMushroom = true;
-                } else if (itemStack.isOf(Items.LAPIS_LAZULI) && !containsLapisLazuli) {
+                } else if (itemStack.is(Items.LAPIS_LAZULI) && !containsLapisLazuli) {
                     containsLapisLazuli = true;
                 } else {
                     return false;
@@ -78,12 +73,12 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
      * @param registries Registries to use when crafting.
      * @return Item stack result from crafting the recipe.
      */
-    public ItemStack craft(CraftingRecipeInput input, RegistryWrapper.WrapperLookup registries) {
-        ItemStack craftedScepter = ModItems.MAGICAL_SCEPTER.getDefaultStack();
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+        ItemStack craftedScepter = ModItems.MAGICAL_SCEPTER.getDefaultInstance();
         for (int i = 0; i < input.size(); i++) {
-            ItemStack itemStack = input.getStackInSlot(i);
-            if (itemStack.isOf(ModItems.SCEPTER)) {
-                craftedScepter = itemStack.copyComponentsToNewStack(ModItems.MAGICAL_SCEPTER, 1);
+            ItemStack itemStack = input.getItem(i);
+            if (itemStack.is(ModItems.SCEPTER)) {
+                craftedScepter = itemStack.transmuteCopy(ModItems.MAGICAL_SCEPTER, 1);
                 break;
             }
         }
@@ -91,28 +86,28 @@ public class MagicalScepterRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean isIgnoredInRecipeBook() {
+    public boolean isSpecial() {
         return false;
     }
 
     @Override
-    public IngredientPlacement getIngredientPlacement() {
+    public PlacementInfo placementInfo() {
         if (this.ingredientPlacement == null) {
-            this.ingredientPlacement = IngredientPlacement.forShapeless(List.of(
-                    Ingredient.ofItem(ModItems.SCEPTER),
-                    Ingredient.ofItem(Items.BROWN_MUSHROOM),
-                    Ingredient.ofItem(Items.LAPIS_LAZULI)
+            this.ingredientPlacement = PlacementInfo.create(List.of(
+                    Ingredient.of(ModItems.SCEPTER),
+                    Ingredient.of(Items.BROWN_MUSHROOM),
+                    Ingredient.of(Items.LAPIS_LAZULI)
             ));
         }
         return this.ingredientPlacement;
     }
 
     @Override
-    public List<RecipeDisplay> getDisplays() {
+    public List<RecipeDisplay> display() {
         return List.of(
                 new ShapelessCraftingRecipeDisplay(
-                        getIngredientPlacement().getIngredients().stream().map(Ingredient::toDisplay).toList(),
-                        new SlotDisplay.StackSlotDisplay(ScepterHelper.createMagicalScepter(resultScepter)),
+                        placementInfo().ingredients().stream().map(Ingredient::display).toList(),
+                        new SlotDisplay.ItemStackSlotDisplay(ScepterHelper.createMagicalScepter(resultScepter)),
                         new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
                 )
         );

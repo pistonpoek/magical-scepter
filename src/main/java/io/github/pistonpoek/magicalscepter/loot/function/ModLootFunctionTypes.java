@@ -3,20 +3,20 @@ package io.github.pistonpoek.magicalscepter.loot.function;
 import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.loot.function.LootFunction;
-import net.minecraft.loot.function.LootFunctionType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.loot.function.LootFunctionTypes
+ * @see net.minecraft.world.level.storage.loot.functions.LootItemFunctions
  */
 public class ModLootFunctionTypes {
-    public static final LootFunctionType<SetExperienceLootFunction> SET_EXPERIENCE =
+    public static final LootItemFunctionType<SetExperienceLootFunction> SET_EXPERIENCE =
             register("set_experience", SetExperienceLootFunction.CODEC);
-    public static final LootFunctionType<SetScepterLootFunction> SET_SCEPTER =
+    public static final LootItemFunctionType<SetScepterLootFunction> SET_SCEPTER =
             register("set_scepter", SetScepterLootFunction.CODEC);
 
     /**
@@ -34,8 +34,8 @@ public class ModLootFunctionTypes {
      * @param <T>        Loot function to register.
      * @return Registered loot function type.
      */
-    private static <T extends LootFunction> LootFunctionType<T> register(String identifier, MapCodec<T> codec) {
-        return Registry.register(Registries.LOOT_FUNCTION_TYPE,
-                ModIdentifier.of(identifier), new LootFunctionType<>(codec));
+    private static <T extends LootItemFunction> LootItemFunctionType<T> register(String identifier, MapCodec<T> codec) {
+        return Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE,
+                ModIdentifier.of(identifier), new LootItemFunctionType<>(codec));
     }
 }

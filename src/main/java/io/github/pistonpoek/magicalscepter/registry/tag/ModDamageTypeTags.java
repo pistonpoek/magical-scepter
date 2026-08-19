@@ -1,14 +1,14 @@
 package io.github.pistonpoek.magicalscepter.registry.tag;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.registry.tag.DamageTypeTags
+ * @see net.minecraft.tags.DamageTypeTags
  */
 public class ModDamageTypeTags {
     public static final TagKey<DamageType> BYPASSES_REPULSION = of("bypasses_repulsion");
@@ -31,6 +31,6 @@ public class ModDamageTypeTags {
      * @return Biome tag key for the specified name.
      */
     private static TagKey<DamageType> of(String name) {
-        return TagKey.of(RegistryKeys.DAMAGE_TYPE, ModIdentifier.of(name));
+        return TagKey.create(Registries.DAMAGE_TYPE, ModIdentifier.of(name));
     }
 }

@@ -6,12 +6,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Uuids;
-import net.minecraft.world.timer.Timer;
-import net.minecraft.world.timer.TimerCallback;
-
+import net.minecraft.world.level.timers.TimerCallback;
+import net.minecraft.world.level.timers.TimerQueue;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,13 +19,13 @@ public record SpellCastingTimerCallback(UUID caster, Integer key)
     public static final Identifier ID = ModIdentifier.of("spell_cast");
     public static final MapCodec<SpellCastingTimerCallback> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Uuids.CODEC.fieldOf("caster").forGetter(SpellCastingTimerCallback::caster),
+                    UUIDUtil.AUTHLIB_CODEC.fieldOf("caster").forGetter(SpellCastingTimerCallback::caster),
                     Codec.INT.fieldOf("key").forGetter(SpellCastingTimerCallback::key)
             ).apply(instance, SpellCastingTimerCallback::new)
     );
 
     @Override
-    public void call(MinecraftServer server, Timer<MinecraftServer> events, long time) {
+    public void handle(MinecraftServer server, TimerQueue<MinecraftServer> events, long time) {
         Optional<SpellCasting> spellCasting = SpellCastingManager.load(server).retrieve(server, caster(), key());
         if (spellCasting.isEmpty()) {
             MagicalScepter.LOGGER.info("Could not load scheduled spell casting");
@@ -36,7 +35,7 @@ public record SpellCastingTimerCallback(UUID caster, Integer key)
     }
 
     @Override
-    public MapCodec<SpellCastingTimerCallback> getCodec() {
+    public MapCodec<SpellCastingTimerCallback> codec() {
         return MAP_CODEC;
     }
 }

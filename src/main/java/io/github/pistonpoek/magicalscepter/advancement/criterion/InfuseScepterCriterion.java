@@ -4,22 +4,22 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterPredicate;
-import net.minecraft.advancement.AdvancementCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.predicate.entity.LootContextPredicate;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerPlayer;
 
 /**
  * Advancement criterion that triggers when a player infuses a scepter.
  */
-public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCriterion.Conditions> {
+public class InfuseScepterCriterion extends SimpleCriterionTrigger<InfuseScepterCriterion.Conditions> {
     @Override
-    public Codec<InfuseScepterCriterion.Conditions> getConditionsCodec() {
+    public Codec<InfuseScepterCriterion.Conditions> codec() {
         return InfuseScepterCriterion.Conditions.CODEC;
     }
 
@@ -29,7 +29,7 @@ public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCrite
      * @param player  Player infusing the scepter.
      * @param scepter Scepter that was infused.
      */
-    public void trigger(ServerPlayerEntity player, RegistryEntry<Scepter> scepter) {
+    public void trigger(ServerPlayer player, Holder<Scepter> scepter) {
         this.trigger(player, conditions -> conditions.matches(scepter));
     }
 
@@ -39,11 +39,11 @@ public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCrite
      * @param player  Optional loot context predicate to check on the casting player.
      * @param scepter Optional scepter predicate to check on the scepter used when casting.
      */
-    public record Conditions(Optional<LootContextPredicate> player,
-                             Optional<ScepterPredicate> scepter) implements AbstractCriterion.Conditions {
+    public record Conditions(Optional<ContextAwarePredicate> player,
+                             Optional<ScepterPredicate> scepter) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<InfuseScepterCriterion.Conditions> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
-                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player")
+                        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
                                 .forGetter(InfuseScepterCriterion.Conditions::player),
                         ScepterPredicate.CODEC.optionalFieldOf("scepter")
                                 .forGetter(InfuseScepterCriterion.Conditions::scepter)
@@ -56,8 +56,8 @@ public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCrite
          * @param scepter Scepter predicate to create the condition with.
          * @return Advancement criterion with an infuse scepter condition.
          */
-        public static AdvancementCriterion<InfuseScepterCriterion.Conditions> create(@Nullable ScepterPredicate scepter) {
-            return ModCriteria.INFUSE_SCEPTER.create(
+        public static Criterion<InfuseScepterCriterion.Conditions> create(@Nullable ScepterPredicate scepter) {
+            return ModCriteria.INFUSE_SCEPTER.createCriterion(
                     new InfuseScepterCriterion.Conditions(Optional.empty(), Optional.ofNullable(scepter)));
         }
 
@@ -67,8 +67,8 @@ public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCrite
          * @param scepter Scepter registry entry to create the condition with.
          * @return Advancement criterion with an infuse scepter condition.
          */
-        public static AdvancementCriterion<InfuseScepterCriterion.Conditions> create(RegistryEntry<Scepter> scepter) {
-            return ModCriteria.INFUSE_SCEPTER.create(
+        public static Criterion<InfuseScepterCriterion.Conditions> create(Holder<Scepter> scepter) {
+            return ModCriteria.INFUSE_SCEPTER.createCriterion(
                     new InfuseScepterCriterion.Conditions(Optional.empty(),
                             Optional.of(ScepterPredicate.of(scepter))));
         }
@@ -79,7 +79,7 @@ public class InfuseScepterCriterion extends AbstractCriterion<InfuseScepterCrite
          * @param scepter Scepter to test for the conditions scepter predicate.
          * @return Truth assignment, if the scepter fulfills the conditions.
          */
-        public boolean matches(RegistryEntry<Scepter> scepter) {
+        public boolean matches(Holder<Scepter> scepter) {
             return this.scepter.isEmpty() || (this.scepter.get()).test(scepter);
         }
     }

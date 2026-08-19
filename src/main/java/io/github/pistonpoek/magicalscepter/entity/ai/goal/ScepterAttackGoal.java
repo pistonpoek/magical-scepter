@@ -6,15 +6,14 @@ import io.github.pistonpoek.magicalscepter.item.MagicalScepterItem;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.util.LivingEntityHand;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-
 import java.util.EnumSet;
 import java.util.Optional;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Entity attack goal for the use of a magical scepter,
@@ -22,7 +21,7 @@ import java.util.Optional;
  *
  * @param <T> Entity type to use this goal for.
  */
-public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
+public class ScepterAttackGoal<T extends Monster> extends Goal {
     private static final double ATTACKS_PER_PROTECT = Math.E;
     private final T actor;
     private final double speed;
@@ -46,11 +45,11 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
         this.castInterval = castInterval;
         this.protectInterval = (int) ((ATTACKS_PER_PROTECT + 1) * this.castInterval);
         this.squaredRange = range * range;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean canStart() {
+    public boolean canUse() {
         return hasAliveTarget() && this.isHoldingScepterWithSpell();
     }
 
@@ -75,8 +74,8 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
     @Override
     public void start() {
         super.start();
-        this.actor.setAttacking(true);
-        if (this.actor.getVisibilityCache().canSee(this.actor.getTarget())) {
+        this.actor.setAggressive(true);
+        if (this.actor.getSensing().hasLineOfSight(this.actor.getTarget())) {
             this.targetSeeingTicker = 15;
         }
     }
@@ -84,18 +83,18 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
     @Override
     public void stop() {
         super.stop();
-        this.actor.setAttacking(false);
+        this.actor.setAggressive(false);
         this.actor.setTarget(null);
         this.targetSeeingTicker = 0;
     }
 
     @Override
-    public boolean canStop() {
+    public boolean isInterruptable() {
         return this.cooldown >= 5 || this.targetSeeingTicker < 15;
     }
 
     @Override
-    public boolean shouldRunEveryTick() {
+    public boolean requiresUpdateEveryTick() {
         return true;
     }
 
@@ -117,8 +116,8 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
         this.cooldown = this.castInterval;
 
         // Get the scepter stack and spells to prepare for casting.
-        Hand hand = LivingEntityHand.get(actor, ScepterHelper.SCEPTER_WITH_SPELL);
-        ItemStack scepterStack = this.actor.getStackInHand(hand);
+        InteractionHand hand = LivingEntityHand.get(actor, ScepterHelper.SCEPTER_WITH_SPELL);
+        ItemStack scepterStack = this.actor.getItemInHand(hand);
         Optional<Spell> attackSpell = ScepterContentsComponent.getAttackSpell(scepterStack);
         Optional<Spell> protectSpell = ScepterContentsComponent.getProtectSpell(scepterStack);
 
@@ -136,8 +135,8 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
         // Cast the spell and update the stack used by the actor.
         scepterSpell.ifPresent(spell -> {
             ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, this.actor,
-                    scepterStack, attack, Hand.MAIN_HAND);
-            this.actor.setStackInHand(hand, usedScepterStack);
+                    scepterStack, attack, InteractionHand.MAIN_HAND);
+            this.actor.setItemInHand(hand, usedScepterStack);
         });
     }
 
@@ -148,9 +147,9 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      * @return Truth assignment, if the actor should use the protect spell.
      */
     private boolean useProtectSpell(LivingEntity target) {
-        boolean targetNearby = actor.squaredDistanceTo(target) < squaredRange * 0.3F;
-        boolean recentlyDamaged = this.actor.getRecentDamageSource() != null;
-        boolean inProtectInterval = this.actor.age % this.protectInterval < this.castInterval;
+        boolean targetNearby = actor.distanceToSqr(target) < squaredRange * 0.3F;
+        boolean recentlyDamaged = this.actor.getLastDamageSource() != null;
+        boolean inProtectInterval = this.actor.tickCount % this.protectInterval < this.castInterval;
         return (targetNearby || recentlyDamaged) && inProtectInterval;
     }
 
@@ -160,7 +159,7 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      * @param target Current target of the actor to update the value with.
      */
     private void updateTargetSeeingTicker(LivingEntity target) {
-        boolean targetVisible = this.actor.getVisibilityCache().canSee(target);
+        boolean targetVisible = this.actor.getSensing().hasLineOfSight(target);
         boolean targetAware = this.targetSeeingTicker > 0;
         if (targetVisible != targetAware) {
             this.targetSeeingTicker = 0;
@@ -179,11 +178,11 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      * @param target Current target of the actor to update navigation with.
      */
     private void updateNavigation(LivingEntity target) {
-        double squaredDistance = this.actor.squaredDistanceTo(target);
+        double squaredDistance = this.actor.distanceToSqr(target);
         if (squaredDistance <= this.squaredRange && this.targetSeeingTicker >= 5) {
             this.actor.getNavigation().stop();
         } else {
-            this.actor.getNavigation().startMovingTo(target, this.speed);
+            this.actor.getNavigation().moveTo(target, this.speed);
         }
     }
 
@@ -193,12 +192,12 @@ public class ScepterAttackGoal<T extends HostileEntity> extends Goal {
      * @param target Current target of the actor to update look control with.
      */
     private void updateLookControl(LivingEntity target) {
-        if (this.actor.getControllingVehicle() instanceof MobEntity mobEntity) {
-            mobEntity.lookAtEntity(target, 30.0F, 30.0F);
-            mobEntity.getLookControl().lookAt(target, 30.0F, 30.0F);
+        if (this.actor.getControlledVehicle() instanceof Mob mobEntity) {
+            mobEntity.lookAt(target, 30.0F, 30.0F);
+            mobEntity.getLookControl().setLookAt(target, 30.0F, 30.0F);
         }
-        this.actor.lookAtEntity(target, 30.0F, 30.0F);
-        this.actor.getLookControl().lookAt(target, 30.0F, 30.0F);
+        this.actor.lookAt(target, 30.0F, 30.0F);
+        this.actor.getLookControl().setLookAt(target, 30.0F, 30.0F);
     }
 }
 

@@ -4,20 +4,20 @@ import io.github.pistonpoek.magicalscepter.item.SwingType;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ArmSwingingEntityRenderState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.state.ArmedEntityRenderState;
-import net.minecraft.client.render.entity.state.IllagerEntityRenderState;
+import net.minecraft.client.renderer.entity.state.ArmedEntityRenderState;
+import net.minecraft.client.renderer.entity.state.IllagerRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Environment(EnvType.CLIENT)
-@Mixin(IllagerEntityRenderState.class)
+@Mixin(IllagerRenderState.class)
 public class IllagerEntityRenderStateMixin extends ArmedEntityRenderState implements ArmSwingingEntityRenderState {
     @Unique
     public SwingType magicalscepter$swingType;
 
     @Override
     public float magical_scepter$getHandSwingProgress() {
-        return this.handSwingProgress;
+        return this.attackTime;
     }
 
     @Override

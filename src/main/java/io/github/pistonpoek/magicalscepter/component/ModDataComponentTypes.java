@@ -1,27 +1,26 @@
 package io.github.pistonpoek.magicalscepter.component;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.component.ComponentType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-
 import java.util.function.UnaryOperator;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.component.DataComponentTypes
+ * @see net.minecraft.core.component.DataComponents
  */
 public class ModDataComponentTypes {
-    public static final ComponentType<ScepterExperienceComponent> SCEPTER_EXPERIENCE = register(
+    public static final DataComponentType<ScepterExperienceComponent> SCEPTER_EXPERIENCE = register(
             "scepter_experience", builder ->
-                    builder.codec(ScepterExperienceComponent.CODEC)
-                            .packetCodec(ScepterExperienceComponent.PACKET_CODEC)
+                    builder.persistent(ScepterExperienceComponent.CODEC)
+                            .networkSynchronized(ScepterExperienceComponent.PACKET_CODEC)
     );
-    public static final ComponentType<ScepterContentsComponent> SCEPTER_CONTENTS = register(
+    public static final DataComponentType<ScepterContentsComponent> SCEPTER_CONTENTS = register(
             "scepter_contents", builder ->
-                    builder.codec(ScepterContentsComponent.CODEC)
-                            .packetCodec(ScepterContentsComponent.PACKET_CODEC).cache()
+                    builder.persistent(ScepterContentsComponent.CODEC)
+                            .networkSynchronized(ScepterContentsComponent.PACKET_CODEC).cacheEncoding()
     );
 
     /**
@@ -39,8 +38,8 @@ public class ModDataComponentTypes {
      * @param <T>             Type of the component type to register.
      * @return Registered component type.
      */
-    private static <T> ComponentType<T> register(String identifier, UnaryOperator<ComponentType.Builder<T>> builderOperator) {
-        return Registry.register(Registries.DATA_COMPONENT_TYPE, ModIdentifier.of(identifier),
-                builderOperator.apply(ComponentType.builder()).build());
+    private static <T> DataComponentType<T> register(String identifier, UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
+        return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, ModIdentifier.of(identifier),
+                builderOperator.apply(DataComponentType.builder()).build());
     }
 }

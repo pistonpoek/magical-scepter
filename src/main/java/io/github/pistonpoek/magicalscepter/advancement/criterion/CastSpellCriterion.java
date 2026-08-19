@@ -2,25 +2,25 @@ package io.github.pistonpoek.magicalscepter.advancement.criterion;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancement.AdvancementCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.predicate.entity.LootContextPredicate;
-import net.minecraft.predicate.item.ItemPredicate;
-import net.minecraft.registry.Registries;
-import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 
 /**
  * Advancement criterion that triggers when a spell is cast by a player.
  */
-public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Conditions> {
+public class CastSpellCriterion extends SimpleCriterionTrigger<CastSpellCriterion.Conditions> {
     @Override
-    public Codec<CastSpellCriterion.Conditions> getConditionsCodec() {
+    public Codec<CastSpellCriterion.Conditions> codec() {
         return CastSpellCriterion.Conditions.CODEC;
     }
 
@@ -30,7 +30,7 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
      * @param player Player that is casting the spell.
      * @param stack  Item stack used when casting the spell.
      */
-    public void trigger(ServerPlayerEntity player, ItemStack stack) {
+    public void trigger(ServerPlayer player, ItemStack stack) {
         this.trigger(player, conditions -> conditions.matches(stack));
     }
 
@@ -40,11 +40,11 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
      * @param player Optional loot context predicate to check on the casting player.
      * @param item   Optional item predicate to check on the item stack used when casting.
      */
-    public record Conditions(Optional<LootContextPredicate> player, Optional<ItemPredicate> item)
-            implements AbstractCriterion.Conditions {
+    public record Conditions(Optional<ContextAwarePredicate> player, Optional<ItemPredicate> item)
+            implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<CastSpellCriterion.Conditions> CODEC = RecordCodecBuilder.create(
                 instance -> instance.group(
-                        EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player")
+                        EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player")
                                 .forGetter(CastSpellCriterion.Conditions::player),
                         ItemPredicate.CODEC.optionalFieldOf("item")
                                 .forGetter(CastSpellCriterion.Conditions::item)
@@ -57,8 +57,8 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
          * @param item Item predicate to create the condition with.
          * @return Advancement criterion with a cast spell condition.
          */
-        public static AdvancementCriterion<CastSpellCriterion.Conditions> create(@Nullable ItemPredicate item) {
-            return ModCriteria.CAST_SCEPTER.create(
+        public static Criterion<CastSpellCriterion.Conditions> create(@Nullable ItemPredicate item) {
+            return ModCriteria.CAST_SCEPTER.createCriterion(
                     new CastSpellCriterion.Conditions(Optional.empty(), Optional.ofNullable(item)));
         }
 
@@ -68,10 +68,10 @@ public class CastSpellCriterion extends AbstractCriterion<CastSpellCriterion.Con
          * @param item Item convertible to create the condition with.
          * @return Advancement criterion with a cast spell condition.
          */
-        public static AdvancementCriterion<CastSpellCriterion.Conditions> create(ItemConvertible item) {
-            return ModCriteria.CAST_SCEPTER.create(
+        public static Criterion<CastSpellCriterion.Conditions> create(ItemLike item) {
+            return ModCriteria.CAST_SCEPTER.createCriterion(
                     new CastSpellCriterion.Conditions(Optional.empty(),
-                            Optional.of(ItemPredicate.Builder.create().items(Registries.ITEM, item).build())));
+                            Optional.of(ItemPredicate.Builder.item().of(BuiltInRegistries.ITEM, item).build())));
         }
 
         /**

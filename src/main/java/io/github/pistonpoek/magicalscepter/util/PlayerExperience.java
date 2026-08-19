@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.util;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * Util class related to the experience of a player.
@@ -13,8 +13,8 @@ public class PlayerExperience {
      * @param player Player to get the amount of experience points for.
      * @return Number of experience points in the current level the specified player has.
      */
-    public static int getExperiencePoints(PlayerEntity player) {
-        return MathHelper.floor(player.experienceProgress * (float) player.getNextLevelExperience());
+    public static int getExperiencePoints(Player player) {
+        return Mth.floor(player.experienceProgress * (float) player.getXpNeededForNextLevel());
     }
 
     /**
@@ -23,7 +23,7 @@ public class PlayerExperience {
      * @param player Player to get the total amount of experience for.
      * @return Total number of experience points the specified player has.
      */
-    public static int getTotalExperience(PlayerEntity player) {
+    public static int getTotalExperience(Player player) {
         int level = player.experienceLevel;
         int levelPoints;
         if (level >= 30) {
@@ -41,9 +41,9 @@ public class PlayerExperience {
      *
      * @param player Player to add experience points to.
      */
-    public static void addOnlyExperience(PlayerEntity player, int experience) {
+    public static void addOnlyExperience(Player player, int experience) {
         int amount = Math.max(-getTotalExperience(player), experience);
-        player.addExperience(amount);
-        player.addScore(-amount);
+        player.giveExperiencePoints(amount);
+        player.increaseScore(-amount);
     }
 }

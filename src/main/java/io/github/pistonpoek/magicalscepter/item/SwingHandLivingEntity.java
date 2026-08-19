@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.item;
 
-import net.minecraft.util.Hand;
+import net.minecraft.world.InteractionHand;
 import org.spongepowered.asm.mixin.Unique;
 
 /**
@@ -14,7 +14,7 @@ public interface SwingHandLivingEntity {
      * @param swingType Swing type to use for the entity.
      */
     @Unique
-    void magical_scepter$swingHand(Hand hand, SwingType swingType);
+    void magical_scepter$swingHand(InteractionHand hand, SwingType swingType);
 
     /**
      * Get the swing type.

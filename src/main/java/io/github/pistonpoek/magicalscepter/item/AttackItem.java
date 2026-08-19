@@ -1,8 +1,8 @@
 package io.github.pistonpoek.magicalscepter.item;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 /**
  * Item that has an attack functionality for the player to perform.
@@ -15,5 +15,5 @@ public interface AttackItem {
      * @param user  Player entity that is to perform the attack.
      * @return Action result of the attack.
      */
-    ActionResult attack(World world, PlayerEntity user);
+    InteractionResult attack(Level world, Player user);
 }

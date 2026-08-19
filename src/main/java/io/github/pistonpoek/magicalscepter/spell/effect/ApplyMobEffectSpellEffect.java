@@ -3,52 +3,51 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.registry.RegistryCodecs;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.util.math.floatprovider.FloatProvider;
-import net.minecraft.util.math.random.Random;
-
 import java.util.Optional;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.FloatProvider;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 
 public record ApplyMobEffectSpellEffect(
-        RegistryEntryList<StatusEffect> toApply,
+        HolderSet<MobEffect> toApply,
         FloatProvider duration,
         FloatProvider amplifier
 ) implements SpellEffect {
     public static final MapCodec<ApplyMobEffectSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            RegistryCodecs.entryList(RegistryKeys.STATUS_EFFECT).fieldOf("to_apply").forGetter(ApplyMobEffectSpellEffect::toApply),
-                            FloatProvider.VALUE_CODEC.fieldOf("duration").forGetter(ApplyMobEffectSpellEffect::duration),
-                            FloatProvider.VALUE_CODEC.fieldOf("amplifier").forGetter(ApplyMobEffectSpellEffect::amplifier)
+                            RegistryCodecs.homogeneousList(Registries.MOB_EFFECT).fieldOf("to_apply").forGetter(ApplyMobEffectSpellEffect::toApply),
+                            FloatProvider.CODEC.fieldOf("duration").forGetter(ApplyMobEffectSpellEffect::duration),
+                            FloatProvider.CODEC.fieldOf("amplifier").forGetter(ApplyMobEffectSpellEffect::amplifier)
                     )
                     .apply(instance, ApplyMobEffectSpellEffect::new)
     );
 
     @Override
     public void apply(SpellContext context) {
-        Random random = context.getRandom();
+        RandomSource random = context.getRandom();
         Optional<LivingEntity> target = context.getLivingTarget();
         if (target.isEmpty()) {
             return;
         }
 
-        Optional<RegistryEntry<StatusEffect>> optional = this.toApply.getRandom(random);
-        optional.ifPresent(statusEffectRegistryEntry -> target.get().addStatusEffect(
-                new StatusEffectInstance(statusEffectRegistryEntry, getDuration(random), getAmplifier(random))
+        Optional<Holder<MobEffect>> optional = this.toApply.getRandomElement(random);
+        optional.ifPresent(statusEffectRegistryEntry -> target.get().addEffect(
+                new MobEffectInstance(statusEffectRegistryEntry, getDuration(random), getAmplifier(random))
         ));
     }
 
-    private int getDuration(Random random) {
-        return Math.round(duration().get(random) * 20.0F);
+    private int getDuration(RandomSource random) {
+        return Math.round(duration().sample(random) * 20.0F);
     }
 
-    private int getAmplifier(Random random) {
-        return Math.max(0, Math.round(amplifier().get(random)));
+    private int getAmplifier(RandomSource random) {
+        return Math.max(0, Math.round(amplifier().sample(random)));
     }
 
     @Override

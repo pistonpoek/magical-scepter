@@ -8,24 +8,24 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
 import io.github.pistonpoek.magicalscepter.spell.target.AbsoluteTargetSource;
 import io.github.pistonpoek.magicalscepter.util.RotationVector;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 public record RayCastTransformer(Target target, double range, boolean require) implements CastTransformer {
     public static final MapCodec<RayCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
@@ -36,11 +36,11 @@ public record RayCastTransformer(Target target, double range, boolean require) i
             ).apply(instance, RayCastTransformer::new)
     );
 
-    public enum Target implements StringIdentifiable {
+    public enum Target implements StringRepresentable {
         BLOCK("block"),
         ENTITY("entity");
 
-        public final static Codec<Target> CODEC = StringIdentifiable.createBasicCodec(Target::values);
+        public final static Codec<Target> CODEC = StringRepresentable.fromValues(Target::values);
         private final String identifier;
 
         Target(String identifier) {
@@ -48,7 +48,7 @@ public record RayCastTransformer(Target target, double range, boolean require) i
         }
 
         @Override
-        public String asString() {
+        public String getSerializedName() {
             return identifier;
         }
     }
@@ -56,8 +56,8 @@ public record RayCastTransformer(Target target, double range, boolean require) i
     @Override
     public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
         SpellContext context = casting.getContext();
-        Vec3d rotationVector = RotationVector.get(context.pitch(), context.yaw()).normalize();
-        Vec3d endPosition = context.position().add(
+        Vec3 rotationVector = RotationVector.get(context.pitch(), context.yaw()).normalize();
+        Vec3 endPosition = context.position().add(
                 rotationVector.x * range,
                 rotationVector.y * range,
                 rotationVector.z * range
@@ -71,57 +71,57 @@ public record RayCastTransformer(Target target, double range, boolean require) i
                     return List.of();
                 }
 
-                casting.addContext(AbsolutePositionSource.builder(hitResult.getPos()).build());
+                casting.addContext(AbsolutePositionSource.builder(hitResult.getLocation()).build());
             }
             case ENTITY -> {
                 Optional<EntityHitResult> entityHitResult = entityRayCast(range, context.caster(), context.position(), endPosition);
                 if (entityHitResult.isEmpty()) {
                     return List.of();
                 }
-                casting.addContext(new AbsoluteTargetSource(entityHitResult.get().getEntity().getUuid()));
+                casting.addContext(new AbsoluteTargetSource(entityHitResult.get().getEntity().getUUID()));
             }
         }
 
         return List.of(casting);
     }
 
-    private static BlockHitResult blockRaycast(double range, Entity target, Vec3d position, Vec3d endPosition) {
-        BlockHitResult hitResult = target.getEntityWorld().raycast(
-                new RaycastContext(position,
+    private static BlockHitResult blockRaycast(double range, Entity target, Vec3 position, Vec3 endPosition) {
+        BlockHitResult hitResult = target.level().clip(
+                new ClipContext(position,
                         endPosition,
-                        RaycastContext.ShapeType.COLLIDER,
-                        RaycastContext.FluidHandling.NONE,
+                        ClipContext.Block.COLLIDER,
+                        ClipContext.Fluid.NONE,
                         target
                 )
         );
 
-        Vec3d hitResultPos = hitResult.getPos();
-        if (!hitResultPos.isInRange(position, range)) {
-            Direction direction = Direction.getFacing(
+        Vec3 hitResultPos = hitResult.getLocation();
+        if (!hitResultPos.closerThan(position, range)) {
+            Direction direction = Direction.getApproximateNearest(
                     hitResultPos.x - position.x,
                     hitResultPos.y - position.y,
                     hitResultPos.z - position.z
             );
-            return BlockHitResult.createMissed(hitResultPos, direction, BlockPos.ofFloored(hitResultPos));
+            return BlockHitResult.miss(hitResultPos, direction, BlockPos.containing(hitResultPos));
         } else {
             return hitResult;
         }
     }
 
-    private static Optional<EntityHitResult> entityRayCast(double range, Entity target, Vec3d position, Vec3d endPosition) {
+    private static Optional<EntityHitResult> entityRayCast(double range, Entity target, Vec3 position, Vec3 endPosition) {
         HitResult hitResult = blockRaycast(range, target, position, endPosition);
 
-        double distance = hitResult.getPos().distanceTo(position);
+        double distance = hitResult.getLocation().distanceTo(position);
         if (hitResult.getType() != HitResult.Type.MISS) {
             range = distance;
         }
 
-        Box box = Box.enclosing(BlockPos.ofFloored(position), BlockPos.ofFloored(endPosition)).expand(1.0);
-        Predicate<Entity> entityPredicate = entity -> !entity.isSpectator() && EntityPredicates.VALID_LIVING_ENTITY.test(entity);
+        AABB box = AABB.encapsulatingFullBlocks(BlockPos.containing(position), BlockPos.containing(endPosition)).inflate(1.0);
+        Predicate<Entity> entityPredicate = entity -> !entity.isSpectator() && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(entity);
         EntityHitResult entityHitResult =
-                ProjectileUtil.raycast(target, position, endPosition, box, entityPredicate, Math.pow(range, 2));
+                ProjectileUtil.getEntityHitResult(target, position, endPosition, box, entityPredicate, Math.pow(range, 2));
 
-        return entityHitResult != null && entityHitResult.getPos().distanceTo(position) < distance
+        return entityHitResult != null && entityHitResult.getLocation().distanceTo(position) < distance
                 ? Optional.of(entityHitResult) : Optional.empty();
     }
 

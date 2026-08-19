@@ -3,15 +3,15 @@ package io.github.pistonpoek.magicalscepter.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import net.minecraft.entity.passive.AllayEntity;
-import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Objects;
+import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.item.ItemStack;
 
-@Mixin(AllayEntity.class)
+@Mixin(Allay.class)
 public class AllayEntityMixin {
     /**
      * Modify are items equal return value to differentiate between scepters.
@@ -21,7 +21,7 @@ public class AllayEntityMixin {
      * @param stack2   Item stack two to compare to the other, for example item to pickup.
      * @return Truth assignment, if allay should treat items as equal.
      */
-    @ModifyReturnValue(method = "areItemsEqual(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;)Z", at = @At("RETURN"))
+    @ModifyReturnValue(method = "allayConsidersItemEqual(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z", at = @At("RETURN"))
     private boolean modifyAreItemsEqualReturnValue(boolean original, ItemStack stack, ItemStack stack2) {
         return original && !magicalscepter$areDifferentScepters(stack, stack2);
     }

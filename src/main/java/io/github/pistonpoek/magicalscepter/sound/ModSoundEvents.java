@@ -1,16 +1,16 @@
 package io.github.pistonpoek.magicalscepter.sound;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.sound.SoundEvents
+ * @see net.minecraft.sounds.SoundEvents
  */
 public class ModSoundEvents {
     public static final SoundEvent ENTITY_PARROT_IMITATE_SORCERER = register("entity.parrot.imitate.sorcerer");
@@ -47,7 +47,7 @@ public class ModSoundEvents {
      * @param name String name to register a sound event for.
      * @return Reference of the sound event registered.
      */
-    private static RegistryEntry.Reference<SoundEvent> registerReference(String name) {
+    private static Holder.Reference<SoundEvent> registerReference(String name) {
         return registerReference(ModIdentifier.of(name));
     }
 
@@ -58,7 +58,7 @@ public class ModSoundEvents {
      * @return Sound event registered for the specified identifier.
      */
     private static SoundEvent register(Identifier identifier) {
-        return Registry.register(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
+        return Registry.register(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier));
     }
 
     /**
@@ -67,7 +67,7 @@ public class ModSoundEvents {
      * @param identifier Identifier to register a sound event for.
      * @return Reference of the sound event registered.
      */
-    private static RegistryEntry.Reference<SoundEvent> registerReference(Identifier identifier) {
-        return Registry.registerReference(Registries.SOUND_EVENT, identifier, SoundEvent.of(identifier));
+    private static Holder.Reference<SoundEvent> registerReference(Identifier identifier) {
+        return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier));
     }
 }

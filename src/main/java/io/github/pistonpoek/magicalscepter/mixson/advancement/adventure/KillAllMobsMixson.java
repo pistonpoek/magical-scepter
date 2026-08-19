@@ -4,10 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.EntityType;
 import net.ramixin.mixson.inline.EventContext;
 import net.ramixin.mixson.inline.MixsonEvent;
 
@@ -20,8 +20,8 @@ public record KillAllMobsMixson(Identifier mobIdentifier) implements MixsonEvent
     @Override
     public void runEvent(EventContext<JsonElement> context) {
         JsonObject root = context.getFile().getAsJsonObject();
-        RegistryEntry<EntityType<?>> mobEntry = Registries.ENTITY_TYPE.getEntry(mobIdentifier).orElseThrow();
-        String mobReference = mobEntry.getIdAsString();
+        Holder<EntityType<?>> mobEntry = BuiltInRegistries.ENTITY_TYPE.get(mobIdentifier).orElseThrow();
+        String mobReference = mobEntry.getRegisteredName();
         JsonElement mobCondition = JsonParser.parseString(
                 """   
                     {

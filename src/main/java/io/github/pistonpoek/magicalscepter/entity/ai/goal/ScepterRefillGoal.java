@@ -6,12 +6,12 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.util.LivingEntityHand;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Hand;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Entity goal to refill scepters to magical scepters,
@@ -32,29 +32,29 @@ public class ScepterRefillGoal<T extends LivingEntity> extends Goal {
     }
 
     @Override
-    public boolean canStart() {
+    public boolean canUse() {
         return isHoldingScepter();
     }
 
     @Override
     public void start() {
         // Get the scepter stack to refill.
-        Hand hand = LivingEntityHand.get(this.actor, ScepterHelper.SCEPTER);
-        ItemStack scepterStack = this.actor.getStackInHand(hand);
+        InteractionHand hand = LivingEntityHand.get(this.actor, ScepterHelper.SCEPTER);
+        ItemStack scepterStack = this.actor.getItemInHand(hand);
 
         // Get the scepter entry that should be added to the scepter stack.
-        Registry<Scepter> scepterRegistry = this.actor.getRegistryManager().getOrThrow(ModRegistryKeys.SCEPTER);
-        RegistryEntry<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
+        Registry<Scepter> scepterRegistry = this.actor.registryAccess().lookupOrThrow(ModRegistryKeys.SCEPTER);
+        Holder<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
 
         // Create the new magical scepter stack.
         ItemStack magicalScepterStack = ScepterHelper.createMagicalScepter(scepterStack, magicalScepter);
 
         // Update the stack of the actor with the new magical scepter stack.
-        this.actor.setStackInHand(hand, magicalScepterStack);
+        this.actor.setItemInHand(hand, magicalScepterStack);
     }
 
     @Override
-    public boolean shouldContinue() {
+    public boolean canContinueToUse() {
         return false;
     }
 

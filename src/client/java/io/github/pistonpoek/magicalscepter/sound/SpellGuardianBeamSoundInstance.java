@@ -3,12 +3,12 @@ package io.github.pistonpoek.magicalscepter.sound;
 import io.github.pistonpoek.magicalscepter.entity.spell.SpellGuardianBeamEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.sound.MovingSoundInstance;
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.sounds.SoundEvents;
 
 @Environment(EnvType.CLIENT)
-public class SpellGuardianBeamSoundInstance extends MovingSoundInstance {
+public class SpellGuardianBeamSoundInstance extends AbstractTickableSoundInstance {
     private static final float BASE_VOLUME = 0.0F;
     private static final float PROGRESS_VOLUME_MULTIPLIER = 1.0F;
     private static final float BASE_PITCH = 0.7F;
@@ -21,15 +21,15 @@ public class SpellGuardianBeamSoundInstance extends MovingSoundInstance {
      * @param entity Spell guardian beam entity to create sound instance for.
      */
     public SpellGuardianBeamSoundInstance(SpellGuardianBeamEntity entity) {
-        super(SoundEvents.ENTITY_GUARDIAN_ATTACK, entity.getSoundCategory(), SoundInstance.createRandom());
+        super(SoundEvents.GUARDIAN_ATTACK, entity.getSoundSource(), SoundInstance.createUnseededRandom());
         this.entity = entity;
-        this.attenuationType = AttenuationType.NONE;
-        this.repeat = true;
-        this.repeatDelay = 0;
+        this.attenuation = Attenuation.NONE;
+        this.looping = true;
+        this.delay = 0;
     }
 
     @Override
-    public boolean canPlay() {
+    public boolean isStopped() {
         return !this.entity.isSilent();
     }
 
@@ -43,7 +43,7 @@ public class SpellGuardianBeamSoundInstance extends MovingSoundInstance {
             this.volume = BASE_VOLUME + PROGRESS_VOLUME_MULTIPLIER * progress * progress;
             this.pitch = BASE_PITCH + PROGRESS_PITCH_MULTIPLIER * progress;
         } else {
-            this.setDone();
+            this.stop();
         }
     }
 }

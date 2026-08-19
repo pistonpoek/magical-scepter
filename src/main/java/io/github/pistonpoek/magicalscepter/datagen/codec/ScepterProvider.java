@@ -5,12 +5,11 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
-import net.minecraft.data.DataOutput;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -26,16 +25,16 @@ public class ScepterProvider extends FabricCodecDataProvider<Scepter> {
      * @param output           Data output to generate scepter data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ScepterProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
+    public ScepterProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture, PackOutput.Target.DATA_PACK,
                 ModRegistryKeys.directory(ModRegistryKeys.SCEPTER), Scepter.CODEC);
     }
 
     @Override
-    protected void configure(BiConsumer<Identifier, Scepter> provider, RegistryWrapper.WrapperLookup registries) {
-        RegistryEntryLookup<Scepter> scepterLookup = registries.getOrThrow(ModRegistryKeys.SCEPTER);
+    protected void configure(BiConsumer<Identifier, Scepter> provider, HolderLookup.Provider registries) {
+        HolderGetter<Scepter> scepterLookup = registries.lookupOrThrow(ModRegistryKeys.SCEPTER);
 
-        for (RegistryKey<Scepter> scepterKey : Scepters.KEYS) {
+        for (ResourceKey<Scepter> scepterKey : Scepters.KEYS) {
             addScepter(provider, scepterLookup, scepterKey);
         }
     }
@@ -48,9 +47,9 @@ public class ScepterProvider extends FabricCodecDataProvider<Scepter> {
      * @param key      Registry key to add to the scepter provider.
      */
     private static void addScepter(BiConsumer<Identifier, Scepter> provider,
-                                   RegistryEntryLookup<Scepter> lookup,
-                                   RegistryKey<Scepter> key) {
-        provider.accept(key.getValue(), lookup.getOrThrow(key).value());
+                                   HolderGetter<Scepter> lookup,
+                                   ResourceKey<Scepter> key) {
+        provider.accept(key.identifier(), lookup.getOrThrow(key).value());
     }
 
     @Override

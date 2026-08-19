@@ -1,12 +1,12 @@
 package io.github.pistonpoek.magicalscepter.enchantment;
 
-import net.minecraft.util.math.random.Random;
+import net.minecraft.util.RandomSource;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * Interface class to add method to the respective vanilla class.
  *
- * @see net.minecraft.enchantment.Enchantment
+ * @see net.minecraft.world.item.enchantment.Enchantment
  */
 public interface ModEnchantment {
     /**
@@ -18,5 +18,5 @@ public interface ModEnchantment {
      *
      * @see ModEnchantmentEffectComponentTypes#EXPERIENCE_STEP
      */
-    void magicalscepter$modifyExperienceStep(Random random, int level, MutableFloat experienceStep);
+    void magicalscepter$modifyExperienceStep(RandomSource random, int level, MutableFloat experienceStep);
 }

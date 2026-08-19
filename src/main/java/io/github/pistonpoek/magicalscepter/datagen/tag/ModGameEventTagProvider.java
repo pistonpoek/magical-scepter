@@ -1,38 +1,37 @@
 package io.github.pistonpoek.magicalscepter.datagen.tag;
 
 import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
-import net.minecraft.data.DataOutput;
-import net.minecraft.data.tag.vanilla.VanillaGameEventTagProvider;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.GameEventTags;
-
 import java.util.concurrent.CompletableFuture;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.GameEventTagsProvider;
+import net.minecraft.tags.GameEventTags;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.data.tag.vanilla.VanillaGameEventTagProvider
+ * @see net.minecraft.data.tags.GameEventTagsProvider
  */
-public class ModGameEventTagProvider extends VanillaGameEventTagProvider {
+public class ModGameEventTagProvider extends GameEventTagsProvider {
     /**
      * Construct a mod game event tag provider for data generation.
      *
      * @param output           Data output to generate game event tag data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModGameEventTagProvider(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public ModGameEventTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup arg) {
-        this.builder(GameEventTags.IGNORE_VIBRATIONS_SNEAKING)
-                .add(ModGameEvent.SPELL_CAST.registryKey());
+    protected void addTags(HolderLookup.Provider arg) {
+        this.tag(GameEventTags.IGNORE_VIBRATIONS_SNEAKING)
+                .add(ModGameEvent.SPELL_CAST.key());
 
-        this.builder(GameEventTags.VIBRATIONS)
-                .add(ModGameEvent.SPELL_CAST.registryKey());
+        this.tag(GameEventTags.VIBRATIONS)
+                .add(ModGameEvent.SPELL_CAST.key());
 
-        this.builder(GameEventTags.WARDEN_CAN_LISTEN)
-                .add(ModGameEvent.SPELL_CAST.registryKey());
+        this.tag(GameEventTags.WARDEN_CAN_LISTEN)
+                .add(ModGameEvent.SPELL_CAST.key());
     }
 }

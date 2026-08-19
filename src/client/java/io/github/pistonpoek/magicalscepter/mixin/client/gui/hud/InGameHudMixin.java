@@ -3,9 +3,9 @@ package io.github.pistonpoek.magicalscepter.mixin.client.gui.hud;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -14,16 +14,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Environment(EnvType.CLIENT)
-@Mixin(InGameHud.class)
+@Mixin(Gui.class)
 public abstract class InGameHudMixin {
     @Final
     @Shadow
-    private MinecraftClient client;
+    private Minecraft minecraft;
 
-    @Inject(at = @At("RETURN"), method = "shouldShowExperienceBar", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "willPrioritizeExperienceInfo", cancellable = true)
     public void shouldShowExperienceBarOverlay(CallbackInfoReturnable<Boolean> callbackReturnable) {
         boolean show = callbackReturnable.getReturnValue();
-        ClientPlayerEntity player = this.client.player;
+        LocalPlayer player = this.minecraft.player;
 
         assert player != null;
         boolean renderOverlay = player.isHolding(ScepterHelper.ARCANE_SCEPTER) ||

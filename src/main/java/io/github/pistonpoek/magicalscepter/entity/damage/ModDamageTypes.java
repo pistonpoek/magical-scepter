@@ -1,21 +1,20 @@
 package io.github.pistonpoek.magicalscepter.entity.damage;
 
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-
 import java.util.List;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.entity.damage.DamageTypes
+ * @see net.minecraft.world.damagesource.DamageTypes
  */
 public class ModDamageTypes {
-    public static final List<RegistryKey<DamageType>> KEYS = List.of();
+    public static final List<ResourceKey<DamageType>> KEYS = List.of();
 
     /**
      * Create a damage source for the specified damage type registry key.
@@ -24,8 +23,8 @@ public class ModDamageTypes {
      * @param key                    Damage type registry key to create a damage source for.
      * @return Damage source created with the specified registry key.
      */
-    public static DamageSource of(DynamicRegistryManager dynamicRegistryManager, RegistryKey<DamageType> key) {
-        return new DamageSource(dynamicRegistryManager.getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(key));
+    public static DamageSource of(RegistryAccess dynamicRegistryManager, ResourceKey<DamageType> key) {
+        return new DamageSource(dynamicRegistryManager.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(key));
     }
 
     /**
@@ -33,6 +32,6 @@ public class ModDamageTypes {
      *
      * @param registry Damage type registrable to add damage types to.
      */
-    public static void bootstrap(Registerable<DamageType> registry) {
+    public static void bootstrap(BootstrapContext<DamageType> registry) {
     }
 }

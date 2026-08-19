@@ -4,14 +4,13 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.world.gen.structure.ModStructures;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
-import net.minecraft.data.DataOutput;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.gen.structure.Structure;
-
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -27,16 +26,16 @@ public class StructureProvider extends FabricCodecDataProvider<Structure> {
      * @param output           Data output to generate structure data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public StructureProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
-                ModRegistryKeys.directory(RegistryKeys.STRUCTURE), Structure.STRUCTURE_CODEC);
+    public StructureProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture, PackOutput.Target.DATA_PACK,
+                ModRegistryKeys.directory(Registries.STRUCTURE), Structure.DIRECT_CODEC);
     }
 
     @Override
-    protected void configure(BiConsumer<Identifier, Structure> provider, RegistryWrapper.WrapperLookup registries) {
-        RegistryEntryLookup<Structure> structureLookup = registries.getOrThrow(RegistryKeys.STRUCTURE);
+    protected void configure(BiConsumer<Identifier, Structure> provider, HolderLookup.Provider registries) {
+        HolderGetter<Structure> structureLookup = registries.lookupOrThrow(Registries.STRUCTURE);
 
-        for (RegistryKey<Structure> structureKey : ModStructures.KEYS) {
+        for (ResourceKey<Structure> structureKey : ModStructures.KEYS) {
             addStructure(provider, structureLookup, structureKey);
         }
     }
@@ -49,9 +48,9 @@ public class StructureProvider extends FabricCodecDataProvider<Structure> {
      * @param key      Registry key to add to the structure provider.
      */
     private static void addStructure(BiConsumer<Identifier, Structure> provider,
-                                         RegistryEntryLookup<Structure> lookup,
-                                         RegistryKey<Structure> key) {
-        provider.accept(key.getValue(), lookup.getOrThrow(key).value());
+                                         HolderGetter<Structure> lookup,
+                                         ResourceKey<Structure> key) {
+        provider.accept(key.identifier(), lookup.getOrThrow(key).value());
     }
 
     @Override

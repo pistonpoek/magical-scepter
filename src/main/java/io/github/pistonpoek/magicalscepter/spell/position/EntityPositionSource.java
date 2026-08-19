@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.util.StringIdentifiable;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public record EntityPositionSource(Anchor anchor) implements PositionSource {
@@ -16,18 +16,18 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
     );
 
     @Override
-    public Vec3d getPosition(@NotNull SpellContext context) {
+    public Vec3 getPosition(@NotNull SpellContext context) {
         return switch (anchor) {
-            case EYES -> context.caster().getEyePos();
-            case FEET -> context.caster().getEntityPos();
+            case EYES -> context.caster().getEyePosition();
+            case FEET -> context.caster().position();
         };
     }
 
-    public enum Anchor implements StringIdentifiable {
+    public enum Anchor implements StringRepresentable {
         EYES("eyes"),
         FEET("feet");
 
-        public final static Codec<Anchor> CODEC = StringIdentifiable.createBasicCodec(Anchor::values);
+        public final static Codec<Anchor> CODEC = StringRepresentable.fromValues(Anchor::values);
         private final String identifier;
 
         Anchor(String identifier) {
@@ -35,7 +35,7 @@ public record EntityPositionSource(Anchor anchor) implements PositionSource {
         }
 
         @Override
-        public String asString() {
+        public String getSerializedName() {
             return identifier;
         }
     }

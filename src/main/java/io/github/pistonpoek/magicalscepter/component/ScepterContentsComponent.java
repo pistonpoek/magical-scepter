@@ -7,26 +7,25 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipAppender;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.Texts;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.ColorHelper;
-
 import java.util.Optional;
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ARGB;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipProvider;
 
 import static io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes.SCEPTER_CONTENTS;
 
@@ -40,12 +39,12 @@ import static io.github.pistonpoek.magicalscepter.component.ModDataComponentType
  * @param customAttackSpell    Attack spell of the scepter that is cast on hit.
  * @param customProtectSpell   Protect spell of the scepter that is cast on use.
  */
-public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
+public record ScepterContentsComponent(Optional<Holder<Scepter>> scepter,
                                        Optional<Integer> customColor,
                                        Optional<Integer> customExperienceCost,
                                        Optional<Boolean> infusable,
-                                       Optional<RegistryEntry<Spell>> customAttackSpell,
-                                       Optional<RegistryEntry<Spell>> customProtectSpell) implements TooltipAppender {
+                                       Optional<Holder<Spell>> customAttackSpell,
+                                       Optional<Holder<Spell>> customProtectSpell) implements TooltipProvider {
     public static final ScepterContentsComponent DEFAULT =
             new ScepterContentsComponent(Optional.empty(), Optional.empty(), Optional.empty(),
                     Optional.empty(), Optional.empty(), Optional.empty());
@@ -65,18 +64,18 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
 
     public static final Codec<ScepterContentsComponent> CODEC = Codec.withAlternative(BASE_CODEC,
             Scepter.ENTRY_CODEC, ScepterContentsComponent::new);
-    public static final PacketCodec<RegistryByteBuf, ScepterContentsComponent> PACKET_CODEC = PacketCodec.tuple(
-            Scepter.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
+    public static final StreamCodec<RegistryFriendlyByteBuf, ScepterContentsComponent> PACKET_CODEC = StreamCodec.composite(
+            Scepter.ENTRY_PACKET_CODEC.apply(ByteBufCodecs::optional),
             ScepterContentsComponent::scepter,
-            PacketCodecs.INTEGER.collect(PacketCodecs::optional),
+            ByteBufCodecs.INT.apply(ByteBufCodecs::optional),
             ScepterContentsComponent::customColor,
-            PacketCodecs.INTEGER.collect(PacketCodecs::optional),
+            ByteBufCodecs.INT.apply(ByteBufCodecs::optional),
             ScepterContentsComponent::customExperienceCost,
-            PacketCodecs.BOOLEAN.collect(PacketCodecs::optional),
+            ByteBufCodecs.BOOL.apply(ByteBufCodecs::optional),
             ScepterContentsComponent::infusable,
-            Spell.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
+            Spell.ENTRY_PACKET_CODEC.apply(ByteBufCodecs::optional),
             ScepterContentsComponent::customAttackSpell,
-            Spell.ENTRY_PACKET_CODEC.collect(PacketCodecs::optional),
+            Spell.ENTRY_PACKET_CODEC.apply(ByteBufCodecs::optional),
             ScepterContentsComponent::customProtectSpell,
             ScepterContentsComponent::new
     );
@@ -86,7 +85,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     public static final String ON_CAST_ATTACK_KEY = createTranslationKey("on_cast_attack");
     public static final String ON_CAST_PROTECT_KEY = createTranslationKey("on_cast_protect");
 
-    public ScepterContentsComponent(RegistryEntry<Scepter> scepter) {
+    public ScepterContentsComponent(Holder<Scepter> scepter) {
         this(Optional.of(scepter), Optional.empty(), Optional.empty(),
                 Optional.empty(), Optional.empty(), Optional.empty());
     }
@@ -107,7 +106,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @param stack Item stack to get scepter component value for.
      * @return Scepter component value from the item stack.
      */
-    public static Optional<RegistryEntry<Scepter>> getScepter(ItemStack stack) {
+    public static Optional<Holder<Scepter>> getScepter(ItemStack stack) {
         return get(stack).flatMap(ScepterContentsComponent::scepter);
     }
 
@@ -117,7 +116,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Scepter value from the item stack.
      */
     private Optional<Scepter> getScepterValue() {
-        return scepter.map(RegistryEntry::value);
+        return scepter.map(Holder::value);
     }
 
     /**
@@ -127,8 +126,8 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @param scepter Scepter to update the scepter contents with.
      * @return Specified item stack updated with the scepter in the scepter contents component.
      */
-    public static ItemStack setScepter(ItemStack stack, RegistryEntry<Scepter> scepter) {
-        stack.apply(SCEPTER_CONTENTS, DEFAULT, scepter, ScepterContentsComponent::with);
+    public static ItemStack setScepter(ItemStack stack, Holder<Scepter> scepter) {
+        stack.update(SCEPTER_CONTENTS, DEFAULT, scepter, ScepterContentsComponent::with);
         return stack;
     }
 
@@ -150,7 +149,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
     public int getColor() {
         return this.customColor
                 .or(() -> getScepterValue().map(Scepter::getColor))
-                .map(ColorHelper::fullAlpha).orElse(BASE_COLOR);
+                .map(ARGB::opaque).orElse(BASE_COLOR);
     }
 
     /**
@@ -160,7 +159,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      */
     public int getExperienceCost() {
         return customExperienceCost
-                .or(() -> scepter.map(RegistryEntry::value).map(Scepter::getExperienceCost))
+                .or(() -> scepter.map(Holder::value).map(Scepter::getExperienceCost))
                 .orElse(BASE_EXPERIENCE_COST);
     }
 
@@ -170,7 +169,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @param player Player to check experience for.
      * @return Truth assignment, if the player has enough experience.
      */
-    public boolean hasEnoughExperience(PlayerEntity player) {
+    public boolean hasEnoughExperience(Player player) {
         return PlayerExperience.getTotalExperience(player) >= getExperienceCost();
     }
 
@@ -202,7 +201,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      */
     public String getTranslationKey() {
         return Scepters.getTranslationKey(
-                scepter.flatMap(RegistryEntry::getKey).orElse(null));
+                scepter.flatMap(Holder::unwrapKey).orElse(null));
     }
 
     /**
@@ -233,7 +232,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Attack spell value from the item stack.
      */
     public static Optional<Spell> getAttackSpell(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::getAttackSpell).map(RegistryEntry::value);
+        return get(stack).flatMap(ScepterContentsComponent::getAttackSpell).map(Holder::value);
     }
 
     /**
@@ -241,7 +240,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      *
      * @return Attack spell entry from scepter contents.
      */
-    public Optional<RegistryEntry<Spell>> getAttackSpell() {
+    public Optional<Holder<Spell>> getAttackSpell() {
         return customAttackSpell
                 .or(() -> getScepterValue().flatMap(Scepter::getAttackSpell));
     }
@@ -253,7 +252,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @return Protect spell value from the item stack.
      */
     public static Optional<Spell> getProtectSpell(ItemStack stack) {
-        return get(stack).flatMap(ScepterContentsComponent::getProtectSpell).map(RegistryEntry::value);
+        return get(stack).flatMap(ScepterContentsComponent::getProtectSpell).map(Holder::value);
     }
 
     /**
@@ -261,7 +260,7 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      *
      * @return Protect spell entry from scepter contents.
      */
-    public Optional<RegistryEntry<Spell>> getProtectSpell() {
+    public Optional<Holder<Spell>> getProtectSpell() {
         return customProtectSpell
                 .or(() -> getScepterValue().flatMap(Scepter::getProtectSpell));
     }
@@ -272,28 +271,28 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      * @param scepter Scepter to construct component with.
      * @return Scepter contents component made with the scepter.
      */
-    public ScepterContentsComponent with(RegistryEntry<Scepter> scepter) {
+    public ScepterContentsComponent with(Holder<Scepter> scepter) {
         return new ScepterContentsComponent(Optional.of(scepter), this.customColor, this.customExperienceCost,
                 this.infusable, this.customAttackSpell, this.customProtectSpell);
     }
 
-    private static final Formatting ATTACK_SPELL_FORMATTING = Formatting.DARK_GREEN;
-    private static final Formatting PROTECT_SPELL_FORMATTING = Formatting.BLUE;
-    private static final Text MISSING_SPELL_TEXT = ModIdentifier.translatable(MISSING_SPELL_KEY)
-            .formatted(Formatting.DARK_GRAY);
+    private static final ChatFormatting ATTACK_SPELL_FORMATTING = ChatFormatting.DARK_GREEN;
+    private static final ChatFormatting PROTECT_SPELL_FORMATTING = ChatFormatting.BLUE;
+    private static final Component MISSING_SPELL_TEXT = ModIdentifier.translatable(MISSING_SPELL_KEY)
+            .withStyle(ChatFormatting.DARK_GRAY);
 
     /**
      * Get the name of the attack spell.
      *
      * @return Text that represents the attack spell.
      */
-    public Text getAttackSpellName() {
-        Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
+    public Component getAttackSpellName() {
+        Optional<Holder<Spell>> attackSpell = getAttackSpell();
         if (attackSpell.isEmpty()) {
             return MISSING_SPELL_TEXT;
         }
-        MutableText mutableText = Spell.getName(attackSpell.get());
-        return Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(ATTACK_SPELL_FORMATTING));
+        MutableComponent mutableText = Spell.getName(attackSpell.get());
+        return ComponentUtils.mergeStyles(mutableText, Style.EMPTY.withColor(ATTACK_SPELL_FORMATTING));
     }
 
     /**
@@ -301,44 +300,44 @@ public record ScepterContentsComponent(Optional<RegistryEntry<Scepter>> scepter,
      *
      * @return Text that represents the protect spell.
      */
-    public Text getProtectSpellName() {
-        Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
+    public Component getProtectSpellName() {
+        Optional<Holder<Spell>> protectSpell = getProtectSpell();
         if (protectSpell.isEmpty()) {
             return MISSING_SPELL_TEXT;
         }
-        MutableText mutableText = Spell.getName(protectSpell.get());
-        return Texts.setStyleIfAbsent(mutableText, Style.EMPTY.withColor(PROTECT_SPELL_FORMATTING));
+        MutableComponent mutableText = Spell.getName(protectSpell.get());
+        return ComponentUtils.mergeStyles(mutableText, Style.EMPTY.withColor(PROTECT_SPELL_FORMATTING));
     }
 
-    private static final Formatting TITLE_FORMATTING = Formatting.GRAY;
-    private static final Text NO_SPELLS_TEXT = Text.translatable(NO_SPELLS_KEY)
-            .formatted(TITLE_FORMATTING);
-    private static final Text CAST_ATTACK_TEXT = Text.translatable(ON_CAST_ATTACK_KEY)
-            .formatted(TITLE_FORMATTING);
-    private static final Text CAST_PROTECT_TEXT = Text.translatable(ON_CAST_PROTECT_KEY)
-            .formatted(TITLE_FORMATTING);
+    private static final ChatFormatting TITLE_FORMATTING = ChatFormatting.GRAY;
+    private static final Component NO_SPELLS_TEXT = Component.translatable(NO_SPELLS_KEY)
+            .withStyle(TITLE_FORMATTING);
+    private static final Component CAST_ATTACK_TEXT = Component.translatable(ON_CAST_ATTACK_KEY)
+            .withStyle(TITLE_FORMATTING);
+    private static final Component CAST_PROTECT_TEXT = Component.translatable(ON_CAST_PROTECT_KEY)
+            .withStyle(TITLE_FORMATTING);
 
     @Override
-    public void appendTooltip(Item.TooltipContext context, Consumer<Text> tooltip,
-                              TooltipType type, ComponentsAccess components) {
-        Optional<RegistryEntry<Spell>> attackSpell = getAttackSpell();
-        Optional<RegistryEntry<Spell>> protectSpell = getProtectSpell();
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltip,
+                              TooltipFlag type, DataComponentGetter components) {
+        Optional<Holder<Spell>> attackSpell = getAttackSpell();
+        Optional<Holder<Spell>> protectSpell = getProtectSpell();
 
         if (attackSpell.isEmpty() && protectSpell.isEmpty()) {
             tooltip.accept(NO_SPELLS_TEXT);
             return;
         }
 
-        tooltip.accept(ScreenTexts.EMPTY);
+        tooltip.accept(CommonComponents.EMPTY);
 
         if (attackSpell.isPresent()) {
             tooltip.accept(CAST_ATTACK_TEXT);
-            tooltip.accept(ScreenTexts.space().append(getAttackSpellName()));
+            tooltip.accept(CommonComponents.space().append(getAttackSpellName()));
         }
 
         if (protectSpell.isPresent()) {
             tooltip.accept(CAST_PROTECT_TEXT);
-            tooltip.accept(ScreenTexts.space().append(getProtectSpellName()));
+            tooltip.accept(CommonComponents.space().append(getProtectSpellName()));
         }
     }
 

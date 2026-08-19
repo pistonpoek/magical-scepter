@@ -1,13 +1,13 @@
 package io.github.pistonpoek.magicalscepter.mixin.client.gui.hud.bar;
 
 import io.github.pistonpoek.magicalscepter.gui.hud.ExperienceBarOverlay;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.bar.Bar;
-import net.minecraft.client.gui.hud.bar.ExperienceBar;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+import net.minecraft.client.gui.contextualbar.ExperienceBarRenderer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,23 +15,23 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ExperienceBar.class)
-public abstract class ExperienceBarMixin implements Bar {
+@Mixin(ExperienceBarRenderer.class)
+public abstract class ExperienceBarMixin implements ContextualBarRenderer {
     @Final
     @Shadow
-    private MinecraftClient client;
+    private Minecraft minecraft;
 
-    @Inject(at = @At("TAIL"), method = "renderBar")
-    public void renderExperienceBarOverlay(DrawContext context, RenderTickCounter tickCounter, CallbackInfo callback) {
-        ClientPlayerEntity player = this.client.player;
-        int x = this.getCenterX(this.client.getWindow());
-        int y = this.getCenterY(this.client.getWindow());
+    @Inject(at = @At("TAIL"), method = "renderBackground")
+    public void renderExperienceBarOverlay(GuiGraphics context, DeltaTracker tickCounter, CallbackInfo callback) {
+        LocalPlayer player = this.minecraft.player;
+        int x = this.left(this.minecraft.getWindow());
+        int y = this.top(this.minecraft.getWindow());
 
         assert player != null;
-        ItemStack mainHandStack = player.getMainHandStack();
-        ItemStack offHandStack = player.getOffHandStack();
-        boolean mainHandCooldown = player.getItemCooldownManager().isCoolingDown(mainHandStack);
-        boolean offHandCooldown = player.getItemCooldownManager().isCoolingDown(offHandStack);
+        ItemStack mainHandStack = player.getMainHandItem();
+        ItemStack offHandStack = player.getOffhandItem();
+        boolean mainHandCooldown = player.getCooldowns().isOnCooldown(mainHandStack);
+        boolean offHandCooldown = player.getCooldowns().isOnCooldown(offHandStack);
 
         if (!offHandCooldown && mainHandCooldown) {
             if (ExperienceBarOverlay.render(context, offHandStack, player, x, y)) return;

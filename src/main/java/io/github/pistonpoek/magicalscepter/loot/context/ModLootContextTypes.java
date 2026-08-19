@@ -3,26 +3,25 @@ package io.github.pistonpoek.magicalscepter.loot.context;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.context.ContextType;
-
 import java.util.function.Consumer;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.context.ContextKeySet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.loot.context.LootContextTypes
+ * @see net.minecraft.world.level.storage.loot.parameters.LootContextParamSets
  */
 public class ModLootContextTypes {
-    private static final BiMap<Identifier, ContextType> MAP = HashBiMap.create();
+    private static final BiMap<Identifier, ContextKeySet> MAP = HashBiMap.create();
 
-    public static final ContextType SPELL_CAST = register(
+    public static final ContextKeySet SPELL_CAST = register(
             "spell_cast",
-            builder -> builder.require(LootContextParameters.THIS_ENTITY)
-                    .require(LootContextParameters.ORIGIN)
-                    .require(LootContextParameters.TOOL)
-                    .require(LootContextParameters.BLOCK_STATE)
+            builder -> builder.required(LootContextParams.THIS_ENTITY)
+                    .required(LootContextParams.ORIGIN)
+                    .required(LootContextParams.TOOL)
+                    .required(LootContextParams.BLOCK_STATE)
     );
 
     /**
@@ -37,7 +36,7 @@ public class ModLootContextTypes {
      *
      * @return Mod loot context map.
      */
-    public static BiMap<Identifier, ContextType> getLootContextMap() {
+    public static BiMap<Identifier, ContextKeySet> getLootContextMap() {
         return MAP;
     }
 
@@ -48,11 +47,11 @@ public class ModLootContextTypes {
      * @param type Context type builder consumer to register.
      * @return Registered context type.
      */
-    private static ContextType register(String name, Consumer<ContextType.Builder> type) {
-        ContextType.Builder builder = new ContextType.Builder();
+    private static ContextKeySet register(String name, Consumer<ContextKeySet.Builder> type) {
+        ContextKeySet.Builder builder = new ContextKeySet.Builder();
         type.accept(builder);
-        ContextType contextType = builder.build();
-        ContextType putContextType = MAP.put(ModIdentifier.of(name), contextType);
+        ContextKeySet contextType = builder.build();
+        ContextKeySet putContextType = MAP.put(ModIdentifier.of(name), contextType);
         if (putContextType != null) {
             throw new IllegalStateException("Loot table parameter set " +
                     ModIdentifier.of(name) + " is already registered");

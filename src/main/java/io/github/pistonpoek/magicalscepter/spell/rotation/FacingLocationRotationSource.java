@@ -4,8 +4,8 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public record FacingLocationRotationSource(PositionSource position) implements RotationSource {
@@ -16,24 +16,24 @@ public record FacingLocationRotationSource(PositionSource position) implements R
     );
 
     @Override
-    public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
-        Vec3d start = context.position();
-        Vec3d end = position.getPosition(context);
+    public Tuple<Float, Float> getRotation(@NotNull SpellContext context) {
+        Vec3 start = context.position();
+        Vec3 end = position.getPosition(context);
 
-        Vec3d facing = end.subtract(start).normalize();
+        Vec3 facing = end.subtract(start).normalize();
         if (facing.length() == 0) {
-            return new Pair<>(context.pitch(), context.yaw());
+            return new Tuple<>(context.pitch(), context.yaw());
         }
         float pitch = (float) (-90 + 180 * Math.acos(facing.y) / Math.PI);
 
-        Vec3d horizontal = new Vec3d(facing.x, 0, facing.z).normalize();
+        Vec3 horizontal = new Vec3(facing.x, 0, facing.z).normalize();
         if (horizontal.length() == 0) {
-            return new Pair<>(pitch, context.yaw());
+            return new Tuple<>(pitch, context.yaw());
         }
         float yaw = (float) (180 * Math.acos(horizontal.z) / Math.PI);
         yaw = facing.x > 0 ? -yaw : yaw;
 
-        return new Pair<>(pitch, yaw);
+        return new Tuple<>(pitch, yaw);
     }
 
     @Override

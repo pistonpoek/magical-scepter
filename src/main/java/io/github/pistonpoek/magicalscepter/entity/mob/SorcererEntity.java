@@ -8,64 +8,69 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.CreakingEntity;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.IllagerEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
-import net.minecraft.entity.passive.MerchantEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.raid.RaiderEntity;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.golem.IronGolem;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.creaking.Creaking;
+import net.minecraft.world.entity.monster.illager.AbstractIllager;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.raid.Raider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Illager entity that wields a magical scepter.
  */
-public class SorcererEntity extends IllagerEntity {
+public class SorcererEntity extends AbstractIllager {
     /**
      * Construct the sorcerer entity in the specified world.
      *
      * @param entityType Entity type that is being created.
      * @param world      World to create the entity in.
      */
-    public SorcererEntity(EntityType<? extends SorcererEntity> entityType, World world) {
+    public SorcererEntity(EntityType<? extends SorcererEntity> entityType, Level world) {
         super(entityType, world);
         this.setCanPickUpLoot(true);
     }
 
     @Override
-    protected void initGoals() {
-        super.initGoals();
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 5.0F, 1.0, 1.2));
-        this.goalSelector.add(3, new FleeEntityGoal<>(this, CreakingEntity.class, 8.0F, 1.0, 1.2));
-        this.goalSelector.add(4, new ScepterRefillGoal<>(this));
-        this.goalSelector.add(6, new ScepterAttackGoal<>(this, 0.5, 30, 8.0F));
-        this.goalSelector.add(8, new WanderAroundGoal(this, 0.6));
-        this.goalSelector.add(9, new LookAtEntityGoal(this, PlayerEntity.class, 3.0F, 1.0F));
-        this.goalSelector.add(10, new LookAtEntityGoal(this, MobEntity.class, 8.0F));
-        this.targetSelector.add(1, new RevengeGoal(this, RaiderEntity.class).setGroupRevenge());
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true).setMaxTimeWithoutVisibility(300));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, MerchantEntity.class, false).setMaxTimeWithoutVisibility(300));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, IronGolemEntity.class, false).setMaxTimeWithoutVisibility(300));
+    protected void registerGoals() {
+        super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 5.0F, 1.0, 1.2));
+        this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Creaking.class, 8.0F, 1.0, 1.2));
+        this.goalSelector.addGoal(4, new ScepterRefillGoal<>(this));
+        this.goalSelector.addGoal(6, new ScepterAttackGoal<>(this, 0.5, 30, 8.0F));
+        this.goalSelector.addGoal(8, new RandomStrollGoal(this, 0.6));
+        this.goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
+        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Raider.class).setAlertOthers());
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true).setUnseenMemoryTicks(300));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false).setUnseenMemoryTicks(300));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false).setUnseenMemoryTicks(300));
     }
 
     /**
@@ -73,35 +78,35 @@ public class SorcererEntity extends IllagerEntity {
      *
      * @return Attribute builder for the sorcerer entity with base values.
      */
-    public static DefaultAttributeContainer.Builder createSorcererAttributes() {
-        return HostileEntity.createHostileAttributes()
-                .add(EntityAttributes.MOVEMENT_SPEED, 0.5)
-                .add(EntityAttributes.FOLLOW_RANGE, 16.0)
-                .add(EntityAttributes.MAX_HEALTH, 24.0);
+    public static AttributeSupplier.Builder createSorcererAttributes() {
+        return Monster.createMonsterAttributes()
+                .add(Attributes.MOVEMENT_SPEED, 0.5)
+                .add(Attributes.FOLLOW_RANGE, 16.0)
+                .add(Attributes.MAX_HEALTH, 24.0);
     }
 
     @Override
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty,
-                                 SpawnReason spawnReason, @Nullable EntityData entityData) {
-        Random random = world.getRandom();
-        this.initEquipment(random, difficulty);
-        return super.initialize(world, difficulty, spawnReason, entityData);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                 EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
+        RandomSource random = world.getRandom();
+        this.populateDefaultEquipmentSlots(random, difficulty);
+        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
     }
 
     @Override
-    protected void initEquipment(Random random, LocalDifficulty localDifficulty) {
-        Registry<Scepter> scepterRegistry = this.getRegistryManager().getOrThrow(ModRegistryKeys.SCEPTER);
-        RegistryEntry<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
-        this.equipStack(EquipmentSlot.MAINHAND, ScepterHelper.createMagicalScepter(magicalScepter));
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance localDifficulty) {
+        Registry<Scepter> scepterRegistry = this.registryAccess().lookupOrThrow(ModRegistryKeys.SCEPTER);
+        Holder<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
+        this.setItemSlot(EquipmentSlot.MAINHAND, ScepterHelper.createMagicalScepter(magicalScepter));
     }
 
     @Override
-    public void tickMovement() {
-        super.tickMovement();
+    public void aiStep() {
+        super.aiStep();
     }
 
     @Override
-    public SoundEvent getCelebratingSound() {
+    public SoundEvent getCelebrateSound() {
         return ModSoundEvents.ENTITY_SORCERER_CELEBRATE;
     }
 
@@ -121,16 +126,16 @@ public class SorcererEntity extends IllagerEntity {
     }
 
     @Override
-    public void addBonusForWave(ServerWorld world, int wave, boolean unused) {
+    public void applyRaidBuffs(ServerLevel world, int wave, boolean unused) {
     }
 
     @Override
-    public TagKey<Item> getPreferredWeapons() {
+    public TagKey<Item> getPreferredWeaponType() {
         return ModItemTags.SORCERER_PREFERRED_WEAPONS;
     }
 
     @Override
-    public SorcererEntity.State getState() {
-        return this.isAttacking() ? IllagerEntity.State.NEUTRAL : IllagerEntity.State.CROSSED;
+    public AbstractIllager.IllagerArmPose getArmPose() {
+        return this.isAggressive() ? AbstractIllager.IllagerArmPose.NEUTRAL : AbstractIllager.IllagerArmPose.CROSSED;
     }
 }

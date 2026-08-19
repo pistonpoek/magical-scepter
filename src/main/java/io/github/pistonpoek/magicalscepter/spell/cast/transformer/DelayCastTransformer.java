@@ -4,16 +4,16 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.DelayedSpellCasting;
-import net.minecraft.util.dynamic.Codecs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
+import net.minecraft.util.ExtraCodecs;
 
 public record DelayCastTransformer(int delay) implements CastTransformer {
     public static final MapCodec<DelayCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Codecs.POSITIVE_INT.fieldOf("delay").forGetter(DelayCastTransformer::delay)
+                    ExtraCodecs.POSITIVE_INT.fieldOf("delay").forGetter(DelayCastTransformer::delay)
             ).apply(instance, DelayCastTransformer::new)
     );
 

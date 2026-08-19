@@ -6,11 +6,11 @@ import io.github.pistonpoek.magicalscepter.mixson.advancement.adventure.KillAllM
 import io.github.pistonpoek.magicalscepter.mixson.advancement.nether.AllEffectsMixson;
 import io.github.pistonpoek.magicalscepter.mixson.world.BiomeSpawnEntryMixson;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.ramixin.mixson.inline.Mixson;
 import net.ramixin.mixson.inline.MixsonEvent;
 
@@ -26,10 +26,10 @@ public class MixsonEvents {
      * @param mobIdentifier Identifier of the mob to register a mob modification for.
      */
     public static void registerMobModification(Identifier mobIdentifier) {
-        registerMixsonEvent(List.of(Identifier.of("advancement/adventure/kill_a_mob")),
+        registerMixsonEvent(List.of(Identifier.parse("advancement/adventure/kill_a_mob")),
                 ModIdentifier.identifier("kill_a_mob_" + mobIdentifier.getPath()),
                 new KillAMobMixson(mobIdentifier));
-        registerMixsonEvent(List.of(Identifier.of("advancement/adventure/kill_all_mobs")),
+        registerMixsonEvent(List.of(Identifier.parse("advancement/adventure/kill_all_mobs")),
                 ModIdentifier.identifier("kill_all_mobs_" + mobIdentifier.getPath()),
                 new KillAllMobsMixson(mobIdentifier));
     }
@@ -40,7 +40,7 @@ public class MixsonEvents {
      * @param effectIdentifier Identifier of the effect to register an effect modification for.
      */
     public static void registerEffectModification(Identifier effectIdentifier) {
-        registerMixsonEvent(List.of(Identifier.of("advancement/nether/all_effects")),
+        registerMixsonEvent(List.of(Identifier.parse("advancement/nether/all_effects")),
                 ModIdentifier.identifier("all_effects_" + effectIdentifier.getPath()),
                 new AllEffectsMixson(effectIdentifier));
     }
@@ -53,12 +53,12 @@ public class MixsonEvents {
      * @param weight Weight of the spawn entry to register.
      * @param entry Spawn entry to add in the specified biome.
      */
-    public static void registerMonsterSpawnEntry(RegistryKey<Biome> biome, SpawnGroup group,
-                                                 int weight, SpawnSettings.SpawnEntry entry) {
-        String biomePath = biome.getValue().getPath();
-        registerMixsonEvent(List.of(Identifier.of("worldgen/biome/" + biomePath)),
+    public static void registerMonsterSpawnEntry(ResourceKey<Biome> biome, MobCategory group,
+                                                 int weight, MobSpawnSettings.SpawnerData entry) {
+        String biomePath = biome.identifier().getPath();
+        registerMixsonEvent(List.of(Identifier.parse("worldgen/biome/" + biomePath)),
                 ModIdentifier.identifier(String.join("_", "biome_spawn_entry",
-                        biomePath, entry.type().getUntranslatedName())),
+                        biomePath, entry.type().toShortString())),
                 new BiomeSpawnEntryMixson(group, weight, entry));
     }
 

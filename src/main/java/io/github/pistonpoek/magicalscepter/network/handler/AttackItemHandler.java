@@ -3,12 +3,12 @@ package io.github.pistonpoek.magicalscepter.network.handler;
 import io.github.pistonpoek.magicalscepter.item.AttackItem;
 import io.github.pistonpoek.magicalscepter.network.packet.AttackItemPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Packet handler for triggering the attack of attack items.
@@ -18,26 +18,26 @@ import net.minecraft.util.math.MathHelper;
 public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandler<AttackItemPayload> {
     @Override
     public void receive(AttackItemPayload payload, ServerPlayNetworking.Context context) {
-        ServerPlayerEntity player = context.player();
+        ServerPlayer player = context.player();
 
         // Filter for attack items.
-        Item item = player.getMainHandStack().getItem();
+        Item item = player.getMainHandItem().getItem();
         if (!(item instanceof AttackItem)) {
             return;
         }
 
-        player.updateLastActionTime();
+        player.resetLastActionTime();
 
         // Update player rotation before attacking with item.
-        float yaw = MathHelper.wrapDegrees(payload.yaw());
-        float pitch = MathHelper.wrapDegrees(payload.pitch());
-        if (yaw != player.getYaw() || pitch != player.getPitch()) {
-            player.setAngles(yaw, pitch);
+        float yaw = Mth.wrapDegrees(payload.yaw());
+        float pitch = Mth.wrapDegrees(payload.pitch());
+        if (yaw != player.getYRot() || pitch != player.getXRot()) {
+            player.absSnapRotationTo(yaw, pitch);
         }
 
-        ActionResult actionResult = attackWithItem(player);
-        if (actionResult == ActionResult.SUCCESS || actionResult == ActionResult.SUCCESS_SERVER) {
-            player.swingHand(Hand.MAIN_HAND, true);
+        InteractionResult actionResult = attackWithItem(player);
+        if (actionResult == InteractionResult.SUCCESS || actionResult == InteractionResult.SUCCESS_SERVER) {
+            player.swing(InteractionHand.MAIN_HAND, true);
         }
     }
 
@@ -47,43 +47,43 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
      * @param player Server player entity that should try to attack.
      * @return Action result of the attack.
      */
-    private ActionResult attackWithItem(ServerPlayerEntity player) {
-        ItemStack stack = player.getMainHandStack();
-        Hand hand = Hand.MAIN_HAND;
+    private InteractionResult attackWithItem(ServerPlayer player) {
+        ItemStack stack = player.getMainHandItem();
+        InteractionHand hand = InteractionHand.MAIN_HAND;
 
         if (player.isSpectator()) {
-            return ActionResult.PASS;
-        } else if (player.getItemCooldownManager().isCoolingDown(stack)) {
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
+        } else if (player.getCooldowns().isOnCooldown(stack)) {
+            return InteractionResult.PASS;
         } else if (!(stack.getItem() instanceof AttackItem)) {
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }
 
         int stackCount = stack.getCount();
-        int stackDamage = stack.getDamage();
+        int stackDamage = stack.getDamageValue();
 
-        ActionResult result =
-                ((AttackItem) stack.getItem()).attack(player.getEntityWorld(), player);
-        ItemStack resultStack = result instanceof ActionResult.Success success ? success.getNewHandStack() : stack;
+        InteractionResult result =
+                ((AttackItem) stack.getItem()).attack(player.level(), player);
+        ItemStack resultStack = result instanceof InteractionResult.Success success ? success.heldItemTransformedTo() : stack;
 
         if (resultStack == stack && resultStack.getCount() == stackCount &&
-                resultStack.getMaxUseTime(player) <= 0 && resultStack.getDamage() == stackDamage) {
+                resultStack.getUseDuration(player) <= 0 && resultStack.getDamageValue() == stackDamage) {
             return result;
-        } else if (result == ActionResult.FAIL &&
-                resultStack.getMaxUseTime(player) > 0 && !player.isUsingItem()) {
+        } else if (result == InteractionResult.FAIL &&
+                resultStack.getUseDuration(player) > 0 && !player.isUsingItem()) {
             return result;
         }
 
         if (stack != resultStack) {
-            player.setStackInHand(hand, resultStack);
+            player.setItemInHand(hand, resultStack);
         }
 
         if (resultStack.isEmpty()) {
-            player.setStackInHand(hand, ItemStack.EMPTY);
+            player.setItemInHand(hand, ItemStack.EMPTY);
         }
 
         if (!player.isUsingItem()) {
-            player.playerScreenHandler.syncState();
+            player.inventoryMenu.sendAllDataToRemote();
         }
 
         return result;

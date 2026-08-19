@@ -6,10 +6,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.builder.SoundTypeBuilder;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricSoundsProvider;
-import net.minecraft.data.DataOutput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.sound.SoundEvent;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.sounds.SoundEvent;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -24,7 +23,7 @@ public class ModSoundsProvider extends FabricSoundsProvider {
      * @param output           Data output to generate sounds data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModSoundsProvider(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public ModSoundsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
@@ -39,7 +38,7 @@ public class ModSoundsProvider extends FabricSoundsProvider {
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup registries, SoundExporter exporter) {
+    protected void configure(HolderLookup.Provider registries, SoundExporter exporter) {
         addSound(exporter, ModSoundEvents.ENTITY_PARROT_IMITATE_SORCERER, 
                 builder -> builder
                         .sound(SoundTypeBuilder.EntryBuilder.ofEvent(ModSoundEvents.ENTITY_SORCERER_AMBIENT))

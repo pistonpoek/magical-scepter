@@ -1,12 +1,11 @@
 package io.github.pistonpoek.magicalscepter.util;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.util.Hand;
-
 import java.util.function.Predicate;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Util class related to the hand of a living entity.
@@ -19,15 +18,15 @@ public class LivingEntityHand {
      * @param predicate Predicate to find the hand for.
      * @return Hand of entity for which the predicate holds.
      */
-    public static Hand get(LivingEntity entity, Predicate<ItemStack> predicate) {
-        return predicate.test(entity.getMainHandStack()) ? Hand.MAIN_HAND : Hand.OFF_HAND;
+    public static InteractionHand get(LivingEntity entity, Predicate<ItemStack> predicate) {
+        return predicate.test(entity.getMainHandItem()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
     }
 
     /**
      * Packet codec for a hand.
      */
-    public static final PacketCodec<RegistryByteBuf, Hand> PACKET_CODEC = PacketCodec.of(
+    public static final StreamCodec<RegistryFriendlyByteBuf, InteractionHand> PACKET_CODEC = StreamCodec.ofMember(
             (value, buf) -> buf.writeVarInt(value.ordinal()),
-            buf -> Hand.values()[buf.readVarInt()]
+            buf -> InteractionHand.values()[buf.readVarInt()]
     );
 }

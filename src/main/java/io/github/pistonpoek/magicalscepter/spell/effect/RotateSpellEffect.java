@@ -8,8 +8,8 @@ public record RotateSpellEffect() implements SpellEffect {
 
     @Override
     public void apply(SpellContext context) {
-        context.target().setPitch(context.pitch());
-        context.target().setYaw(context.yaw());
+        context.target().setXRot(context.pitch());
+        context.target().setYRot(context.yaw());
     }
 
     @Override

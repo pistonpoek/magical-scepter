@@ -5,11 +5,11 @@ import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
-import net.minecraft.component.ComponentType;
-import net.minecraft.predicate.component.ComponentSubPredicate;
-import net.minecraft.registry.RegistryCodecs;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.advancements.criterion.SingleComponentItemPredicate;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.component.DataComponentType;
 
 import java.util.Optional;
 
@@ -19,18 +19,18 @@ import java.util.Optional;
  * @param scepters List of scepter registry entries to test scepter contents with.
  */
 public record ScepterContentsPredicate(
-        RegistryEntryList<Scepter> scepters) implements ComponentSubPredicate<ScepterContentsComponent> {
-    public static final Codec<ScepterContentsPredicate> CODEC = RegistryCodecs.entryList(ModRegistryKeys.SCEPTER)
+        HolderSet<Scepter> scepters) implements SingleComponentItemPredicate<ScepterContentsComponent> {
+    public static final Codec<ScepterContentsPredicate> CODEC = RegistryCodecs.homogeneousList(ModRegistryKeys.SCEPTER)
             .xmap(ScepterContentsPredicate::new, ScepterContentsPredicate::scepters);
 
     @Override
-    public ComponentType<ScepterContentsComponent> getComponentType() {
+    public DataComponentType<ScepterContentsComponent> componentType() {
         return ModDataComponentTypes.SCEPTER_CONTENTS;
     }
 
     @Override
-    public boolean test(ScepterContentsComponent scepterContentsComponent) {
-        Optional<RegistryEntry<Scepter>> optional = scepterContentsComponent.scepter();
+    public boolean matches(ScepterContentsComponent scepterContentsComponent) {
+        Optional<Holder<Scepter>> optional = scepterContentsComponent.scepter();
         return optional.isPresent() && this.scepters.contains(optional.get());
     }
 }

@@ -3,10 +3,10 @@ package io.github.pistonpoek.magicalscepter.gui.hud;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.bar.Bar;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.Identifier;
 
 public class SpellCostIndicationBar {
     private static final Identifier TEXTURE = ModIdentifier.of("hud/experience_bar_cost");
@@ -20,12 +20,12 @@ public class SpellCostIndicationBar {
      * @param x               Horizontal position of the experience bar on the screen.
      * @param y               Vertical position of the experience bar on the screen.
      */
-    public static void render(DrawContext context, ClientPlayerEntity player,
+    public static void render(GuiGraphics context, LocalPlayer player,
                               ScepterContentsComponent scepterContents, int x, int y) {
         int progress = ExperienceBar.getPixelProgress(player);
         float cost_progress = (scepterContents.getExperienceCost() - PlayerExperience.getTotalExperience(player))
-                / (float) player.getNextLevelExperience();
-        int cost_part = Math.round(cost_progress * (Bar.WIDTH + 1.0F));
+                / (float) player.getXpNeededForNextLevel();
+        int cost_part = Math.round(cost_progress * (ContextualBarRenderer.WIDTH + 1.0F));
         ExperienceBar.renderSection(context, TEXTURE, x, y, progress, progress + cost_part);
     }
 }

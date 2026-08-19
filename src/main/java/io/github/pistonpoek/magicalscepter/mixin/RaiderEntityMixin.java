@@ -2,24 +2,24 @@ package io.github.pistonpoek.magicalscepter.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.mob.PatrolEntity;
-import net.minecraft.entity.raid.RaiderEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.PatrollingMonster;
+import net.minecraft.world.entity.raid.Raider;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Mixin(RaiderEntity.class)
-public abstract class RaiderEntityMixin extends PatrolEntity {
+@Mixin(Raider.class)
+public abstract class RaiderEntityMixin extends PatrollingMonster {
     /**
      * Constructs a raider entity mixin to match the patrol entity constructor.
      *
      * @param type Entity type to create the raider entity mixin with.
      * @param world World to create the raider entity mixin in.
      */
-    protected RaiderEntityMixin(EntityType<? extends PatrolEntity> type, World world) {
+    protected RaiderEntityMixin(EntityType<? extends PatrollingMonster> type, Level world) {
         super(type, world);
     }
 
@@ -30,9 +30,9 @@ public abstract class RaiderEntityMixin extends PatrolEntity {
      * @param spawnReason Spawn reason for the raider entity.
      * @return Truth assignment, if originally able to join the raid excluding naturally spawned sorcerers.
      */
-    @ModifyArg(method = "initialize",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/raid/RaiderEntity;setAbleToJoinRaid(Z)V"))
-    public boolean modifyAbleToJoinRaid(boolean ableToJoinRaid, @Local(argsOnly = true) SpawnReason spawnReason) {
-        return ableToJoinRaid && (this.getType() != ModEntityType.SORCERER && spawnReason != SpawnReason.NATURAL);
+    @ModifyArg(method = "finalizeSpawn",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/raid/Raider;setCanJoinRaid(Z)V"))
+    public boolean modifyAbleToJoinRaid(boolean ableToJoinRaid, @Local(argsOnly = true) EntitySpawnReason spawnReason) {
+        return ableToJoinRaid && (this.getType() != ModEntityType.SORCERER && spawnReason != EntitySpawnReason.NATURAL);
     }
 }

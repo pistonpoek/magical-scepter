@@ -36,7 +36,7 @@ public record ContextSourceList(List<SpellContextSource> sources) implements Spe
 
     public ContextSourceList(SpellContext context) {
         this(List.of(
-                        new AbsoluteTargetSource(context.target().getUuid()),
+                        new AbsoluteTargetSource(context.target().getUUID()),
                         new AbsolutePositionSource(context.position()),
                         new AbsoluteRotationSource(context.pitch(), context.yaw())
                 )

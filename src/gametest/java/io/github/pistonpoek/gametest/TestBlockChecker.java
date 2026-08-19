@@ -1,28 +1,27 @@
 package io.github.pistonpoek.gametest;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TestBlock;
-import net.minecraft.block.entity.TestBlockEntity;
-import net.minecraft.block.enums.TestBlockMode;
-import net.minecraft.test.BlockBasedTestInstance;
-import net.minecraft.test.FunctionTestInstance;
-import net.minecraft.test.TestContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.gametest.framework.BlockBasedTestInstance;
+import net.minecraft.gametest.framework.FunctionGameTestInstance;
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TestBlock;
+import net.minecraft.world.level.block.entity.TestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.TestBlockMode;
 
 /**
- * Check for test blocks in game tests, which allows {@link FunctionTestInstance} to have active {@link TestBlock}'s.
+ * Check for test blocks in game tests, which allows {@link FunctionGameTestInstance} to have active {@link TestBlock}'s.
  *
  * @see BlockBasedTestInstance
  *
  * @param context Test context to activate test blocks for.
  */
-public record TestBlockChecker(TestContext context) {
+public record TestBlockChecker(GameTestHelper context) {
 
     /**
      * Trigger start test blocks and activate the use of other test block modes.
@@ -34,10 +33,10 @@ public record TestBlockChecker(TestContext context) {
         }
 
         // Make all other test blocks function for the remaining ticks of the test.
-        context.forEachRemainingTick(() -> {
-            handleTrigger(TestBlockMode.ACCEPT, testBlockEntity -> context.complete());
+        context.onEachTick(() -> {
+            handleTrigger(TestBlockMode.ACCEPT, testBlockEntity -> context.succeed());
             handleTrigger(TestBlockMode.FAIL, testBlockEntity ->
-                    context.throwGameTestException(Text.literal(testBlockEntity.getMessage())));
+                    context.fail(Component.literal(testBlockEntity.getMessage())));
             handleTrigger(TestBlockMode.LOG, TestBlockEntity::trigger);
         });
     }
@@ -50,10 +49,10 @@ public record TestBlockChecker(TestContext context) {
      */
     public List<BlockPos> findTestBlocks(TestBlockMode mode) {
         List<BlockPos> list = new ArrayList<>();
-        context.forEachRelativePos(pos -> {
+        context.forEveryBlockInStructure(pos -> {
             BlockState blockState = context.getBlockState(pos);
-            if (blockState.isOf(Blocks.TEST_BLOCK) && blockState.get(TestBlock.MODE) == mode) {
-                list.add(pos.toImmutable());
+            if (blockState.is(Blocks.TEST_BLOCK) && blockState.getValue(TestBlock.MODE) == mode) {
+                list.add(pos.immutable());
             }
         });
         return list;

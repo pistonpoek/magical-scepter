@@ -10,19 +10,18 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.cast.delay.SpellCastingManager;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-
 import java.util.Collection;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.ResourceArgument;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * Command that can be used by living entities to cast or clear spells.
@@ -36,9 +35,9 @@ public class SpellCommand {
     public static final String CLEAR_SUCCESS_MULTIPLE_KEY = createTranslationKey("clear.success.multiple");
 
     private static final SimpleCommandExceptionType CAST_FAILED_EXCEPTION =
-            new SimpleCommandExceptionType(Text.translatable(CAST_FAILED_KEY));
+            new SimpleCommandExceptionType(Component.translatable(CAST_FAILED_KEY));
     private static final SimpleCommandExceptionType CLEAR_FAILED_EXCEPTION =
-            new SimpleCommandExceptionType(Text.translatable(CLEAR_FAILED_KEY));
+            new SimpleCommandExceptionType(Component.translatable(CLEAR_FAILED_KEY));
 
     /**
      * Register the spell command.
@@ -48,35 +47,35 @@ public class SpellCommand {
      * @param environment    Environment that the command is being registered for.
      * @see net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
      */
-    public static void register(CommandDispatcher<ServerCommandSource> dispatcher,
-                                CommandRegistryAccess registryAccess,
-                                CommandManager.RegistrationEnvironment environment) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher,
+                                CommandBuildContext registryAccess,
+                                Commands.CommandSelection environment) {
         dispatcher.register(
-                CommandManager.literal("spell")
-                        .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
+                Commands.literal("spell")
+                        .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                         .then(
-                                CommandManager.literal("clear")
+                                Commands.literal("clear")
                                         .executes(context -> executeClear(
                                                 context.getSource(),
-                                                ImmutableList.of(context.getSource().getEntityOrThrow())))
+                                                ImmutableList.of(context.getSource().getEntityOrException())))
                                         .then(
-                                                CommandManager.argument("targets", EntityArgumentType.entities())
+                                                Commands.argument("targets", EntityArgument.entities())
                                                         .executes(context -> executeClear(
                                                                 context.getSource(),
-                                                                EntityArgumentType.getEntities(context, "targets")))
+                                                                EntityArgument.getEntities(context, "targets")))
                                         )
                         )
                         .then(
-                                CommandManager.literal("cast")
+                                Commands.literal("cast")
                                         .then(
-                                                CommandManager.argument("targets", EntityArgumentType.entities())
+                                                Commands.argument("targets", EntityArgument.entities())
                                                         .then(
-                                                                CommandManager.argument("spell", RegistryEntryReferenceArgumentType
-                                                                                .registryEntry(registryAccess, ModRegistryKeys.SPELL))
+                                                                Commands.argument("spell", ResourceArgument
+                                                                                .resource(registryAccess, ModRegistryKeys.SPELL))
                                                                         .executes(
                                                                                 context -> executeCast(
                                                                                         context.getSource(),
-                                                                                        EntityArgumentType.getEntities(context, "targets"),
+                                                                                        EntityArgument.getEntities(context, "targets"),
                                                                                         ModRegistryEntryReferenceArgumentType.getSpell(context, "spell")
                                                                                 )
                                                                         )
@@ -96,9 +95,9 @@ public class SpellCommand {
      * @throws CommandSyntaxException When no entities were able to cast the spell.
      */
     private static int executeCast(
-            ServerCommandSource source,
+            CommandSourceStack source,
             Collection<? extends Entity> entities,
-            RegistryEntry<Spell> spell
+            Holder<Spell> spell
     ) throws CommandSyntaxException {
         Spell spellInstance = spell.value();
         int successes = 0;
@@ -107,7 +106,7 @@ public class SpellCommand {
             if (entity instanceof LivingEntity livingEntity) {
                 spellInstance.castSpell(livingEntity);
                 successes++;
-                if (livingEntity instanceof ServerPlayerEntity serverPlayerEntity) {
+                if (livingEntity instanceof ServerPlayer serverPlayerEntity) {
                     ModCriteria.CAST_SCEPTER.trigger(serverPlayerEntity, ItemStack.EMPTY);
                 }
             }
@@ -117,13 +116,13 @@ public class SpellCommand {
             throw CAST_FAILED_EXCEPTION.create();
         } else {
             if (entities.size() == 1) {
-                source.sendFeedback(
-                        () -> Text.translatable(CAST_SUCCESS_SINGLE_KEY,
+                source.sendSuccess(
+                        () -> Component.translatable(CAST_SUCCESS_SINGLE_KEY,
                                 Spell.getName(spell), entities.iterator().next().getDisplayName()),
                         true
                 );
             } else {
-                source.sendFeedback(() -> Text.translatable(CAST_SUCCESS_MULTIPLE_KEY,
+                source.sendSuccess(() -> Component.translatable(CAST_SUCCESS_MULTIPLE_KEY,
                         Spell.getName(spell), entities.size()), true);
             }
 
@@ -139,7 +138,7 @@ public class SpellCommand {
      * @return Number of successful entities cleared.
      * @throws CommandSyntaxException When no entities had scheduled spell casts to clear.
      */
-    private static int executeClear(ServerCommandSource source, Collection<? extends Entity> entities)
+    private static int executeClear(CommandSourceStack source, Collection<? extends Entity> entities)
             throws CommandSyntaxException {
         int successes = 0;
 
@@ -153,10 +152,10 @@ public class SpellCommand {
             throw CLEAR_FAILED_EXCEPTION.create();
         } else {
             if (entities.size() == 1) {
-                source.sendFeedback(() -> Text.translatable(CLEAR_SUCCESS_SINGLE_KEY,
+                source.sendSuccess(() -> Component.translatable(CLEAR_SUCCESS_SINGLE_KEY,
                         entities.iterator().next().getDisplayName()), true);
             } else {
-                source.sendFeedback(() -> Text.translatable(CLEAR_SUCCESS_MULTIPLE_KEY,
+                source.sendSuccess(() -> Component.translatable(CLEAR_SUCCESS_MULTIPLE_KEY,
                         entities.size()), true);
             }
 

@@ -3,45 +3,45 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
-import net.minecraft.util.math.floatprovider.FloatProvider;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.ConstantFloat;
+import net.minecraft.util.valueproviders.FloatProvider;
+import net.minecraft.world.phys.Vec3;
 
 public record SpawnParticleSpellEffect(
-        ParticleEffect particle,
-        Vec3d delta,
+        ParticleOptions particle,
+        Vec3 delta,
         FloatProvider speed
 ) implements SpellEffect {
     public static final MapCodec<SpawnParticleSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            ParticleTypes.TYPE_CODEC.fieldOf("particle")
+                            ParticleTypes.CODEC.fieldOf("particle")
                                     .forGetter(SpawnParticleSpellEffect::particle),
-                            Vec3d.CODEC.optionalFieldOf("delta", Vec3d.ZERO)
+                            Vec3.CODEC.optionalFieldOf("delta", Vec3.ZERO)
                                     .forGetter(SpawnParticleSpellEffect::delta),
-                            FloatProvider.VALUE_CODEC.optionalFieldOf("speed",
-                                    ConstantFloatProvider.ZERO).forGetter(SpawnParticleSpellEffect::speed)
+                            FloatProvider.CODEC.optionalFieldOf("speed",
+                                    ConstantFloat.ZERO).forGetter(SpawnParticleSpellEffect::speed)
                     )
                     .apply(instance, SpawnParticleSpellEffect::new)
     );
 
     @Override
     public void apply(SpellContext context) {
-        Random random = context.getRandom();
-        Vec3d position = context.position();
+        RandomSource random = context.getRandom();
+        Vec3 position = context.position();
 
-        context.getWorld().spawnParticles(
+        context.getWorld().sendParticles(
                 this.particle,
-                position.getX(),
-                position.getY(),
-                position.getZ(),
+                position.x(),
+                position.y(),
+                position.z(),
                 0,
                 delta.x,
                 delta.y,
                 delta.z,
-                this.speed.get(random)
+                this.speed.sample(random)
         );
     }
 
@@ -50,20 +50,20 @@ public record SpawnParticleSpellEffect(
         return MAP_CODEC;
     }
 
-    public static SpawnParticleSpellEffect.Builder builder(ParticleEffect particleEffect) {
+    public static SpawnParticleSpellEffect.Builder builder(ParticleOptions particleEffect) {
         return new SpawnParticleSpellEffect.Builder(particleEffect);
     }
 
     public static class Builder {
-        private final ParticleEffect particleEffect;
-        private Vec3d delta = Vec3d.ZERO;
-        private FloatProvider speed = ConstantFloatProvider.ZERO;
+        private final ParticleOptions particleEffect;
+        private Vec3 delta = Vec3.ZERO;
+        private FloatProvider speed = ConstantFloat.ZERO;
 
-        public Builder(ParticleEffect particleEffect) {
+        public Builder(ParticleOptions particleEffect) {
             this.particleEffect = particleEffect;
         }
 
-        public Builder delta(Vec3d delta) {
+        public Builder delta(Vec3 delta) {
             this.delta = delta;
             return this;
         }

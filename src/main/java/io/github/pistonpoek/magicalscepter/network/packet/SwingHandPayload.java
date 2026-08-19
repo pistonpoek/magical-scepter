@@ -3,11 +3,11 @@ package io.github.pistonpoek.magicalscepter.network.packet;
 import io.github.pistonpoek.magicalscepter.item.SwingType;
 import io.github.pistonpoek.magicalscepter.util.LivingEntityHand;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.Hand;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.InteractionHand;
 
 /**
  * Payload to swing the specified hand with specified swing type.
@@ -16,18 +16,18 @@ import net.minecraft.util.Hand;
  * @param hand Hand of the entity to swing.
  * @param swingType Swing type to use when swinging the hand.
  */
-public record SwingHandPayload(int identifier, Hand hand, SwingType swingType) implements CustomPayload {
-    public static final CustomPayload.Id<SwingHandPayload> ID =
-            new CustomPayload.Id<>(ModIdentifier.of("swing_type"));
-    public static final PacketCodec<RegistryByteBuf, SwingHandPayload> CODEC = PacketCodec.tuple(
-            PacketCodecs.VAR_INT, SwingHandPayload::identifier,
+public record SwingHandPayload(int identifier, InteractionHand hand, SwingType swingType) implements CustomPacketPayload {
+    public static final CustomPacketPayload.Type<SwingHandPayload> ID =
+            new CustomPacketPayload.Type<>(ModIdentifier.of("swing_type"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, SwingHandPayload> CODEC = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT, SwingHandPayload::identifier,
             LivingEntityHand.PACKET_CODEC, SwingHandPayload::hand,
             SwingType.PACKET_CODEC, SwingHandPayload::swingType,
             SwingHandPayload::new
     );
 
     @Override
-    public Id<SwingHandPayload> getId() {
+    public Type<SwingHandPayload> type() {
         return ID;
     }
 }

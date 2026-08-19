@@ -8,283 +8,293 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.gametest.v1.CustomTestMethodInvoker;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.minecraft.advancement.AdvancementCriterion;
-import net.minecraft.advancement.AdvancementEntry;
-import net.minecraft.advancement.PlayerAdvancementTracker;
-import net.minecraft.advancement.criterion.CriterionProgress;
-import net.minecraft.entity.AreaEffectCloudEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.mob.*;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.network.NetworkSide;
-import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
-import net.minecraft.network.packet.c2s.play.PlayerLoadedC2SPacket;
-import net.minecraft.registry.Registry;
-import net.minecraft.server.ServerAdvancementLoader;
-import net.minecraft.server.network.ConnectedClientData;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.test.TestContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.world.GameMode;
-
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.CriterionProgress;
+import net.minecraft.core.Registry;
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.network.protocol.game.ServerboundPlayerLoadedPacket;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
+import net.minecraft.server.level.ClientInformation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.AreaEffectCloud;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.monster.Blaze;
+import net.minecraft.world.entity.monster.ElderGuardian;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.world.entity.monster.breeze.Breeze;
+import net.minecraft.world.entity.monster.illager.Evoker;
+import net.minecraft.world.entity.monster.warden.Warden;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.EvokerFangs;
+import net.minecraft.world.entity.projectile.ShulkerBullet;
+import net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.SmallFireball;
+import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
+import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameType;
 import java.lang.reflect.Method;
 
 import static io.github.pistonpoek.gametest.magicalscepter.util.ContextUtil.setMagicalScepterInMainHand;
 
 public class AdvancementTest implements CustomTestMethodInvoker {
     @Override
-    public void invokeTestMethod(TestContext context, Method method) throws ReflectiveOperationException {
+    public void invokeTestMethod(GameTestHelper context, Method method) throws ReflectiveOperationException {
         method.invoke(this, context);
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void existsCastScepter(TestContext context) {
+    public void existsCastScepter(GameTestHelper context) {
         String advancementPath = "adventure/cast_scepter";
         getEntry(context, advancementPath);
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void obtainCastScepter(TestContext context) {
+    public void obtainCastScepter(GameTestHelper context) {
         // Get cast scepter advancement entry.
         String advancementPath = "adventure/cast_scepter";
-        AdvancementEntry entry = getEntry(context, advancementPath);
+        AdvancementHolder entry = getEntry(context, advancementPath);
 
         // Get the advancement tracker for a mock player.
-        ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
-        PlayerAdvancementTracker tracker = player.getAdvancementTracker();
+        ServerPlayer player = createMockServerPlayer(context, GameType.SURVIVAL);
+        PlayerAdvancements tracker = player.getAdvancements();
 
-        context.assertFalse(tracker.getProgress(entry).isDone(),
-                Text.of("Cast scepter advancement is obtained without action."));
+        context.assertFalse(tracker.getOrStartProgress(entry).isDone(),
+                Component.nullToEmpty("Cast scepter advancement is obtained without action."));
 
         ItemStack stack = setMagicalScepterInMainHand(context, player);
-        player.addExperience(100);
-        stack.use(context.getWorld(), player, Hand.MAIN_HAND);
+        player.giveExperiencePoints(100);
+        stack.use(context.getLevel(), player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(tracker.getProgress(entry).isDone(),
-                Text.of("Cast scepter advancement is not obtained after using a magical scepter with experience."));
+        context.assertTrue(tracker.getOrStartProgress(entry).isDone(),
+                Component.nullToEmpty("Cast scepter advancement is not obtained after using a magical scepter with experience."));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void matchesCastSpellCriterionConditions(TestContext context) {
-        AdvancementCriterion<CastSpellCriterion.Conditions> criterion =
+    public void matchesCastSpellCriterionConditions(GameTestHelper context) {
+        Criterion<CastSpellCriterion.Conditions> criterion =
                 CastSpellCriterion.Conditions.create(Items.DIRT);
 
-        context.assertTrue(criterion.conditions().matches(Items.DIRT.getDefaultStack()),
-                Text.of("Conditions does not match for expected item stack."));
-        context.assertFalse(criterion.conditions().matches(Items.WHEAT.getDefaultStack()),
-                Text.of("Conditions incorrectly matches for item stack."));
+        context.assertTrue(criterion.triggerInstance().matches(Items.DIRT.getDefaultInstance()),
+                Component.nullToEmpty("Conditions does not match for expected item stack."));
+        context.assertFalse(criterion.triggerInstance().matches(Items.WHEAT.getDefaultInstance()),
+                Component.nullToEmpty("Conditions incorrectly matches for item stack."));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void existsAllScepterInfusions(TestContext context) {
+    public void existsAllScepterInfusions(GameTestHelper context) {
         String advancementPath = "adventure/all_scepter_infusions";
         getEntry(context, advancementPath);
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void obtainAllScepterInfusions(TestContext context) {
+    public void obtainAllScepterInfusions(GameTestHelper context) {
         // Get all scepter infusions advancement entry.
         String advancementPath = "adventure/all_scepter_infusions";
-        AdvancementEntry entry = getEntry(context, advancementPath);
+        AdvancementHolder entry = getEntry(context, advancementPath);
 
         // Get the advancement tracker for a mock player.
-        ServerPlayerEntity player = createMockServerPlayer(context, GameMode.SURVIVAL);
-        PlayerAdvancementTracker tracker = player.getAdvancementTracker();
+        ServerPlayer player = createMockServerPlayer(context, GameType.SURVIVAL);
+        PlayerAdvancements tracker = player.getAdvancements();
 
         // Check no progress has been made yet.
-        context.assertFalse(tracker.getProgress(entry).isDone(),
-                Text.of("All scepter infusions advancement is obtained without action."));
-        context.assertFalse(tracker.getProgress(entry).isAnyObtained(),
-                Text.of("All scepter infusions advancement has obtained criteria without action."));
+        context.assertFalse(tracker.getOrStartProgress(entry).isDone(),
+                Component.nullToEmpty("All scepter infusions advancement is obtained without action."));
+        context.assertFalse(tracker.getOrStartProgress(entry).hasProgress(),
+                Component.nullToEmpty("All scepter infusions advancement has obtained criteria without action."));
 
-        ServerWorld world = context.getWorld();
+        ServerLevel world = context.getLevel();
 
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
-        player.networkHandler.onPlayerLoaded(new PlayerLoadedC2SPacket());
+        player.connection.handleAcceptPlayerLoad(new ServerboundPlayerLoadedPacket());
         player.getAbilities().invulnerable = false;
 
         // Infuse a magical scepter to each of the 9 scepters from the criteria.
         // Each consecutive damage is 1 higher to allow it to deal damage on the same tick.
         {
             setMagicalScepterInMainHand(context, player);
-            BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, world);
-            SmallFireballEntity fireCharge = new SmallFireballEntity(EntityType.SMALL_FIREBALL, world);
-            player.damage(world, world.getDamageSources().fireball(fireCharge, blaze), 1);
+            Blaze blaze = new Blaze(EntityType.BLAZE, world);
+            SmallFireball fireCharge = new SmallFireball(EntityType.SMALL_FIREBALL, world);
+            player.hurtServer(world, world.damageSources().fireball(fireCharge, blaze), 1);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:blaze");
-            context.assertTrue(criterion != null, Text.of("Blaze criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:blaze");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Blaze criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Blaze criterion of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Blaze criterion of all scepter infusion advancement is not obtained " +
                             "after damage from blaze's fire charge"));
         }
         {
             setMagicalScepterInMainHand(context, player);
-            BreezeEntity breeze = new BreezeEntity(EntityType.BREEZE, world);
-            BreezeWindChargeEntity windCharge = new BreezeWindChargeEntity(EntityType.BREEZE_WIND_CHARGE, world);
-            player.damage(world, world.getDamageSources().windCharge(windCharge, breeze), 2);
+            Breeze breeze = new Breeze(EntityType.BREEZE, world);
+            BreezeWindCharge windCharge = new BreezeWindCharge(EntityType.BREEZE_WIND_CHARGE, world);
+            player.hurtServer(world, world.damageSources().windCharge(windCharge, breeze), 2);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:breeze");
-            context.assertTrue(criterion != null, Text.of("Breeze criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:breeze");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Breeze criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Breeze criterion of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Breeze criterion of all scepter infusion advancement is not obtained " +
                             "after damage from breeze's wind charge"));
         }
         {
             setMagicalScepterInMainHand(context, player);
-            EnderDragonEntity dragon = new EnderDragonEntity(EntityType.ENDER_DRAGON, world);
-            AreaEffectCloudEntity effectCloud = new AreaEffectCloudEntity(EntityType.AREA_EFFECT_CLOUD, world);
-            player.damage(world, world.getDamageSources().indirectMagic(effectCloud, dragon), 3);
+            EnderDragon dragon = new EnderDragon(EntityType.ENDER_DRAGON, world);
+            AreaEffectCloud effectCloud = new AreaEffectCloud(EntityType.AREA_EFFECT_CLOUD, world);
+            player.hurtServer(world, world.damageSources().indirectMagic(effectCloud, dragon), 3);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:dragon");
-            context.assertTrue(criterion != null, Text.of("Dragon criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:dragon");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Dragon criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Dragon criterion of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Dragon criterion of all scepter infusion advancement is not obtained " +
                             "after damage from an ender dragon"));
         }
         {
             setMagicalScepterInMainHand(context, player);
-            EvokerEntity evoker = new EvokerEntity(EntityType.EVOKER, world);
-            EvokerFangsEntity fangs = new EvokerFangsEntity(EntityType.EVOKER_FANGS, world);
-            player.damage(world, world.getDamageSources().indirectMagic(fangs, evoker), 4);
+            Evoker evoker = new Evoker(EntityType.EVOKER, world);
+            EvokerFangs fangs = new EvokerFangs(EntityType.EVOKER_FANGS, world);
+            player.hurtServer(world, world.damageSources().indirectMagic(fangs, evoker), 4);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:evoker");
-            context.assertTrue(criterion != null, Text.of("Evoker criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:evoker");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Evoker criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Evoker criterion of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Evoker criterion of all scepter infusion advancement is not obtained " +
                             "after damage from evoker's fangs"));
         }
         {
             setMagicalScepterInMainHand(context, player);
-            GhastEntity ghast = new GhastEntity(EntityType.GHAST, world);
-            FireballEntity fireball = new FireballEntity(EntityType.FIREBALL, world);
-            player.damage(world, world.getDamageSources().fireball(fireball, ghast), 5);
+            Ghast ghast = new Ghast(EntityType.GHAST, world);
+            LargeFireball fireball = new LargeFireball(EntityType.FIREBALL, world);
+            player.hurtServer(world, world.damageSources().fireball(fireball, ghast), 5);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:ghast");
-            context.assertTrue(criterion != null, Text.of("Ghast criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:ghast");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Ghast criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Ghast criterion of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Ghast criterion of all scepter infusion advancement is not obtained " +
                             "after damage from ghast's fireball"));
         }
         {
             setMagicalScepterInMainHand(context, player);
-            ElderGuardianEntity guardian = new ElderGuardianEntity(EntityType.ELDER_GUARDIAN, world);
-            player.damage(world, world.getDamageSources().indirectMagic(guardian, guardian), 6);
+            ElderGuardian guardian = new ElderGuardian(EntityType.ELDER_GUARDIAN, world);
+            player.hurtServer(world, world.damageSources().indirectMagic(guardian, guardian), 6);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:guardian");
-            context.assertTrue(criterion != null, Text.of("Guardian criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:guardian");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Guardian criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Guardian criterion of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Guardian criterion of all scepter infusion advancement is not obtained " +
                             "after damage from elder guardian's beam"));
         }
         {
             setMagicalScepterInMainHand(context, player);
-            ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, world);
-            ShulkerBulletEntity bullet = new ShulkerBulletEntity(EntityType.SHULKER_BULLET, world);
-            player.damage(world, world.getDamageSources().mobProjectile(bullet, shulker), 7);
+            Shulker shulker = new Shulker(EntityType.SHULKER, world);
+            ShulkerBullet bullet = new ShulkerBullet(EntityType.SHULKER_BULLET, world);
+            player.hurtServer(world, world.damageSources().mobProjectile(bullet, shulker), 7);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:shulker");
-            context.assertTrue(criterion != null, Text.of("Shulker criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:shulker");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Shulker criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Shulker criterion of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Shulker criterion of all scepter infusion advancement is not obtained " +
                             "after damage from shulker's bullet"));
         }
         {
             setMagicalScepterInMainHand(context, player);
-            WardenEntity warden = new WardenEntity(EntityType.WARDEN, world);
-            player.damage(world, world.getDamageSources().sonicBoom(warden), 8);
+            Warden warden = new Warden(EntityType.WARDEN, world);
+            player.hurtServer(world, world.damageSources().sonicBoom(warden), 8);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:warden");
-            context.assertTrue(criterion != null, Text.of("Warden criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:warden");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Warden criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Warden criteria of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Warden criteria of all scepter infusion advancement is not obtained " +
                             "after damage from warden's sonic boom"));
         }
         {
             setMagicalScepterInMainHand(context, player);
-            WitherEntity wither = new WitherEntity(EntityType.WITHER, world);
-            WitherSkullEntity skull = new WitherSkullEntity(EntityType.WITHER_SKULL, world);
-            player.damage(world, world.getDamageSources().witherSkull(skull, wither), 9);
+            WitherBoss wither = new WitherBoss(EntityType.WITHER, world);
+            WitherSkull skull = new WitherSkull(EntityType.WITHER_SKULL, world);
+            player.hurtServer(world, world.damageSources().witherSkull(skull, wither), 9);
 
-            CriterionProgress criterion = tracker.getProgress(entry)
-                    .getCriterionProgress("magicalscepter:wither");
-            context.assertTrue(criterion != null, Text.of("Wither criterion is null"));
+            CriterionProgress criterion = tracker.getOrStartProgress(entry)
+                    .getCriterion("magicalscepter:wither");
+            context.assertTrue(criterion != null, Component.nullToEmpty("Wither criterion is null"));
             assert criterion != null;
-            context.assertTrue(criterion.isObtained(),
-                    Text.of("Wither criterion of all scepter infusion advancement is not obtained " +
+            context.assertTrue(criterion.isDone(),
+                    Component.nullToEmpty("Wither criterion of all scepter infusion advancement is not obtained " +
                             "after damage from wither's skull"));
         }
 
-        context.assertTrue(tracker.getProgress(entry).isDone(),
-                Text.of("All scepter infusions advancement is not obtained after infusing 9 scepters."));
+        context.assertTrue(tracker.getOrStartProgress(entry).isDone(),
+                Component.nullToEmpty("All scepter infusions advancement is not obtained after infusing 9 scepters."));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void matchesInfuseScepterCriterionConditions(TestContext context) {
-        Registry<Scepter> registry = context.getWorld().getRegistryManager().getOrThrow(ModRegistryKeys.SCEPTER);
-        AdvancementCriterion<InfuseScepterCriterion.Conditions> criterion =
+    public void matchesInfuseScepterCriterionConditions(GameTestHelper context) {
+        Registry<Scepter> registry = context.getLevel().registryAccess().lookupOrThrow(ModRegistryKeys.SCEPTER);
+        Criterion<InfuseScepterCriterion.Conditions> criterion =
                 InfuseScepterCriterion.Conditions.create(registry.getOrThrow(Scepters.GUARDIAN_KEY));
 
-        context.assertTrue(criterion.conditions().matches(registry.getOrThrow(Scepters.GUARDIAN_KEY)),
-                Text.of("Conditions does not match for expected scepter."));
-        context.assertFalse(criterion.conditions().matches(registry.getOrThrow(Scepters.WITHER_KEY)),
-                Text.of("Conditions incorrectly matches for scepter."));
+        context.assertTrue(criterion.triggerInstance().matches(registry.getOrThrow(Scepters.GUARDIAN_KEY)),
+                Component.nullToEmpty("Conditions does not match for expected scepter."));
+        context.assertFalse(criterion.triggerInstance().matches(registry.getOrThrow(Scepters.WITHER_KEY)),
+                Component.nullToEmpty("Conditions incorrectly matches for scepter."));
 
-        context.complete();
+        context.succeed();
     }
 
-    private AdvancementEntry getEntry(TestContext context, String path) {
-        ServerAdvancementLoader loader = context.getWorld().getServer().getAdvancementLoader();
-        AdvancementEntry entry = loader.get(ModIdentifier.of(path));
+    private AdvancementHolder getEntry(GameTestHelper context, String path) {
+        ServerAdvancementManager loader = context.getLevel().getServer().getAdvancements();
+        AdvancementHolder entry = loader.get(ModIdentifier.of(path));
 
         if (entry == null) {
-            throw context.createError(Text.of("Could not find advancement at %s".formatted(path)));
+            throw context.assertionException(Component.nullToEmpty("Could not find advancement at %s".formatted(path)));
         }
 
         return entry;
     }
 
-    private ServerPlayerEntity createMockServerPlayer(TestContext context, GameMode gameMode) {
-        PlayerEntity player = context.createMockPlayer(gameMode);
-        ServerPlayerEntity serverPlayer = new ServerPlayerEntity(context.getWorld().getServer(), context.getWorld(),
-                player.getGameProfile(), SyncedClientOptions.createDefault());
+    private ServerPlayer createMockServerPlayer(GameTestHelper context, GameType gameMode) {
+        Player player = context.makeMockPlayer(gameMode);
+        ServerPlayer serverPlayer = new ServerPlayer(context.getLevel().getServer(), context.getLevel(),
+                player.getGameProfile(), ClientInformation.createDefault());
 
         // Set the player to be loaded and have a network handler to mock server expectation.
-        serverPlayer.networkHandler = new ServerPlayNetworkHandler(context.getWorld().getServer(),
-                new ClientConnection(NetworkSide.CLIENTBOUND), serverPlayer,
-                ConnectedClientData.createDefault(player.getGameProfile(), false));
+        serverPlayer.connection = new ServerGamePacketListenerImpl(context.getLevel().getServer(),
+                new Connection(PacketFlow.CLIENTBOUND), serverPlayer,
+                CommonListenerCookie.createInitial(player.getGameProfile(), false));
         return serverPlayer;
     }
 }

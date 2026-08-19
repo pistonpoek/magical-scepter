@@ -2,22 +2,21 @@ package io.github.pistonpoek.magicalscepter.structure.pool;
 
 import io.github.pistonpoek.magicalscepter.structure.OldTaigaCabinGenerator;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.structure.pool.StructurePool;
-import net.minecraft.structure.pool.StructurePools;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.Pools;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.structure.pool.StructurePools
+ * @see net.minecraft.data.worldgen.Pools
  */
 public class ModStructurePools {
-    public static final List<RegistryKey<StructurePool>> KEYS = new ArrayList<>();
+    public static final List<ResourceKey<StructureTemplatePool>> KEYS = new ArrayList<>();
 
     /**
      * Get a structure pool registry key for the specified name.
@@ -25,8 +24,8 @@ public class ModStructurePools {
      * @param name String name to get structure pool registry key for.
      * @return Structure pool registry key with the specified name.
      */
-    public static RegistryKey<StructurePool> of(String name) {
-        return StructurePools.of(ModIdentifier.of(name));
+    public static ResourceKey<StructureTemplatePool> of(String name) {
+        return Pools.createKey(ModIdentifier.of(name));
     }
 
     /**
@@ -36,7 +35,7 @@ public class ModStructurePools {
      * @param identifier Identifier to register under.
      * @param pool Structure pool to register.
      */
-    public static void register(Registerable<StructurePool> registry, String identifier, StructurePool pool) {
+    public static void register(BootstrapContext<StructureTemplatePool> registry, String identifier, StructureTemplatePool pool) {
         KEYS.add(of(identifier));
         registry.register(of(identifier), pool);
     }
@@ -46,7 +45,7 @@ public class ModStructurePools {
      *
      * @param registry Structure pool registry to bootstrap.
      */
-    public static void bootstrap(Registerable<StructurePool> registry) {
+    public static void bootstrap(BootstrapContext<StructureTemplatePool> registry) {
         addStructurePool(OldTaigaCabinGenerator::bootstrap, registry);
     }
 
@@ -56,8 +55,8 @@ public class ModStructurePools {
      * @param bootstrap Function to boostrap to get main structure pool key from.
      * @param registry Structure pool registry to use.
      */
-    private static void addStructurePool(Function<Registerable<StructurePool>, RegistryKey<StructurePool>> bootstrap,
-                                        Registerable<StructurePool> registry) {
+    private static void addStructurePool(Function<BootstrapContext<StructureTemplatePool>, ResourceKey<StructureTemplatePool>> bootstrap,
+                                        BootstrapContext<StructureTemplatePool> registry) {
         KEYS.add(bootstrap.apply(registry));
     }
 }

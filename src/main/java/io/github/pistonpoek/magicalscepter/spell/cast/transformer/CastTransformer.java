@@ -5,14 +5,14 @@ import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.function.Function;
+import net.minecraft.core.Registry;
 
 public interface CastTransformer {
-    Codec<CastTransformer> CODEC = ModRegistries.CAST_TRANSFORMER_TYPE.getCodec().dispatch(CastTransformer::getCodec, Function.identity());
+    Codec<CastTransformer> CODEC = ModRegistries.CAST_TRANSFORMER_TYPE.byNameCodec().dispatch(CastTransformer::getCodec, Function.identity());
 
     static void register(Registry<MapCodec<? extends CastTransformer>> registry) {
         Registry.register(registry, ModIdentifier.of("anchor"), AnchorCastTransformer.MAP_CODEC);

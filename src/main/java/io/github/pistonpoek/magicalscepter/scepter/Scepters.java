@@ -5,40 +5,40 @@ import io.github.pistonpoek.magicalscepter.registry.tag.ModDamageTypeTags;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.Spells;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.entity.EntityType;
-import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
-import net.minecraft.predicate.TagPredicate;
-import net.minecraft.predicate.entity.DamageSourcePredicate;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.predicate.entity.EntityTypePredicate;
-import net.minecraft.predicate.entity.LootContextPredicate;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.advancements.criterion.DamageSourcePredicate;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.criterion.EntityTypePredicate;
+import net.minecraft.advancements.criterion.TagPredicate;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 
 /**
  * Collection of scepters.
  */
 public class Scepters {
-    public static final List<RegistryKey<Scepter>> KEYS = new ArrayList<>();
-    public static final RegistryKey<Scepter> MAGICAL_KEY = of("magical");
+    public static final List<ResourceKey<Scepter>> KEYS = new ArrayList<>();
+    public static final ResourceKey<Scepter> MAGICAL_KEY = of("magical");
 
-    public static final RegistryKey<Scepter> BLAZE_KEY = of("blaze");
-    public static final RegistryKey<Scepter> BREEZE_KEY = of("breeze");
-    public static final RegistryKey<Scepter> DRAGON_KEY = of("dragon");
-    public static final RegistryKey<Scepter> EVOKER_KEY = of("evoker");
-    public static final RegistryKey<Scepter> GHAST_KEY = of("ghast");
-    public static final RegistryKey<Scepter> GUARDIAN_KEY = of("guardian");
-    public static final RegistryKey<Scepter> SHULKER_KEY = of("shulker");
-    public static final RegistryKey<Scepter> WARDEN_KEY = of("warden");
-    public static final RegistryKey<Scepter> WITHER_KEY = of("wither");
-    public static final List<RegistryKey<Scepter>> ALL_INFUSED_SCEPTERS =
+    public static final ResourceKey<Scepter> BLAZE_KEY = of("blaze");
+    public static final ResourceKey<Scepter> BREEZE_KEY = of("breeze");
+    public static final ResourceKey<Scepter> DRAGON_KEY = of("dragon");
+    public static final ResourceKey<Scepter> EVOKER_KEY = of("evoker");
+    public static final ResourceKey<Scepter> GHAST_KEY = of("ghast");
+    public static final ResourceKey<Scepter> GUARDIAN_KEY = of("guardian");
+    public static final ResourceKey<Scepter> SHULKER_KEY = of("shulker");
+    public static final ResourceKey<Scepter> WARDEN_KEY = of("warden");
+    public static final ResourceKey<Scepter> WITHER_KEY = of("wither");
+    public static final List<ResourceKey<Scepter>> ALL_INFUSED_SCEPTERS =
             List.of(BLAZE_KEY, BREEZE_KEY, DRAGON_KEY, EVOKER_KEY,
                     GHAST_KEY, GUARDIAN_KEY, SHULKER_KEY, WARDEN_KEY, WITHER_KEY);
 
@@ -48,8 +48,8 @@ public class Scepters {
      * @param name String name to get scepter registry key for.
      * @return Scepter registry key with the specified name.
      */
-    private static RegistryKey<Scepter> of(String name) {
-        return RegistryKey.of(ModRegistryKeys.SCEPTER, ModIdentifier.of(name));
+    private static ResourceKey<Scepter> of(String name) {
+        return ResourceKey.create(ModRegistryKeys.SCEPTER, ModIdentifier.of(name));
     }
 
     /**
@@ -57,9 +57,9 @@ public class Scepters {
      *
      * @param registry Scepter registry to bootstrap.
      */
-    public static void bootstrap(Registerable<Scepter> registry) {
-        RegistryEntryLookup<Spell> spellRegistryEntryLookup = registry.getRegistryLookup(ModRegistryKeys.SPELL);
-        RegistryEntryLookup<EntityType<?>> entityTypeRegistryEntryLookup = registry.getRegistryLookup(RegistryKeys.ENTITY_TYPE);
+    public static void bootstrap(BootstrapContext<Scepter> registry) {
+        HolderGetter<Spell> spellRegistryEntryLookup = registry.lookup(ModRegistryKeys.SPELL);
+        HolderGetter<EntityType<?>> entityTypeRegistryEntryLookup = registry.lookup(Registries.ENTITY_TYPE);
         register(registry, MAGICAL_KEY, Scepter.builder(
                                 0xBC7C5C,
                                 4,
@@ -84,16 +84,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.BLAZE_FIRE_RESISTANCE_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.BLAZE)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.SMALL_FIREBALL)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.BLAZE_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.BLAZE_INFUSION))
                                 ).build()
                         ))
         );
@@ -109,16 +109,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.BREEZE_JUMP_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.BREEZE)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.BREEZE_WIND_CHARGE)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.BREEZE_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.BREEZE_INFUSION))
                                 ).build()
                         ))
         );
@@ -134,16 +134,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.DRAGON_GROWL_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.ENDER_DRAGON)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.AREA_EFFECT_CLOUD)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.DRAGON_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.DRAGON_INFUSION))
                                 ).build()
                         ))
         );
@@ -159,16 +159,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.EVOKER_FANG_CIRCLE_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.EVOKER)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.EVOKER_FANGS)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.EVOKER_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.EVOKER_INFUSION))
                                 ).build()
                         ))
         );
@@ -184,16 +184,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.GHAST_REGENERATION_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.GHAST)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.FIREBALL)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.GHAST_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.GHAST_INFUSION))
                                 ).build()
                         ))
         );
@@ -209,16 +209,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.GUARDIAN_HASTE_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.ELDER_GUARDIAN)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.ELDER_GUARDIAN)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.GUARDIAN_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.GUARDIAN_INFUSION))
                                 ).build()
                         ))
         );
@@ -234,16 +234,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.SHULKER_TELEPORT_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.SHULKER)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.SHULKER_BULLET)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.SHULKER_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.SHULKER_INFUSION))
                                 ).build()
                         ))
         );
@@ -259,16 +259,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.WARDEN_STABILITY_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.WARDEN)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.WARDEN)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.WARDEN_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.WARDEN_INFUSION))
                                 ).build()
                         ))
         );
@@ -284,16 +284,16 @@ public class Scepters {
                         .protectSpell(
                                 spellRegistryEntryLookup.getOrThrow(Spells.WITHER_REPULSION_KEY)
                         )
-                        .infusion(LootContextPredicate.create(
-                                DamageSourcePropertiesLootCondition.builder(
-                                        DamageSourcePredicate.Builder.create()
-                                                .sourceEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                        .infusion(ContextAwarePredicate.create(
+                                DamageSourceCondition.hasDamageSource(
+                                        DamageSourcePredicate.Builder.damageType()
+                                                .source(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.WITHER)))
-                                                .directEntity(EntityPredicate.Builder.create()
-                                                        .type(EntityTypePredicate.create(entityTypeRegistryEntryLookup,
+                                                .direct(EntityPredicate.Builder.entity()
+                                                        .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
                                                                 EntityType.WITHER_SKULL)))
-                                                .tag(TagPredicate.expected(ModDamageTypeTags.WITHER_INFUSION))
+                                                .tag(TagPredicate.is(ModDamageTypeTags.WITHER_INFUSION))
                                 ).build()
                         ))
         );
@@ -306,7 +306,7 @@ public class Scepters {
      * @param key Scepter registry key to register under.
      * @param builder Scepter builder to register.
      */
-    private static void register(Registerable<Scepter> registry, RegistryKey<Scepter> key, Scepter.Builder builder) {
+    private static void register(BootstrapContext<Scepter> registry, ResourceKey<Scepter> key, Scepter.Builder builder) {
         KEYS.add(key);
         registry.register(key, builder.build());
     }
@@ -317,9 +317,9 @@ public class Scepters {
      * @param scepter Scepter registry key to get translation key for.
      * @return String translation key for the specified scepter registry key.
      */
-    public static String getTranslationKey(@Nullable RegistryKey<Scepter> scepter) {
+    public static String getTranslationKey(@Nullable ResourceKey<Scepter> scepter) {
         return Optional.ofNullable(scepter)
-                .map(key -> key.getValue().getPath().replace("/", "."))
+                .map(key -> key.identifier().getPath().replace("/", "."))
                 .orElse("empty");
     }
 }

@@ -4,16 +4,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.predicate.entity.LootContextPredicate;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryFixedCodec;
-import net.minecraft.util.dynamic.Codecs;
-
 import java.util.Optional;
+import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.core.Holder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 /**
  * Scepter type that provides properties for the magical scepter item behavior.
@@ -26,23 +25,23 @@ import java.util.Optional;
  * @param infusion Optional loot context predicate to determine when to infuse a scepter with this type.
  */
 public record Scepter(int color, int experienceCost, boolean infusable,
-                      Optional<RegistryEntry<Spell>> attackSpell,
-                      Optional<RegistryEntry<Spell>> protectSpell,
-                      Optional<LootContextPredicate> infusion) {
+                      Optional<Holder<Spell>> attackSpell,
+                      Optional<Holder<Spell>> protectSpell,
+                      Optional<ContextAwarePredicate> infusion) {
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    Codecs.RGB.fieldOf("color").forGetter(Scepter::color),
-                    Codecs.NON_NEGATIVE_INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
+                    ExtraCodecs.RGB_COLOR_CODEC.fieldOf("color").forGetter(Scepter::color),
+                    ExtraCodecs.NON_NEGATIVE_INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
                     Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_attack").forGetter(Scepter::attackSpell),
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_protect").forGetter(Scepter::protectSpell),
-                    LootContextPredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
+                    ContextAwarePredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
             ).apply(instance, Scepter::new)
     );
     public static final Codec<Scepter> NETWORK_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    Codecs.RGB.fieldOf("color").forGetter(Scepter::color),
-                    Codecs.NON_NEGATIVE_INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
+                    ExtraCodecs.RGB_COLOR_CODEC.fieldOf("color").forGetter(Scepter::color),
+                    ExtraCodecs.NON_NEGATIVE_INT.fieldOf("experience_cost").forGetter(Scepter::experienceCost),
                     Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_attack").forGetter(Scepter::attackSpell),
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_protect").forGetter(Scepter::protectSpell)
@@ -61,15 +60,15 @@ public record Scepter(int color, int experienceCost, boolean infusable,
      */
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private static Scepter createClientScepter(int color, int experienceCost, boolean infusable,
-                                               Optional<RegistryEntry<Spell>> attackSpell,
-                                               Optional<RegistryEntry<Spell>> protectSpell) {
+                                               Optional<Holder<Spell>> attackSpell,
+                                               Optional<Holder<Spell>> protectSpell) {
         return new Scepter(color, experienceCost, infusable, attackSpell, protectSpell, Optional.empty());
     }
 
-    public static final Codec<RegistryEntry<Scepter>> ENTRY_CODEC = RegistryFixedCodec.of(ModRegistryKeys.SCEPTER);
-    public static final PacketCodec<RegistryByteBuf, RegistryEntry<Scepter>> ENTRY_PACKET_CODEC =
-            PacketCodecs.registryEntry(ModRegistryKeys.SCEPTER);
-    public static final PacketCodec<RegistryByteBuf, Scepter> PACKET_CODEC = PacketCodecs.registryCodec(CODEC);
+    public static final Codec<Holder<Scepter>> ENTRY_CODEC = RegistryFixedCodec.create(ModRegistryKeys.SCEPTER);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Scepter>> ENTRY_PACKET_CODEC =
+            ByteBufCodecs.holderRegistry(ModRegistryKeys.SCEPTER);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Scepter> PACKET_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
     /**
      * Get the color of the scepter.
@@ -103,7 +102,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
      *
      * @return Optional attack spell entry.
      */
-    public Optional<RegistryEntry<Spell>> getAttackSpell() {
+    public Optional<Holder<Spell>> getAttackSpell() {
         return attackSpell;
     }
 
@@ -112,7 +111,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
      *
      * @return Optional protect spell entry.
      */
-    public Optional<RegistryEntry<Spell>> getProtectSpell() {
+    public Optional<Holder<Spell>> getProtectSpell() {
         return protectSpell;
     }
 
@@ -125,9 +124,9 @@ public record Scepter(int color, int experienceCost, boolean infusable,
     public boolean infuses(LootContext lootContext) {
         if (infusion.isEmpty()) return false;
 
-        LootContextPredicate lootContextPredicate = infusion.get();
+        ContextAwarePredicate lootContextPredicate = infusion.get();
 
-        return lootContextPredicate.test(lootContext);
+        return lootContextPredicate.matches(lootContext);
     }
 
     /**
@@ -149,9 +148,9 @@ public record Scepter(int color, int experienceCost, boolean infusable,
         private final int color;
         private final boolean infusable;
         private final int experienceCost;
-        private RegistryEntry<Spell> attackSpell = null;
-        private RegistryEntry<Spell> protectSpell = null;
-        private LootContextPredicate infusion = null;
+        private Holder<Spell> attackSpell = null;
+        private Holder<Spell> protectSpell = null;
+        private ContextAwarePredicate infusion = null;
 
         /**
          * Construct a scepter builder using the required scepter properties.
@@ -172,7 +171,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
          * @param infusion Optional loot context predicate to determine when to infuse a scepter with this type.
          * @return Scepter builder to continue with.
          */
-        public Scepter.Builder infusion(LootContextPredicate infusion) {
+        public Scepter.Builder infusion(ContextAwarePredicate infusion) {
             this.infusion = infusion;
             return this;
         }
@@ -183,7 +182,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
          * @param attackSpell Optional spell entry to use for casting a spell on attack.
          * @return Scepter builder to continue with.
          */
-        public Scepter.Builder attackSpell(RegistryEntry<Spell> attackSpell) {
+        public Scepter.Builder attackSpell(Holder<Spell> attackSpell) {
             this.attackSpell = attackSpell;
             return this;
         }
@@ -194,7 +193,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
          * @param protectSpell Optional spell entry to use for casting a spell on protect.
          * @return Scepter builder to continue with.
          */
-        public Scepter.Builder protectSpell(RegistryEntry<Spell> protectSpell) {
+        public Scepter.Builder protectSpell(Holder<Spell> protectSpell) {
             this.protectSpell = protectSpell;
             return this;
         }

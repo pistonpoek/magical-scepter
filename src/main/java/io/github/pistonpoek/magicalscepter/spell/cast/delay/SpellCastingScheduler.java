@@ -1,8 +1,8 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.timer.Timer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.timers.TimerQueue;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class SpellCastingScheduler {
@@ -15,18 +15,18 @@ public abstract class SpellCastingScheduler {
      * @param callback Spell cast timer callback to schedule.
      * @param delay    Positive time delay to set for the callback in ticks.
      */
-    static void schedule(@NotNull ServerWorld world, @NotNull SpellCastingTimerCallback callback, int delay) {
+    static void schedule(@NotNull ServerLevel world, @NotNull SpellCastingTimerCallback callback, int delay) {
         if (delay <= 0) {
             throw new IllegalArgumentException("Delay is %d when trying to schedule spell cast".formatted(delay));
         }
-        long cast_time = world.getTime() + (long) delay;
+        long cast_time = world.getGameTime() + (long) delay;
 
         MinecraftServer server = world.getServer();
 
-        Timer<MinecraftServer> timer = server.getSaveProperties()
-                .getMainWorldProperties().getScheduledEvents();
+        TimerQueue<MinecraftServer> timer = server.getWorldData()
+                .overworldData().getScheduledEvents();
 
-        timer.setEventIfAbsent(getEventName(callback),
+        timer.schedule(getEventName(callback),
                 cast_time,
                 callback
         );
@@ -37,7 +37,7 @@ public abstract class SpellCastingScheduler {
     }
 
     static void clear(@NotNull MinecraftServer server, @NotNull SpellCastingTimerCallback callback) {
-        Timer<MinecraftServer> timer = server.getSaveProperties().getMainWorldProperties().getScheduledEvents();
+        TimerQueue<MinecraftServer> timer = server.getWorldData().overworldData().getScheduledEvents();
         timer.remove(getEventName(callback));
     }
 }

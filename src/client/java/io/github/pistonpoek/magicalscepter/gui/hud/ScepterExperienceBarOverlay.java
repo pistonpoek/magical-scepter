@@ -4,9 +4,9 @@ import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentHelper;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.item.ItemStack;
 
 public class ScepterExperienceBarOverlay {
     /**
@@ -19,7 +19,7 @@ public class ScepterExperienceBarOverlay {
      * @param y       Vertical position of the experience bar on the screen.
      * @return Truth assignment, if overlay was added excluding cost indication.
      */
-    public static boolean render(DrawContext context, ItemStack item, ClientPlayerEntity player, int x, int y) {
+    public static boolean render(GuiGraphics context, ItemStack item, LocalPlayer player, int x, int y) {
         int playerExperience = PlayerExperience.getTotalExperience(player);
         int scepterExperience = ScepterExperienceComponent.getExperience(item);
         int step = ModEnchantmentHelper.getExperienceStep(item, player, ArcaneScepterItem.EXPERIENCE_STEP);

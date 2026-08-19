@@ -4,14 +4,14 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
-import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.ResourceArgument;
+import net.minecraft.core.Holder;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.command.argument.RegistryEntryReferenceArgumentType
+ * @see net.minecraft.commands.arguments.ResourceArgument
  */
 public class ModRegistryEntryReferenceArgumentType {
     /**
@@ -22,8 +22,8 @@ public class ModRegistryEntryReferenceArgumentType {
      * @return Spell registry reference.
      * @throws CommandSyntaxException When spell registry entry could not be found for the name.
      */
-    public static RegistryEntry.Reference<Spell> getSpell(
-            CommandContext<ServerCommandSource> context, String name) throws CommandSyntaxException {
-        return RegistryEntryReferenceArgumentType.getRegistryEntry(context, name, ModRegistryKeys.SPELL);
+    public static Holder.Reference<Spell> getSpell(
+            CommandContext<CommandSourceStack> context, String name) throws CommandSyntaxException {
+        return ResourceArgument.getResource(context, name, ModRegistryKeys.SPELL);
     }
 }

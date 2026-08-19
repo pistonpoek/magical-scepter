@@ -3,10 +3,10 @@ package io.github.pistonpoek.magicalscepter.spell.position;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import net.minecraft.world.phys.Vec3;
 
 public record MixedPositionSource(Optional<PositionSource> x,
                                   Optional<PositionSource> y,
@@ -20,11 +20,11 @@ public record MixedPositionSource(Optional<PositionSource> x,
     );
 
     @Override
-    public Vec3d getPosition(@NotNull SpellContext context) {
-        return new Vec3d(
-                x.map(x -> x.getX(context)).orElse(context.getX()),
-                y.map(y -> y.getY(context)).orElse(context.getY()),
-                z.map(z -> z.getZ(context)).orElse(context.getZ()));
+    public Vec3 getPosition(@NotNull SpellContext context) {
+        return new Vec3(
+                x.map(x -> x.getX(context)).orElse(context.x()),
+                y.map(y -> y.getY(context)).orElse(context.y()),
+                z.map(z -> z.getZ(context)).orElse(context.z()));
     }
 
     @Override

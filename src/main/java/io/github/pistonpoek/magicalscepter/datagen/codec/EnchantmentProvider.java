@@ -4,14 +4,13 @@ import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantments;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
-import net.minecraft.data.DataOutput;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -27,16 +26,16 @@ public class EnchantmentProvider extends FabricCodecDataProvider<Enchantment> {
      * @param output           Data output to generate enchantment data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public EnchantmentProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
-                ModRegistryKeys.directory(RegistryKeys.ENCHANTMENT), Enchantment.CODEC);
+    public EnchantmentProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture, PackOutput.Target.DATA_PACK,
+                ModRegistryKeys.directory(Registries.ENCHANTMENT), Enchantment.DIRECT_CODEC);
     }
 
     @Override
-    protected void configure(BiConsumer<Identifier, Enchantment> provider, RegistryWrapper.WrapperLookup registries) {
-        RegistryEntryLookup<Enchantment> enchantmentLookup = registries.getOrThrow(RegistryKeys.ENCHANTMENT);
+    protected void configure(BiConsumer<Identifier, Enchantment> provider, HolderLookup.Provider registries) {
+        HolderGetter<Enchantment> enchantmentLookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
 
-        for (RegistryKey<Enchantment> scepterKey : ModEnchantments.KEYS) {
+        for (ResourceKey<Enchantment> scepterKey : ModEnchantments.KEYS) {
             addEnchantment(provider, enchantmentLookup, scepterKey);
         }
     }
@@ -49,9 +48,9 @@ public class EnchantmentProvider extends FabricCodecDataProvider<Enchantment> {
      * @param key      Registry key to add to the enchantment provider.
      */
     private static void addEnchantment(BiConsumer<Identifier, Enchantment> provider,
-                                       RegistryEntryLookup<Enchantment> lookup,
-                                       RegistryKey<Enchantment> key) {
-        provider.accept(key.getValue(), lookup.getOrThrow(key).value());
+                                       HolderGetter<Enchantment> lookup,
+                                       ResourceKey<Enchantment> key) {
+        provider.accept(key.identifier(), lookup.getOrThrow(key).value());
     }
 
     @Override

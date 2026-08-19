@@ -1,43 +1,43 @@
 package io.github.pistonpoek.magicalscepter.entity.spell;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.projectile.AbstractFireballEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 
 /**
  * Fire charge entity that has modified behavior to be suitable as spell projectile.
  */
-public class SpellFireChargeEntity extends AbstractFireballEntity {
-    public SpellFireChargeEntity(EntityType<? extends SpellFireChargeEntity> entityType, World world) {
+public class SpellFireChargeEntity extends Fireball {
+    public SpellFireChargeEntity(EntityType<? extends SpellFireChargeEntity> entityType, Level world) {
         super(entityType, world);
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-        if (this.getEntityWorld() instanceof ServerWorld serverWorld) {
+    protected void onHitEntity(EntityHitResult entityHitResult) {
+        super.onHitEntity(entityHitResult);
+        if (this.level() instanceof ServerLevel serverWorld) {
             Entity entity = entityHitResult.getEntity();
-            int fireTicks = entity.getFireTicks();
-            entity.setOnFireFor(5.0F);
-            DamageSource damageSource = this.getDamageSources().fireball(this, this.getOwner());
-            if (!entity.damage(serverWorld, damageSource, 5.0F)) {
-                entity.setFireTicks(fireTicks);
+            int fireTicks = entity.getRemainingFireTicks();
+            entity.igniteForSeconds(5.0F);
+            DamageSource damageSource = this.damageSources().fireball(this, this.getOwner());
+            if (!entity.hurtServer(serverWorld, damageSource, 5.0F)) {
+                entity.setRemainingFireTicks(fireTicks);
             } else {
-                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource);
+                EnchantmentHelper.doPostAttackEffects(serverWorld, entity, damageSource);
             }
         }
     }
 
     @Override
-    protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
-        if (!this.getEntityWorld().isClient()) {
+    protected void onHit(HitResult hitResult) {
+        super.onHit(hitResult);
+        if (!this.level().isClientSide()) {
             this.discard();
         }
     }

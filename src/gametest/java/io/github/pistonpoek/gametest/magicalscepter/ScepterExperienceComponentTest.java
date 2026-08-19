@@ -8,9 +8,8 @@ import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.item.ArcaneScepterItem;
 import net.fabricmc.fabric.api.gametest.v1.CustomTestMethodInvoker;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.minecraft.test.TestContext;
-import net.minecraft.text.Text;
-
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
 import java.lang.reflect.Method;
 
 import static io.github.pistonpoek.gametest.magicalscepter.util.ContextUtil.getRegistryOps;
@@ -24,36 +23,36 @@ public class ScepterExperienceComponentTest implements CustomTestMethodInvoker {
     private static final String CHARGED = String.valueOf(ArcaneScepterItem.EXPERIENCE_STEP);
 
     @Override
-    public void invokeTestMethod(TestContext context, Method method) throws ReflectiveOperationException {
+    public void invokeTestMethod(GameTestHelper context, Method method) throws ReflectiveOperationException {
         method.invoke(this, context);
     }
 
     @GameTest(structure = "gametest:template/empty")
-    void codecFromJson(TestContext context) {
+    void codecFromJson(GameTestHelper context) {
         checkFromJson(context, DEFAULT_COMPONENT, DEFAULT);
         checkFromJson(context, CHARGED_COMPONENT, CHARGED);
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure = "gametest:template/empty")
-    void codecToJson(TestContext context) {
+    void codecToJson(GameTestHelper context) {
         checkToJson(context, DEFAULT, DEFAULT_COMPONENT);
         checkToJson(context, CHARGED, CHARGED_COMPONENT);
-        context.complete();
+        context.succeed();
     }
 
-    private void checkFromJson(TestContext context, ScepterExperienceComponent expected, String json) {
+    private void checkFromJson(GameTestHelper context, ScepterExperienceComponent expected, String json) {
         ScepterExperienceComponent component =
                 ScepterExperienceComponent.CODEC.decode(getRegistryOps(context, JsonOps.INSTANCE),
                         GSON.fromJson(json, JsonElement.class)).getOrThrow().getFirst();
-        context.assertEquals(expected.experience(), component.experience(),
-                Text.of("experience property"));
+        context.assertValueEqual(expected.experience(), component.experience(),
+                Component.nullToEmpty("experience property"));
     }
 
-    private void checkToJson(TestContext context, String expected, ScepterExperienceComponent component) {
+    private void checkToJson(GameTestHelper context, String expected, ScepterExperienceComponent component) {
         JsonElement json = ScepterExperienceComponent.CODEC.encodeStart(
                 getRegistryOps(context, JsonOps.INSTANCE), component).getOrThrow();
-        context.assertEquals(expected, GSON.toJson(json),
-                Text.of("scepter experience component json string"));
+        context.assertValueEqual(expected, GSON.toJson(json),
+                Component.nullToEmpty("scepter experience component json string"));
     }
 }

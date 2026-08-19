@@ -1,14 +1,14 @@
 package io.github.pistonpoek.magicalscepter.registry.tag;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.registry.tag.ItemTags
+ * @see net.minecraft.tags.ItemTags
  */
 public class ModItemTags {
     public static final TagKey<Item> SORCERER_PREFERRED_WEAPONS = of("sorcerer_preferred_weapons");
@@ -24,6 +24,6 @@ public class ModItemTags {
      * @return Item tag key for the specified name.
      */
     public static TagKey<Item> of(String name) {
-        return TagKey.of(RegistryKeys.ITEM, ModIdentifier.of(name));
+        return TagKey.create(Registries.ITEM, ModIdentifier.of(name));
     }
 }

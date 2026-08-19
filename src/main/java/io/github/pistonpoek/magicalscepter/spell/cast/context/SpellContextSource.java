@@ -7,13 +7,13 @@ import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import io.github.pistonpoek.magicalscepter.spell.target.TargetSource;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
+import net.minecraft.core.Registry;
 
 public interface SpellContextSource {
-    Codec<SpellContextSource> CODEC = ModRegistries.CAST_CONTEXT_SOURCE_TYPE.getCodec()
+    Codec<SpellContextSource> CODEC = ModRegistries.CAST_CONTEXT_SOURCE_TYPE.byNameCodec()
             .dispatch("source", SpellContextSource::getSourceCodec, Function.identity());
 
     static void register(Registry<MapCodec<? extends SpellContextSource>> registry) {

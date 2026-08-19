@@ -5,43 +5,43 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.loot.context.ModLootContextTypes;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.loot.context.LootWorldContext;
-import net.minecraft.predicate.entity.LootContextPredicate;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.advancements.criterion.ContextAwarePredicate;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 
-public record FilterCastTransformer(LootContextPredicate filters) implements CastTransformer {
+public record FilterCastTransformer(ContextAwarePredicate filters) implements CastTransformer {
     public static final MapCodec<FilterCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    LootContextPredicate.CODEC.fieldOf("filters").forGetter(FilterCastTransformer::filters)
+                    ContextAwarePredicate.CODEC.fieldOf("filters").forGetter(FilterCastTransformer::filters)
             ).apply(instance, FilterCastTransformer::new)
     );
 
     @Override
     public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
         SpellContext context = casting.getContext();
-        ServerWorld serverWorld = context.getWorld();
-        Vec3d position = context.position();
-        ItemStack stack = context.caster().getActiveItem();
-        BlockState blockState = serverWorld.getBlockState(BlockPos.ofFloored(position));
-        LootWorldContext lootWorldContext = new LootWorldContext.Builder(serverWorld)
-                .add(LootContextParameters.THIS_ENTITY, context.target())
-                .add(LootContextParameters.ORIGIN, position)
-                .add(LootContextParameters.TOOL, stack)
-                .add(LootContextParameters.BLOCK_STATE, blockState)
-                .build(ModLootContextTypes.SPELL_CAST);
-        LootContext lootContext = new LootContext.Builder(lootWorldContext).build(Optional.empty());
-        if (filters.test(lootContext)) {
+        ServerLevel serverWorld = context.getWorld();
+        Vec3 position = context.position();
+        ItemStack stack = context.caster().getUseItem();
+        BlockState blockState = serverWorld.getBlockState(BlockPos.containing(position));
+        LootParams lootWorldContext = new LootParams.Builder(serverWorld)
+                .withParameter(LootContextParams.THIS_ENTITY, context.target())
+                .withParameter(LootContextParams.ORIGIN, position)
+                .withParameter(LootContextParams.TOOL, stack)
+                .withParameter(LootContextParams.BLOCK_STATE, blockState)
+                .create(ModLootContextTypes.SPELL_CAST);
+        LootContext lootContext = new LootContext.Builder(lootWorldContext).create(Optional.empty());
+        if (filters.matches(lootContext)) {
             return List.of(casting);
         }
 

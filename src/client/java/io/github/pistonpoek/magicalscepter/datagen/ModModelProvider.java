@@ -8,22 +8,29 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.*;
-import net.minecraft.item.Item;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
 import java.util.Optional;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.client.data.ModelProvider
- * @see net.minecraft.client.data.Models
+ * @see net.minecraft.client.data.models.ModelProvider
+ * @see net.minecraft.client.data.models.model.ModelTemplates
  */
 @Environment(EnvType.CLIENT)
 public class ModModelProvider extends FabricModelProvider {
-    public static final Model HANDHELD_SCEPTER = new Model(
-            Optional.of(Identifier.ofVanilla("item/handheld")),
-            Optional.empty(), TextureKey.LAYER0, TextureKey.LAYER1);
+    public static final ModelTemplate HANDHELD_SCEPTER = new ModelTemplate(
+            Optional.of(Identifier.withDefaultNamespace("item/handheld")),
+            Optional.empty(), TextureSlot.LAYER0, TextureSlot.LAYER1);
 
     /**
      * Construct a mod model provider for data generation.
@@ -35,20 +42,20 @@ public class ModModelProvider extends FabricModelProvider {
     }
 
     @Override
-    public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
+    public void generateBlockStateModels(BlockModelGenerators blockStateModelGenerator) {
     }
 
     @Override
-    public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(ModItems.ARCANE_SCEPTER, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.CHARGED_ARCANE_SCEPTER, Models.HANDHELD);
-        itemModelGenerator.register(ModItems.SCEPTER, Models.HANDHELD);
+    public void generateItemModels(ItemModelGenerators itemModelGenerator) {
+        itemModelGenerator.generateFlatItem(ModItems.ARCANE_SCEPTER, ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.CHARGED_ARCANE_SCEPTER, ModelTemplates.FLAT_HANDHELD_ITEM);
+        itemModelGenerator.generateFlatItem(ModItems.SCEPTER, ModelTemplates.FLAT_HANDHELD_ITEM);
 
         if (itemModelGenerator instanceof ItemModelGeneratorMixin scepterItemModelGenerator) {
             registerScepter(scepterItemModelGenerator, ModItems.MAGICAL_SCEPTER, HANDHELD_SCEPTER);
         }
 
-        itemModelGenerator.register(ModItems.SORCERER_SPAWN_EGG, Models.GENERATED);
+        itemModelGenerator.generateFlatItem(ModItems.SORCERER_SPAWN_EGG, ModelTemplates.FLAT_ITEM);
     }
 
     /**
@@ -60,7 +67,7 @@ public class ModModelProvider extends FabricModelProvider {
      */
     public static void registerScepterTinted(ItemModelGeneratorMixin itemModelGenerator,
                                              Item item, Identifier model) {
-        itemModelGenerator.getOutput().accept(item, ItemModels.tinted(model, new ScepterTintSource()));
+        itemModelGenerator.getItemModelOutput().accept(item, ItemModelUtils.tintedModel(model, new ScepterTintSource()));
     }
 
     /**
@@ -71,12 +78,12 @@ public class ModModelProvider extends FabricModelProvider {
      * @param model              Identifier to register the item model at.
      */
     public static void registerScepter(ItemModelGeneratorMixin itemModelGenerator,
-                                       Item item, Model model) {
+                                       Item item, ModelTemplate model) {
         Identifier identifier = uploadTwoLayers(
                 itemModelGenerator,
                 item, model,
-                ModelIds.getItemSubModelId(item, "_overlay"),
-                ModelIds.getItemModelId(item));
+                ModelLocationUtils.getModelLocation(item, "_overlay"),
+                ModelLocationUtils.getModelLocation(item));
         registerScepterTinted(itemModelGenerator, item, identifier);
     }
 
@@ -89,11 +96,11 @@ public class ModModelProvider extends FabricModelProvider {
      * @param layer0             Identifier of the first layer.
      * @param layer1             Identifier of the second layer.
      * @return Identifier of the uploaded model.
-     * @see Model
+     * @see ModelTemplate
      */
     public static Identifier uploadTwoLayers(ItemModelGeneratorMixin itemModelGenerator,
-                                             Item item, Model model,
+                                             Item item, ModelTemplate model,
                                              Identifier layer0, Identifier layer1) {
-        return model.upload(item, TextureMap.layered(layer0, layer1), itemModelGenerator.getModelCollector());
+        return model.create(item, TextureMapping.layered(layer0, layer1), itemModelGenerator.getModelOutput());
     }
 }

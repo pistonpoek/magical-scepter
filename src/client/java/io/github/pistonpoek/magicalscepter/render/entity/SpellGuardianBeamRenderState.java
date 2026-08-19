@@ -2,12 +2,12 @@ package io.github.pistonpoek.magicalscepter.render.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.world.phys.Vec3;
 
 @Environment(EnvType.CLIENT)
 public class SpellGuardianBeamRenderState extends EntityRenderState {
-    public Vec3d pos;
-    public Vec3d targetPos;
+    public Vec3 pos;
+    public Vec3 targetPos;
     public float progress;
 }

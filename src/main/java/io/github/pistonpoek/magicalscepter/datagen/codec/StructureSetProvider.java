@@ -4,14 +4,13 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.structure.ModStructureSets;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
-import net.minecraft.data.DataOutput;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.structure.StructureSet;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -27,16 +26,16 @@ public class StructureSetProvider extends FabricCodecDataProvider<StructureSet> 
      * @param output           Data output to generate structure set data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public StructureSetProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
-                ModRegistryKeys.directory(RegistryKeys.STRUCTURE_SET), StructureSet.CODEC);
+    public StructureSetProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture, PackOutput.Target.DATA_PACK,
+                ModRegistryKeys.directory(Registries.STRUCTURE_SET), StructureSet.DIRECT_CODEC);
     }
 
     @Override
-    protected void configure(BiConsumer<Identifier, StructureSet> provider, RegistryWrapper.WrapperLookup registries) {
-        RegistryEntryLookup<StructureSet> structureSetLookup = registries.getOrThrow(RegistryKeys.STRUCTURE_SET);
+    protected void configure(BiConsumer<Identifier, StructureSet> provider, HolderLookup.Provider registries) {
+        HolderGetter<StructureSet> structureSetLookup = registries.lookupOrThrow(Registries.STRUCTURE_SET);
 
-        for (RegistryKey<StructureSet> structureSetKey : ModStructureSets.KEYS) {
+        for (ResourceKey<StructureSet> structureSetKey : ModStructureSets.KEYS) {
             addStructureSet(provider, structureSetLookup, structureSetKey);
         }
     }
@@ -49,9 +48,9 @@ public class StructureSetProvider extends FabricCodecDataProvider<StructureSet> 
      * @param key      Registry key to add to the structure set provider.
      */
     private static void addStructureSet(BiConsumer<Identifier, StructureSet> provider,
-                                         RegistryEntryLookup<StructureSet> lookup,
-                                         RegistryKey<StructureSet> key) {
-        provider.accept(key.getValue(), lookup.getOrThrow(key).value());
+                                         HolderGetter<StructureSet> lookup,
+                                         ResourceKey<StructureSet> key) {
+        provider.accept(key.identifier(), lookup.getOrThrow(key).value());
     }
 
     @Override

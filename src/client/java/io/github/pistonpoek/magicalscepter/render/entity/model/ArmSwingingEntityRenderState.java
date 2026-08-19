@@ -10,7 +10,7 @@ public interface ArmSwingingEntityRenderState {
      * Get the hand swing progress.
      *
      * @return Hand swing progress.
-     * @see net.minecraft.entity.LivingEntity#getHandSwingProgress(float)
+     * @see net.minecraft.world.entity.LivingEntity#getAttackAnim(float)
      */
     float magical_scepter$getHandSwingProgress();
 

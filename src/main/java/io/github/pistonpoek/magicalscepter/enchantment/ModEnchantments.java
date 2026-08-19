@@ -2,28 +2,27 @@ package io.github.pistonpoek.magicalscepter.enchantment;
 
 import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.component.EnchantmentEffectComponentTypes;
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentLevelBasedValue;
-import net.minecraft.enchantment.effect.value.MultiplyEnchantmentEffect;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.LevelBasedValue;
+import net.minecraft.world.item.enchantment.effects.MultiplyValue;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.enchantment.Enchantments
+ * @see net.minecraft.world.item.enchantment.Enchantments
  */
 public interface ModEnchantments {
-    List<RegistryKey<Enchantment>> KEYS = new ArrayList<>();
-    RegistryKey<Enchantment> INSIGHT_KEY = of("insight");
+    List<ResourceKey<Enchantment>> KEYS = new ArrayList<>();
+    ResourceKey<Enchantment> INSIGHT_KEY = of("insight");
 
     /**
      * Create the enchantment registry key for a specific name.
@@ -31,8 +30,8 @@ public interface ModEnchantments {
      * @param name String name to create registry key with.
      * @return Enchantment registry key for the specified name.
      */
-    private static RegistryKey<Enchantment> of(String name) {
-        return RegistryKey.of(RegistryKeys.ENCHANTMENT, ModIdentifier.of(name));
+    private static ResourceKey<Enchantment> of(String name) {
+        return ResourceKey.create(Registries.ENCHANTMENT, ModIdentifier.of(name));
     }
 
     /**
@@ -40,25 +39,25 @@ public interface ModEnchantments {
      *
      * @param registry Enchantment registry to bootstrap.
      */
-    static void bootstrap(Registerable<Enchantment> registry) {
-        RegistryEntryLookup<Item> itemLookup = registry.getRegistryLookup(RegistryKeys.ITEM);
+    static void bootstrap(BootstrapContext<Enchantment> registry) {
+        HolderGetter<Item> itemLookup = registry.lookup(Registries.ITEM);
 
         register(registry, INSIGHT_KEY, new Enchantment.Builder(
                         Enchantment.definition(
                                 itemLookup.getOrThrow(ModItemTags.SCEPTER_ENCHANTABLE),
                                 2,
                                 3,
-                                Enchantment.leveledCost(15, 9),
-                                Enchantment.leveledCost(65, 9),
+                                Enchantment.dynamicCost(15, 9),
+                                Enchantment.dynamicCost(65, 9),
                                 4,
-                                AttributeModifierSlot.MAINHAND
+                                EquipmentSlotGroup.MAINHAND
                         )
-                ).addEffect(
-                        EnchantmentEffectComponentTypes.MOB_EXPERIENCE,
-                        new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.linear(1.3F, 0.35F))
-                ).addNonListEffect(
+                ).withEffect(
+                        EnchantmentEffectComponents.MOB_EXPERIENCE,
+                        new MultiplyValue(LevelBasedValue.perLevel(1.3F, 0.35F))
+                ).withSpecialEffect(
                         ModEnchantmentEffectComponentTypes.EXPERIENCE_STEP,
-                        new MultiplyEnchantmentEffect(EnchantmentLevelBasedValue.lookup(List.of(2.0F, 4.0F, 8.0F), EnchantmentLevelBasedValue.constant(8.0F)))
+                        new MultiplyValue(LevelBasedValue.lookup(List.of(2.0F, 4.0F, 8.0F), LevelBasedValue.constant(8.0F)))
                 )
         );
     }
@@ -70,10 +69,10 @@ public interface ModEnchantments {
      * @param key      Enchantment key to register the enchantment at.
      * @param builder  Enchantment builder to create enchantment to register.
      */
-    private static void register(Registerable<Enchantment> registry,
-                                 RegistryKey<Enchantment> key,
+    private static void register(BootstrapContext<Enchantment> registry,
+                                 ResourceKey<Enchantment> key,
                                  Enchantment.Builder builder) {
         KEYS.add(key);
-        registry.register(key, builder.build(key.getValue()));
+        registry.register(key, builder.build(key.identifier()));
     }
 }

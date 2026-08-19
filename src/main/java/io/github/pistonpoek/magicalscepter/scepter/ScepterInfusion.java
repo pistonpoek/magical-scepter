@@ -3,20 +3,19 @@ package io.github.pistonpoek.magicalscepter.scepter;
 import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.loot.context.LootWorldContext;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Hand;
-
 import java.util.Optional;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 import static io.github.pistonpoek.magicalscepter.scepter.ScepterHelper.INFUSABLE_SCEPTER;
 
@@ -31,10 +30,10 @@ public class ScepterInfusion {
      * @param lootContext Loot context to check infusion conditions with.
      * @return Optional scepter for the damage source infusion.
      */
-    public static Optional<RegistryEntry<Scepter>> getInfusion(
+    public static Optional<Holder<Scepter>> getInfusion(
             Registry<Scepter> scepterRegistry, LootContext lootContext) {
 
-        for (RegistryEntry<Scepter> scepter : scepterRegistry.streamEntries().toList()) {
+        for (Holder<Scepter> scepter : scepterRegistry.listElements().toList()) {
             if (scepter.value().infuses(lootContext)) {
                 return Optional.of(scepter);
             }
@@ -54,27 +53,27 @@ public class ScepterInfusion {
         }
 
         // Get the item stack that is the infusable scepter.
-        Hand hand = Hand.MAIN_HAND;
-        ItemStack itemStack = entity.getMainHandStack();
+        InteractionHand hand = InteractionHand.MAIN_HAND;
+        ItemStack itemStack = entity.getMainHandItem();
         if (!INFUSABLE_SCEPTER.test(itemStack)) {
-            hand = Hand.OFF_HAND;
-            itemStack = entity.getOffHandStack();
+            hand = InteractionHand.OFF_HAND;
+            itemStack = entity.getOffhandItem();
         }
 
         // Get the infusion scepter for the damage source.
-        Optional<RegistryEntry<Scepter>> scepter = getInfusion(
-                ScepterHelper.getScepterRegistry(entity.getEntityWorld()), getLootContext(entity, damageSource));
+        Optional<Holder<Scepter>> scepter = getInfusion(
+                ScepterHelper.getScepterRegistry(entity.level()), getLootContext(entity, damageSource));
 
         // Check if there is an infusion scepter, if so infuse the held scepter.
         if (scepter.isPresent()) {
             ItemStack infusedScepter = ScepterContentsComponent.setScepter(itemStack, scepter.get());
-            entity.setStackInHand(hand, infusedScepter);
-            if (entity instanceof ServerPlayerEntity serverPlayerEntity) {
+            entity.setItemInHand(hand, infusedScepter);
+            if (entity instanceof ServerPlayer serverPlayerEntity) {
                 ModCriteria.INFUSE_SCEPTER.trigger(serverPlayerEntity, scepter.get());
             }
-            if (entity.getEntityWorld() instanceof ServerWorld serverWorld) {
-                serverWorld.playSoundFromEntity(null, entity,
-                        ModSoundEvents.ITEM_MAGICAL_SCEPTER_INFUSE, entity.getSoundCategory(),
+            if (entity.level() instanceof ServerLevel serverWorld) {
+                serverWorld.playSound(null, entity,
+                        ModSoundEvents.ITEM_MAGICAL_SCEPTER_INFUSE, entity.getSoundSource(),
                         1.0F, 1.0F);
             }
         }
@@ -88,14 +87,14 @@ public class ScepterInfusion {
      * @return Loot context constructed with values from the entity and damage source.
      */
     private static LootContext getLootContext(LivingEntity entity, DamageSource damageSource) {
-        LootWorldContext.Builder builder = new LootWorldContext.Builder((ServerWorld) entity.getEntityWorld())
-                .add(LootContextParameters.THIS_ENTITY, entity)
-                .add(LootContextParameters.ORIGIN, entity.getEntityPos())
-                .add(LootContextParameters.DAMAGE_SOURCE, damageSource)
-                .addOptional(LootContextParameters.ATTACKING_ENTITY, damageSource.getAttacker())
-                .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, damageSource.getSource());
-        LootWorldContext lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
-        return new LootContext.Builder(lootContextParameterSet).build(Optional.empty());
+        LootParams.Builder builder = new LootParams.Builder((ServerLevel) entity.level())
+                .withParameter(LootContextParams.THIS_ENTITY, entity)
+                .withParameter(LootContextParams.ORIGIN, entity.position())
+                .withParameter(LootContextParams.DAMAGE_SOURCE, damageSource)
+                .withOptionalParameter(LootContextParams.ATTACKING_ENTITY, damageSource.getEntity())
+                .withOptionalParameter(LootContextParams.DIRECT_ATTACKING_ENTITY, damageSource.getDirectEntity());
+        LootParams lootContextParameterSet = builder.create(LootContextParamSets.ENTITY);
+        return new LootContext.Builder(lootContextParameterSet).create(Optional.empty());
     }
 
     /**

@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.mixson.advancement.nether;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import net.ramixin.mixson.inline.EventContext;
 import net.ramixin.mixson.inline.MixsonEvent;
 

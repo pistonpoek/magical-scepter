@@ -4,9 +4,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
-import net.minecraft.component.ComponentType;
-import net.minecraft.predicate.NumberRange;
-import net.minecraft.predicate.component.ComponentSubPredicate;
+import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.criterion.SingleComponentItemPredicate;
+import net.minecraft.core.component.DataComponentType;
 
 /**
  * Predicate for the scepter experience component.
@@ -14,22 +14,22 @@ import net.minecraft.predicate.component.ComponentSubPredicate;
  * @param experience Integer range to test the scepter experience with.
  */
 public record ScepterExperiencePredicate(
-        NumberRange.IntRange experience) implements ComponentSubPredicate<ScepterExperienceComponent> {
+        MinMaxBounds.Ints experience) implements SingleComponentItemPredicate<ScepterExperienceComponent> {
     public static final Codec<ScepterExperiencePredicate> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    NumberRange.IntRange.CODEC.optionalFieldOf("experience",
-                            NumberRange.IntRange.ANY).forGetter(ScepterExperiencePredicate::experience)
+                    MinMaxBounds.Ints.CODEC.optionalFieldOf("experience",
+                            MinMaxBounds.Ints.ANY).forGetter(ScepterExperiencePredicate::experience)
             ).apply(instance, ScepterExperiencePredicate::new)
     );
 
     @Override
-    public ComponentType<ScepterExperienceComponent> getComponentType() {
+    public DataComponentType<ScepterExperienceComponent> componentType() {
         return ModDataComponentTypes.SCEPTER_EXPERIENCE;
     }
 
     @Override
-    public boolean test(ScepterExperienceComponent scepterExperienceComponent) {
-        return this.experience.test(scepterExperienceComponent.experience());
+    public boolean matches(ScepterExperienceComponent scepterExperienceComponent) {
+        return this.experience.matches(scepterExperienceComponent.experience());
     }
 
 }

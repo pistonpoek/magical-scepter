@@ -5,17 +5,21 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.serialization.Codec;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.minecraft.world.rule.*;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.gamerules.GameRule;
+import net.minecraft.world.level.gamerules.GameRuleCategory;
+import net.minecraft.world.level.gamerules.GameRuleType;
+import net.minecraft.world.level.gamerules.GameRuleTypeVisitor;
+import net.minecraft.world.level.gamerules.GameRules;
 
 import java.util.function.ToIntFunction;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.world.rule.GameRules
+ * @see net.minecraft.world.level.gamerules.GameRules
  */
 public class ModGameRules {
     public static final GameRule<Integer> MAX_SPELL_CASTS = registerIntRule(
@@ -29,7 +33,7 @@ public class ModGameRules {
     }
 
     public static String getDescriptionTranslationKey(GameRule<?> gameRule) {
-        return gameRule.getTranslationKey() + ".description";
+        return gameRule.getDescriptionId() + ".description";
     }
 
     private static GameRule<Boolean> registerBooleanRule(String name, GameRuleCategory category, boolean defaultValue) {
@@ -40,24 +44,24 @@ public class ModGameRules {
                 BoolArgumentType.bool(),
                 Codec.BOOL,
                 defaultValue,
-                FeatureSet.empty(),
-                GameRuleVisitor::visitBoolean,
+                FeatureFlagSet.of(),
+                GameRuleTypeVisitor::visitBoolean,
                 value -> value ? 1 : 0
         );
     }
 
     private static GameRule<Integer> registerIntRule(String name, GameRuleCategory category, int defaultValue,
                                                      int minValue) {
-        return registerIntRule(name, category, defaultValue, minValue, Integer.MAX_VALUE, FeatureSet.empty());
+        return registerIntRule(name, category, defaultValue, minValue, Integer.MAX_VALUE, FeatureFlagSet.of());
     }
 
     private static GameRule<Integer> registerIntRule(String name, GameRuleCategory category, int defaultValue,
                                                      int minValue, int maxValue) {
-        return registerIntRule(name, category, defaultValue, minValue, maxValue, FeatureSet.empty());
+        return registerIntRule(name, category, defaultValue, minValue, maxValue, FeatureFlagSet.of());
     }
 
     private static GameRule<Integer> registerIntRule(String name, GameRuleCategory category, int defaultValue,
-                                                     int minValue, int maxValue, FeatureSet requiredFeatures
+                                                     int minValue, int maxValue, FeatureFlagSet requiredFeatures
     ) {
         return register(
                 name,
@@ -67,7 +71,7 @@ public class ModGameRules {
                 Codec.intRange(minValue, maxValue),
                 defaultValue,
                 requiredFeatures,
-                GameRuleVisitor::visitInt,
+                GameRuleTypeVisitor::visitInteger,
                 value -> value
         );
     }
@@ -79,12 +83,12 @@ public class ModGameRules {
             ArgumentType<T> argumentType,
             Codec<T> codec,
             T defaultValue,
-            FeatureSet requiredFeatures,
-            GameRules.Acceptor<T> acceptor,
+            FeatureFlagSet requiredFeatures,
+            GameRules.VisitorCaller<T> acceptor,
             ToIntFunction<T> commandResultSupplier
     ) {
         return Registry.register(
-                Registries.GAME_RULE, ModIdentifier.of(name),
+                BuiltInRegistries.GAME_RULE, ModIdentifier.of(name),
                 new GameRule<>(category, type, argumentType, acceptor, codec, commandResultSupplier,
                         defaultValue, requiredFeatures)
         );

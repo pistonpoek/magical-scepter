@@ -1,14 +1,14 @@
 package io.github.pistonpoek.magicalscepter.mixin;
 
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.PatrolEntity;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.PatrollingMonster;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(PatrolEntity.class)
-public abstract class PatrolEntityMixin extends HostileEntity {
+@Mixin(PatrollingMonster.class)
+public abstract class PatrolEntityMixin extends Monster {
     @Shadow
     private boolean patrolLeader;
 
@@ -27,7 +27,7 @@ public abstract class PatrolEntityMixin extends HostileEntity {
      * @param type Entity type to create the patrol entity mixin with.
      * @param world World to create the patrol entity mixin in.
      */
-    protected PatrolEntityMixin(EntityType<? extends HostileEntity> type, World world) {
+    protected PatrolEntityMixin(EntityType<? extends Monster> type, Level world) {
         super(type, world);
     }
 
@@ -41,12 +41,12 @@ public abstract class PatrolEntityMixin extends HostileEntity {
      * @param entityData Entity data to initialize with.
      * @param callbackInfoReturnable Callback into returnable to return a different value of the initialize method.
      */
-    @Inject(method = "initialize", at = @At(value = "FIELD",
-            target = "Lnet/minecraft/entity/mob/PatrolEntity;patrolLeader:Z",
+    @Inject(method = "finalizeSpawn", at = @At(value = "FIELD",
+            target = "Lnet/minecraft/world/entity/monster/PatrollingMonster;patrolLeader:Z",
             opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
-    private void modifyPatrolLeader(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
-                                    EntityData entityData, CallbackInfoReturnable<EntityData> callbackInfoReturnable) {
+    private void modifyPatrolLeader(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason,
+                                    SpawnGroupData entityData, CallbackInfoReturnable<SpawnGroupData> callbackInfoReturnable) {
         this.patrolLeader = this.patrolLeader && (this.getType() != (ModEntityType.SORCERER) ||
-                spawnReason != SpawnReason.NATURAL);
+                spawnReason != EntitySpawnReason.NATURAL);
     }
 }

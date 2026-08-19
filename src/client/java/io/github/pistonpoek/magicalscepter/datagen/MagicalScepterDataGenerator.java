@@ -16,8 +16,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.registry.RegistryBuilder;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 
 @Environment(EnvType.CLIENT)
 public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
@@ -53,13 +53,13 @@ public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
     }
 
     @Override
-    public void buildRegistry(RegistryBuilder registryBuilder) {
-        registryBuilder.addRegistry(RegistryKeys.DAMAGE_TYPE, ModDamageTypes::bootstrap);
-        registryBuilder.addRegistry(RegistryKeys.ENCHANTMENT, ModEnchantments::bootstrap);
-        registryBuilder.addRegistry(ModRegistryKeys.SPELL, Spells::bootstrap);
-        registryBuilder.addRegistry(ModRegistryKeys.SCEPTER, Scepters::bootstrap);
-        registryBuilder.addRegistry(RegistryKeys.TEMPLATE_POOL, ModStructurePools::bootstrap);
-        registryBuilder.addRegistry(RegistryKeys.STRUCTURE_SET, ModStructureSets::bootstrap);
-        registryBuilder.addRegistry(RegistryKeys.STRUCTURE, ModStructures::bootstrap);
+    public void buildRegistry(RegistrySetBuilder registryBuilder) {
+        registryBuilder.add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap);
+        registryBuilder.add(Registries.ENCHANTMENT, ModEnchantments::bootstrap);
+        registryBuilder.add(ModRegistryKeys.SPELL, Spells::bootstrap);
+        registryBuilder.add(ModRegistryKeys.SCEPTER, Scepters::bootstrap);
+        registryBuilder.add(Registries.TEMPLATE_POOL, ModStructurePools::bootstrap);
+        registryBuilder.add(Registries.STRUCTURE_SET, ModStructureSets::bootstrap);
+        registryBuilder.add(Registries.STRUCTURE, ModStructures::bootstrap);
     }
 }

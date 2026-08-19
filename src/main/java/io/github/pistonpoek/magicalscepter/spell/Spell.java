@@ -5,46 +5,46 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryFixedCodec;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextCodecs;
-import net.minecraft.util.dynamic.Codecs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.core.Holder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.entity.LivingEntity;
 
-public record Spell(List<SpellCast> casts, int cooldown, Text description) {
+public record Spell(List<SpellCast> casts, int cooldown, Component description) {
     public static final Codec<Spell> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             SpellCast.CODEC.listOf().fieldOf("casts").forGetter(Spell::casts),
-                            Codecs.NON_NEGATIVE_INT.fieldOf("cooldown").forGetter(Spell::cooldown),
-                            TextCodecs.CODEC.fieldOf("description").forGetter(Spell::description)
+                            ExtraCodecs.NON_NEGATIVE_INT.fieldOf("cooldown").forGetter(Spell::cooldown),
+                            ComponentSerialization.CODEC.fieldOf("description").forGetter(Spell::description)
                     )
                     .apply(instance, Spell::new)
     );
     public static final Codec<Spell> NETWORK_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.INT.fieldOf("cooldown").forGetter(Spell::cooldown),
-                    TextCodecs.CODEC.fieldOf("description").forGetter(Spell::description)
+                    ComponentSerialization.CODEC.fieldOf("description").forGetter(Spell::description)
             ).apply(instance, Spell::createClientSpell)
     );
 
-    private static Spell createClientSpell(int cooldown, Text description) {
+    private static Spell createClientSpell(int cooldown, Component description) {
         return new Spell(List.of(), cooldown, description);
     }
 
-    public static final Codec<RegistryEntry<Spell>> ENTRY_CODEC = RegistryFixedCodec.of(ModRegistryKeys.SPELL);
-    public static final Codec<Spell> CODEC = Codec.withAlternative(BASE_CODEC, ENTRY_CODEC, RegistryEntry::value);
-    public static final PacketCodec<RegistryByteBuf, RegistryEntry<Spell>> ENTRY_PACKET_CODEC =
-            PacketCodecs.registryEntry(ModRegistryKeys.SPELL);
-    public static final PacketCodec<RegistryByteBuf, Spell> PACKET_CODEC = PacketCodecs.registryCodec(CODEC);
+    public static final Codec<Holder<Spell>> ENTRY_CODEC = RegistryFixedCodec.create(ModRegistryKeys.SPELL);
+    public static final Codec<Spell> CODEC = Codec.withAlternative(BASE_CODEC, ENTRY_CODEC, Holder::value);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Holder<Spell>> ENTRY_PACKET_CODEC =
+            ByteBufCodecs.holderRegistry(ModRegistryKeys.SPELL);
+    public static final StreamCodec<RegistryFriendlyByteBuf, Spell> PACKET_CODEC = ByteBufCodecs.fromCodecWithRegistries(CODEC);
 
     /**
      * Cast this spell for a specific living entity.
@@ -52,7 +52,7 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
      * @param caster Living entity to cast the spell for.
      */
     public void castSpell(@NotNull LivingEntity caster) {
-        if (caster.getEntityWorld().isClient()) {
+        if (caster.level().isClientSide()) {
             return;
         }
 
@@ -60,7 +60,7 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
             cast.invoke(caster);
         }
 
-        caster.emitGameEvent(ModGameEvent.SPELL_CAST);
+        caster.gameEvent(ModGameEvent.SPELL_CAST);
     }
 
     public int getCooldown() {
@@ -71,20 +71,20 @@ public record Spell(List<SpellCast> casts, int cooldown, Text description) {
         return "Spell " + this.description.getString();
     }
 
-    public static MutableText getName(RegistryEntry<Spell> spell) {
+    public static MutableComponent getName(Holder<Spell> spell) {
         return spell.value().description.copy();
     }
 
-    public static Spell.Builder builder(int cooldown, Text description) {
+    public static Spell.Builder builder(int cooldown, Component description) {
         return new Spell.Builder(cooldown, description);
     }
 
     public static class Builder {
         private final int cooldown;
-        private final Text description;
+        private final Component description;
         private final List<SpellCast> casts = new ArrayList<>();
 
-        public Builder(int cooldown, Text description) {
+        public Builder(int cooldown, Component description) {
             this.cooldown = cooldown;
             this.description = description;
         }

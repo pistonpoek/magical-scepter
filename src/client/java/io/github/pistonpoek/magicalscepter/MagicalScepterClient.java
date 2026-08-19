@@ -13,9 +13,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
-import net.minecraft.client.render.entity.EntityRendererFactories;
-import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.client.render.entity.model.IllagerEntityModel;
+import net.minecraft.client.model.monster.illager.IllagerModel;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 
 @Environment(EnvType.CLIENT)
 public class MagicalScepterClient implements ClientModInitializer {
@@ -23,15 +23,15 @@ public class MagicalScepterClient implements ClientModInitializer {
     public void onInitializeClient() {
         ClientPlayPackets.init();
 
-        EntityRendererFactories.register(ModEntityType.SORCERER, SorcererEntityRenderer::new);
+        EntityRenderers.register(ModEntityType.SORCERER, SorcererEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.SORCERER,
-                IllagerEntityModel::getTexturedModelData);
+                IllagerModel::createBodyLayer);
 
-        EntityRendererFactories.register(ModEntityType.SPELL_GUARDIAN_BEAM, SpellGuardianBeamRenderer::new);
-        EntityRendererFactories.register(ModEntityType.SPELL_DRAGON_FIREBALL, SpellDragonFireballRenderer::new);
-        EntityRendererFactories.register(ModEntityType.SPELL_FIRE_CHARGE, context -> new FlyingItemEntityRenderer<>(context, 0.75F, true));
-        EntityRendererFactories.register(ModEntityType.SPELL_FIREBALL, context -> new FlyingItemEntityRenderer<>(context, 3.0F, true));
-        EntityRendererFactories.register(ModEntityType.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);
+        EntityRenderers.register(ModEntityType.SPELL_GUARDIAN_BEAM, SpellGuardianBeamRenderer::new);
+        EntityRenderers.register(ModEntityType.SPELL_DRAGON_FIREBALL, SpellDragonFireballRenderer::new);
+        EntityRenderers.register(ModEntityType.SPELL_FIRE_CHARGE, context -> new ThrownItemRenderer<>(context, 0.75F, true));
+        EntityRenderers.register(ModEntityType.SPELL_FIREBALL, context -> new ThrownItemRenderer<>(context, 3.0F, true));
+        EntityRenderers.register(ModEntityType.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModEntityModelLayers.WITHER_SKULL,
                 SpellWitherSkullEntityRenderer::getTexturedModelData);
 

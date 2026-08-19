@@ -1,10 +1,10 @@
 package io.github.pistonpoek.magicalscepter.world.event;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
@@ -12,7 +12,7 @@ import net.minecraft.world.event.GameEvent;
  * @see GameEvent
  */
 public class ModGameEvent {
-    public static final RegistryEntry.Reference<GameEvent> SPELL_CAST = register("spell_cast");
+    public static final Holder.Reference<GameEvent> SPELL_CAST = register("spell_cast");
 
     /**
      * Initialize the class for the static fields.
@@ -27,8 +27,8 @@ public class ModGameEvent {
      * @param name String name to register the game event for.
      * @return Registry entry reference for registered game event.
      */
-    private static RegistryEntry.Reference<GameEvent> register(String name) {
-        return register(name, GameEvent.DEFAULT_RANGE);
+    private static Holder.Reference<GameEvent> register(String name) {
+        return register(name, GameEvent.DEFAULT_NOTIFICATION_RADIUS);
     }
 
     /**
@@ -38,7 +38,7 @@ public class ModGameEvent {
      * @param range Range that the game event is detected at.
      * @return Registry entry reference for registered game event.
      */
-    private static RegistryEntry.Reference<GameEvent> register(String name, int range) {
-        return Registry.registerReference(Registries.GAME_EVENT, ModIdentifier.of(name), new GameEvent(range));
+    private static Holder.Reference<GameEvent> register(String name, int range) {
+        return Registry.registerForHolder(BuiltInRegistries.GAME_EVENT, ModIdentifier.of(name), new GameEvent(range));
     }
 }

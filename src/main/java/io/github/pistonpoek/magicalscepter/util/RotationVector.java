@@ -1,8 +1,8 @@
 package io.github.pistonpoek.magicalscepter.util;
 
-import net.minecraft.util.Pair;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.Mth;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.phys.Vec3;
 
 /**
  * Util class related to vector rotation.
@@ -14,8 +14,8 @@ public class RotationVector {
      * @param rotation Pair of floats that specifies the vertical and horizontal direction.
      * @return Vector that expresses the direction of the specified rotation.
      */
-    public static Vec3d get(Pair<Float, Float> rotation) {
-        return get(rotation.getLeft(), rotation.getRight());
+    public static Vec3 get(Tuple<Float, Float> rotation) {
+        return get(rotation.getA(), rotation.getB());
     }
 
     /**
@@ -25,13 +25,13 @@ public class RotationVector {
      * @param yaw   Float that specifies horizontal direction.
      * @return Vector that expresses the direction of the specified pitch and yaw.
      */
-    public static Vec3d get(float pitch, float yaw) {
+    public static Vec3 get(float pitch, float yaw) {
         float f = pitch * (float) (Math.PI / 180.0);
         float g = -yaw * (float) (Math.PI / 180.0);
-        float h = MathHelper.cos(g);
-        float i = MathHelper.sin(g);
-        float j = MathHelper.cos(f);
-        float k = MathHelper.sin(f);
-        return new Vec3d(i * j, -k, h * j);
+        float h = Mth.cos(g);
+        float i = Mth.sin(g);
+        float j = Mth.cos(f);
+        float k = Mth.sin(f);
+        return new Vec3(i * j, -k, h * j);
     }
 }

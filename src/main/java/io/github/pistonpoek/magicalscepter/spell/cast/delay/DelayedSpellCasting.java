@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.delay;
 
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
 
 public class DelayedSpellCasting extends SpellCasting {
     private final int delay;
@@ -29,7 +29,7 @@ public class DelayedSpellCasting extends SpellCasting {
         }
         scheduled = true;
 
-        if (getCaster().getEntityWorld() instanceof ServerWorld serverWorld) {
+        if (getCaster().level() instanceof ServerLevel serverWorld) {
             SpellCastingManager.load(serverWorld.getServer()).schedule(serverWorld, this, delay);
         }
     }

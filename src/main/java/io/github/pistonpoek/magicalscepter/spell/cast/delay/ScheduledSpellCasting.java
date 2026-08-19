@@ -6,10 +6,9 @@ import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import io.github.pistonpoek.magicalscepter.spell.target.AbsoluteTargetSource;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.MinecraftServer;
-
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import java.util.Optional;
 
 public record ScheduledSpellCasting(SpellCast spellCast, AbsoluteTargetSource caster, SpellContextSource context) {
@@ -23,7 +22,7 @@ public record ScheduledSpellCasting(SpellCast spellCast, AbsoluteTargetSource ca
 
     public ScheduledSpellCasting(SpellCasting spellCasting) {
         this(spellCasting.getSpellCast(),
-                new AbsoluteTargetSource(spellCasting.getCaster().getUuid()),
+                new AbsoluteTargetSource(spellCasting.getCaster().getUUID()),
                 spellCasting.getContextSource());
     }
 

@@ -1,24 +1,24 @@
 package io.github.pistonpoek.magicalscepter.entity.spell;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 
 /**
  * Wither skull entity that has modified behavior to be suitable as spell projectile.
  */
-public class SpellWitherSkullEntity extends ExplosiveProjectileEntity {
-    public SpellWitherSkullEntity(EntityType<? extends SpellWitherSkullEntity> entityType, World world) {
+public class SpellWitherSkullEntity extends AbstractHurtingProjectile {
+    public SpellWitherSkullEntity(EntityType<? extends SpellWitherSkullEntity> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -28,47 +28,47 @@ public class SpellWitherSkullEntity extends ExplosiveProjectileEntity {
     }
 
     @Override
-    protected void onEntityHit(EntityHitResult entityHitResult) {
-        super.onEntityHit(entityHitResult);
-        if (!(this.getEntityWorld() instanceof ServerWorld serverWorld)) {
+    protected void onHitEntity(EntityHitResult entityHitResult) {
+        super.onHitEntity(entityHitResult);
+        if (!(this.level() instanceof ServerLevel serverWorld)) {
             return;
         }
         Entity entity = entityHitResult.getEntity();
         boolean damaged;
 
         if (this.getOwner() instanceof LivingEntity livingEntity) {
-            DamageSource damageSource = this.getDamageSources()
-                    .create(DamageTypes.WITHER_SKULL, this, livingEntity);
-            damaged = entity.damage(serverWorld, damageSource, 8.0F);
+            DamageSource damageSource = this.damageSources()
+                    .source(DamageTypes.WITHER_SKULL, this, livingEntity);
+            damaged = entity.hurtServer(serverWorld, damageSource, 8.0F);
             if (!damaged) {
                 return;
             }
 
             if (entity.isAlive()) {
-                EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource);
+                EnchantmentHelper.doPostAttackEffects(serverWorld, entity, damageSource);
             } else {
                 livingEntity.heal(5.0F);
             }
         } else {
-            damaged = entity.damage(serverWorld, this.getDamageSources().magic(), 5.0F);
+            damaged = entity.hurtServer(serverWorld, this.damageSources().magic(), 5.0F);
         }
 
         if (damaged && entity instanceof LivingEntity livingEntity) {
-            livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 160, 1),
-                    this.getEffectCause());
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 160, 1),
+                    this.getEffectSource());
         }
     }
 
     @Override
-    protected void onCollision(HitResult hitResult) {
-        super.onCollision(hitResult);
-        if (!this.getEntityWorld().isClient()) {
+    protected void onHit(HitResult hitResult) {
+        super.onHit(hitResult);
+        if (!this.level().isClientSide()) {
             this.discard();
         }
     }
 
     @Override
-    protected boolean isBurning() {
+    protected boolean shouldBurn() {
         return false;
     }
 }

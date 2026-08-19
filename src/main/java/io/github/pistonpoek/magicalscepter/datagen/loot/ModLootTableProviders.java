@@ -2,10 +2,9 @@ package io.github.pistonpoek.magicalscepter.datagen.loot;
 
 import io.github.pistonpoek.magicalscepter.loot.ModLootTables;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.data.loottable.LootTableProvider;
-import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -20,7 +19,7 @@ public class ModLootTableProviders extends LootTableProvider {
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
     public ModLootTableProviders(FabricDataOutput output,
-                                 CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+                                 CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, ModLootTables.getAll(), getModLootTables(), registriesFuture);
     }
 
@@ -29,9 +28,9 @@ public class ModLootTableProviders extends LootTableProvider {
      *
      * @return List of loot table generators.
      */
-    private static List<LootTableProvider.LootTypeGenerator> getModLootTables() {
+    private static List<LootTableProvider.SubProviderEntry> getModLootTables() {
         return List.of(
-                new LootTableProvider.LootTypeGenerator(ModChestLootTableGenerator::new, LootContextTypes.CHEST)
+                new LootTableProvider.SubProviderEntry(ModChestLootTableGenerator::new, LootContextParamSets.CHEST)
         );
     }
 }

@@ -2,50 +2,49 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 
 import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.event.GameEvent;
-
 import java.util.Set;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 
 public record TeleportSpellEffect() implements SpellEffect {
     public static final MapCodec<TeleportSpellEffect> MAP_CODEC = MapCodec.unit(new TeleportSpellEffect());
 
     @Override
     public void apply(SpellContext context) {
-        Vec3d position = context.position();
-        ServerWorld world = context.getWorld();
+        Vec3 position = context.position();
+        ServerLevel world = context.getWorld();
         Entity target = context.target();
 
-        double positionX = position.getX();
-        double positionY = MathHelper.clamp(
-                position.getY(),
-                world.getBottomY(),
-                world.getBottomY() + world.getLogicalHeight() - 1
+        double positionX = position.x();
+        double positionY = Mth.clamp(
+                position.y(),
+                world.getMinY(),
+                world.getMinY() + world.getLogicalHeight() - 1
         );
-        double positionZ = position.getZ();
+        double positionZ = position.z();
 
-        Vec3d targetPos = target.getEntityPos();
+        Vec3 targetPos = target.position();
 
-        BlockPos blockPos = BlockPos.ofFloored(positionX, positionY, positionZ);
-        target.teleport(world, blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, Set.of(), target.getYaw(), target.getPitch(), true);
+        BlockPos blockPos = BlockPos.containing(positionX, positionY, positionZ);
+        target.teleportTo(world, blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5, Set.of(), target.getYRot(), target.getXRot(), true);
 
-        if (!world.isSpaceEmpty(target) || world.containsFluid(target.getBoundingBox())) {
-            target.teleport(world, targetPos.getX(), targetPos.getY(), targetPos.getZ(), Set.of(), target.getYaw(), target.getPitch(), true);
+        if (!world.noCollision(target) || world.containsAnyLiquid(target.getBoundingBox())) {
+            target.teleportTo(world, targetPos.x(), targetPos.y(), targetPos.z(), Set.of(), target.getYRot(), target.getXRot(), true);
             return;
         }
 
-        if (target.hasVehicle()) {
+        if (target.isPassenger()) {
             target.stopRiding();
         }
 
-        world.emitGameEvent(GameEvent.TELEPORT, blockPos, GameEvent.Emitter.of(target));
-        target.onLanding();
-        if (target instanceof PathAwareEntity pathAwareEntity) {
+        world.gameEvent(GameEvent.TELEPORT, blockPos, GameEvent.Context.of(target));
+        target.resetFallDistance();
+        if (target instanceof PathfinderMob pathAwareEntity) {
             pathAwareEntity.getNavigation().stop();
         }
     }

@@ -1,20 +1,20 @@
 package io.github.pistonpoek.magicalscepter.recipe;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.recipe.RecipeSerializer
+ * @see net.minecraft.world.item.crafting.RecipeSerializer
  */
 public interface ModRecipeSerializer {
     RecipeSerializer<ExperienceBottleRecipe> EXPERIENCE_BOTTLE = register("crafting_experience_bottle",
-            new SpecialCraftingRecipe.SpecialRecipeSerializer<>(ExperienceBottleRecipe::new));
+            new CustomRecipe.Serializer<>(ExperienceBottleRecipe::new));
     RecipeSerializer<MagicalScepterRecipe> MAGICAL_SCEPTER = register("crafting_magical_scepter",
             new MagicalScepterRecipeSerializer());
 
@@ -35,6 +35,6 @@ public interface ModRecipeSerializer {
      * @param <T> Recipe type to register serializer for.
      */
     static <S extends RecipeSerializer<T>, T extends Recipe<?>> S register(String name, S serializer) {
-        return Registry.register(Registries.RECIPE_SERIALIZER, ModIdentifier.of(name), serializer);
+        return Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, ModIdentifier.of(name), serializer);
     }
 }

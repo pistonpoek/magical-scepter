@@ -16,9 +16,8 @@ import io.github.pistonpoek.magicalscepter.spell.Spells;
 import io.github.pistonpoek.magicalscepter.world.ModGameRules;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -36,12 +35,12 @@ public class ModLanguageProvider extends FabricLanguageProvider {
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
     protected ModLanguageProvider(FabricDataOutput output,
-                                  CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+                                  CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup,
+    public void generateTranslations(HolderLookup.Provider registryLookup,
                                      TranslationBuilder translationBuilder) {
         // Advancements
         translationBuilder.add(createTitleTranslationKey(CAST_SCEPTER), "Wizardry");
@@ -81,7 +80,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModEntityType.SPELL_WITHER_SKULL, "Spell Wither Skull");
 
         // Gamerule
-        translationBuilder.add(MAX_SPELL_CASTS.getTranslationKey(), "Spell cast limit");
+        translationBuilder.add(MAX_SPELL_CASTS.getDescriptionId(), "Spell cast limit");
         translationBuilder.add(ModGameRules.getDescriptionTranslationKey(MAX_SPELL_CASTS),
                 "Maximum number of spell casts a caster can have scheduled in the world.");
 
@@ -93,8 +92,8 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModItems.SORCERER_SPAWN_EGG, "Sorcerer Spawn Egg");
 
         // Scepter
-        final Function<RegistryKey<Scepter>, String> SCEPTER_TRANSLATION_KEY =
-                (scepter) -> ModItems.MAGICAL_SCEPTER.getTranslationKey() + "." +
+        final Function<ResourceKey<Scepter>, String> SCEPTER_TRANSLATION_KEY =
+                (scepter) -> ModItems.MAGICAL_SCEPTER.getDescriptionId() + "." +
                         Scepters.getTranslationKey(scepter);
         translationBuilder.add(SCEPTER_TRANSLATION_KEY.apply(null), "Uncraftable Scepter");
         translationBuilder.add(SCEPTER_TRANSLATION_KEY.apply(Scepters.BLAZE_KEY), "Blaze Scepter");

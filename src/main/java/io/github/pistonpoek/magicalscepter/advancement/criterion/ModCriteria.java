@@ -1,13 +1,13 @@
 package io.github.pistonpoek.magicalscepter.advancement.criterion;
 
-import net.minecraft.advancement.criterion.Criterion;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.advancement.criterion.Criteria
+ * @see net.minecraft.advancements.CriteriaTriggers
  */
 public class ModCriteria {
     public static final CastSpellCriterion CAST_SCEPTER = register("cast_scepter", new CastSpellCriterion());
@@ -28,7 +28,7 @@ public class ModCriteria {
      * @param <T>        Type of the criterion to register.
      * @return Registered criterion.
      */
-    public static <T extends Criterion<?>> T register(String identifier, T criterion) {
-        return Registry.register(Registries.CRITERION, identifier, criterion);
+    public static <T extends CriterionTrigger<?>> T register(String identifier, T criterion) {
+        return Registry.register(BuiltInRegistries.TRIGGER_TYPES, identifier, criterion);
     }
 }

@@ -6,12 +6,12 @@ import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import io.github.pistonpoek.magicalscepter.world.ModGameRules;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.PersistentState;
-import net.minecraft.world.PersistentStateType;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class SpellCastingManager extends PersistentState {
+public class SpellCastingManager extends SavedData {
     private static final String ID = ModIdentifier.key("spell_castings", "_");
     public static final Codec<SpellCastingManager> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
@@ -47,13 +47,13 @@ public class SpellCastingManager extends PersistentState {
     }
 
     public static SpellCastingManager load(MinecraftServer server) {
-        return server.getOverworld().getPersistentStateManager()
-                .getOrCreate(SpellCastingManager.getPersistentStateType());
+        return server.overworld().getDataStorage()
+                .computeIfAbsent(SpellCastingManager.getPersistentStateType());
     }
 
-    public void schedule(ServerWorld world, SpellCasting spellCasting, int delay) {
+    public void schedule(ServerLevel world, SpellCasting spellCasting, int delay) {
         ScheduledSpellCasting scheduledSpellCasting = new ScheduledSpellCasting(spellCasting.clone());
-        UUID casterUuid = spellCasting.getCaster().getUuid();
+        UUID casterUuid = spellCasting.getCaster().getUUID();
         int key = generateKey(world, casterUuid);
 
         if (key == -1) {
@@ -70,7 +70,7 @@ public class SpellCastingManager extends PersistentState {
             scheduledCastings.put(casterUuid, new HashMap<>());
         }
         scheduledCastings.get(casterUuid).put(key, scheduledSpellCasting);
-        this.markDirty();
+        this.setDirty();
     }
 
     Optional<SpellCasting> retrieve(MinecraftServer server, UUID casterUuid, int key) {
@@ -80,7 +80,7 @@ public class SpellCastingManager extends PersistentState {
         if (!scheduledCastings.get(casterUuid).containsKey(key)) {
             return Optional.empty();
         }
-        this.markDirty();
+        this.setDirty();
         if (scheduledCastings.get(casterUuid).size() == 1) {
             return scheduledCastings.remove(casterUuid).remove(key).load(server);
         }
@@ -97,12 +97,12 @@ public class SpellCastingManager extends PersistentState {
         for (int key : scheduledCastings.remove(casterUuid).keySet()) {
             SpellCastingScheduler.clear(server, new SpellCastingTimerCallback(casterUuid, key));
         }
-        this.markDirty();
+        this.setDirty();
         return true;
     }
 
-    private int generateKey(ServerWorld world, UUID casterUuid) {
-        final int maxSpellCasts = world.getGameRules().getValue(ModGameRules.MAX_SPELL_CASTS);
+    private int generateKey(ServerLevel world, UUID casterUuid) {
+        final int maxSpellCasts = world.getGameRules().get(ModGameRules.MAX_SPELL_CASTS);
         int nextKey = startKey;
         if (!scheduledCastings.containsKey(casterUuid)) {
             startKey = nextKey + 1 % maxSpellCasts;
@@ -121,17 +121,17 @@ public class SpellCastingManager extends PersistentState {
         return -1;
     }
 
-    public static PersistentStateType<SpellCastingManager> getPersistentStateType() {
-        return new PersistentStateType<>(ID,
+    public static SavedDataType<SpellCastingManager> getPersistentStateType() {
+        return new SavedDataType<>(ID,
                 SpellCastingManager::new, CODEC, null);
     }
 
     public static boolean clear(@NotNull LivingEntity entity) {
-        MinecraftServer server = entity.getEntityWorld().getServer();
+        MinecraftServer server = entity.level().getServer();
         if (server == null) {
             return false;
         }
-        return SpellCastingManager.load(server).clear(server, entity.getUuid());
+        return SpellCastingManager.load(server).clear(server, entity.getUUID());
     }
 
     /**

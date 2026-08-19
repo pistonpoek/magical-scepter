@@ -2,10 +2,9 @@ package io.github.pistonpoek.magicalscepter.spell.cast.context;
 
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.spell.cast.transformer.CastTransformer;
-import net.minecraft.entity.LivingEntity;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.entity.LivingEntity;
 
 public class SpellCasting implements Cloneable {
     protected final SpellCast spellCast;

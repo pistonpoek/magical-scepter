@@ -5,11 +5,11 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.phys.Vec3;
 
 public record RandomPositionSource(double dx, double dy, double dz,
                                    Optional<PositionSource> position,
@@ -25,13 +25,13 @@ public record RandomPositionSource(double dx, double dy, double dz,
     );
 
     @Override
-    public Vec3d getPosition(@NotNull SpellContext context) {
-        Random random = context.caster().getRandom();
+    public Vec3 getPosition(@NotNull SpellContext context) {
+        RandomSource random = context.caster().getRandom();
         PositionSource position = getRandomPositionSource(random);
         return position.getPosition(context);
     }
 
-    private PositionSource getRandomPositionSource(Random random) {
+    private PositionSource getRandomPositionSource(RandomSource random) {
         RelativePositionSource.Builder builder =
                 RelativePositionSource.builder(
                         random.nextDouble() * dx,
@@ -52,7 +52,7 @@ public record RandomPositionSource(double dx, double dy, double dz,
         return new Builder(x, y, z);
     }
 
-    public static Builder builder(Vec3d vector) {
+    public static Builder builder(Vec3 vector) {
         return new Builder(vector.x, vector.y, vector.z);
     }
 

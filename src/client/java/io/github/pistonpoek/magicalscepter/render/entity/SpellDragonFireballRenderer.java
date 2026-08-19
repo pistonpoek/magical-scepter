@@ -1,28 +1,28 @@
 package io.github.pistonpoek.magicalscepter.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import io.github.pistonpoek.magicalscepter.entity.spell.SpellDragonFireballEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.command.OrderedRenderCommandQueue;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.client.render.state.CameraRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Colors;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.CommonColors;
 
 @Environment(EnvType.CLIENT)
 public class SpellDragonFireballRenderer extends EntityRenderer<SpellDragonFireballEntity, EntityRenderState> {
-        private static final Identifier TEXTURE = Identifier.ofVanilla("textures/entity/enderdragon/dragon_fireball.png");
-        private static final RenderLayer LAYER = RenderLayers.entityCutoutNoCull(TEXTURE);
+        private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/entity/enderdragon/dragon_fireball.png");
+        private static final RenderType LAYER = RenderTypes.entityCutoutNoCull(TEXTURE);
 
-	public SpellDragonFireballRenderer(EntityRendererFactory.Context context) {
+	public SpellDragonFireballRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
@@ -31,28 +31,28 @@ public class SpellDragonFireballRenderer extends EntityRenderer<SpellDragonFireb
     }
 
         @Override
-        public void render(EntityRenderState renderState, MatrixStack matrices, OrderedRenderCommandQueue
+        public void submit(EntityRenderState renderState, PoseStack matrices, SubmitNodeCollector
         queue, CameraRenderState cameraState) {
-        matrices.push();
+        matrices.pushPose();
         matrices.scale(2.0F, 2.0F, 2.0F);
-        matrices.multiply(cameraState.orientation);
-        queue.submitCustom(matrices, LAYER, (entry, vertexConsumer) -> {
-            produceVertex(vertexConsumer, entry, renderState.light, 0.0F, 0, 0, 1);
-            produceVertex(vertexConsumer, entry, renderState.light, 1.0F, 0, 1, 1);
-            produceVertex(vertexConsumer, entry, renderState.light, 1.0F, 1, 1, 0);
-            produceVertex(vertexConsumer, entry, renderState.light, 0.0F, 1, 0, 0);
+        matrices.mulPose(cameraState.orientation);
+        queue.submitCustomGeometry(matrices, LAYER, (entry, vertexConsumer) -> {
+            produceVertex(vertexConsumer, entry, renderState.lightCoords, 0.0F, 0, 0, 1);
+            produceVertex(vertexConsumer, entry, renderState.lightCoords, 1.0F, 0, 1, 1);
+            produceVertex(vertexConsumer, entry, renderState.lightCoords, 1.0F, 1, 1, 0);
+            produceVertex(vertexConsumer, entry, renderState.lightCoords, 0.0F, 1, 0, 0);
         });
-        matrices.pop();
-        super.render(renderState, matrices, queue, cameraState);
+        matrices.popPose();
+        super.submit(renderState, matrices, queue, cameraState);
     }
 
-        private static void produceVertex(VertexConsumer vertexConsumer, MatrixStack.Entry matrix, int light, float x, int z, int textureU, int textureV) {
-        vertexConsumer.vertex(matrix, x - 0.5F, z - 0.25F, 0.0F)
-                .color(Colors.WHITE)
-                .texture(textureU, textureV)
-                .overlay(OverlayTexture.DEFAULT_UV)
-                .light(light)
-                .normal(matrix, 0.0F, 1.0F, 0.0F);
+        private static void produceVertex(VertexConsumer vertexConsumer, PoseStack.Pose matrix, int light, float x, int z, int textureU, int textureV) {
+        vertexConsumer.addVertex(matrix, x - 0.5F, z - 0.25F, 0.0F)
+                .setColor(CommonColors.WHITE)
+                .setUv(textureU, textureV)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(light)
+                .setNormal(matrix, 0.0F, 1.0F, 0.0F);
     }
 
         @Override

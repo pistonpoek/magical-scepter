@@ -12,6 +12,6 @@ public class ClientPlayPackets {
      * Register mod play packets.
      */
     public static void init() {
-        ClientPlayNetworking.registerGlobalReceiver(ModPlayPackets.SWING_HAND.id(), new SwingHandHandler());
+        ClientPlayNetworking.registerGlobalReceiver(ModPlayPackets.SWING_HAND.type(), new SwingHandHandler());
     }
 }

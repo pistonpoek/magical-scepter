@@ -6,19 +6,19 @@ import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.item.tint.TintSource;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.util.math.ColorHelper;
+import net.minecraft.client.color.item.ItemTintSource;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public record ScepterTintSource(int defaultColor) implements TintSource {
+public record ScepterTintSource(int defaultColor) implements ItemTintSource {
     public static final MapCodec<ScepterTintSource> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                    Codecs.RGB.fieldOf("default").forGetter(ScepterTintSource::defaultColor)
+                    ExtraCodecs.RGB_COLOR_CODEC.fieldOf("default").forGetter(ScepterTintSource::defaultColor)
             ).apply(instance, ScepterTintSource::new)
     );
 
@@ -30,15 +30,15 @@ public record ScepterTintSource(int defaultColor) implements TintSource {
     }
 
     @Override
-    public int getTint(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity user) {
+    public int calculate(ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity user) {
         ScepterContentsComponent scepterContentsComponent = stack.get(ModDataComponentTypes.SCEPTER_CONTENTS);
         return scepterContentsComponent != null
-                ? ColorHelper.fullAlpha(scepterContentsComponent.getColor(this.defaultColor))
-                : ColorHelper.fullAlpha(this.defaultColor);
+                ? ARGB.opaque(scepterContentsComponent.getColor(this.defaultColor))
+                : ARGB.opaque(this.defaultColor);
     }
 
     @Override
-    public MapCodec<ScepterTintSource> getCodec() {
+    public MapCodec<ScepterTintSource> type() {
         return CODEC;
     }
 }

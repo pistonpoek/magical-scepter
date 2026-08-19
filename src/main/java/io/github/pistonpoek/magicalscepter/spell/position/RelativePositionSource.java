@@ -6,11 +6,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import io.github.pistonpoek.magicalscepter.util.RotationVector;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public record RelativePositionSource(double x, double y, double z,
                                      Optional<PositionSource> position,
@@ -26,18 +26,18 @@ public record RelativePositionSource(double x, double y, double z,
     );
 
     @Override
-    public Vec3d getPosition(@NotNull SpellContext context) {
-        Vec3d vector = position.map(position -> position.getPosition(context)).orElse(context.position());
+    public Vec3 getPosition(@NotNull SpellContext context) {
+        Vec3 vector = position.map(position -> position.getPosition(context)).orElse(context.position());
         float pitch = rotation.map(rotation -> rotation.getPitch(context)).orElse(context.pitch());
         float yaw = rotation.map(rotation -> rotation.getYaw(context)).orElse(context.yaw());
         return getRelativeVector(vector, pitch, yaw, x, y, z);
     }
 
-    private Vec3d getRelativeVector(Vec3d base, float pitch, float yaw, double x, double y, double z) {
+    private Vec3 getRelativeVector(Vec3 base, float pitch, float yaw, double x, double y, double z) {
         return base
-                .add(RotationVector.get(0, MathHelper.wrapDegrees(yaw - 90)).normalize().multiply(x))
-                .add(RotationVector.get(MathHelper.wrapDegrees(pitch - 90), yaw).normalize().multiply(y))
-                .add(RotationVector.get(pitch, yaw).normalize().multiply(z));
+                .add(RotationVector.get(0, Mth.wrapDegrees(yaw - 90)).normalize().scale(x))
+                .add(RotationVector.get(Mth.wrapDegrees(pitch - 90), yaw).normalize().scale(y))
+                .add(RotationVector.get(pitch, yaw).normalize().scale(z));
     }
 
     @Override
@@ -49,7 +49,7 @@ public record RelativePositionSource(double x, double y, double z,
         return new Builder(x, y, z);
     }
 
-    public static Builder builder(Vec3d vector) {
+    public static Builder builder(Vec3 vector) {
         return new Builder(vector.x, vector.y, vector.z);
     }
 

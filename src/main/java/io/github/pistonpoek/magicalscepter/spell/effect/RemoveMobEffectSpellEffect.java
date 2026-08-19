@@ -3,37 +3,36 @@ package io.github.pistonpoek.magicalscepter.spell.effect;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.registry.RegistryCodecs;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.util.math.random.Random;
-
 import java.util.Optional;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.RegistryCodecs;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.LivingEntity;
 
 public record RemoveMobEffectSpellEffect(
-        RegistryEntryList<StatusEffect> toRemove
+        HolderSet<MobEffect> toRemove
 ) implements SpellEffect {
     public static final MapCodec<RemoveMobEffectSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            RegistryCodecs.entryList(RegistryKeys.STATUS_EFFECT).fieldOf("to_remove").forGetter(RemoveMobEffectSpellEffect::toRemove)
+                            RegistryCodecs.homogeneousList(Registries.MOB_EFFECT).fieldOf("to_remove").forGetter(RemoveMobEffectSpellEffect::toRemove)
                     )
                     .apply(instance, RemoveMobEffectSpellEffect::new)
     );
 
     @Override
     public void apply(SpellContext context) {
-        Random random = context.getRandom();
+        RandomSource random = context.getRandom();
         Optional<LivingEntity> target = context.getLivingTarget();
         if (target.isEmpty()) {
             return;
         }
 
-        Optional<RegistryEntry<StatusEffect>> optional = this.toRemove.getRandom(random);
+        Optional<Holder<MobEffect>> optional = this.toRemove.getRandomElement(random);
         optional.ifPresent(statusEffectRegistryEntry ->
-                target.get().removeStatusEffect(statusEffectRegistryEntry)
+                target.get().removeEffect(statusEffectRegistryEntry)
         );
     }
 

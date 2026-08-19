@@ -5,12 +5,11 @@ import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.Spells;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricCodecDataProvider;
-import net.minecraft.data.DataOutput;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -26,16 +25,16 @@ public class SpellProvider extends FabricCodecDataProvider<Spell> {
      * @param output           Data output to generate spell data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public SpellProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-        super(output, registriesFuture, DataOutput.OutputType.DATA_PACK,
+    public SpellProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+        super(output, registriesFuture, PackOutput.Target.DATA_PACK,
                 ModRegistryKeys.directory(ModRegistryKeys.SPELL), Spell.CODEC);
     }
 
     @Override
-    protected void configure(BiConsumer<Identifier, Spell> provider, RegistryWrapper.WrapperLookup registries) {
-        RegistryEntryLookup<Spell> spellLookup = registries.getOrThrow(ModRegistryKeys.SPELL);
+    protected void configure(BiConsumer<Identifier, Spell> provider, HolderLookup.Provider registries) {
+        HolderGetter<Spell> spellLookup = registries.lookupOrThrow(ModRegistryKeys.SPELL);
 
-        for (RegistryKey<Spell> spellKey : Spells.KEYS) {
+        for (ResourceKey<Spell> spellKey : Spells.KEYS) {
             addSpell(provider, spellLookup, spellKey);
         }
     }
@@ -48,9 +47,9 @@ public class SpellProvider extends FabricCodecDataProvider<Spell> {
      * @param key      Registry key to add to the spell provider.
      */
     private static void addSpell(BiConsumer<Identifier, Spell> provider,
-                                 RegistryEntryLookup<Spell> lookup,
-                                 RegistryKey<Spell> key) {
-        provider.accept(key.getValue(), lookup.getOrThrow(key).value());
+                                 HolderGetter<Spell> lookup,
+                                 ResourceKey<Spell> key) {
+        provider.accept(key.identifier(), lookup.getOrThrow(key).value());
     }
 
     @Override

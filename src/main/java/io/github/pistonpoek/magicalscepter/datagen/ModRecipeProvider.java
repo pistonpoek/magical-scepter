@@ -9,32 +9,31 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepters;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.advancement.Advancement;
-import net.minecraft.advancement.AdvancementRequirements;
-import net.minecraft.advancement.AdvancementRewards;
-import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
-import net.minecraft.data.recipe.CraftingRecipeJsonBuilder;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.data.recipe.TransmuteRecipeJsonBuilder;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.TransmuteRecipeBuilder;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.data.recipe.RecipeGenerator.RecipeProvider
+ * @see net.minecraft.data.recipes.RecipeProvider.Runner
  */
 public class ModRecipeProvider extends FabricRecipeProvider {
     /**
@@ -43,34 +42,34 @@ public class ModRecipeProvider extends FabricRecipeProvider {
      * @param output           Data output to generate recipe data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup registries, RecipeExporter exporter) {
-        return new RecipeGenerator(registries, exporter) {
+    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput exporter) {
+        return new RecipeProvider(registries, exporter) {
             @Override
-            public void generate() {
-                RegistryWrapper<Scepter> scepterRegistry = registries.getOrThrow(ModRegistryKeys.SCEPTER);
-                RegistryEntry<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
+            public void buildRecipes() {
+                HolderLookup<Scepter> scepterRegistry = registries.lookupOrThrow(ModRegistryKeys.SCEPTER);
+                Holder<Scepter> magicalScepter = scepterRegistry.getOrThrow(Scepters.MAGICAL_KEY);
 
                 exportRecipe("magical_scepter", category ->
                                 new MagicalScepterRecipe(magicalScepter, category), RecipeCategory.COMBAT,
-                        exporter, exporter.getAdvancementBuilder()
-                                .criterion("has_scepter", this.conditionsFromItem(ModItems.SCEPTER))
+                        output, output.advancement()
+                                .addCriterion("has_scepter", this.has(ModItems.SCEPTER))
                 );
 
-                TransmuteRecipeJsonBuilder.create(
-                                RecipeCategory.TOOLS, Ingredient.ofItem(ModItems.SCEPTER),
-                                Ingredient.ofItem(Items.LAPIS_LAZULI), ModItems.ARCANE_SCEPTER
+                TransmuteRecipeBuilder.transmute(
+                                RecipeCategory.TOOLS, Ingredient.of(ModItems.SCEPTER),
+                                Ingredient.of(Items.LAPIS_LAZULI), ModItems.ARCANE_SCEPTER
                         )
-                        .criterion("has_scepter", this.conditionsFromItem(ModItems.SCEPTER))
-                        .offerTo(this.exporter);
+                        .unlockedBy("has_scepter", this.has(ModItems.SCEPTER))
+                        .save(this.output);
 
                 exportRecipe("experience_bottle", ExperienceBottleRecipe::new, RecipeCategory.MISC,
-                        exporter, exporter.getAdvancementBuilder()
-                                .criterion("has_arcane_scepter", this.conditionsFromItem(ModItems.ARCANE_SCEPTER))
+                        output, output.advancement()
+                                .addCriterion("has_arcane_scepter", this.has(ModItems.ARCANE_SCEPTER))
                 );
 
             }
@@ -88,8 +87,8 @@ public class ModRecipeProvider extends FabricRecipeProvider {
      * @param id String identifier to get mod registry key for.
      * @return Registry key of the mod recipe for the specified identifier.
      */
-    public static RegistryKey<Recipe<?>> getRecipeRegistryKey(String id) {
-        return RegistryKey.of(RegistryKeys.RECIPE, ModIdentifier.of(id));
+    public static ResourceKey<Recipe<?>> getRecipeRegistryKey(String id) {
+        return ResourceKey.create(Registries.RECIPE, ModIdentifier.of(id));
     }
 
     /**
@@ -102,19 +101,19 @@ public class ModRecipeProvider extends FabricRecipeProvider {
      * @param advancementBuilder Advancement builder of the exporter that may specify recipe obtainment criteria.
      */
     public static void exportRecipe(String id,
-                                    Function<CraftingRecipeCategory, CraftingRecipe> recipe,
+                                    Function<CraftingBookCategory, CraftingRecipe> recipe,
                                     RecipeCategory category,
-                                    RecipeExporter exporter,
+                                    RecipeOutput exporter,
                                     Advancement.Builder advancementBuilder
     ) {
-        RegistryKey<Recipe<?>> recipeRegistryKey = getRecipeRegistryKey(id);
+        ResourceKey<Recipe<?>> recipeRegistryKey = getRecipeRegistryKey(id);
         exporter.accept(recipeRegistryKey,
-                recipe.apply(CraftingRecipeJsonBuilder.toCraftingCategory(category)),
+                recipe.apply(RecipeBuilder.determineBookCategory(category)),
                 advancementBuilder
-                        .criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeRegistryKey))
+                        .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeRegistryKey))
                         .rewards(AdvancementRewards.Builder.recipe(recipeRegistryKey))
-                        .criteriaMerger(AdvancementRequirements.CriterionMerger.OR)
-                        .build(ModIdentifier.of(id).withPrefixedPath("recipes/" + category.getName() + "/"))
+                        .requirements(AdvancementRequirements.Strategy.OR)
+                        .build(ModIdentifier.of(id).withPrefix("recipes/" + category.getFolderName() + "/"))
         );
     }
 

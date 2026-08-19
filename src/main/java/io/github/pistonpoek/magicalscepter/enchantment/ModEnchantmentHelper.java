@@ -1,14 +1,14 @@
 package io.github.pistonpoek.magicalscepter.enchantment;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.apache.commons.lang3.mutable.MutableFloat;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.enchantment.EnchantmentHelper
+ * @see net.minecraft.world.item.enchantment.EnchantmentHelper
  */
 public class ModEnchantmentHelper {
     /**
@@ -21,7 +21,7 @@ public class ModEnchantmentHelper {
      */
     public static int getExperienceStep(ItemStack stack, LivingEntity user, int baseExperienceStep) {
         MutableFloat mutableFloat = new MutableFloat(baseExperienceStep);
-        EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) ->
+        EnchantmentHelper.runIterationOnItem(stack, (enchantment, level) ->
                 ((ModEnchantment) (Object) enchantment.value()).magicalscepter$modifyExperienceStep(
                         user.getRandom(), level, mutableFloat));
         return Math.max(0, mutableFloat.intValue());

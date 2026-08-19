@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.advancement;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
 /**
@@ -18,7 +18,7 @@ public interface ModAdvancements {
      * @return String translation key of the specified identifier with the advancements type.
      */
     static String createTranslationKey(Identifier identifier) {
-        return Util.createTranslationKey("advancements", identifier);
+        return Util.makeDescriptionId("advancements", identifier);
     }
 
     /**
@@ -28,7 +28,7 @@ public interface ModAdvancements {
      * @return String translation key of the specified identifier with the advancements type and title detail.
      */
     static String createTitleTranslationKey(Identifier identifier) {
-        return createTranslationKey(identifier.withSuffixedPath(".title"));
+        return createTranslationKey(identifier.withSuffix(".title"));
     }
 
     /**
@@ -38,6 +38,6 @@ public interface ModAdvancements {
      * @return String translation key of the specified identifier with the advancements type and description detail.
      */
     static String createDescriptionTranslationKey(Identifier identifier) {
-        return createTranslationKey(identifier.withSuffixedPath(".description"));
+        return createTranslationKey(identifier.withSuffix(".description"));
     }
 }

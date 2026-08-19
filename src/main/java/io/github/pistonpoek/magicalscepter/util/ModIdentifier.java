@@ -1,13 +1,13 @@
 package io.github.pistonpoek.magicalscepter.util;
 
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Util;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.util.Identifier
+ * @see net.minecraft.resources.Identifier
  */
 public class ModIdentifier {
     /**
@@ -25,10 +25,10 @@ public class ModIdentifier {
      *
      * @param path Path to create identifier for.
      * @return Identifier that is validated.
-     * @see net.minecraft.util.Identifier
+     * @see net.minecraft.resources.Identifier
      */
-    public static net.minecraft.util.Identifier of(String path) {
-        return net.minecraft.util.Identifier.of(MOD_IDENTIFIER, path);
+    public static net.minecraft.resources.Identifier of(String path) {
+        return net.minecraft.resources.Identifier.fromNamespaceAndPath(MOD_IDENTIFIER, path);
     }
 
     /**
@@ -60,10 +60,10 @@ public class ModIdentifier {
      * @param path String to create mutable text with.
      * @param args Arguments to create mutable text with.
      * @return MutableText created for the path and arguments with the mod namespace.
-     * @see net.minecraft.text.Text#translatable(String, Object...)
+     * @see net.minecraft.network.chat.Component#translatable(String, Object...)
      */
-    public static MutableText translatable(String path, Object... args) {
-        return Text.translatable(of(path).toTranslationKey(), args);
+    public static MutableComponent translatable(String path, Object... args) {
+        return Component.translatable(of(path).toLanguageKey(), args);
     }
 
     /**
@@ -74,7 +74,7 @@ public class ModIdentifier {
      * @return String translation key with the specified type and path.
      */
     public static String createTranslationKey(String type, String path) {
-        return Util.createTranslationKey(type, ModIdentifier.of(path));
+        return Util.makeDescriptionId(type, ModIdentifier.of(path));
     }
 
     /**

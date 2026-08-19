@@ -2,16 +2,15 @@ package io.github.pistonpoek.magicalscepter.scepter;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.registry.entry.RegistryEntry;
-
 import java.util.function.Predicate;
+import net.minecraft.core.Holder;
 
 /**
  * Predicate to test for matching scepter.
  *
  * @param scepter Scepter registry entry to match.
  */
-public record ScepterPredicate(RegistryEntry<Scepter> scepter) implements Predicate<RegistryEntry<Scepter>> {
+public record ScepterPredicate(Holder<Scepter> scepter) implements Predicate<Holder<Scepter>> {
     public static final Codec<ScepterPredicate> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                             Scepter.ENTRY_CODEC.fieldOf("scepter").forGetter(ScepterPredicate::scepter)
@@ -25,12 +24,12 @@ public record ScepterPredicate(RegistryEntry<Scepter> scepter) implements Predic
      * @param scepter Scepter registry entry to use.
      * @return Scepter predicate with the specified scepter.
      */
-    public static ScepterPredicate of(RegistryEntry<Scepter> scepter) {
+    public static ScepterPredicate of(Holder<Scepter> scepter) {
         return new ScepterPredicate(scepter);
     }
 
     @Override
-    public boolean test(RegistryEntry<Scepter> scepter) {
-        return scepter.getKeyOrValue().equals(this.scepter.getKeyOrValue());
+    public boolean test(Holder<Scepter> scepter) {
+        return scepter.unwrap().equals(this.scepter.unwrap());
     }
 }

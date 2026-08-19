@@ -2,19 +2,18 @@ package io.github.pistonpoek.magicalscepter.particle;
 
 import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-
 import java.util.function.Function;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.particle.ParticleTypes
+ * @see net.minecraft.core.particles.ParticleTypes
  */
 public class ModParticleTypes {
     /**
@@ -34,20 +33,20 @@ public class ModParticleTypes {
      * @return Particle effect registered.
      * @param <T> Particle effect being registered.
      */
-    private static <T extends ParticleEffect> ParticleType<T> register(
+    private static <T extends ParticleOptions> ParticleType<T> register(
             String name,
             boolean alwaysShow,
             Function<ParticleType<T>, MapCodec<T>> codecGetter,
-            Function<ParticleType<T>, PacketCodec<? super RegistryByteBuf, T>> packetCodecGetter
+            Function<ParticleType<T>, StreamCodec<? super RegistryFriendlyByteBuf, T>> packetCodecGetter
     ) {
-        return Registry.register(Registries.PARTICLE_TYPE, ModIdentifier.of(name), new ParticleType<T>(alwaysShow) {
+        return Registry.register(BuiltInRegistries.PARTICLE_TYPE, ModIdentifier.of(name), new ParticleType<T>(alwaysShow) {
             @Override
-            public MapCodec<T> getCodec() {
+            public MapCodec<T> codec() {
                 return codecGetter.apply(this);
             }
 
             @Override
-            public PacketCodec<? super RegistryByteBuf, T> getPacketCodec() {
+            public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
                 return packetCodecGetter.apply(this);
             }
         });

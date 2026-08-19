@@ -6,12 +6,12 @@ import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.position.AbsolutePositionSource;
 import io.github.pistonpoek.magicalscepter.spell.position.PositionSource;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.phys.Vec3;
 
 public record LineCastTransformer(PositionSource position,
                                   int amount,
@@ -19,21 +19,21 @@ public record LineCastTransformer(PositionSource position,
     public static final MapCodec<LineCastTransformer> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     PositionSource.CODEC.fieldOf("position").forGetter(LineCastTransformer::position),
-                    Codecs.NON_NEGATIVE_INT.fieldOf("amount").forGetter(LineCastTransformer::amount),
-                    Codecs.NON_NEGATIVE_FLOAT.optionalFieldOf("step_delay", 0.0F).forGetter(LineCastTransformer::stepDelay)
+                    ExtraCodecs.NON_NEGATIVE_INT.fieldOf("amount").forGetter(LineCastTransformer::amount),
+                    ExtraCodecs.NON_NEGATIVE_FLOAT.optionalFieldOf("step_delay", 0.0F).forGetter(LineCastTransformer::stepDelay)
             ).apply(instance, LineCastTransformer::new)
     );
 
     @Override
     public Collection<SpellCasting> transform(@NotNull SpellCasting casting) {
         SpellContext context = casting.getContext();
-        Vec3d startPos = context.position();
-        Vec3d lineVector = position.getPosition(context).subtract(startPos);
+        Vec3 startPos = context.position();
+        Vec3 lineVector = position.getPosition(context).subtract(startPos);
         Collection<SpellCasting> casts = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             SpellCasting pointCast = DelayCastTransformer.delay(casting, (int) (i * stepDelay));
             pointCast.addContext(AbsolutePositionSource.builder(
-                    startPos.add(lineVector.multiply(((double) i) / (amount - 1)))).build());
+                    startPos.add(lineVector.scale(((double) i) / (amount - 1)))).build());
             casts.add(pointCast);
         }
         return casts;

@@ -1,8 +1,8 @@
 package io.github.pistonpoek.magicalscepter.util;
 
 import io.github.pistonpoek.magicalscepter.mixin.ParrotEntityMixin;
-import net.minecraft.entity.EntityType;
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.EntityType;
 
 public class ParrotEntityUtil {
     /**

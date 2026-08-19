@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public record AbsolutePositionSource(double x, double y, double z) implements PositionSource {
@@ -16,13 +16,13 @@ public record AbsolutePositionSource(double x, double y, double z) implements Po
             ).apply(instance, AbsolutePositionSource::new)
     );
 
-    public AbsolutePositionSource(Vec3d position) {
+    public AbsolutePositionSource(Vec3 position) {
         this(position.x, position.y, position.z);
     }
 
     @Override
-    public Vec3d getPosition(@NotNull SpellContext context) {
-        return new Vec3d(x, y, z);
+    public Vec3 getPosition(@NotNull SpellContext context) {
+        return new Vec3(x, y, z);
     }
 
     @Override
@@ -34,7 +34,7 @@ public record AbsolutePositionSource(double x, double y, double z) implements Po
         return new Builder(x, y, z);
     }
 
-    public static Builder builder(Vec3d vector) {
+    public static Builder builder(Vec3 vector) {
         return new Builder(vector.x, vector.y, vector.z);
     }
 

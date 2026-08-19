@@ -3,15 +3,15 @@ package io.github.pistonpoek.magicalscepter.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.raid.RaiderEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.village.raid.Raid;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.entity.raid.Raider;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,19 +26,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class RaidMixin {
     @Final
     @Shadow
-    private Random random;
+    private RandomSource random;
 
     @Shadow
-    protected abstract boolean isSpawningExtraWave();
+    protected abstract boolean shouldSpawnBonusGroup();
 
     @Unique
-    private ServerWorld magicalscepter$world;
+    private ServerLevel magicalscepter$world;
     @Unique
     private int magicalscepter$wave = 0;
     @Unique
     private int magicalscepter$count = 0;
     @Unique
-    private RaiderEntity magicalscepter$raiderEntity = null;
+    private Raider magicalscepter$raiderEntity = null;
 
     /**
      * Capture local variables at the entity creation during the spawning of a next wave.
@@ -50,14 +50,14 @@ public abstract class RaidMixin {
      * @param count        Integer count of the amount of entities to spawn for the current type.
      */
     @Inject(
-            method = "spawnNextWave",
+            method = "spawnGroup",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/EntityType;create(Lnet/minecraft/world/World;Lnet/minecraft/entity/SpawnReason;)Lnet/minecraft/entity/Entity;",
+                    target = "Lnet/minecraft/world/entity/EntityType;create(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/EntitySpawnReason;)Lnet/minecraft/world/entity/Entity;",
                     ordinal = 0
             )
     )
-    private void captureLocalVariables(ServerWorld world,
+    private void captureLocalVariables(ServerLevel world,
                                        BlockPos pos, CallbackInfo callbackInfo,
                                        @Local(ordinal = 0) int wave, @Local(ordinal = 5) int count) {
         this.magicalscepter$world = world;
@@ -75,18 +75,18 @@ public abstract class RaidMixin {
      * @return Entity created based on the current raider entity being created.
      */
     @Redirect(
-            method = "spawnNextWave",
+            method = "spawnGroup",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/EntityType;create(Lnet/minecraft/world/World;Lnet/minecraft/entity/SpawnReason;)Lnet/minecraft/entity/Entity;",
+                    target = "Lnet/minecraft/world/entity/EntityType;create(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/EntitySpawnReason;)Lnet/minecraft/world/entity/Entity;",
                     ordinal = 0
             )
     )
-    private <T extends Entity> T createRaiderEntity(EntityType<T> instance, World world, SpawnReason reason) {
+    private <T extends Entity> T createRaiderEntity(EntityType<T> instance, Level world, EntitySpawnReason reason) {
         int wave = this.magicalscepter$wave;
         int count = this.magicalscepter$count;
         if (instance.equals(EntityType.PILLAGER)) {
-            if (wave == 4 && !this.isSpawningExtraWave() && count == 0) {
+            if (wave == 4 && !this.shouldSpawnBonusGroup() && count == 0) {
                 magicalscepter$setOptionalSorcererRaiderEntity(world, reason);
                 return null;
             } else if (wave >= 5 && count == 0) {
@@ -109,7 +109,7 @@ public abstract class RaidMixin {
      * @param reason Spawn reason to create raider entity with.
      */
     @Unique
-    private void magicalscepter$setOptionalSorcererRaiderEntity(World world, SpawnReason reason) {
+    private void magicalscepter$setOptionalSorcererRaiderEntity(Level world, EntitySpawnReason reason) {
         if (this.random.nextBoolean()) {
             magicalscepter$setSorcererRaiderEntity(world, reason);
         }
@@ -122,7 +122,7 @@ public abstract class RaidMixin {
      * @param reason Spawn reason to create raider entity with.
      */
     @Unique
-    private void magicalscepter$setSorcererRaiderEntity(World world, SpawnReason reason) {
+    private void magicalscepter$setSorcererRaiderEntity(Level world, EntitySpawnReason reason) {
         this.magicalscepter$raiderEntity = ModEntityType.SORCERER.create(world, reason);
     }
 
@@ -133,14 +133,14 @@ public abstract class RaidMixin {
      * @return Raider entity that is updated with a new raider entity, if it exists.
      */
     @ModifyVariable(
-            method = "spawnNextWave",
+            method = "spawnGroup",
             at = @At(
                     value = "STORE"
             ),
             ordinal = 0
     )
-    private RaiderEntity createSorcererRaiderEntity(RaiderEntity raiderEntity) {
-        RaiderEntity newRaiderEntity = this.magicalscepter$raiderEntity;
+    private Raider createSorcererRaiderEntity(Raider raiderEntity) {
+        Raider newRaiderEntity = this.magicalscepter$raiderEntity;
         if (newRaiderEntity != null) {
             this.magicalscepter$raiderEntity = null;
             return newRaiderEntity;
@@ -155,30 +155,30 @@ public abstract class RaidMixin {
      * @return Raider entity to be the ravager passenger.
      */
     @ModifyVariable(
-            method = "spawnNextWave",
+            method = "spawnGroup",
             at = @At(
                     value = "STORE"
             ),
             ordinal = 1
     )
-    private RaiderEntity getRavagerPassenger(RaiderEntity raiderEntity) {
+    private Raider getRavagerPassenger(Raider raiderEntity) {
         int wave = this.magicalscepter$wave;
         int count = this.magicalscepter$count;
-        ServerWorld world = magicalscepter$world;
+        ServerLevel world = magicalscepter$world;
 
         if (wave <= 5) {
-            return EntityType.PILLAGER.create(world, SpawnReason.EVENT);
+            return EntityType.PILLAGER.create(world, EntitySpawnReason.EVENT);
         } else if (wave == 6) {
             if (count == 0) {
-                return ModEntityType.SORCERER.create(world, SpawnReason.EVENT);
+                return ModEntityType.SORCERER.create(world, EntitySpawnReason.EVENT);
             } else {
                 return null;
             }
         } else {
             return switch (count) {
-                case 0 -> ModEntityType.SORCERER.create(world, SpawnReason.EVENT);
-                case 1 -> EntityType.EVOKER.create(world, SpawnReason.EVENT);
-                default -> EntityType.VINDICATOR.create(world, SpawnReason.EVENT);
+                case 0 -> ModEntityType.SORCERER.create(world, EntitySpawnReason.EVENT);
+                case 1 -> EntityType.EVOKER.create(world, EntitySpawnReason.EVENT);
+                default -> EntityType.VINDICATOR.create(world, EntitySpawnReason.EVENT);
             };
         }
     }
@@ -190,10 +190,10 @@ public abstract class RaidMixin {
      * @return Integer value being compared against to prevent further ravager assignment.
      */
     @ModifyExpressionValue(
-            method = "spawnNextWave",
+            method = "spawnGroup",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/village/raid/Raid;getMaxWaves(Lnet/minecraft/world/Difficulty;)I"
+                    target = "Lnet/minecraft/world/entity/raid/Raid;getNumGroups(Lnet/minecraft/world/Difficulty;)I"
             )
     )
     private int preventRavagerPassengerAssignment(int maxWaves) {

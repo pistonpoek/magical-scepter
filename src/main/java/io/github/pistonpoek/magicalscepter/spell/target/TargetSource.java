@@ -6,14 +6,14 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.entity.Entity;
-import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
+import net.minecraft.core.Registry;
+import net.minecraft.world.entity.Entity;
 
 public interface TargetSource extends SpellContextSource {
-    MapCodec<TargetSource> MAP_CODEC = ModRegistries.CAST_TARGET_SOURCE_TYPE.getCodec()
+    MapCodec<TargetSource> MAP_CODEC = ModRegistries.CAST_TARGET_SOURCE_TYPE.byNameCodec()
             .dispatchMap(TargetSource::getCodec, Function.identity());
     Codec<TargetSource> CODEC = MAP_CODEC.codec();
 

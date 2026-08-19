@@ -1,10 +1,10 @@
 package io.github.pistonpoek.magicalscepter.gui.hud;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.bar.Bar;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.Identifier;
 
 public class ScepterGainIndicationBar {
     private static final Identifier TEXTURE = ModIdentifier.of("hud/experience_bar_gain");
@@ -18,11 +18,11 @@ public class ScepterGainIndicationBar {
      * @param x              Horizontal position of the experience bar on the screen.
      * @param y              Vertical position of the experience bar on the screen.
      */
-    public static void render(DrawContext context, ClientPlayerEntity player,
+    public static void render(GuiGraphics context, LocalPlayer player,
                               int experienceStep, int x, int y) {
         int progress = ExperienceBar.getPixelProgress(player);
-        float gain_progress = experienceStep / (float) player.getNextLevelExperience();
-        int gain_part = Math.round(gain_progress * (Bar.WIDTH + 1.0F));
+        float gain_progress = experienceStep / (float) player.getXpNeededForNextLevel();
+        int gain_part = Math.round(gain_progress * (ContextualBarRenderer.WIDTH + 1.0F));
         ExperienceBar.renderSection(context, TEXTURE, x, y, progress, progress + gain_part);
     }
 }

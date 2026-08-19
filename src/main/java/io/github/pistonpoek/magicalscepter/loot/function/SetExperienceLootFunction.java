@@ -4,25 +4,24 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.function.ConditionalLootFunction;
-import net.minecraft.loot.function.LootFunctionType;
-import net.minecraft.loot.provider.number.LootNumberProvider;
-import net.minecraft.loot.provider.number.LootNumberProviderTypes;
-
 import java.util.List;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
 
 /**
  * Loot function to set the experience in the scepter experience component of an item itemStack.
  */
-public class SetExperienceLootFunction extends ConditionalLootFunction {
+public class SetExperienceLootFunction extends LootItemConditionalFunction {
     public static final MapCodec<SetExperienceLootFunction> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> addConditionsField(instance)
+            instance -> commonFields(instance)
                     .and(
                             instance.group(
-                                    LootNumberProviderTypes.CODEC.fieldOf("count")
+                                    NumberProviders.CODEC.fieldOf("count")
                                             .forGetter(function -> function.count),
                                     Codec.BOOL.fieldOf("add").orElse(false)
                                             .forGetter(function -> function.add)
@@ -30,7 +29,7 @@ public class SetExperienceLootFunction extends ConditionalLootFunction {
                     )
                     .apply(instance, SetExperienceLootFunction::new)
     );
-    private final LootNumberProvider count;
+    private final NumberProvider count;
     private final boolean add;
 
     /**
@@ -40,20 +39,20 @@ public class SetExperienceLootFunction extends ConditionalLootFunction {
      * @param count      Loot number provider to create loot function with.
      * @param add        Truth assignment, if number should be added to existing data value.
      */
-    private SetExperienceLootFunction(List<LootCondition> conditions, LootNumberProvider count, boolean add) {
+    private SetExperienceLootFunction(List<LootItemCondition> conditions, NumberProvider count, boolean add) {
         super(conditions);
         this.count = count;
         this.add = add;
     }
 
     @Override
-    public LootFunctionType<SetExperienceLootFunction> getType() {
+    public LootItemFunctionType<SetExperienceLootFunction> getType() {
         return ModLootFunctionTypes.SET_EXPERIENCE;
     }
 
     @Override
-    public ItemStack process(ItemStack itemStack, LootContext context) {
-        int experience = count.nextInt(context);
+    public ItemStack run(ItemStack itemStack, LootContext context) {
+        int experience = count.getInt(context);
         if (add) {
             experience += ScepterExperienceComponent.getExperience(itemStack);
         }
@@ -67,8 +66,8 @@ public class SetExperienceLootFunction extends ConditionalLootFunction {
      * @param count Loot number provider to create loot function with.
      * @return Set experience loot function with the number provider.
      */
-    public static ConditionalLootFunction.Builder<?> builder(LootNumberProvider count) {
-        return builder(list -> new SetExperienceLootFunction(list, count, false));
+    public static LootItemConditionalFunction.Builder<?> builder(NumberProvider count) {
+        return simpleBuilder(list -> new SetExperienceLootFunction(list, count, false));
     }
 
     /**
@@ -78,7 +77,7 @@ public class SetExperienceLootFunction extends ConditionalLootFunction {
      * @param add   Truth assignment, if number should be added to existing data value.
      * @return Set experience loot function with the number provider.
      */
-    public static ConditionalLootFunction.Builder<?> builder(LootNumberProvider count, boolean add) {
-        return builder(list -> new SetExperienceLootFunction(list, count, add));
+    public static LootItemConditionalFunction.Builder<?> builder(NumberProvider count, boolean add) {
+        return simpleBuilder(list -> new SetExperienceLootFunction(list, count, add));
     }
 }

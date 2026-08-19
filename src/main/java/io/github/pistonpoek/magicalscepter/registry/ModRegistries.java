@@ -11,12 +11,12 @@ import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
 import io.github.pistonpoek.magicalscepter.spell.target.TargetSource;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.registry.Registries
+ * @see net.minecraft.core.registries.BuiltInRegistries
  */
 public class ModRegistries {
     public static final Registry<MapCodec<? extends SpellEffect>> SPELL_EFFECT_TYPE =

@@ -7,16 +7,16 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public interface PositionSource extends SpellContextSource {
-    MapCodec<PositionSource> MAP_CODEC = ModRegistries.CAST_POSITION_SOURCE_TYPE.getCodec()
+    MapCodec<PositionSource> MAP_CODEC = ModRegistries.CAST_POSITION_SOURCE_TYPE.byNameCodec()
             .dispatchMap(PositionSource::getCodec, Function.identity());
     Codec<PositionSource> CODEC = MAP_CODEC.codec();
 
@@ -28,11 +28,11 @@ public interface PositionSource extends SpellContextSource {
         Registry.register(registry, ModIdentifier.of("random"), RandomPositionSource.MAP_CODEC);
     }
 
-    Vec3d getPosition(@NotNull SpellContext context);
+    Vec3 getPosition(@NotNull SpellContext context);
 
     @Override
     default SpellContext getContext(@NotNull SpellContext spellContext) {
-        if (!World.isValid(BlockPos.ofFloored(getPosition(spellContext)))) {
+        if (!Level.isInSpawnableBounds(BlockPos.containing(getPosition(spellContext)))) {
             MagicalScepter.LOGGER.debug("Spell position is not valid");
             return spellContext;
         }
@@ -40,15 +40,15 @@ public interface PositionSource extends SpellContextSource {
     }
 
     default double getX(@NotNull SpellContext context) {
-        return getPosition(context).getX();
+        return getPosition(context).x();
     }
 
     default double getY(@NotNull SpellContext context) {
-        return getPosition(context).getY();
+        return getPosition(context).y();
     }
 
     default double getZ(@NotNull SpellContext context) {
-        return getPosition(context).getZ();
+        return getPosition(context).z();
     }
 
     @Override

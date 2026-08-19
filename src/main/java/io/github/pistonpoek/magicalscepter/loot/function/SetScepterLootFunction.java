@@ -6,26 +6,25 @@ import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.function.ConditionalLootFunction;
-import net.minecraft.loot.function.LootFunctionType;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-
 import java.util.List;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 /**
  * Loot function to set a scepter in the scepter contents component of an item stack.
  */
-public class SetScepterLootFunction extends ConditionalLootFunction {
+public class SetScepterLootFunction extends LootItemConditionalFunction {
     public static final MapCodec<SetScepterLootFunction> CODEC = RecordCodecBuilder.mapCodec(
-            instance -> addConditionsField(instance).and(Scepter.ENTRY_CODEC.fieldOf("id")
+            instance -> commonFields(instance).and(Scepter.ENTRY_CODEC.fieldOf("id")
                     .forGetter(function -> function.scepter)).apply(instance, SetScepterLootFunction::new)
     );
-    private final RegistryEntry<Scepter> scepter;
+    private final Holder<Scepter> scepter;
 
     /**
      * Construct a set scepter loot function.
@@ -33,19 +32,19 @@ public class SetScepterLootFunction extends ConditionalLootFunction {
      * @param conditions List of conditions to create the loot function with.
      * @param scepter    Registry entry of the scepter to set.
      */
-    private SetScepterLootFunction(List<LootCondition> conditions, RegistryEntry<Scepter> scepter) {
+    private SetScepterLootFunction(List<LootItemCondition> conditions, Holder<Scepter> scepter) {
         super(conditions);
         this.scepter = scepter;
     }
 
     @Override
-    public LootFunctionType<SetScepterLootFunction> getType() {
+    public LootItemFunctionType<SetScepterLootFunction> getType() {
         return ModLootFunctionTypes.SET_SCEPTER;
     }
 
     @Override
-    public ItemStack process(ItemStack stack, LootContext context) {
-        stack.apply(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT,
+    public ItemStack run(ItemStack stack, LootContext context) {
+        stack.update(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT,
                 this.scepter, ScepterContentsComponent::with);
         return stack;
     }
@@ -56,10 +55,10 @@ public class SetScepterLootFunction extends ConditionalLootFunction {
      * @param key Registry key of the scepter to set with the loot function.
      * @return Set scepter loot function with the specified scepter.
      */
-    public static ConditionalLootFunction.Builder<?> builder(RegistryWrapper.WrapperLookup  registries,
-                                                             RegistryKey<Scepter> key) {
-        RegistryWrapper.Impl<Scepter> impl = registries.getOrThrow(ModRegistryKeys.SCEPTER);
-        RegistryEntry<Scepter> scepter = impl.getOrThrow(key);
-        return builder(conditions -> new SetScepterLootFunction(conditions, scepter));
+    public static LootItemConditionalFunction.Builder<?> builder(HolderLookup.Provider  registries,
+                                                             ResourceKey<Scepter> key) {
+        HolderLookup.RegistryLookup<Scepter> impl = registries.lookupOrThrow(ModRegistryKeys.SCEPTER);
+        Holder<Scepter> scepter = impl.getOrThrow(key);
+        return simpleBuilder(conditions -> new SetScepterLootFunction(conditions, scepter));
     }
 }

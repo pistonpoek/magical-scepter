@@ -8,277 +8,276 @@ import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
 import net.fabricmc.fabric.api.gametest.v1.CustomTestMethodInvoker;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
-import net.minecraft.entity.player.ItemCooldownManager;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.test.TestContext;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.world.GameMode;
-
+import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemCooldowns;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameType;
 import java.lang.reflect.Method;
 
 public class ArcaneScepterTest implements CustomTestMethodInvoker {
     @Override
-    public void invokeTestMethod(TestContext context, Method method) throws ReflectiveOperationException {
+    public void invokeTestMethod(GameTestHelper context, Method method) throws ReflectiveOperationException {
         method.invoke(this, context);
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void chargeArcaneScepter(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
-        player.setStackInHand(Hand.MAIN_HAND, ModItems.ARCANE_SCEPTER.getDefaultStack());
-        player.addExperience(14);
+    public void chargeArcaneScepter(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        player.setItemInHand(InteractionHand.MAIN_HAND, ModItems.ARCANE_SCEPTER.getDefaultInstance());
+        player.giveExperiencePoints(14);
 
-        ActionResult result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        InteractionResult result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(result.isAccepted(), Text.of("Action result of charging scepter is not accepted"));
-        context.assertEquals(ActionResult.SUCCESS.withNewHandStack(ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack()).toString(),
-                result.toString(), Text.of("action result of charging an arcane scepter"));
-        context.assertEquals(7, PlayerExperience.getTotalExperience(player),
-                Text.of("player experience after charging scepter"));
+        context.assertTrue(result.consumesAction(), Component.nullToEmpty("Action result of charging scepter is not accepted"));
+        context.assertValueEqual(InteractionResult.SUCCESS.heldItemTransformedTo(ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance()).toString(),
+                result.toString(), Component.nullToEmpty("action result of charging an arcane scepter"));
+        context.assertValueEqual(7, PlayerExperience.getTotalExperience(player),
+                Component.nullToEmpty("player experience after charging scepter"));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void chargeArcaneScepterWithoutExperience(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
-        player.setStackInHand(Hand.MAIN_HAND, ModItems.ARCANE_SCEPTER.getDefaultStack());
+    public void chargeArcaneScepterWithoutExperience(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        player.setItemInHand(InteractionHand.MAIN_HAND, ModItems.ARCANE_SCEPTER.getDefaultInstance());
 
-        ActionResult result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        InteractionResult result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertEquals(ActionResult.PASS, result, Text.of("action result"));
-        context.assertEquals(ModItems.ARCANE_SCEPTER.getDefaultStack().getItem(),
-                player.getMainHandStack().getItem(),
-                Text.of("player main hand item"));
+        context.assertValueEqual(InteractionResult.PASS, result, Component.nullToEmpty("action result"));
+        context.assertValueEqual(ModItems.ARCANE_SCEPTER.getDefaultInstance().getItem(),
+                player.getMainHandItem().getItem(),
+                Component.nullToEmpty("player main hand item"));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void chargeArcaneScepterWithoutExperienceInCreative(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.CREATIVE);
-        GameMode.CREATIVE.setAbilities(player.getAbilities());
-        player.setStackInHand(Hand.MAIN_HAND, ModItems.ARCANE_SCEPTER.getDefaultStack());
+    public void chargeArcaneScepterWithoutExperienceInCreative(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.CREATIVE);
+        GameType.CREATIVE.updatePlayerAbilities(player.getAbilities());
+        player.setItemInHand(InteractionHand.MAIN_HAND, ModItems.ARCANE_SCEPTER.getDefaultInstance());
 
-        ActionResult result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        InteractionResult result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(result.isAccepted(), Text.of("Action result of charging scepter is not accepted"));
-        context.assertEquals(ActionResult.SUCCESS.withNewHandStack(ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack()).toString(),
-                result.toString(), Text.of("action result of charging an arcane scepter"));
+        context.assertTrue(result.consumesAction(), Component.nullToEmpty("Action result of charging scepter is not accepted"));
+        context.assertValueEqual(InteractionResult.SUCCESS.heldItemTransformedTo(ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance()).toString(),
+                result.toString(), Component.nullToEmpty("action result of charging an arcane scepter"));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void drainArcaneScepter(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
-        ItemStack itemStack = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack();
-        player.setStackInHand(Hand.MAIN_HAND, itemStack);
+    public void drainArcaneScepter(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        ItemStack itemStack = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance();
+        player.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
 
-        ActionResult result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        InteractionResult result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(result.isAccepted(), Text.of("Action result of draining scepter is not accepted"));
-        context.assertEquals(ActionResult.SUCCESS.withNewHandStack(ModItems.ARCANE_SCEPTER.getDefaultStack()).toString(),
-                result.toString(), Text.of("action result of draining a charged scepter"));
-        context.assertEquals(7, PlayerExperience.getTotalExperience(player),
-                Text.of("player experience after draining scepter"));
+        context.assertTrue(result.consumesAction(), Component.nullToEmpty("Action result of draining scepter is not accepted"));
+        context.assertValueEqual(InteractionResult.SUCCESS.heldItemTransformedTo(ModItems.ARCANE_SCEPTER.getDefaultInstance()).toString(),
+                result.toString(), Component.nullToEmpty("action result of draining a charged scepter"));
+        context.assertValueEqual(7, PlayerExperience.getTotalExperience(player),
+                Component.nullToEmpty("player experience after draining scepter"));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void breakArcaneScepterCharging(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
-        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultStack();
-        itemStack.setDamage(itemStack.getMaxDamage() - 1);
-        player.setStackInHand(Hand.MAIN_HAND, itemStack);
-        player.addExperience(100);
+    public void breakArcaneScepterCharging(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultInstance();
+        itemStack.setDamageValue(itemStack.getMaxDamage() - 1);
+        player.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
+        player.giveExperiencePoints(100);
 
-        ActionResult result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        InteractionResult result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(result.isAccepted(), Text.of("Action result of charging scepter is not accepted"));
-        context.assertEquals(ActionResult.SUCCESS.withNewHandStack(ModItems.SCEPTER.getDefaultStack()).toString(),
-                result.toString(), Text.of("action result of breaking scepter by charging"));
+        context.assertTrue(result.consumesAction(), Component.nullToEmpty("Action result of charging scepter is not accepted"));
+        context.assertValueEqual(InteractionResult.SUCCESS.heldItemTransformedTo(ModItems.SCEPTER.getDefaultInstance()).toString(),
+                result.toString(), Component.nullToEmpty("action result of breaking scepter by charging"));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void breakArcaneScepterDraining(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
-        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultStack();
-        itemStack.setDamage(itemStack.getMaxDamage() - 1);
+    public void breakArcaneScepterDraining(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultInstance();
+        itemStack.setDamageValue(itemStack.getMaxDamage() - 1);
         ScepterExperienceComponent.add(itemStack, 70);
-        player.setStackInHand(Hand.MAIN_HAND, itemStack);
+        player.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
 
-        ActionResult result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        InteractionResult result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(result.isAccepted(), Text.of("Action result of draining scepter is not accepted"));
-        context.assertEquals(ActionResult.SUCCESS.withNewHandStack(ModItems.SCEPTER.getDefaultStack()).toString(),
-                result.toString(), Text.of("action result of breaking scepter by draining"));
+        context.assertTrue(result.consumesAction(), Component.nullToEmpty("Action result of draining scepter is not accepted"));
+        context.assertValueEqual(InteractionResult.SUCCESS.heldItemTransformedTo(ModItems.SCEPTER.getDefaultInstance()).toString(),
+                result.toString(), Component.nullToEmpty("action result of breaking scepter by draining"));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void checkDamagedAfterUse(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
-        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultStack();
-        player.setStackInHand(Hand.MAIN_HAND, itemStack);
-        player.addExperience(7);
+    public void checkDamagedAfterUse(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultInstance();
+        player.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
+        player.giveExperiencePoints(7);
 
-        ActionResult result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        InteractionResult result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(result.isAccepted(), Text.of("Action result of charging scepter is not accepted"));
-        assert ((ActionResult.Success) result).getNewHandStack() != null;
-        ItemStack damagedChargedScepter = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack();
-        damagedChargedScepter.setDamage(1);
-        context.assertEquals(damagedChargedScepter.getItem(),
-                ((ActionResult.Success)result).getNewHandStack().getItem(),
-                Text.of("item after charging scepter"));
-        context.assertEquals(damagedChargedScepter.getDamage(),
-                ((ActionResult.Success)result).getNewHandStack().getDamage(),
-                Text.of("item stack damage after charging scepter"));
+        context.assertTrue(result.consumesAction(), Component.nullToEmpty("Action result of charging scepter is not accepted"));
+        assert ((InteractionResult.Success) result).heldItemTransformedTo() != null;
+        ItemStack damagedChargedScepter = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance();
+        damagedChargedScepter.setDamageValue(1);
+        context.assertValueEqual(damagedChargedScepter.getItem(),
+                ((InteractionResult.Success)result).heldItemTransformedTo().getItem(),
+                Component.nullToEmpty("item after charging scepter"));
+        context.assertValueEqual(damagedChargedScepter.getDamageValue(),
+                ((InteractionResult.Success)result).heldItemTransformedTo().getDamageValue(),
+                Component.nullToEmpty("item stack damage after charging scepter"));
 
         expectedCooldownMainHand(context, player, 10);
 
-        result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(result.isAccepted(), Text.of("Action result of draining scepter is not accepted"));
-        assert ((ActionResult.Success) result).getNewHandStack() != null;
-        ItemStack damagedArcaneScepter = ModItems.ARCANE_SCEPTER.getDefaultStack();
-        damagedArcaneScepter.setDamage(2);
-        context.assertEquals(damagedArcaneScepter.getItem(),
-                ((ActionResult.Success)result).getNewHandStack().getItem(),
-                Text.of("item after draining scepter"));
-        context.assertEquals(damagedArcaneScepter.getDamage(),
-                ((ActionResult.Success)result).getNewHandStack().getDamage(),
-                Text.of("item stack damage after draining scepter"));
+        context.assertTrue(result.consumesAction(), Component.nullToEmpty("Action result of draining scepter is not accepted"));
+        assert ((InteractionResult.Success) result).heldItemTransformedTo() != null;
+        ItemStack damagedArcaneScepter = ModItems.ARCANE_SCEPTER.getDefaultInstance();
+        damagedArcaneScepter.setDamageValue(2);
+        context.assertValueEqual(damagedArcaneScepter.getItem(),
+                ((InteractionResult.Success)result).heldItemTransformedTo().getItem(),
+                Component.nullToEmpty("item after draining scepter"));
+        context.assertValueEqual(damagedArcaneScepter.getDamageValue(),
+                ((InteractionResult.Success)result).heldItemTransformedTo().getDamageValue(),
+                Component.nullToEmpty("item stack damage after draining scepter"));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void checkDamagedAfterUseCreative(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.CREATIVE);
-        GameMode.CREATIVE.setAbilities(player.getAbilities());
-        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultStack();
-        player.setStackInHand(Hand.MAIN_HAND, itemStack);
-        player.addExperience(7);
+    public void checkDamagedAfterUseCreative(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.CREATIVE);
+        GameType.CREATIVE.updatePlayerAbilities(player.getAbilities());
+        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultInstance();
+        player.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
+        player.giveExperiencePoints(7);
 
-        ActionResult result = player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        InteractionResult result = player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
-        context.assertTrue(result.isAccepted(), Text.of("Action result of charging scepter is not accepted"));
-        assert ((ActionResult.Success) result).getNewHandStack() != null;
-        ItemStack damagedChargedScepter = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack();
-        context.assertEquals(damagedChargedScepter.toString(),
-                ((ActionResult.Success)result).getNewHandStack().toString(),
-                Text.of("item stack after charging scepter"));
+        context.assertTrue(result.consumesAction(), Component.nullToEmpty("Action result of charging scepter is not accepted"));
+        assert ((InteractionResult.Success) result).heldItemTransformedTo() != null;
+        ItemStack damagedChargedScepter = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance();
+        context.assertValueEqual(damagedChargedScepter.toString(),
+                ((InteractionResult.Success)result).heldItemTransformedTo().toString(),
+                Component.nullToEmpty("item stack after charging scepter"));
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void chargingArcaneScepterCooldown(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
-        player.addExperience(100);
-        player.setStackInHand(Hand.MAIN_HAND, ModItems.ARCANE_SCEPTER.getDefaultStack());
+    public void chargingArcaneScepterCooldown(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        player.giveExperiencePoints(100);
+        player.setItemInHand(InteractionHand.MAIN_HAND, ModItems.ARCANE_SCEPTER.getDefaultInstance());
 
-        player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
         expectedCooldownMainHand(context, player, 10);
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void drainingArcaneScepterCooldown(TestContext context) {
-        ServerWorld world = context.getWorld();
-        PlayerEntity player = context.createMockPlayer(GameMode.SURVIVAL);
-        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultStack();
+    public void drainingArcaneScepterCooldown(GameTestHelper context) {
+        ServerLevel world = context.getLevel();
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultInstance();
         ScepterExperienceComponent.add(itemStack, 70);
-        player.setStackInHand(Hand.MAIN_HAND, itemStack);
+        player.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
 
-        player.getMainHandStack().use(world, player, Hand.MAIN_HAND);
+        player.getMainHandItem().use(world, player, InteractionHand.MAIN_HAND);
 
         expectedCooldownMainHand(context, player, 10);
 
-        context.complete();
+        context.succeed();
     }
 
     @GameTest(structure="gametest:template/empty")
-    public void getReplacementStack(TestContext context) {
+    public void getReplacementStack(GameTestHelper context) {
         {
-            ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultStack();
-            context.assertEquals(ItemStack.EMPTY.toString(),
+            ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultInstance();
+            context.assertValueEqual(ItemStack.EMPTY.toString(),
                     ArcaneScepterItem.getReplacementStack(itemStack).toString(),
-                    Text.of("updated arcane scepter"));
+                    Component.nullToEmpty("updated arcane scepter"));
         }
         {
-            ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultStack();
+            ItemStack itemStack = ModItems.ARCANE_SCEPTER.getDefaultInstance();
             ScepterExperienceComponent.add(itemStack, 7);
-            context.assertEquals(ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack().getItem(),
+            context.assertValueEqual(ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance().getItem(),
                     ArcaneScepterItem.getReplacementStack(itemStack).getItem(),
-                    Text.of("updated arcane scepter with experience"));
+                    Component.nullToEmpty("updated arcane scepter with experience"));
         }
         {
-            ItemStack itemStack = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack();
-            context.assertEquals(ItemStack.EMPTY.getItem(),
+            ItemStack itemStack = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance();
+            context.assertValueEqual(ItemStack.EMPTY.getItem(),
                     ArcaneScepterItem.getReplacementStack(itemStack).getItem(),
-                    Text.of("updated charged scepter"));
+                    Component.nullToEmpty("updated charged scepter"));
         }
         {
-            ItemStack itemStack = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack();
+            ItemStack itemStack = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance();
             ScepterExperienceComponent.add(itemStack, -7);
-            context.assertEquals(ModItems.ARCANE_SCEPTER.getDefaultStack().getItem(),
+            context.assertValueEqual(ModItems.ARCANE_SCEPTER.getDefaultInstance().getItem(),
                     ArcaneScepterItem.getReplacementStack(itemStack).getItem(),
-                    Text.of("updated charged scepter without experience"));
+                    Component.nullToEmpty("updated charged scepter without experience"));
         }
         {
-            ItemStack itemStack = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultStack();
+            ItemStack itemStack = ModItems.CHARGED_ARCANE_SCEPTER.getDefaultInstance();
             ScepterExperienceComponent.add(itemStack, -7);
-            itemStack.addEnchantment(ContextUtil.getEnchantment(context, ModEnchantments.INSIGHT_KEY), 1);
-            itemStack.setDamage(17);
+            itemStack.enchant(ContextUtil.getEnchantment(context, ModEnchantments.INSIGHT_KEY), 1);
+            itemStack.setDamageValue(17);
 
-            ItemStack expected = ModItems.ARCANE_SCEPTER.getDefaultStack();
-            expected.addEnchantment(ContextUtil.getEnchantment(context, ModEnchantments.INSIGHT_KEY), 1);
-            expected.setDamage(17);
+            ItemStack expected = ModItems.ARCANE_SCEPTER.getDefaultInstance();
+            expected.enchant(ContextUtil.getEnchantment(context, ModEnchantments.INSIGHT_KEY), 1);
+            expected.setDamageValue(17);
 
-            context.assertEquals(expected.getItem(),
+            context.assertValueEqual(expected.getItem(),
                     ArcaneScepterItem.getReplacementStack(itemStack).getItem(),
-                    Text.of("updated charged scepter without experience keeping components"));
+                    Component.nullToEmpty("updated charged scepter without experience keeping components"));
         }
 
-        context.complete();
+        context.succeed();
     }
 
-    private void expectedCooldownMainHand(TestContext context, PlayerEntity player, int expected) {
-        ItemCooldownManager cooldownManager = player.getItemCooldownManager();
-        ItemStack itemStack = player.getMainHandStack();
+    private void expectedCooldownMainHand(GameTestHelper context, Player player, int expected) {
+        ItemCooldowns cooldownManager = player.getCooldowns();
+        ItemStack itemStack = player.getMainHandItem();
 
         for (int i = 0; i < expected - 1; i++) {
-            cooldownManager.update();
+            cooldownManager.tick();
         }
 
-        context.assertTrue(cooldownManager.isCoolingDown(itemStack),
-                Text.of("Charged scepter is not cooling down for %s ticks".formatted(expected)));
+        context.assertTrue(cooldownManager.isOnCooldown(itemStack),
+                Component.nullToEmpty("Charged scepter is not cooling down for %s ticks".formatted(expected)));
 
-        cooldownManager.update();
+        cooldownManager.tick();
 
-        context.assertFalse(cooldownManager.isCoolingDown(itemStack),
-                Text.of("Charged scepter is cooling down for more than %s ticks".formatted(expected)));
+        context.assertFalse(cooldownManager.isOnCooldown(itemStack),
+                Component.nullToEmpty("Charged scepter is cooling down for more than %s ticks".formatted(expected)));
     }
 }

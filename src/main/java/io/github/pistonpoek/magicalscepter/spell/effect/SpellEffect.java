@@ -5,12 +5,11 @@ import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.registry.Registry;
-
 import java.util.function.Function;
+import net.minecraft.core.Registry;
 
 public interface SpellEffect {
-    Codec<SpellEffect> CODEC = ModRegistries.SPELL_EFFECT_TYPE.getCodec().dispatch(SpellEffect::getCodec, Function.identity());
+    Codec<SpellEffect> CODEC = ModRegistries.SPELL_EFFECT_TYPE.byNameCodec().dispatch(SpellEffect::getCodec, Function.identity());
 
     static void register(Registry<MapCodec<? extends SpellEffect>> registry) {
         Registry.register(registry, ModIdentifier.of("play_sound"), PlaySoundSpellEffect.MAP_CODEC);

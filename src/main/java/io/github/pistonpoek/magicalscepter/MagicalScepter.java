@@ -22,7 +22,7 @@ import io.github.pistonpoek.magicalscepter.world.ModGameRules;
 import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.minecraft.world.timer.TimerCallbackSerializer;
+import net.minecraft.world.level.timers.TimerCallbacks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +55,7 @@ public class MagicalScepter implements ModInitializer {
         ServerLivingEntityEvents.ALLOW_DAMAGE.register(ModStatusEffects::allowDamage);
         ServerLivingEntityEvents.AFTER_DAMAGE.register(ScepterInfusion::afterDamage);
 
-        TimerCallbackSerializer.INSTANCE.registerSerializer(SpellCastingTimerCallback.ID,
+        TimerCallbacks.SERVER_CALLBACKS.register(SpellCastingTimerCallback.ID,
                 SpellCastingTimerCallback.MAP_CODEC);
     }
 }

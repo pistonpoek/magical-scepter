@@ -2,24 +2,23 @@ package io.github.pistonpoek.magicalscepter.spell.cast.context;
 
 import io.github.pistonpoek.magicalscepter.spell.effect.SpellEffect;
 import io.github.pistonpoek.magicalscepter.util.RotationVector;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Position;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.core.Position;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
-public record SpellContext(LivingEntity caster, Entity target, Vec3d position, float pitch,
+public record SpellContext(LivingEntity caster, Entity target, Vec3 position, float pitch,
                            float yaw) implements Position {
 
     public SpellContext(LivingEntity caster) {
-        this(caster, caster, caster.getEyePos(), caster.getPitch(), caster.getYaw());
+        this(caster, caster, caster.getEyePosition(), caster.getXRot(), caster.getYRot());
     }
 
-    public SpellContext(SpellContext context, Vec3d position) {
+    public SpellContext(SpellContext context, Vec3 position) {
         this(context.caster, context.target, position, context.pitch, context.yaw);
     }
 
@@ -32,25 +31,25 @@ public record SpellContext(LivingEntity caster, Entity target, Vec3d position, f
     }
 
     @Override
-    public double getX() {
-        return position.getX();
+    public double x() {
+        return position.x();
     }
 
     @Override
-    public double getY() {
-        return position.getY();
+    public double y() {
+        return position.y();
     }
 
     @Override
-    public double getZ() {
-        return position.getZ();
+    public double z() {
+        return position.z();
     }
 
-    public ServerWorld getWorld() {
-        return (ServerWorld) caster.getEntityWorld();
+    public ServerLevel getWorld() {
+        return (ServerLevel) caster.level();
     }
 
-    public Random getRandom() {
+    public RandomSource getRandom() {
         return caster.getRandom();
     }
 
@@ -61,7 +60,7 @@ public record SpellContext(LivingEntity caster, Entity target, Vec3d position, f
         return Optional.empty();
     }
 
-    public Vec3d getRotationVector() {
+    public Vec3 getRotationVector() {
         return RotationVector.get(pitch, yaw);
     }
 

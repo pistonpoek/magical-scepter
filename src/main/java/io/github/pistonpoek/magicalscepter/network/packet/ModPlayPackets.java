@@ -3,26 +3,26 @@ package io.github.pistonpoek.magicalscepter.network.packet;
 import io.github.pistonpoek.magicalscepter.network.handler.AttackItemHandler;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
  *
- * @see net.minecraft.network.packet.PlayPackets
+ * @see net.minecraft.network.protocol.game.GamePacketTypes
  */
 public class ModPlayPackets {
-    public static final CustomPayload.Type<?, AttackItemPayload> ATTACK_ITEM =
+    public static final CustomPacketPayload.TypeAndCodec<?, AttackItemPayload> ATTACK_ITEM =
             registerClientToServerPayload(AttackItemPayload.ID, AttackItemPayload.CODEC);
-    public static final CustomPayload.Type<?, SwingHandPayload> SWING_HAND =
+    public static final CustomPacketPayload.TypeAndCodec<?, SwingHandPayload> SWING_HAND =
             registerServerToClientPayload(SwingHandPayload.ID, SwingHandPayload.CODEC);
 
     /**
      * Initialize the class for the static fields.
      */
     public static void init() {
-        ServerPlayNetworking.registerGlobalReceiver(ATTACK_ITEM.id(), new AttackItemHandler());
+        ServerPlayNetworking.registerGlobalReceiver(ATTACK_ITEM.type(), new AttackItemHandler());
     }
 
     /**
@@ -33,8 +33,8 @@ public class ModPlayPackets {
      * @return Custom payload type that is being registered.
      * @param <T> Type of the payload to register.
      */
-    private static <T extends CustomPayload> CustomPayload.Type<? super RegistryByteBuf, T>
-    registerServerToClientPayload(CustomPayload.Id<T> identifier, PacketCodec<RegistryByteBuf, T> codec) {
+    private static <T extends CustomPacketPayload> CustomPacketPayload.TypeAndCodec<? super RegistryFriendlyByteBuf, T>
+    registerServerToClientPayload(CustomPacketPayload.Type<T> identifier, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
         return PayloadTypeRegistry.playS2C().register(identifier, codec);
     }
 
@@ -46,8 +46,8 @@ public class ModPlayPackets {
      * @return Custom payload type that is being registered.
      * @param <T> Type of the payload to register.
      */
-    private static <T extends CustomPayload> CustomPayload.Type<? super RegistryByteBuf, T>
-    registerClientToServerPayload(CustomPayload.Id<T> identifier, PacketCodec<RegistryByteBuf, T> codec) {
+    private static <T extends CustomPacketPayload> CustomPacketPayload.TypeAndCodec<? super RegistryFriendlyByteBuf, T>
+    registerClientToServerPayload(CustomPacketPayload.Type<T> identifier, StreamCodec<RegistryFriendlyByteBuf, T> codec) {
         return PayloadTypeRegistry.playC2S().register(identifier, codec);
     }
 

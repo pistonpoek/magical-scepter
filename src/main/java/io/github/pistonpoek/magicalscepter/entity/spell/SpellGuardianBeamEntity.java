@@ -1,26 +1,30 @@
 package io.github.pistonpoek.magicalscepter.entity.spell;
 
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.entity.*;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.world.World;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TraceableEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
-public class SpellGuardianBeamEntity extends Entity implements Ownable {
-    private static final TrackedData<Integer> OWNER_ID = DataTracker.registerData(SpellGuardianBeamEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Integer> TARGET_ID = DataTracker.registerData(SpellGuardianBeamEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final TrackedData<Integer> WARMUP_TIME = DataTracker.registerData(SpellGuardianBeamEntity.class, TrackedDataHandlerRegistry.INTEGER);
+public class SpellGuardianBeamEntity extends Entity implements TraceableEntity {
+    private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(SpellGuardianBeamEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(SpellGuardianBeamEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> WARMUP_TIME = SynchedEntityData.defineId(SpellGuardianBeamEntity.class, EntityDataSerializers.INT);
     @Nullable
-    protected LazyEntityReference<LivingEntity> owner;
+    protected EntityReference<LivingEntity> owner;
     @Nullable
-    protected LazyEntityReference<Entity> target;
+    protected EntityReference<Entity> target;
     @Nullable
     private LivingEntity cachedOwner;
     @Nullable
@@ -28,15 +32,15 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     private static final int DEFAULT_WARMUP_TIME = 24;
     public static final float MAX_DISTANCE = 15.0F;
 
-    public SpellGuardianBeamEntity(EntityType<? extends SpellGuardianBeamEntity> type, World world) {
+    public SpellGuardianBeamEntity(EntityType<? extends SpellGuardianBeamEntity> type, Level world) {
         super(type, world);
     }
 
     @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        builder.add(OWNER_ID, 0);
-        builder.add(TARGET_ID, 0);
-        builder.add(WARMUP_TIME, DEFAULT_WARMUP_TIME);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(OWNER_ID, 0);
+        builder.define(TARGET_ID, 0);
+        builder.define(WARMUP_TIME, DEFAULT_WARMUP_TIME);
     }
 
     @Override
@@ -45,15 +49,15 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
         LivingEntity owner = getOwner();
         Entity target = getTarget();
         if (owner == null || target == null) {
-            if (!getEntityWorld().isClient()) {
+            if (!level().isClientSide()) {
                 discard();
             }
             return;
         }
 
-        setPosition(owner.getX(), owner.getEyeY(), owner.getZ());
+        setPos(owner.getX(), owner.getEyeY(), owner.getZ());
 
-        if (getEntityWorld().isClient()) {
+        if (level().isClientSide()) {
             clientTick(owner, target);
             return;
         }
@@ -67,7 +71,7 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     private void addParticles(LivingEntity owner, Entity target) {
         double progress = getProgress(0.0F);
         double deltaX = target.getX() - owner.getX();
-        double deltaY = target.getBodyY(0.5) - owner.getEyeY();
+        double deltaY = target.getY(0.5) - owner.getEyeY();
         double deltaZ = target.getZ() - owner.getZ();
         double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
         deltaX /= distance;
@@ -77,7 +81,7 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
 
         while (random < distance) {
             random += 1.8 - progress + this.random.nextDouble() * (1.7 - progress);
-            this.getEntityWorld().addParticleClient(ParticleTypes.BUBBLE,
+            this.level().addParticle(ParticleTypes.BUBBLE,
                     owner.getX() + deltaX * random,
                     owner.getEyeY() + deltaY * random,
                     owner.getZ() + deltaZ * random,
@@ -86,14 +90,14 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     }
 
     private void serverTick(LivingEntity owner, Entity target) {
-        if (!owner.canSee(target) || owner.distanceTo(target) > MAX_DISTANCE) {
+        if (!owner.hasLineOfSight(target) || owner.distanceTo(target) > MAX_DISTANCE) {
             discard();
             return;
         }
 
-        if (age > getWarmupTime()) {
-            if (getEntityWorld() instanceof ServerWorld serverWorld) {
-                target.damage(serverWorld, this.getDamageSources().indirectMagic(owner, owner), 6);
+        if (tickCount > getWarmupTime()) {
+            if (level() instanceof ServerLevel serverWorld) {
+                target.hurtServer(serverWorld, this.damageSources().indirectMagic(owner, owner), 6);
             }
             discard();
         }
@@ -102,8 +106,8 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     }
 
     @Override
-    public void onTrackedDataSet(TrackedData<?> data) {
-        super.onTrackedDataSet(data);
+    public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
+        super.onSyncedDataUpdated(data);
         if (OWNER_ID.equals(data)) {
             this.cachedOwner = null;
         }
@@ -113,8 +117,8 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     }
 
     @Override
-    public void copyFrom(Entity original) {
-        super.copyFrom(original);
+    public void restoreFrom(Entity original) {
+        super.restoreFrom(original);
         if (original instanceof SpellGuardianBeamEntity guardianBeamEntity) {
             setOwner(guardianBeamEntity.getOwner());
             setTarget(guardianBeamEntity.getTarget());
@@ -123,44 +127,44 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     }
 
     @Override
-    protected void readCustomData(ReadView view) {
-        this.setOwner(LazyEntityReference.fromData(view, "owner"));
-        this.setTarget(LazyEntityReference.fromData(view, "target"));
-        this.setWarmupTime(view.getInt("warmup_time", DEFAULT_WARMUP_TIME));
+    protected void readAdditionalSaveData(ValueInput view) {
+        this.setOwner(EntityReference.read(view, "owner"));
+        this.setTarget(EntityReference.read(view, "target"));
+        this.setWarmupTime(view.getIntOr("warmup_time", DEFAULT_WARMUP_TIME));
     }
 
     @Override
-    protected void writeCustomData(WriteView view) {
-        LazyEntityReference.writeData(this.owner, view, "owner");
-        LazyEntityReference.writeData(this.target, view, "target");
+    protected void addAdditionalSaveData(ValueOutput view) {
+        EntityReference.store(this.owner, view, "owner");
+        EntityReference.store(this.target, view, "target");
         view.putInt("warmup_time", this.getWarmupTime());
     }
 
     public float getProgress(float tickProgress) {
-        return (age + tickProgress) / getWarmupTime();
+        return (tickCount + tickProgress) / getWarmupTime();
     }
 
     public int getWarmupTime() {
-        return this.dataTracker.get(WARMUP_TIME);
+        return this.entityData.get(WARMUP_TIME);
     }
 
     public void setWarmupTime(int warmupTime) {
-        this.dataTracker.set(WARMUP_TIME, warmupTime);
+        this.entityData.set(WARMUP_TIME, warmupTime);
     }
 
     public boolean hasOwner() {
-        return this.dataTracker.get(OWNER_ID) != 0;
+        return this.entityData.get(OWNER_ID) != 0;
     }
 
     @Nullable
     public LivingEntity getOwner() {
         if (!this.hasOwner()) {
             return null;
-        } else if (this.getEntityWorld().isClient()) {
+        } else if (this.level().isClientSide()) {
             if (this.cachedOwner != null) {
                 return this.cachedOwner;
             } else {
-                Entity entity = this.getEntityWorld().getEntityById(this.dataTracker.get(OWNER_ID));
+                Entity entity = this.level().getEntity(this.entityData.get(OWNER_ID));
                 if (entity instanceof LivingEntity livingEntity) {
                     this.cachedOwner = livingEntity;
                     return this.cachedOwner;
@@ -169,36 +173,36 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
                 }
             }
         } else {
-            return LazyEntityReference.getLivingEntity(this.owner, this.getEntityWorld());
+            return EntityReference.getLivingEntity(this.owner, this.level());
         }
     }
 
-    protected void setOwner(@Nullable LazyEntityReference<LivingEntity> owner) {
+    protected void setOwner(@Nullable EntityReference<LivingEntity> owner) {
         this.owner = owner;
     }
 
     void setOwnerId(int entityId) {
-        this.dataTracker.set(OWNER_ID, entityId);
+        this.entityData.set(OWNER_ID, entityId);
     }
 
     public void setOwner(@Nullable LivingEntity owner) {
-        this.setOwner(LazyEntityReference.of(owner));
+        this.setOwner(EntityReference.of(owner));
         if (owner != null) setOwnerId(owner.getId());
     }
 
     public boolean hasTarget() {
-        return this.dataTracker.get(TARGET_ID) != 0;
+        return this.entityData.get(TARGET_ID) != 0;
     }
 
     @Nullable
     public Entity getTarget() {
         if (!this.hasTarget()) {
             return null;
-        } else if (this.getEntityWorld().isClient()) {
+        } else if (this.level().isClientSide()) {
             if (this.cachedTarget != null) {
                 return this.cachedTarget;
             } else {
-                Entity entity = this.getEntityWorld().getEntityById(this.dataTracker.get(TARGET_ID));
+                Entity entity = this.level().getEntity(this.entityData.get(TARGET_ID));
                 if (entity != null) {
                     this.cachedTarget = entity;
                     return this.cachedTarget;
@@ -207,20 +211,20 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
                 }
             }
         } else {
-            return LazyEntityReference.getEntity(this.target, this.getEntityWorld());
+            return EntityReference.getEntity(this.target, this.level());
         }
     }
 
-    protected void setTarget(@Nullable LazyEntityReference<Entity> target) {
+    protected void setTarget(@Nullable EntityReference<Entity> target) {
         this.target = target;
     }
 
     void setTargetId(int entityId) {
-        this.dataTracker.set(TARGET_ID, entityId);
+        this.entityData.set(TARGET_ID, entityId);
     }
 
     public void setTarget(@Nullable Entity target) {
-        this.setTarget(LazyEntityReference.of(target));
+        this.setTarget(EntityReference.of(target));
         if (target != null) setTargetId(target.getId());
     }
 
@@ -230,12 +234,12 @@ public class SpellGuardianBeamEntity extends Entity implements Ownable {
     }
 
     @Override
-    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+    public boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
         return false;
     }
 
     @Override
-    public PistonBehavior getPistonBehavior() {
-        return PistonBehavior.IGNORE;
+    public PushReaction getPistonPushReaction() {
+        return PushReaction.IGNORE;
     }
 }

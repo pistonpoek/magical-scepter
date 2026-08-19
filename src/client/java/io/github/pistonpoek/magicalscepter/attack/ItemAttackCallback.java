@@ -6,40 +6,40 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.client.player.ClientPreAttackCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 @Environment(EnvType.CLIENT)
 public class ItemAttackCallback implements ClientPreAttackCallback {
     @Override
-    public boolean onClientPlayerPreAttack(MinecraftClient client, ClientPlayerEntity player, int clickCount) {
+    public boolean onClientPlayerPreAttack(Minecraft client, LocalPlayer player, int clickCount) {
         // Return false when the player is spectator.
         if (player.isSpectator()) {
             return false;
         }
 
         // Filter for attack items.
-        ItemStack stack = player.getMainHandStack();
+        ItemStack stack = player.getMainHandItem();
         Item item = stack.getItem();
         if (!(item instanceof AttackItem)) {
             return false;
         }
 
         // Not allowed to use the item if the item is cooling down.
-        if (player.getItemCooldownManager().isCoolingDown(stack)) {
+        if (player.getCooldowns().isOnCooldown(stack)) {
             return false; // Allow other attack actions to happen.
         }
 
         // Process attack item when clicked and not when held.
         if (clickCount != 0) {
-            ActionResult result = processAttackItem(client, player, item);
+            InteractionResult result = processAttackItem(client, player, item);
 
             // Cancel other attack actions if result is not pass.
-            return result != ActionResult.PASS;
+            return result != InteractionResult.PASS;
         }
 
         // Return false to allow other attack actions from happening.
@@ -54,17 +54,17 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
      * @param item   Item that is being attacked with.
      * @return Result of the attack action for the player.
      */
-    private ActionResult processAttackItem(MinecraftClient client, ClientPlayerEntity player, Item item) {
+    private InteractionResult processAttackItem(Minecraft client, LocalPlayer player, Item item) {
         // Check the result for the attack item.
-        ActionResult result = ((AttackItem) item)
-                .attack(player.getEntityWorld(), player);
+        InteractionResult result = ((AttackItem) item)
+                .attack(player.level(), player);
 
         // Render attack use if attack item use is accepted.
-        if (result.isAccepted()) {
-            renderAttackUse(client, player, result == ActionResult.SUCCESS);
+        if (result.consumesAction()) {
+            renderAttackUse(client, player, result == InteractionResult.SUCCESS);
 
             // Send an attack item packet to invoke the server for it.
-            ClientPlayNetworking.send(new AttackItemPayload(player.getYaw(), player.getPitch()));
+            ClientPlayNetworking.send(new AttackItemPayload(player.getYRot(), player.getXRot()));
         }
         return result;
     }
@@ -76,11 +76,11 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
      * @param player          Player that performs the attack.
      * @param shouldSwingHand Truth assignment, if the players hand should swing.
      */
-    private void renderAttackUse(MinecraftClient client, ClientPlayerEntity player, boolean shouldSwingHand) {
+    private void renderAttackUse(Minecraft client, LocalPlayer player, boolean shouldSwingHand) {
         if (shouldSwingHand) {
-            player.swingHand(Hand.MAIN_HAND);
+            player.swing(InteractionHand.MAIN_HAND);
         }
 
-        client.gameRenderer.firstPersonRenderer.resetEquipProgress(Hand.MAIN_HAND);
+        client.gameRenderer.itemInHandRenderer.itemUsed(InteractionHand.MAIN_HAND);
     }
 }
