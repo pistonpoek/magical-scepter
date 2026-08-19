@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.spell;
 
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import io.github.pistonpoek.magicalscepter.entity.spell.SpellGuardianBeamEntity;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
@@ -10,9 +10,9 @@ import io.github.pistonpoek.magicalscepter.spell.effect.*;
 import io.github.pistonpoek.magicalscepter.spell.position.*;
 import io.github.pistonpoek.magicalscepter.spell.rotation.*;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.EntityFlagsPredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.predicates.ContextAwarePredicate;
+import net.minecraft.advancements.predicates.entity.EntityFlagsPredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
@@ -32,6 +32,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -158,7 +159,7 @@ public class Spells {
                         )
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(ModEntityType.SPELL_FIRE_CHARGE)
+                                        entityTypeReferenceFunction.apply(ModEntityTypes.SPELL_FIRE_CHARGE)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloat.of(1.0F), false)
                                 ).build()
@@ -188,7 +189,7 @@ public class Spells {
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(EntityType.WIND_CHARGE)
+                                        entityTypeReferenceFunction.apply(EntityTypes.WIND_CHARGE)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloat.of(1.5F), false)
                                 ).build()
@@ -264,7 +265,7 @@ public class Spells {
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(ModEntityType.SPELL_DRAGON_FIREBALL)
+                                        entityTypeReferenceFunction.apply(ModEntityTypes.SPELL_DRAGON_FIREBALL)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloat.of(1.0F), false)
                                 ).build()
@@ -292,7 +293,7 @@ public class Spells {
                 .addCast(SpellCast.builder()
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(EntityType.AREA_EFFECT_CLOUD)
+                                        entityTypeReferenceFunction.apply(EntityTypes.AREA_EFFECT_CLOUD)
                                 ).nbt(areaEffectCloudNbtCompound).build()
                         )
                         .addTransformer(
@@ -333,7 +334,7 @@ public class Spells {
                                 UniformFloat.of(0.8F, 1.2F)))
                 )
                 .addCast(SpellCast.builder()
-                        .addEffect(SummonEntitySpellEffect.builder(entityTypeReferenceFunction.apply(EntityType.EVOKER_FANGS)).build())
+                        .addEffect(SummonEntitySpellEffect.builder(entityTypeReferenceFunction.apply(EntityTypes.EVOKER_FANGS)).build())
                         .addTransformer(
                                 MoveCastTransformer.builder(
                                         RelativePositionSource.builder(0, 0, 1.25)
@@ -374,7 +375,7 @@ public class Spells {
                                 UniformFloat.of(0.8F, 1.2F)))
                 )
                 .addCast(SpellCast.builder()
-                        .addEffect(SummonEntitySpellEffect.builder(entityTypeReferenceFunction.apply(EntityType.EVOKER_FANGS)).build())
+                        .addEffect(SummonEntitySpellEffect.builder(entityTypeReferenceFunction.apply(EntityTypes.EVOKER_FANGS)).build())
                         .addTransformer(
                                 MoveCastTransformer.builder(
                                         EntityPositionSource.builder(EntityPositionSource.Anchor.FEET).build()
@@ -397,7 +398,7 @@ public class Spells {
                         )
                 )
                 .addCast(SpellCast.builder()
-                        .addEffect(SummonEntitySpellEffect.builder(entityTypeReferenceFunction.apply(EntityType.EVOKER_FANGS)).build())
+                        .addEffect(SummonEntitySpellEffect.builder(entityTypeReferenceFunction.apply(EntityTypes.EVOKER_FANGS)).build())
                         .addTransformer(DelayCastTransformer.builder(3).build())
                         .addTransformer(
                                 MoveCastTransformer.builder(
@@ -435,7 +436,7 @@ public class Spells {
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(ModEntityType.SPELL_FIREBALL)
+                                        entityTypeReferenceFunction.apply(ModEntityTypes.SPELL_FIREBALL)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloat.of(1.0F), false)
                                 ).build()
@@ -463,7 +464,7 @@ public class Spells {
                         )
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                                entityTypeReferenceFunction.apply(ModEntityType.SPELL_GUARDIAN_BEAM))
+                                                entityTypeReferenceFunction.apply(ModEntityTypes.SPELL_GUARDIAN_BEAM))
                                         .build()
                         )
                 )
@@ -506,7 +507,7 @@ public class Spells {
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(EntityType.SHULKER_BULLET)
+                                        entityTypeReferenceFunction.apply(EntityTypes.SHULKER_BULLET)
                                 ).build()
                         )
                 )
@@ -627,7 +628,7 @@ public class Spells {
                         .addTransformer(MoveCastTransformer.builder(PROJECTILE_BASE).build())
                         .addEffect(
                                 SummonEntitySpellEffect.builder(
-                                        entityTypeReferenceFunction.apply(ModEntityType.SPELL_WITHER_SKULL)
+                                        entityTypeReferenceFunction.apply(ModEntityTypes.SPELL_WITHER_SKULL)
                                 ).addEffect(
                                         new MoveSpellEffect(ConstantFloat.of(1.0F), false)
                                 ).build()

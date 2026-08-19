@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.mixin;
 
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -46,7 +46,7 @@ public abstract class PatrolEntityMixin extends Monster {
             opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
     private void modifyPatrolLeader(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason,
                                     SpawnGroupData entityData, CallbackInfoReturnable<SpawnGroupData> callbackInfoReturnable) {
-        this.patrolLeader = this.patrolLeader && (this.getType() != (ModEntityType.SORCERER) ||
+        this.patrolLeader = this.patrolLeader && (this.getType() != (ModEntityTypes.SORCERER) ||
                 spawnReason != EntitySpawnReason.NATURAL);
     }
 }

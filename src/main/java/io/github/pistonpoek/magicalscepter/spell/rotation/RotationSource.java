@@ -1,17 +1,17 @@
 package io.github.pistonpoek.magicalscepter.spell.rotation;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistries;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContextSource;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
-import net.minecraft.util.Tuple;
 
 public interface RotationSource extends SpellContextSource {
     MapCodec<RotationSource> MAP_CODEC = ModRegistries.CAST_ROTATION_SOURCE_TYPE.byNameCodec()
@@ -27,20 +27,20 @@ public interface RotationSource extends SpellContextSource {
         Registry.register(registry, ModIdentifier.of("facing"), FacingLocationRotationSource.MAP_CODEC);
     }
 
-    Tuple<Float, Float> getRotation(@NotNull SpellContext context);
+    Pair<Float, Float> getRotation(@NotNull SpellContext context);
 
     @Override
     default SpellContext getContext(@NotNull SpellContext context) {
-        Tuple<Float, Float> rotationPair = getRotation(context);
-        return new SpellContext(context, rotationPair.getA(), rotationPair.getB());
+        Pair<Float, Float> rotationPair = getRotation(context);
+        return new SpellContext(context, rotationPair.getFirst(), rotationPair.getSecond());
     }
 
     default float getPitch(@NotNull SpellContext context) {
-        return getRotation(context).getA();
+        return getRotation(context).getFirst();
     }
 
     default float getYaw(@NotNull SpellContext context) {
-        return getRotation(context).getB();
+        return getRotation(context).getSecond();
     }
 
     static Direction getDirection(@NotNull SpellContext context) {

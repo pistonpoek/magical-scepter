@@ -1,13 +1,13 @@
 package io.github.pistonpoek.magicalscepter.spell.rotation;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-import net.minecraft.util.Mth;
-import net.minecraft.util.Tuple;
 
 public record MixedRotationSource(Optional<RotationSource> pitch,
                                   Optional<RotationSource> yaw) implements RotationSource {
@@ -19,8 +19,8 @@ public record MixedRotationSource(Optional<RotationSource> pitch,
     );
 
     @Override
-    public Tuple<Float, Float> getRotation(@NotNull SpellContext context) {
-        return new Tuple<>(
+    public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
+        return new Pair<>(
                 Mth.wrapDegrees(pitch.map(pitch -> pitch.getPitch(context)).orElse(context.pitch())),
                 Mth.wrapDegrees(yaw.map(yaw -> yaw.getYaw(context)).orElse(context.yaw())));
     }

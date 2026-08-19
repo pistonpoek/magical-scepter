@@ -4,7 +4,7 @@ import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
 import io.github.pistonpoek.magicalscepter.command.ModCommands;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentEffectComponentTypes;
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.loot.function.ModLootFunctionTypes;
@@ -40,7 +40,7 @@ public class MagicalScepter implements ModInitializer {
         ModStatusEffects.init();
         ModDataComponentTypes.init();
         ModComponentPredicateTypes.init();
-        ModEntityType.init();
+        ModEntityTypes.init();
         ModLootFunctionTypes.init();
         ModPlayPackets.init();
         ModCriteria.init();

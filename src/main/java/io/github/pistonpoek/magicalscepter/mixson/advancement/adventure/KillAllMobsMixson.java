@@ -31,7 +31,7 @@ public record KillAllMobsMixson(Identifier mobIdentifier) implements Event<JsonE
                                     "condition": "minecraft:entity_properties",
                                     "entity": "this",
                                     "predicate": {
-                                        "type": "%s"
+                                        "minecraft:entity_type": "%s"
                                     }
                                 }
                             ]

@@ -2,18 +2,20 @@ package io.github.pistonpoek.magicalscepter.advancement.criterion;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
+import net.minecraft.advancements.predicates.ContextAwarePredicate;
+import net.minecraft.advancements.predicates.ItemPredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.advancements.triggers.Criterion;
+import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+
+;
 
 /**
  * Advancement criterion that triggers when a spell is cast by a player.
@@ -57,7 +59,7 @@ public class CastSpellCriterion extends SimpleCriterionTrigger<CastSpellCriterio
          * @param item Item predicate to create the condition with.
          * @return Advancement criterion with a cast spell condition.
          */
-        public static Criterion<CastSpellCriterion.Conditions> create(@Nullable ItemPredicate item) {
+        public static Criterion<Conditions> create(@Nullable ItemPredicate item) {
             return ModCriteria.CAST_SCEPTER.createCriterion(
                     new CastSpellCriterion.Conditions(Optional.empty(), Optional.ofNullable(item)));
         }

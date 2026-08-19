@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
  */
 public class ModSpawnRestriction {
     static {
-        SpawnPlacements.register(ModEntityType.SORCERER, SpawnPlacementTypes.ON_GROUND,
+        SpawnPlacements.register(ModEntityTypes.SORCERER, SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
     }
 

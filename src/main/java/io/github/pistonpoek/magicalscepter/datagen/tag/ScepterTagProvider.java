@@ -4,15 +4,16 @@ import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.registry.tag.ScepterTags;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
-import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.KeyTagProvider;
+import net.minecraft.data.tags.TagsProvider;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Mod data generator for scepter tags.
  */
-public class ScepterTagProvider extends KeyTagProvider<Scepter> {
+public class ScepterTagProvider extends TagsProvider<Scepter> {
     /**
      * Construct a mod scepter tag provider for data generation.
      *

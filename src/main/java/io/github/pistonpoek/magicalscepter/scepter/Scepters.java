@@ -5,22 +5,23 @@ import io.github.pistonpoek.magicalscepter.registry.tag.ModDamageTypeTags;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.spell.Spells;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.DamageSourcePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.EntityTypePredicate;
-import net.minecraft.advancements.criterion.TagPredicate;
+import net.minecraft.advancements.predicates.ContextAwarePredicate;
+import net.minecraft.advancements.predicates.DamageSourcePredicate;
+import net.minecraft.advancements.predicates.TagPredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.advancements.predicates.entity.EntityTypePredicate;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Collection of scepters.
@@ -89,10 +90,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.BLAZE)))
+                                                                EntityTypes.BLAZE)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.SMALL_FIREBALL)))
+                                                                EntityTypes.SMALL_FIREBALL)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.BLAZE_INFUSION))
                                 ).build()
                         ))
@@ -114,10 +115,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.BREEZE)))
+                                                                EntityTypes.BREEZE)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.BREEZE_WIND_CHARGE)))
+                                                                EntityTypes.BREEZE_WIND_CHARGE)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.BREEZE_INFUSION))
                                 ).build()
                         ))
@@ -139,10 +140,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.ENDER_DRAGON)))
+                                                                EntityTypes.ENDER_DRAGON)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.AREA_EFFECT_CLOUD)))
+                                                                EntityTypes.AREA_EFFECT_CLOUD)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.DRAGON_INFUSION))
                                 ).build()
                         ))
@@ -164,10 +165,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.EVOKER)))
+                                                                EntityTypes.EVOKER)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.EVOKER_FANGS)))
+                                                                EntityTypes.EVOKER_FANGS)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.EVOKER_INFUSION))
                                 ).build()
                         ))
@@ -189,10 +190,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.GHAST)))
+                                                                EntityTypes.GHAST)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.FIREBALL)))
+                                                                EntityTypes.FIREBALL)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.GHAST_INFUSION))
                                 ).build()
                         ))
@@ -214,10 +215,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.ELDER_GUARDIAN)))
+                                                                EntityTypes.ELDER_GUARDIAN)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.ELDER_GUARDIAN)))
+                                                                EntityTypes.ELDER_GUARDIAN)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.GUARDIAN_INFUSION))
                                 ).build()
                         ))
@@ -239,10 +240,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.SHULKER)))
+                                                                EntityTypes.SHULKER)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.SHULKER_BULLET)))
+                                                                EntityTypes.SHULKER_BULLET)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.SHULKER_INFUSION))
                                 ).build()
                         ))
@@ -264,10 +265,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.WARDEN)))
+                                                                EntityTypes.WARDEN)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.WARDEN)))
+                                                                EntityTypes.WARDEN)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.WARDEN_INFUSION))
                                 ).build()
                         ))
@@ -289,10 +290,10 @@ public class Scepters {
                                         DamageSourcePredicate.Builder.damageType()
                                                 .source(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.WITHER)))
+                                                                EntityTypes.WITHER)))
                                                 .direct(EntityPredicate.Builder.entity()
                                                         .entityType(EntityTypePredicate.of(entityTypeRegistryEntryLookup,
-                                                                EntityType.WITHER_SKULL)))
+                                                                EntityTypes.WITHER_SKULL)))
                                                 .tag(TagPredicate.is(ModDamageTypeTags.WITHER_INFUSION))
                                 ).build()
                         ))

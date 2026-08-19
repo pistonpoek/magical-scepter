@@ -11,13 +11,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.level.GameType;
+
 import java.lang.reflect.Method;
 
 import static io.github.pistonpoek.gametest.magicalscepter.util.ContextUtil.createMockServerPlayer;
@@ -50,8 +51,8 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
         player.connection.handleAcceptPlayerLoad(new ServerboundPlayerLoadedPacket());
         player.getAbilities().invulnerable = false;
-        Skeleton skeleton = new Skeleton(EntityType.SKELETON, world);
-        Arrow arrow = new Arrow(EntityType.ARROW, world);
+        Skeleton skeleton = new Skeleton(EntityTypes.SKELETON, world);
+        Arrow arrow = new Arrow(EntityTypes.ARROW, world);
         player.hurtServer(world, world.damageSources().mobProjectile(arrow, skeleton), DAMAGE_AMOUNT);
         context.assertValueEqual(player.getMaxHealth() - DAMAGE_AMOUNT, player.getHealth(), Component.nullToEmpty("player health"));
         context.succeed();
@@ -65,8 +66,8 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         player.connection.handleAcceptPlayerLoad(new ServerboundPlayerLoadedPacket());
         player.getAbilities().invulnerable = false;
         player.addEffect(new MobEffectInstance(ModStatusEffects.REPULSION));
-        Skeleton skeleton = new Skeleton(EntityType.SKELETON, world);
-        Arrow arrow = new Arrow(EntityType.ARROW, world);
+        Skeleton skeleton = new Skeleton(EntityTypes.SKELETON, world);
+        Arrow arrow = new Arrow(EntityTypes.ARROW, world);
         player.hurtServer(world, world.damageSources().mobProjectile(arrow, skeleton), DAMAGE_AMOUNT);
         context.assertValueEqual(player.getMaxHealth(), player.getHealth(), Component.nullToEmpty("player health"));
         context.succeed();
@@ -80,7 +81,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         player.connection.handleAcceptPlayerLoad(new ServerboundPlayerLoadedPacket());
         player.getAbilities().invulnerable = false;
         player.addEffect(new MobEffectInstance(ModStatusEffects.REPULSION));
-        Arrow arrow = new Arrow(EntityType.ARROW, world);
+        Arrow arrow = new Arrow(EntityTypes.ARROW, world);
         player.hurtServer(world, world.damageSources().source(DamageTypes.GENERIC_KILL, arrow), DAMAGE_AMOUNT);
         context.assertValueEqual(player.getMaxHealth() - DAMAGE_AMOUNT, player.getHealth(), Component.nullToEmpty("player health"));
         context.succeed();
@@ -106,7 +107,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         // Setting player to be loaded and not be invulnerable to allow damage to be taken.
         player.connection.handleAcceptPlayerLoad(new ServerboundPlayerLoadedPacket());
         player.getAbilities().invulnerable = false;
-        Creeper creeper = new Creeper(EntityType.CREEPER, world);
+        Creeper creeper = new Creeper(EntityTypes.CREEPER, world);
         player.hurtServer(world, world.damageSources().explosion(creeper, creeper), DAMAGE_AMOUNT);
         context.assertValueEqual(player.getMaxHealth() - DAMAGE_AMOUNT, player.getHealth(), Component.nullToEmpty("player health"));
         context.succeed();
@@ -122,7 +123,7 @@ public class StatusEffectTest implements CustomTestMethodInvoker {
         player.connection.handleAcceptPlayerLoad(new ServerboundPlayerLoadedPacket());
         player.getAbilities().invulnerable = false;
         player.addEffect(new MobEffectInstance(ModStatusEffects.STABILITY));
-        Creeper creeper = new Creeper(EntityType.CREEPER, world);
+        Creeper creeper = new Creeper(EntityTypes.CREEPER, world);
         player.hurtServer(world, world.damageSources().explosion(creeper, creeper), DAMAGE_AMOUNT);
         context.assertValueEqual(player.getMaxHealth(), player.getHealth(), Component.nullToEmpty("player health"));
         context.succeed();

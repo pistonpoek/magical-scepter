@@ -4,7 +4,7 @@ import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
 import io.github.pistonpoek.magicalscepter.registry.tag.ScepterTags;
@@ -19,7 +19,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.UseCooldown;
@@ -42,23 +41,23 @@ public class ModItems {
             .andThen((settings) -> settings.durability(64).repairable(ModItemTags.SCEPTER_MATERIALS));
     private static final Function<Item.Properties, Item.Properties> ARCANE_SCEPTER_SETTINGS = USABLE_SCEPTER_SETTINGS
             .andThen((settings) -> settings.component(DataComponents.USE_COOLDOWN,
-                    new UseCooldown(0.5F, Optional.of(ModIdentifier.of("arcane_scepters")))));
+                    new UseCooldown(0.5F, Optional.of(ModItemIds.ARCANE_SCEPTER.identifier()))));
 
-    public static final Item SCEPTER = register("scepter", SCEPTER_SETTINGS.apply(new Item.Properties().stacksTo(1)));
-    public static final Item ARCANE_SCEPTER = register("arcane_scepter", ArcaneScepterItem::new,
+    public static final Item SCEPTER = register(ModItemIds.SCEPTER, SCEPTER_SETTINGS.apply(new Item.Properties().stacksTo(1)));
+    public static final Item ARCANE_SCEPTER = register(ModItemIds.ARCANE_SCEPTER, ArcaneScepterItem::new,
             ARCANE_SCEPTER_SETTINGS.apply(new Item.Properties()
                     .component(ModDataComponentTypes.SCEPTER_EXPERIENCE, ScepterExperienceComponent.DEFAULT)));
-    public static final Item CHARGED_ARCANE_SCEPTER = register("charged_arcane_scepter", ArcaneScepterItem::new,
+    public static final Item CHARGED_ARCANE_SCEPTER = register(ModItemIds.CHARGED_ARCANE_SCEPTER, ArcaneScepterItem::new,
             ARCANE_SCEPTER_SETTINGS.apply(new Item.Properties()
                     .component(ModDataComponentTypes.SCEPTER_EXPERIENCE,
                             ScepterExperienceComponent.of(ArcaneScepterItem.EXPERIENCE_STEP))
                     .component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)));
-    public static final Item MAGICAL_SCEPTER = register("magical_scepter", MagicalScepterItem::new,
+    public static final Item MAGICAL_SCEPTER = register(ModItemIds.MAGICAL_SCEPTER, MagicalScepterItem::new,
             USABLE_SCEPTER_SETTINGS.apply(new Item.Properties()
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT)));
 
-    public static final Item SORCERER_SPAWN_EGG = register("sorcerer_spawn_egg", SpawnEggItem::new,
-            new Item.Properties().spawnEgg(ModEntityType.SORCERER));
+    public static final Item SORCERER_SPAWN_EGG = register(ModItemIds.SORCERER_SPAWN_EGG, SpawnEggItem::new,
+            new Item.Properties().spawnEgg(ModEntityTypes.SORCERER));
 
     /**
      * Initialize the class for the static fields.
@@ -133,47 +132,37 @@ public class ModItems {
     }
 
     /**
-     * Get the item registry key for the specified identifier.
-     *
-     * @param identifier String to create item registry key for.
-     * @return Item registry key made with the specified identifier.
-     */
-    private static ResourceKey<Item> keyOf(String identifier) {
-        return ResourceKey.create(Registries.ITEM, ModIdentifier.of(identifier));
-    }
-
-    /**
      * Register an item with specified item settings.
      *
-     * @param identifier String identifier to register the item for.
-     * @param settings   Settings to register the item with.
+     * @param key      Resource key to register the item for.
+     * @param settings Settings to register the item with.
      * @return Item registered.
      */
-    public static Item register(String identifier, Item.Properties settings) {
-        return register(identifier, Item::new, settings);
+    public static Item register(ResourceKey<Item> key, Item.Properties settings) {
+        return register(key, Item::new, settings);
     }
 
     /**
      * Register an item with specified item factory.
      *
-     * @param identifier String identifier to register the item for.
-     * @param factory    Item factory that uses item settings to create an item.
+     * @param key     Resource key to register the item for.
+     * @param factory Item factory that uses item settings to create an item.
      * @return Item registered.
      */
-    private static Item register(String identifier, Function<Item.Properties, Item> factory) {
-        return register(identifier, factory, new Item.Properties());
+    private static Item register(ResourceKey<Item> key, Function<Item.Properties, Item> factory) {
+        return register(key, factory, new Item.Properties());
     }
 
     /**
      * Register an item with a specified item factory and specified item settings.
      *
-     * @param identifier String identifier to register the item for.
-     * @param factory    Item factory that uses item settings to create an item.
-     * @param settings   Settings to register the item with.
+     * @param key      Resource key to register the item for.
+     * @param factory  Item factory that uses item settings to create an item.
+     * @param settings Settings to register the item with.
      * @return Item registered.
      */
-    private static Item register(String identifier, Function<Item.Properties, Item> factory, Item.Properties settings) {
-        return registerItem(keyOf(identifier), factory, settings.useItemDescriptionPrefix());
+    private static Item register(ResourceKey<Item> key, Function<Item.Properties, Item> factory, Item.Properties settings) {
+        return registerItem(key, factory, settings.useItemDescriptionPrefix());
     }
 
     /**

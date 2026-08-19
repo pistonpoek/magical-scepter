@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.util;
 
 import net.minecraft.util.Mth;
-import net.minecraft.util.Tuple;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -14,8 +14,8 @@ public class RotationVector {
      * @param rotation Pair of floats that specifies the vertical and horizontal direction.
      * @return Vector that expresses the direction of the specified rotation.
      */
-    public static Vec3 get(Tuple<Float, Float> rotation) {
-        return get(rotation.getA(), rotation.getB());
+    public static Vec3 get(Pair<Float, Float> rotation) {
+        return get(rotation.getFirst(), rotation.getSecond());
     }
 
     /**

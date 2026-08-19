@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.AreaEffectCloud;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Blaze;
@@ -32,6 +32,7 @@ import net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull;
 import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.BreezeWindCharge;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
+
 import java.lang.reflect.Method;
 import java.util.Optional;
 
@@ -53,8 +54,8 @@ public class InfusionTest implements CustomTestMethodInvoker {
 
         setMagicalScepterInMainHand(context, player);
 
-        Blaze blaze = new Blaze(EntityType.BLAZE, world);
-        SmallFireball fireCharge = new SmallFireball(EntityType.SMALL_FIREBALL, world);
+        Blaze blaze = new Blaze(EntityTypes.BLAZE, world);
+        SmallFireball fireCharge = new SmallFireball(EntityTypes.SMALL_FIREBALL, world);
         player.hurtServer(world, world.damageSources().fireball(fireCharge, blaze), 1);
 
         expectScepter(context, player.getMainHandItem(), Scepters.BLAZE_KEY);
@@ -71,8 +72,8 @@ public class InfusionTest implements CustomTestMethodInvoker {
 
         setMagicalScepterInMainHand(context, player);
 
-        Blaze blaze = new Blaze(EntityType.BLAZE, world);
-        SmallFireball fireCharge = new SmallFireball(EntityType.SMALL_FIREBALL, world);
+        Blaze blaze = new Blaze(EntityTypes.BLAZE, world);
+        SmallFireball fireCharge = new SmallFireball(EntityTypes.SMALL_FIREBALL, world);
         player.hurtServer(world, world.damageSources().fireball(fireCharge, blaze), 0);
 
         expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
@@ -89,8 +90,8 @@ public class InfusionTest implements CustomTestMethodInvoker {
 
         setMagicalScepterInHand(context, player, InteractionHand.OFF_HAND);
 
-        Blaze blaze = new Blaze(EntityType.BLAZE, world);
-        SmallFireball fireCharge = new SmallFireball(EntityType.SMALL_FIREBALL, world);
+        Blaze blaze = new Blaze(EntityTypes.BLAZE, world);
+        SmallFireball fireCharge = new SmallFireball(EntityTypes.SMALL_FIREBALL, world);
         player.hurtServer(world, world.damageSources().fireball(fireCharge, blaze), 0);
 
         expectScepter(context, player.getOffhandItem(), Scepters.MAGICAL_KEY);
@@ -108,8 +109,8 @@ public class InfusionTest implements CustomTestMethodInvoker {
         setMagicalScepterInMainHand(context, player);
         setMagicalScepterInHand(context, player, InteractionHand.OFF_HAND);
 
-        Blaze blaze = new Blaze(EntityType.BLAZE, world);
-        SmallFireball fireCharge = new SmallFireball(EntityType.SMALL_FIREBALL, world);
+        Blaze blaze = new Blaze(EntityTypes.BLAZE, world);
+        SmallFireball fireCharge = new SmallFireball(EntityTypes.SMALL_FIREBALL, world);
         player.hurtServer(world, world.damageSources().fireball(fireCharge, blaze), 1);
 
         expectScepter(context, player.getMainHandItem(), Scepters.BLAZE_KEY);
@@ -128,12 +129,12 @@ public class InfusionTest implements CustomTestMethodInvoker {
         setMagicalScepterInMainHand(context, player);
         setMagicalScepterInHand(context, player, InteractionHand.OFF_HAND);
 
-        Blaze blaze = new Blaze(EntityType.BLAZE, world);
-        SmallFireball fireCharge = new SmallFireball(EntityType.SMALL_FIREBALL, world);
+        Blaze blaze = new Blaze(EntityTypes.BLAZE, world);
+        SmallFireball fireCharge = new SmallFireball(EntityTypes.SMALL_FIREBALL, world);
         player.hurtServer(world, world.damageSources().fireball(fireCharge, blaze), 1);
 
-        Ghast ghast = new Ghast(EntityType.GHAST, world);
-        LargeFireball fireball = new LargeFireball(EntityType.FIREBALL, world);
+        Ghast ghast = new Ghast(EntityTypes.GHAST, world);
+        LargeFireball fireball = new LargeFireball(EntityTypes.FIREBALL, world);
         player.hurtServer(world, world.damageSources().fireball(fireball, ghast), 2);
 
         expectScepter(context, player.getMainHandItem(), Scepters.BLAZE_KEY);
@@ -151,70 +152,70 @@ public class InfusionTest implements CustomTestMethodInvoker {
 
         {
             setMagicalScepterInMainHand(context, player);
-            Blaze blaze = new Blaze(EntityType.BLAZE, world);
-            SmallFireball fireCharge = new SmallFireball(EntityType.SMALL_FIREBALL, world);
+            Blaze blaze = new Blaze(EntityTypes.BLAZE, world);
+            SmallFireball fireCharge = new SmallFireball(EntityTypes.SMALL_FIREBALL, world);
             player.hurtServer(world, world.damageSources().fireball(fireCharge, blaze), 1);
 
             expectScepter(context, player.getMainHandItem(), Scepters.BLAZE_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Breeze breeze = new Breeze(EntityType.BREEZE, world);
-            BreezeWindCharge windCharge = new BreezeWindCharge(EntityType.BREEZE_WIND_CHARGE, world);
+            Breeze breeze = new Breeze(EntityTypes.BREEZE, world);
+            BreezeWindCharge windCharge = new BreezeWindCharge(EntityTypes.BREEZE_WIND_CHARGE, world);
             player.hurtServer(world, world.damageSources().windCharge(windCharge, breeze), 2);
 
             expectScepter(context, player.getMainHandItem(), Scepters.BREEZE_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            EnderDragon dragon = new EnderDragon(EntityType.ENDER_DRAGON, world);
-            AreaEffectCloud effectCloud = new AreaEffectCloud(EntityType.AREA_EFFECT_CLOUD, world);
+            EnderDragon dragon = new EnderDragon(EntityTypes.ENDER_DRAGON, world);
+            AreaEffectCloud effectCloud = new AreaEffectCloud(EntityTypes.AREA_EFFECT_CLOUD, world);
             player.hurtServer(world, world.damageSources().indirectMagic(effectCloud, dragon), 3);
 
             expectScepter(context, player.getMainHandItem(), Scepters.DRAGON_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Evoker evoker = new Evoker(EntityType.EVOKER, world);
-            EvokerFangs fangs = new EvokerFangs(EntityType.EVOKER_FANGS, world);
+            Evoker evoker = new Evoker(EntityTypes.EVOKER, world);
+            EvokerFangs fangs = new EvokerFangs(EntityTypes.EVOKER_FANGS, world);
             player.hurtServer(world, world.damageSources().indirectMagic(fangs, evoker), 4);
 
             expectScepter(context, player.getMainHandItem(), Scepters.EVOKER_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Ghast ghast = new Ghast(EntityType.GHAST, world);
-            LargeFireball fireball = new LargeFireball(EntityType.FIREBALL, world);
+            Ghast ghast = new Ghast(EntityTypes.GHAST, world);
+            LargeFireball fireball = new LargeFireball(EntityTypes.FIREBALL, world);
             player.hurtServer(world, world.damageSources().fireball(fireball, ghast), 5);
 
             expectScepter(context, player.getMainHandItem(), Scepters.GHAST_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            ElderGuardian guardian = new ElderGuardian(EntityType.ELDER_GUARDIAN, world);
+            ElderGuardian guardian = new ElderGuardian(EntityTypes.ELDER_GUARDIAN, world);
             player.hurtServer(world, world.damageSources().indirectMagic(guardian, guardian), 6);
 
             expectScepter(context, player.getMainHandItem(), Scepters.GUARDIAN_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Shulker shulker = new Shulker(EntityType.SHULKER, world);
-            ShulkerBullet bullet = new ShulkerBullet(EntityType.SHULKER_BULLET, world);
+            Shulker shulker = new Shulker(EntityTypes.SHULKER, world);
+            ShulkerBullet bullet = new ShulkerBullet(EntityTypes.SHULKER_BULLET, world);
             player.hurtServer(world, world.damageSources().mobProjectile(bullet, shulker), 7);
 
             expectScepter(context, player.getMainHandItem(), Scepters.SHULKER_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Warden warden = new Warden(EntityType.WARDEN, world);
+            Warden warden = new Warden(EntityTypes.WARDEN, world);
             player.hurtServer(world, world.damageSources().sonicBoom(warden), 8);
 
             expectScepter(context, player.getMainHandItem(), Scepters.WARDEN_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            WitherBoss wither = new WitherBoss(EntityType.WITHER, world);
-            WitherSkull skull = new WitherSkull(EntityType.WITHER_SKULL, world);
+            WitherBoss wither = new WitherBoss(EntityTypes.WITHER, world);
+            WitherSkull skull = new WitherSkull(EntityTypes.WITHER_SKULL, world);
             player.hurtServer(world, world.damageSources().witherSkull(skull, wither), 9);
 
             expectScepter(context, player.getMainHandItem(), Scepters.WITHER_KEY);
@@ -233,63 +234,63 @@ public class InfusionTest implements CustomTestMethodInvoker {
 
         {
             setMagicalScepterInMainHand(context, player);
-            Blaze blaze = new Blaze(EntityType.BLAZE, world);
+            Blaze blaze = new Blaze(EntityTypes.BLAZE, world);
             player.hurtServer(world, world.damageSources().mobAttack(blaze), 1);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Breeze breeze = new Breeze(EntityType.BREEZE, world);
+            Breeze breeze = new Breeze(EntityTypes.BREEZE, world);
             player.hurtServer(world, world.damageSources().mobAttack(breeze), 2);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            EnderDragon dragon = new EnderDragon(EntityType.ENDER_DRAGON, world);
+            EnderDragon dragon = new EnderDragon(EntityTypes.ENDER_DRAGON, world);
             player.hurtServer(world, world.damageSources().mobAttack(dragon), 3);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Evoker evoker = new Evoker(EntityType.EVOKER, world);
+            Evoker evoker = new Evoker(EntityTypes.EVOKER, world);
             player.hurtServer(world, world.damageSources().mobAttack(evoker), 4);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Ghast ghast = new Ghast(EntityType.GHAST, world);
+            Ghast ghast = new Ghast(EntityTypes.GHAST, world);
             player.hurtServer(world, world.damageSources().mobAttack(ghast), 5);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            ElderGuardian guardian = new ElderGuardian(EntityType.ELDER_GUARDIAN, world);
+            ElderGuardian guardian = new ElderGuardian(EntityTypes.ELDER_GUARDIAN, world);
             player.hurtServer(world, world.damageSources().mobAttack(guardian), 6);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Shulker shulker = new Shulker(EntityType.SHULKER, world);
+            Shulker shulker = new Shulker(EntityTypes.SHULKER, world);
             player.hurtServer(world, world.damageSources().mobAttack(shulker), 7);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Warden warden = new Warden(EntityType.WARDEN, world);
+            Warden warden = new Warden(EntityTypes.WARDEN, world);
             player.hurtServer(world, world.damageSources().mobAttack(warden), 8);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);
         }
         {
             setMagicalScepterInMainHand(context, player);
-            WitherBoss wither = new WitherBoss(EntityType.WITHER, world);
+            WitherBoss wither = new WitherBoss(EntityTypes.WITHER, world);
             player.hurtServer(world, world.damageSources().mobAttack(wither), 9);
 
             expectScepter(context, player.getMainHandItem(), Scepters.MAGICAL_KEY);

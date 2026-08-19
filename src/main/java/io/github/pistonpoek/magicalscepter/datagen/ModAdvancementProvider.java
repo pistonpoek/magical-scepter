@@ -66,8 +66,10 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         AdvancementHolder allScepterInfusionsAdvancement = requireListedSceptersInfused(
                 Advancement.Builder.advancement().parent(castScepterAdvancement)
                         .display(
-                                ItemStackTemplate.fromNonEmptyStack(
-                                    ScepterHelper.createMagicalScepter(scepterRegistryLookup.getOrThrow(Scepters.DRAGON_KEY))
+                                new ItemStackTemplate(ModItems.MAGICAL_SCEPTER,
+                                        ScepterHelper.getScepterComponentPatch(scepterRegistryLookup.getOrThrow(
+                                                Scepters.DRAGON_KEY)
+                                        )
                                 ),
                                 createTitleText(ALL_SCEPTER_INFUSIONS),
                                 createDescriptionText(ALL_SCEPTER_INFUSIONS),

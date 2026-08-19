@@ -1,10 +1,10 @@
 package io.github.pistonpoek.magicalscepter.spell.rotation;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
-import net.minecraft.util.Tuple;
 import org.jetbrains.annotations.NotNull;
 
 public record AbsoluteRotationSource(float pitch, float yaw) implements RotationSource {
@@ -16,8 +16,8 @@ public record AbsoluteRotationSource(float pitch, float yaw) implements Rotation
     );
 
     @Override
-    public Tuple<Float, Float> getRotation(@NotNull SpellContext context) {
-        return new Tuple<>(pitch, yaw);
+    public Pair<Float, Float> getRotation(@NotNull SpellContext context) {
+        return new Pair<>(pitch, yaw);
     }
 
     @Override

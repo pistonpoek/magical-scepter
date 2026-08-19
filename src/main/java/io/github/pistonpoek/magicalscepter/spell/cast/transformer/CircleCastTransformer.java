@@ -1,5 +1,6 @@
 package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -11,13 +12,12 @@ import io.github.pistonpoek.magicalscepter.spell.position.RelativePositionSource
 import io.github.pistonpoek.magicalscepter.spell.rotation.AbsoluteRotationSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.FacingLocationRotationSource;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.Tuple;
-import net.minecraft.world.phys.Vec3;
 
 public record CircleCastTransformer(PositionSource position, float direction, float arc, int amount,
                                     float stepDelay) implements CastTransformer {
@@ -57,8 +57,8 @@ public record CircleCastTransformer(PositionSource position, float direction, fl
                             .rotation(rotation).build().getPosition(context)).build();
             pointCast.addContext(absolutePosition);
 
-            Tuple<Float, Float> pointRotation = new FacingLocationRotationSource(absolutePosition).getRotation(context);
-            RotationSource absoluteRotation = new AbsoluteRotationSource(pointRotation.getA(), pointRotation.getB());
+            Pair<Float, Float> pointRotation = new FacingLocationRotationSource(absolutePosition).getRotation(context);
+            RotationSource absoluteRotation = new AbsoluteRotationSource(pointRotation.getFirst(), pointRotation.getSecond());
             pointCast.addContext(absoluteRotation);
             casts.add(pointCast);
         }

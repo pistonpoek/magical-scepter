@@ -9,12 +9,13 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameType;
+
 import java.lang.reflect.Method;
 
 import static io.github.pistonpoek.gametest.magicalscepter.util.ContextUtil.getEnchantment;
@@ -56,7 +57,7 @@ public class EnchantmentTest implements CustomTestMethodInvoker {
         ItemStack stack = setMagicalScepterInMainHand(context, player);
         ServerLevel world = context.getLevel();
 
-        PiglinBrute brute = new PiglinBrute(EntityType.PIGLIN_BRUTE, world);
+        PiglinBrute brute = new PiglinBrute(EntityTypes.PIGLIN_BRUTE, world);
 
         int dropWithout = brute.getExperienceReward(world, player);
         context.assertValueEqual(20, dropWithout, Component.nullToEmpty("experience drop without enchantment"));

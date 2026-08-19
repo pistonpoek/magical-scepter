@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.gui.hud;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+import net.minecraft.client.gui.contextualbar.ContextualBar;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -18,13 +18,13 @@ public class ExperienceBar {
      * @param end     Horizontal position to end the section to render at.
      */
     static void renderSection(GuiGraphicsExtractor context, Identifier texture, int x, int y, int start, int end) {
-        int startX = Math.clamp(start, 0, ContextualBarRenderer.WIDTH);
-        int width = Math.clamp(end - startX, 0, ContextualBarRenderer.WIDTH - startX);
+        int startX = Math.clamp(start, 0, ContextualBar.WIDTH);
+        int width = Math.clamp(end - startX, 0, ContextualBar.WIDTH - startX);
         if (width <= 0) {
             return;
         }
-        context.blitSprite(RenderPipelines.GUI_TEXTURED, texture, ContextualBarRenderer.WIDTH, ContextualBarRenderer.HEIGHT,
-                startX, 0, x + startX, y, width, ContextualBarRenderer.HEIGHT);
+        context.blitSprite(RenderPipelines.GUI_TEXTURED, texture, ContextualBar.WIDTH, ContextualBar.HEIGHT,
+                startX, 0, x + startX, y, width, ContextualBar.HEIGHT);
     }
 
     /**

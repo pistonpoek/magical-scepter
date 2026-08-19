@@ -3,9 +3,7 @@ package io.github.pistonpoek.magicalscepter.entity.effect;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModDamageTypeTags;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import net.minecraft.advancements.criterion.TagPredicate;
+import net.minecraft.advancements.predicates.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,6 +17,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.

@@ -4,7 +4,7 @@ import io.github.pistonpoek.magicalscepter.command.SpellCommand;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.component.ScepterExperienceComponent;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantments;
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModBiomeTags;
@@ -72,12 +72,12 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.addEnchantment(ModEnchantments.INSIGHT_KEY, "Insight");
 
         // Entity
-        translationBuilder.add(ModEntityType.SORCERER, "Sorcerer");
-        translationBuilder.add(ModEntityType.SPELL_DRAGON_FIREBALL, "Spell Dragon Fireball");
-        translationBuilder.add(ModEntityType.SPELL_FIRE_CHARGE, "Spell Fire Charge");
-        translationBuilder.add(ModEntityType.SPELL_FIREBALL, "Spell Fireball");
-        translationBuilder.add(ModEntityType.SPELL_GUARDIAN_BEAM, "Spell Guardian Beam");
-        translationBuilder.add(ModEntityType.SPELL_WITHER_SKULL, "Spell Wither Skull");
+        translationBuilder.add(ModEntityTypes.SORCERER, "Sorcerer");
+        translationBuilder.add(ModEntityTypes.SPELL_DRAGON_FIREBALL, "Spell Dragon Fireball");
+        translationBuilder.add(ModEntityTypes.SPELL_FIRE_CHARGE, "Spell Fire Charge");
+        translationBuilder.add(ModEntityTypes.SPELL_FIREBALL, "Spell Fireball");
+        translationBuilder.add(ModEntityTypes.SPELL_GUARDIAN_BEAM, "Spell Guardian Beam");
+        translationBuilder.add(ModEntityTypes.SPELL_WITHER_SKULL, "Spell Wither Skull");
 
         // Gamerule
         translationBuilder.add(MAX_SPELL_CASTS.getDescriptionId(), "Spell cast limit");

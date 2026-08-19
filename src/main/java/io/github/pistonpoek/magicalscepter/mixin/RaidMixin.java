@@ -2,13 +2,14 @@ package io.github.pistonpoek.magicalscepter.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.level.Level;
@@ -85,7 +86,7 @@ public abstract class RaidMixin {
     private <T extends Entity> T createRaiderEntity(EntityType<T> instance, Level world, EntitySpawnReason reason) {
         int wave = this.magicalscepter$wave;
         int count = this.magicalscepter$count;
-        if (instance.equals(EntityType.PILLAGER)) {
+        if (instance.equals(EntityTypes.PILLAGER)) {
             if (wave == 4 && !this.shouldSpawnBonusGroup() && count == 0) {
                 magicalscepter$setOptionalSorcererRaiderEntity(world, reason);
                 return null;
@@ -94,7 +95,7 @@ public abstract class RaidMixin {
                 return null;
             }
         }
-        if (instance.equals(EntityType.VINDICATOR) && wave >= 5 && count == 0) {
+        if (instance.equals(EntityTypes.VINDICATOR) && wave >= 5 && count == 0) {
             magicalscepter$setOptionalSorcererRaiderEntity(world, reason);
             return null;
         }
@@ -123,7 +124,7 @@ public abstract class RaidMixin {
      */
     @Unique
     private void magicalscepter$setSorcererRaiderEntity(Level world, EntitySpawnReason reason) {
-        this.magicalscepter$raiderEntity = ModEntityType.SORCERER.create(world, reason);
+        this.magicalscepter$raiderEntity = ModEntityTypes.SORCERER.create(world, reason);
     }
 
     /**
@@ -167,18 +168,18 @@ public abstract class RaidMixin {
         ServerLevel world = magicalscepter$world;
 
         if (wave <= 5) {
-            return EntityType.PILLAGER.create(world, EntitySpawnReason.EVENT);
+            return EntityTypes.PILLAGER.create(world, EntitySpawnReason.EVENT);
         } else if (wave == 6) {
             if (count == 0) {
-                return ModEntityType.SORCERER.create(world, EntitySpawnReason.EVENT);
+                return ModEntityTypes.SORCERER.create(world, EntitySpawnReason.EVENT);
             } else {
                 return null;
             }
         } else {
             return switch (count) {
-                case 0 -> ModEntityType.SORCERER.create(world, EntitySpawnReason.EVENT);
-                case 1 -> EntityType.EVOKER.create(world, EntitySpawnReason.EVENT);
-                default -> EntityType.VINDICATOR.create(world, EntitySpawnReason.EVENT);
+                case 0 -> ModEntityTypes.SORCERER.create(world, EntitySpawnReason.EVENT);
+                case 1 -> EntityTypes.EVOKER.create(world, EntitySpawnReason.EVENT);
+                default -> EntityTypes.VINDICATOR.create(world, EntitySpawnReason.EVENT);
             };
         }
     }

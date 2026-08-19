@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.gui.hud;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+import net.minecraft.client.gui.contextualbar.ContextualBar;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
 
@@ -22,7 +22,7 @@ public class ScepterGainIndicationBar {
                               int experienceStep, int x, int y) {
         int progress = ExperienceBar.getPixelProgress(player);
         float gain_progress = experienceStep / (float) player.getXpNeededForNextLevel();
-        int gain_part = Math.round(gain_progress * (ContextualBarRenderer.WIDTH + 1.0F));
+        int gain_part = Math.round(gain_progress * (ContextualBar.WIDTH + 1.0F));
         ExperienceBar.renderSection(context, TEXTURE, x, y, progress, progress + gain_part);
     }
 }

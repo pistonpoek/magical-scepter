@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.datagen.loot;
 
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootSubProvider;
 import net.minecraft.core.HolderLookup;
@@ -8,7 +8,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -31,7 +30,7 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
 
     @Override
     public void generate() {
-        add(ModEntityType.SORCERER,
+        add(ModEntityTypes.SORCERER,
                 LootTable.lootTable()
                         .pool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(Items.BROWN_MUSHROOM)

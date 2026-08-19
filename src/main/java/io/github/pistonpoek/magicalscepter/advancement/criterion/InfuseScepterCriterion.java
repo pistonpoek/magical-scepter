@@ -4,15 +4,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterPredicate;
+import net.minecraft.advancements.predicates.ContextAwarePredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
+import net.minecraft.advancements.triggers.Criterion;
+import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.ContextAwarePredicate;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.SimpleCriterionTrigger;
-import net.minecraft.core.Holder;
-import net.minecraft.server.level.ServerPlayer;
 
 /**
  * Advancement criterion that triggers when a player infuses a scepter.
@@ -56,7 +56,7 @@ public class InfuseScepterCriterion extends SimpleCriterionTrigger<InfuseScepter
          * @param scepter Scepter predicate to create the condition with.
          * @return Advancement criterion with an infuse scepter condition.
          */
-        public static Criterion<InfuseScepterCriterion.Conditions> create(@Nullable ScepterPredicate scepter) {
+        public static Criterion<Conditions> create(@Nullable ScepterPredicate scepter) {
             return ModCriteria.INFUSE_SCEPTER.createCriterion(
                     new InfuseScepterCriterion.Conditions(Optional.empty(), Optional.ofNullable(scepter)));
         }

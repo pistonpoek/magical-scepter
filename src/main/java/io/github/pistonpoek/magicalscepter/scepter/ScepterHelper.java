@@ -5,13 +5,15 @@ import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
-import java.util.Optional;
-import java.util.function.Predicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
+import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Helper class for all scepter related applications.
@@ -64,6 +66,17 @@ public class ScepterHelper {
         ItemStack scepterStack = ModItems.MAGICAL_SCEPTER.getDefaultInstance();
         scepterStack.applyComponentsAndValidate(stack.getComponentsPatch());
         return ScepterContentsComponent.setScepter(scepterStack, scepter);
+    }
+
+    /**
+     * Get a data component patch for a specified scepter.
+     *
+     * @param scepter Scepter to get data component patch for.
+     * @return Data component patch that applies contents for the specified scepter.
+     */
+    public static DataComponentPatch getScepterComponentPatch(Holder<Scepter> scepter) {
+        return DataComponentPatch.builder().set(ModDataComponentTypes.SCEPTER_CONTENTS,
+                ScepterContentsComponent.DEFAULT.with(scepter)).build();
     }
 
     /**

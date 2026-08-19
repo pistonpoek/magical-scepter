@@ -1,6 +1,6 @@
 package io.github.pistonpoek.magicalscepter.world.gen.structure;
 
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModBiomeTags;
 import io.github.pistonpoek.magicalscepter.structure.OldTaigaCabinGenerator;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class ModStructures {
                         new Structure.StructureSettings.Builder(biomeLookup.getOrThrow(ModBiomeTags.OLD_TAIGA_CABIN_HAS_STRUCTURE))
                                 .spawnOverrides(Map.of(MobCategory.MONSTER, new StructureSpawnOverride(
                                         StructureSpawnOverride.BoundingBoxType.PIECE,
-                                        WeightedList.of(new MobSpawnSettings.SpawnerData(ModEntityType.SORCERER, 1, 1))
+                                        WeightedList.of(new MobSpawnSettings.SpawnerData(ModEntityTypes.SORCERER, 1, 1))
                                 )))
                                 .generationStep(GenerationStep.Decoration.SURFACE_STRUCTURES)
                                 .terrainAdapation(TerrainAdjustment.BEARD_THIN).build(),

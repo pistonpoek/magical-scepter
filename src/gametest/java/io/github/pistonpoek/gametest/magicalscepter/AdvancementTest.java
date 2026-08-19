@@ -9,8 +9,8 @@ import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.fabric.api.gametest.v1.CustomTestMethodInvoker;
 import net.fabricmc.fabric.api.gametest.v1.GameTest;
 import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.CriterionProgress;
+import net.minecraft.advancements.triggers.Criterion;
 import net.minecraft.core.Registry;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.network.Connection;
@@ -26,7 +26,7 @@ import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.AreaEffectCloud;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Blaze;
@@ -46,6 +46,7 @@ import net.minecraft.world.entity.projectile.hurtingprojectile.windcharge.Breeze
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
+
 import java.lang.reflect.Method;
 
 import static io.github.pistonpoek.gametest.magicalscepter.util.ContextUtil.setMagicalScepterInMainHand;
@@ -132,8 +133,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         // Each consecutive damage is 1 higher to allow it to deal damage on the same tick.
         {
             setMagicalScepterInMainHand(context, player);
-            Blaze blaze = new Blaze(EntityType.BLAZE, world);
-            SmallFireball fireCharge = new SmallFireball(EntityType.SMALL_FIREBALL, world);
+            Blaze blaze = new Blaze(EntityTypes.BLAZE, world);
+            SmallFireball fireCharge = new SmallFireball(EntityTypes.SMALL_FIREBALL, world);
             player.hurtServer(world, world.damageSources().fireball(fireCharge, blaze), 1);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)
@@ -146,8 +147,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Breeze breeze = new Breeze(EntityType.BREEZE, world);
-            BreezeWindCharge windCharge = new BreezeWindCharge(EntityType.BREEZE_WIND_CHARGE, world);
+            Breeze breeze = new Breeze(EntityTypes.BREEZE, world);
+            BreezeWindCharge windCharge = new BreezeWindCharge(EntityTypes.BREEZE_WIND_CHARGE, world);
             player.hurtServer(world, world.damageSources().windCharge(windCharge, breeze), 2);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)
@@ -160,8 +161,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         }
         {
             setMagicalScepterInMainHand(context, player);
-            EnderDragon dragon = new EnderDragon(EntityType.ENDER_DRAGON, world);
-            AreaEffectCloud effectCloud = new AreaEffectCloud(EntityType.AREA_EFFECT_CLOUD, world);
+            EnderDragon dragon = new EnderDragon(EntityTypes.ENDER_DRAGON, world);
+            AreaEffectCloud effectCloud = new AreaEffectCloud(EntityTypes.AREA_EFFECT_CLOUD, world);
             player.hurtServer(world, world.damageSources().indirectMagic(effectCloud, dragon), 3);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)
@@ -174,8 +175,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Evoker evoker = new Evoker(EntityType.EVOKER, world);
-            EvokerFangs fangs = new EvokerFangs(EntityType.EVOKER_FANGS, world);
+            Evoker evoker = new Evoker(EntityTypes.EVOKER, world);
+            EvokerFangs fangs = new EvokerFangs(EntityTypes.EVOKER_FANGS, world);
             player.hurtServer(world, world.damageSources().indirectMagic(fangs, evoker), 4);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)
@@ -188,8 +189,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Ghast ghast = new Ghast(EntityType.GHAST, world);
-            LargeFireball fireball = new LargeFireball(EntityType.FIREBALL, world);
+            Ghast ghast = new Ghast(EntityTypes.GHAST, world);
+            LargeFireball fireball = new LargeFireball(EntityTypes.FIREBALL, world);
             player.hurtServer(world, world.damageSources().fireball(fireball, ghast), 5);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)
@@ -202,7 +203,7 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         }
         {
             setMagicalScepterInMainHand(context, player);
-            ElderGuardian guardian = new ElderGuardian(EntityType.ELDER_GUARDIAN, world);
+            ElderGuardian guardian = new ElderGuardian(EntityTypes.ELDER_GUARDIAN, world);
             player.hurtServer(world, world.damageSources().indirectMagic(guardian, guardian), 6);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)
@@ -215,8 +216,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Shulker shulker = new Shulker(EntityType.SHULKER, world);
-            ShulkerBullet bullet = new ShulkerBullet(EntityType.SHULKER_BULLET, world);
+            Shulker shulker = new Shulker(EntityTypes.SHULKER, world);
+            ShulkerBullet bullet = new ShulkerBullet(EntityTypes.SHULKER_BULLET, world);
             player.hurtServer(world, world.damageSources().mobProjectile(bullet, shulker), 7);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)
@@ -229,7 +230,7 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         }
         {
             setMagicalScepterInMainHand(context, player);
-            Warden warden = new Warden(EntityType.WARDEN, world);
+            Warden warden = new Warden(EntityTypes.WARDEN, world);
             player.hurtServer(world, world.damageSources().sonicBoom(warden), 8);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)
@@ -242,8 +243,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
         }
         {
             setMagicalScepterInMainHand(context, player);
-            WitherBoss wither = new WitherBoss(EntityType.WITHER, world);
-            WitherSkull skull = new WitherSkull(EntityType.WITHER_SKULL, world);
+            WitherBoss wither = new WitherBoss(EntityTypes.WITHER, world);
+            WitherSkull skull = new WitherSkull(EntityTypes.WITHER_SKULL, world);
             player.hurtServer(world, world.damageSources().witherSkull(skull, wither), 9);
 
             CriterionProgress criterion = tracker.getOrStartProgress(entry)

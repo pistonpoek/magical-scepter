@@ -27,6 +27,7 @@ fabricApi {
     configureDataGeneration {
         client = true
         createRunConfiguration = true
+        modId = mod
     }
     configureTests {
         createSourceSet = true

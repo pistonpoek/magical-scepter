@@ -6,10 +6,10 @@
       "condition": "minecraft:damage_source_properties",
       "predicate": {
         "direct_entity": {
-          "type": "minecraft:evoker_fangs"
+          "minecraft:entity_type": "minecraft:evoker_fangs"
         },
         "source_entity": {
-          "type": "minecraft:evoker"
+          "minecraft:entity_type": "minecraft:evoker"
         },
         "tags": [
           {

@@ -29,7 +29,8 @@ public record MoveSpellEffect(FloatProvider power, boolean knockback) implements
         Optional<LivingEntity> target = context.getLivingTarget();
 
         if (knockback && target.isPresent()) {
-            target.get().knockback(power.sample(random), -rotation.x(), -rotation.z());
+            target.get().knockback(power.sample(random), -rotation.x(), -rotation.z(),
+                    context.caster().createDamageSource(), 0);
         } else {
             Entity entityTarget = context.target();
             Vec3 force = rotation.scale(power.sample(random));

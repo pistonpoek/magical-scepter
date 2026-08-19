@@ -1,13 +1,14 @@
 package io.github.pistonpoek.magicalscepter.datagen.tag;
 
-import io.github.pistonpoek.magicalscepter.item.ModItems;
+import io.github.pistonpoek.magicalscepter.item.ModItemIds;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModItemTags;
-import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.VanillaItemTagsProvider;
+import net.minecraft.references.ItemIds;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Items;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
@@ -28,20 +29,20 @@ public class ModItemTagProvider extends VanillaItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider arg) {
         this.tag(ModItemTags.SORCERER_PREFERRED_WEAPONS)
-                .add(ModItems.SCEPTER)
-                .add(ModItems.MAGICAL_SCEPTER);
+                .add(ModItemIds.SCEPTER)
+                .add(ModItemIds.MAGICAL_SCEPTER);
 
         this.tag(ModItemTags.SCEPTERS)
-                .add(ModItems.SCEPTER)
-                .add(ModItems.MAGICAL_SCEPTER)
+                .add(ModItemIds.SCEPTER)
+                .add(ModItemIds.MAGICAL_SCEPTER)
                 .addTag(ModItemTags.ARCANE_SCEPTERS);
 
         this.tag(ModItemTags.ARCANE_SCEPTERS)
-                .add(ModItems.ARCANE_SCEPTER)
-                .add(ModItems.CHARGED_ARCANE_SCEPTER);
+                .add(ModItemIds.ARCANE_SCEPTER)
+                .add(ModItemIds.CHARGED_ARCANE_SCEPTER);
 
         this.tag(ModItemTags.SCEPTER_MATERIALS)
-                .add(Items.LAPIS_LAZULI);
+                .add(ItemIds.LAPIS_LAZULI);
 
         this.tag(ModItemTags.SCEPTER_ENCHANTABLE)
                 .addTag(ModItemTags.SCEPTERS);

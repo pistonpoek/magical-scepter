@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.PatrollingMonster;
@@ -33,6 +33,6 @@ public abstract class RaiderEntityMixin extends PatrollingMonster {
     @ModifyArg(method = "finalizeSpawn",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/raid/Raider;setCanJoinRaid(Z)V"))
     public boolean modifyAbleToJoinRaid(boolean ableToJoinRaid, @Local(argsOnly = true) EntitySpawnReason spawnReason) {
-        return ableToJoinRaid && (this.getType() != ModEntityType.SORCERER && spawnReason != EntitySpawnReason.NATURAL);
+        return ableToJoinRaid && (this.getType() != ModEntityTypes.SORCERER && spawnReason != EntitySpawnReason.NATURAL);
     }
 }

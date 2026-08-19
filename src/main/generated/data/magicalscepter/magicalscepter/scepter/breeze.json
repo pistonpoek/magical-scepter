@@ -6,10 +6,10 @@
       "condition": "minecraft:damage_source_properties",
       "predicate": {
         "direct_entity": {
-          "type": "minecraft:breeze_wind_charge"
+          "minecraft:entity_type": "minecraft:breeze_wind_charge"
         },
         "source_entity": {
-          "type": "minecraft:breeze"
+          "minecraft:entity_type": "minecraft:breeze"
         },
         "tags": [
           {

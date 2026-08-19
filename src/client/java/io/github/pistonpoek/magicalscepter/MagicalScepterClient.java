@@ -1,7 +1,7 @@
 package io.github.pistonpoek.magicalscepter;
 
 import io.github.pistonpoek.magicalscepter.attack.ItemAttackCallback;
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import io.github.pistonpoek.magicalscepter.network.ClientPlayPackets;
 import io.github.pistonpoek.magicalscepter.render.entity.SorcererEntityRenderer;
 import io.github.pistonpoek.magicalscepter.render.entity.SpellDragonFireballRenderer;
@@ -23,15 +23,15 @@ public class MagicalScepterClient implements ClientModInitializer {
     public void onInitializeClient() {
         ClientPlayPackets.init();
 
-        EntityRenderers.register(ModEntityType.SORCERER, SorcererEntityRenderer::new);
+        EntityRenderers.register(ModEntityTypes.SORCERER, SorcererEntityRenderer::new);
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.SORCERER,
                 IllagerModel::createBodyLayer);
 
-        EntityRenderers.register(ModEntityType.SPELL_GUARDIAN_BEAM, SpellGuardianBeamRenderer::new);
-        EntityRenderers.register(ModEntityType.SPELL_DRAGON_FIREBALL, SpellDragonFireballRenderer::new);
-        EntityRenderers.register(ModEntityType.SPELL_FIRE_CHARGE, context -> new ThrownItemRenderer<>(context, 0.75F, true));
-        EntityRenderers.register(ModEntityType.SPELL_FIREBALL, context -> new ThrownItemRenderer<>(context, 3.0F, true));
-        EntityRenderers.register(ModEntityType.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);
+        EntityRenderers.register(ModEntityTypes.SPELL_GUARDIAN_BEAM, SpellGuardianBeamRenderer::new);
+        EntityRenderers.register(ModEntityTypes.SPELL_DRAGON_FIREBALL, SpellDragonFireballRenderer::new);
+        EntityRenderers.register(ModEntityTypes.SPELL_FIRE_CHARGE, context -> new ThrownItemRenderer<>(context, 0.75F, true));
+        EntityRenderers.register(ModEntityTypes.SPELL_FIREBALL, context -> new ThrownItemRenderer<>(context, 3.0F, true));
+        EntityRenderers.register(ModEntityTypes.SPELL_WITHER_SKULL, SpellWitherSkullEntityRenderer::new);
         ModelLayerRegistry.registerModelLayer(ModEntityModelLayers.WITHER_SKULL,
                 SpellWitherSkullEntityRenderer::getTexturedModelData);
 

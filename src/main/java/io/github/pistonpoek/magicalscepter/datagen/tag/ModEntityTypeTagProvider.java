@@ -1,10 +1,11 @@
 package io.github.pistonpoek.magicalscepter.datagen.tag;
 
-import io.github.pistonpoek.magicalscepter.entity.ModEntityType;
+import io.github.pistonpoek.magicalscepter.entity.ModEntityTypeIds;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
+
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -26,13 +27,13 @@ public class ModEntityTypeTagProvider extends EntityTypeTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider arg) {
         this.tag(EntityTypeTags.ILLAGER)
-                .add(ModEntityType.SORCERER);
+                .add(ModEntityTypeIds.SORCERER);
         this.tag(EntityTypeTags.REDIRECTABLE_PROJECTILE)
-                .add(ModEntityType.SPELL_FIREBALL);
+                .add(ModEntityTypeIds.SPELL_FIREBALL);
         this.tag(EntityTypeTags.IMPACT_PROJECTILES)
-                .add(ModEntityType.SPELL_DRAGON_FIREBALL)
-                .add(ModEntityType.SPELL_FIRE_CHARGE)
-                .add(ModEntityType.SPELL_FIREBALL)
-                .add(ModEntityType.SPELL_WITHER_SKULL);
+                .add(ModEntityTypeIds.SPELL_DRAGON_FIREBALL)
+                .add(ModEntityTypeIds.SPELL_FIRE_CHARGE)
+                .add(ModEntityTypeIds.SPELL_FIREBALL)
+                .add(ModEntityTypeIds.SPELL_WITHER_SKULL);
     }
 }

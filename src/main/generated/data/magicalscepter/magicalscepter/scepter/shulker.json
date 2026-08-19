@@ -6,10 +6,10 @@
       "condition": "minecraft:damage_source_properties",
       "predicate": {
         "direct_entity": {
-          "type": "minecraft:shulker_bullet"
+          "minecraft:entity_type": "minecraft:shulker_bullet"
         },
         "source_entity": {
-          "type": "minecraft:shulker"
+          "minecraft:entity_type": "minecraft:shulker"
         },
         "tags": [
           {

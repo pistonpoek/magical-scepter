@@ -6,12 +6,7 @@ import io.github.pistonpoek.magicalscepter.MagicalScepter;
 import io.github.pistonpoek.magicalscepter.entity.spell.SpellGuardianBeamEntity;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import io.github.pistonpoek.magicalscepter.spell.rotation.RotationSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.Registry;
-import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -20,18 +15,13 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.AreaEffectCloud;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -86,11 +76,11 @@ public record SummonEntitySpellEffect(
         CompoundTag nbtCompound = nbt.orElse(new CompoundTag());
 
         nbtCompound.putString("id", entityTypeIdentifier.toString());
-        if (entityType == EntityType.SHULKER_BULLET) {
+        if (entityType == EntityTypes.SHULKER_BULLET) {
             initializeShulkerBulletNbtCompound(nbtCompound, context);
         }
 
-        Entity entity = EntityType.loadEntityRecursive(nbtCompound, world, EntitySpawnReason.MOB_SUMMONED, summonedEntity -> {
+        Entity entity = EntityType.loadEntityRecursive(nbtCompound, world, new EntitySpawnRequest(EntitySpawnReason.MOB_SUMMONED, false), summonedEntity -> {
             summonedEntity.snapTo(position.x, position.y, position.z, context.yaw(), context.pitch());
             return summonedEntity;
         });
