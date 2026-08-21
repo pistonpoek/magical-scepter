@@ -4,14 +4,14 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.codec.RegistryFixedCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.Optional;
 
@@ -28,7 +28,7 @@ import java.util.Optional;
 public record Scepter(int color, int experienceCost, boolean infusable,
                       Optional<Holder<Spell>> attackSpell,
                       Optional<Holder<Spell>> protectSpell,
-                      Optional<ContextAwarePredicate> infusion) {
+                      Optional<Holder<LootItemCondition>> infusion) {
     public static final Codec<Scepter> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     ExtraCodecs.RGB_COLOR_CODEC.fieldOf("color").forGetter(Scepter::color),
@@ -36,7 +36,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
                     Codec.BOOL.optionalFieldOf("infusable", false).forGetter(Scepter::infusable),
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_attack").forGetter(Scepter::attackSpell),
                     Spell.ENTRY_CODEC.optionalFieldOf("spell_protect").forGetter(Scepter::protectSpell),
-                    ContextAwarePredicate.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
+                    LootItemCondition.CODEC.optionalFieldOf("infusion").forGetter(Scepter::infusion)
             ).apply(instance, Scepter::new)
     );
     public static final Codec<Scepter> NETWORK_CODEC = RecordCodecBuilder.create(
@@ -125,9 +125,9 @@ public record Scepter(int color, int experienceCost, boolean infusable,
     public boolean infuses(LootContext lootContext) {
         if (infusion.isEmpty()) return false;
 
-        ContextAwarePredicate lootContextPredicate = infusion.get();
+        LootItemCondition lootContextPredicate = infusion.get().value();
 
-        return lootContextPredicate.matches(lootContext);
+        return lootContextPredicate.test(lootContext);
     }
 
     /**
@@ -151,7 +151,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
         private final int experienceCost;
         private Holder<Spell> attackSpell = null;
         private Holder<Spell> protectSpell = null;
-        private ContextAwarePredicate infusion = null;
+        private Holder<LootItemCondition> infusion = null;
 
         /**
          * Construct a scepter builder using the required scepter properties.
@@ -172,7 +172,7 @@ public record Scepter(int color, int experienceCost, boolean infusable,
          * @param infusion Optional loot context predicate to determine when to infuse a scepter with this type.
          * @return Scepter builder to continue with.
          */
-        public Scepter.Builder infusion(ContextAwarePredicate infusion) {
+        public Scepter.Builder infusion(Holder<LootItemCondition> infusion) {
             this.infusion = infusion;
             return this;
         }

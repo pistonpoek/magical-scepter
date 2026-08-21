@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 
 /**
  * Packet handler for triggering the attack of attack items.
@@ -37,7 +38,8 @@ public class AttackItemHandler implements ServerPlayNetworking.PlayPayloadHandle
 
         InteractionResult actionResult = attackWithItem(player);
         if (actionResult == InteractionResult.SUCCESS || actionResult == InteractionResult.SUCCESS_SERVER) {
-            player.swing(InteractionHand.MAIN_HAND, true);
+            // TODO Update code to use swing animation instead of ignoring the new swing animation class.
+            player.swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, true);
         }
     }
 

@@ -10,8 +10,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
  * @see net.minecraft.advancements.triggers.CriteriaTriggers
  */
 public class ModCriteria {
-    public static final CastSpellCriterion CAST_SCEPTER = register("cast_scepter", new CastSpellCriterion());
-    public static final InfuseScepterCriterion INFUSE_SCEPTER = register("infuse_scepter", new InfuseScepterCriterion());
+    public static final CastSpellTrigger CAST_SCEPTER = register("cast_scepter", new CastSpellTrigger());
+    public static final InfuseScepterTrigger INFUSE_SCEPTER = register("infuse_scepter", new InfuseScepterTrigger());
 
     /**
      * Initialize the class for the static fields.

@@ -1,25 +1,23 @@
 {
   "color": 12067829,
   "experience_cost": 8,
-  "infusion": [
-    {
-      "condition": "minecraft:damage_source_properties",
-      "predicate": {
-        "direct_entity": {
-          "minecraft:entity_type": "minecraft:area_effect_cloud"
-        },
-        "source_entity": {
-          "minecraft:entity_type": "minecraft:ender_dragon"
-        },
-        "tags": [
-          {
-            "expected": true,
-            "id": "magicalscepter:infuses_dragon_scepter"
-          }
-        ]
-      }
+  "infusion": {
+    "type": "minecraft:damage_source_properties",
+    "predicate": {
+      "direct_entity": {
+        "minecraft:entity_type": "minecraft:area_effect_cloud"
+      },
+      "source_entity": {
+        "minecraft:entity_type": "minecraft:ender_dragon"
+      },
+      "tags": [
+        {
+          "expected": true,
+          "id": "#magicalscepter:infuses_dragon_scepter"
+        }
+      ]
     }
-  ],
+  },
   "spell_attack": "magicalscepter:dragon_fireball",
   "spell_protect": "magicalscepter:dragon_growl"
 }

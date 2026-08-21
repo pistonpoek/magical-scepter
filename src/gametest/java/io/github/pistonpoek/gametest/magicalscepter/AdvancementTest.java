@@ -1,7 +1,7 @@
 package io.github.pistonpoek.gametest.magicalscepter;
 
-import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellCriterion;
-import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterCriterion;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellTrigger;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterTrigger;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
@@ -89,8 +89,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
 
     @GameTest(structure="gametest:template/empty")
     public void matchesCastSpellCriterionConditions(GameTestHelper context) {
-        Criterion<CastSpellCriterion.Conditions> criterion =
-                CastSpellCriterion.Conditions.create(Items.DIRT);
+        Criterion<CastSpellTrigger.TriggerInstance> criterion =
+                CastSpellTrigger.TriggerInstance.create(Items.DIRT);
 
         context.assertTrue(criterion.triggerInstance().matches(Items.DIRT.getDefaultInstance()),
                 Component.nullToEmpty("Conditions does not match for expected item stack."));
@@ -265,8 +265,8 @@ public class AdvancementTest implements CustomTestMethodInvoker {
     @GameTest(structure="gametest:template/empty")
     public void matchesInfuseScepterCriterionConditions(GameTestHelper context) {
         Registry<Scepter> registry = context.getLevel().registryAccess().lookupOrThrow(ModRegistryKeys.SCEPTER);
-        Criterion<InfuseScepterCriterion.Conditions> criterion =
-                InfuseScepterCriterion.Conditions.create(registry.getOrThrow(Scepters.GUARDIAN_KEY));
+        Criterion<InfuseScepterTrigger.TriggerInstance> criterion =
+                InfuseScepterTrigger.TriggerInstance.create(registry.getOrThrow(Scepters.GUARDIAN_KEY));
 
         context.assertTrue(criterion.triggerInstance().matches(registry.getOrThrow(Scepters.GUARDIAN_KEY)),
                 Component.nullToEmpty("Conditions does not match for expected scepter."));

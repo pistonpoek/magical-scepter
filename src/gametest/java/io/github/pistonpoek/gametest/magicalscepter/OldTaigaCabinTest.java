@@ -80,7 +80,6 @@ public class OldTaigaCabinTest implements CustomTestMethodInvoker {
     public void lootWithCommand(GameTestHelper context, TestBlockChecker checker) {
         checker.start();
         context.succeedIf(() -> checkLootItems(context));
-        context.succeed();
     }
 
     private void checkLootItems(GameTestHelper context) {

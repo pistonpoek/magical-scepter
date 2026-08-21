@@ -1,9 +1,8 @@
-package io.github.pistonpoek.magicalscepter.datagen;
+package io.github.pistonpoek.magicalscepter.datagen.advancement;
 
-import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellCriterion;
-import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterCriterion;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.CastSpellTrigger;
+import io.github.pistonpoek.magicalscepter.advancement.criterion.InfuseScepterTrigger;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
-import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.scepter.Scepters;
@@ -12,9 +11,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementType;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.advancements.AdvancementSubProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
@@ -39,41 +36,41 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
      * @param output           Data output to generate mod advancement data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    protected ModAdvancementProvider(FabricPackOutput output,
+    public ModAdvancementProvider(FabricPackOutput output,
                                      CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
     public void generateAdvancement(HolderLookup.Provider registryLookup, Consumer<AdvancementHolder> consumer) {
-        HolderGetter<Scepter> scepterRegistryLookup = registryLookup.lookupOrThrow(ModRegistryKeys.SCEPTER);
+        AdvancementHolder root = FabricAdvancementProvider.createPlaceholder(
+                Identifier.parse("adventure/root"));
 
-        AdvancementHolder adventureRootAdvancementReference = AdvancementSubProvider.createPlaceholder("adventure/root");
-        AdvancementHolder castScepterAdvancement = Advancement.Builder.advancement().parent(adventureRootAdvancementReference)
+        AdvancementHolder castScepter = Advancement.Builder.advancement()
+                .parent(root)
                 .display(
                         ModItems.MAGICAL_SCEPTER,
                         createTitleText(CAST_SCEPTER),
                         createDescriptionText(CAST_SCEPTER),
-                        null,
                         AdvancementType.TASK,
                         true,
                         true,
                         false
                 )
-                .addCriterion("cast_scepter", CastSpellCriterion.Conditions.create(ModItems.MAGICAL_SCEPTER))
-                .save(consumer, CAST_SCEPTER.toString());
+                .addCriterion("cast_scepter", CastSpellTrigger.TriggerInstance.create(ModItems.MAGICAL_SCEPTER))
+                .save(consumer, CAST_SCEPTER);
 
-        AdvancementHolder allScepterInfusionsAdvancement = requireListedSceptersInfused(
-                Advancement.Builder.advancement().parent(castScepterAdvancement)
+        requireListedSceptersInfused(
+                Advancement.Builder.advancement()
+                        .parent(castScepter)
                         .display(
                                 new ItemStackTemplate(ModItems.MAGICAL_SCEPTER,
-                                        ScepterHelper.getScepterComponentPatch(scepterRegistryLookup.getOrThrow(
+                                        ScepterHelper.getScepterComponentPatch(registryLookup.getOrThrow(
                                                 Scepters.DRAGON_KEY)
                                         )
                                 ),
                                 createTitleText(ALL_SCEPTER_INFUSIONS),
                                 createDescriptionText(ALL_SCEPTER_INFUSIONS),
-                                null,
                                 AdvancementType.GOAL,
                                 true,
                                 true,
@@ -81,26 +78,25 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
                         ),
                 registryLookup,
                 Scepters.ALL_INFUSED_SCEPTERS
-        ).save(consumer, ALL_SCEPTER_INFUSIONS.toString());
+        ).save(consumer, ALL_SCEPTER_INFUSIONS);
     }
 
     /**
      * Extend the specified advancement builder with infuse scepter criterion for the list of specified scepters.
      *
-     * @param builder        Advancement builder to extend with condition.
-     * @param registryLookup Registry lookup to access registries with.
-     * @param scepters       List of scepters that each add an infuse condition to the advancement builder.
+     * @param builder          Advancement builder to extend with condition.
+     * @param infusingScepters List of scepters that each add an infuse condition to the advancement builder.
      * @return Advancement builder that is extended with a criterion for each specified scepter.
      */
-    protected static Advancement.Builder requireListedSceptersInfused(Advancement.Builder builder,
-                                                                      HolderLookup.Provider registryLookup,
-                                                                      List<ResourceKey<Scepter>> scepters
+    protected Advancement.Builder requireListedSceptersInfused(
+            Advancement.Builder builder,
+            HolderLookup.Provider registryLookup,
+            List<ResourceKey<Scepter>> infusingScepters
     ) {
-        HolderGetter<Scepter> scepterRegistryLookup = registryLookup.lookupOrThrow(ModRegistryKeys.SCEPTER);
-        for (ResourceKey<Scepter> registryKey : scepters) {
+        for (ResourceKey<Scepter> registryKey : infusingScepters) {
             builder.addCriterion(
                     registryKey.identifier().toString(),
-                    InfuseScepterCriterion.Conditions.create(scepterRegistryLookup.getOrThrow(registryKey))
+                    InfuseScepterTrigger.TriggerInstance.create(registryLookup.getOrThrow(registryKey))
             );
         }
 

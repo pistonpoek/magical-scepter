@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 
 @Environment(EnvType.CLIENT)
 public class ItemAttackCallback implements ClientPreAttackCallback {
@@ -78,9 +79,9 @@ public class ItemAttackCallback implements ClientPreAttackCallback {
      */
     private void renderAttackUse(Minecraft client, LocalPlayer player, boolean shouldSwingHand) {
         if (shouldSwingHand) {
-            player.swing(InteractionHand.MAIN_HAND);
+            player.swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
         }
-
-        client.gameRenderer.itemInHandRenderer.itemUsed(InteractionHand.MAIN_HAND);
+// TODO use new defined interact and attack swing animation to customize it for scepter.
+//        client.gameRenderer.firstPersonHandsAndItemsRenderer(InteractionHand.MAIN_HAND);
     }
 }

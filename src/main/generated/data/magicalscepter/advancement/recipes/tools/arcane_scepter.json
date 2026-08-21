@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magicalscepter:arcane_scepter"
+        "recipes": "magicalscepter:arcane_scepter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

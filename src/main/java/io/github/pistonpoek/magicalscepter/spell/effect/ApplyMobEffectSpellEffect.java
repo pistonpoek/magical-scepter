@@ -5,8 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.FloatProvider;
 import net.minecraft.util.valueproviders.FloatProviders;
@@ -23,7 +23,7 @@ public record ApplyMobEffectSpellEffect(
 ) implements SpellEffect {
     public static final MapCodec<ApplyMobEffectSpellEffect> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            RegistryCodecs.homogeneousList(Registries.MOB_EFFECT).fieldOf("to_apply").forGetter(ApplyMobEffectSpellEffect::toApply),
+                            RegistryCodecs.holderSet(Registries.MOB_EFFECT).fieldOf("to_apply").forGetter(ApplyMobEffectSpellEffect::toApply),
                             FloatProviders.CODEC.fieldOf("duration").forGetter(ApplyMobEffectSpellEffect::duration),
                             FloatProviders.CODEC.fieldOf("amplifier").forGetter(ApplyMobEffectSpellEffect::amplifier)
                     )

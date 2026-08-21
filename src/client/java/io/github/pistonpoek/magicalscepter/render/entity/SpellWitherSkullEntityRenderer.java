@@ -58,8 +58,7 @@ public class SpellWitherSkullEntityRenderer extends EntityRenderer<SpellWitherSk
                 this.model.renderType(TEXTURE),
                 renderState.lightCoords,
                 OverlayTexture.NO_OVERLAY,
-                renderState.outlineColor,
-                null
+                renderState.outlineColor
         );
         matrixStack.popPose();
         super.submit(renderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);

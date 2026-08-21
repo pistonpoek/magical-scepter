@@ -1,9 +1,6 @@
 package io.github.pistonpoek.magicalscepter.structure;
 
 import io.github.pistonpoek.magicalscepter.world.gen.structure.ModStructureKeys;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.Registries;
@@ -12,9 +9,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructureSets;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.AbstractSpreadingStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
-import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
@@ -37,12 +38,12 @@ public interface ModStructureSets {
                         structureLookup.getOrThrow(ModStructureKeys.OLD_TAIGA_CABIN),
                         new RandomSpreadStructurePlacement(
                                 Vec3i.ZERO,
-                                StructurePlacement.FrequencyReductionMethod.DEFAULT,
+                                AbstractSpreadingStructurePlacement.FrequencyReductionMethod.DEFAULT,
                                 1.0F,
                                 1685961,
-                                Optional.of(new StructurePlacement.ExclusionZone(
+                                Optional.of(new AbstractSpreadingStructurePlacement.ExclusionZone(
                                                 structureSetLookup.getOrThrow(BuiltinStructureSets.VILLAGES), 10
-                                        )),
+                                )),
                                 28,
                                 8,
                                 RandomSpreadType.LINEAR

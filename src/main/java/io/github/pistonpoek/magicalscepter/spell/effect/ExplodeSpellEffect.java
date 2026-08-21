@@ -6,11 +6,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.particles.ExplosionParticleInfo;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedList;
@@ -43,7 +43,7 @@ public record ExplodeSpellEffect(
                             Codec.BOOL.optionalFieldOf("attribute_to_caster", false).forGetter(ExplodeSpellEffect::attributeToCaster),
                             DamageType.CODEC.optionalFieldOf("damage_type").forGetter(ExplodeSpellEffect::damageType),
                             FloatProviders.CODEC.optionalFieldOf("knockback_multiplier").forGetter(ExplodeSpellEffect::knockbackMultiplier),
-                            RegistryCodecs.homogeneousList(Registries.BLOCK).optionalFieldOf("immune_blocks").forGetter(ExplodeSpellEffect::immuneBlocks),
+                            RegistryCodecs.holderSet(Registries.BLOCK).optionalFieldOf("immune_blocks").forGetter(ExplodeSpellEffect::immuneBlocks),
                             FloatProviders.CODEC.fieldOf("radius").forGetter(ExplodeSpellEffect::radius),
                             Codec.BOOL.optionalFieldOf("create_fire", false).forGetter(ExplodeSpellEffect::createFire),
                             Level.ExplosionInteraction.CODEC.fieldOf("block_interaction").forGetter(ExplodeSpellEffect::blockInteraction),

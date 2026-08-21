@@ -10,12 +10,10 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "magicalscepter:set_scepter",
-              "id": "magicalscepter:magical"
-            }
-          ],
+          "modifier": {
+            "type": "magicalscepter:set_scepter",
+            "id": "magicalscepter:magical"
+          },
           "name": "magicalscepter:magical_scepter",
           "weight": 2
         }
@@ -47,58 +45,50 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 5.0,
+              "min": 2.0
             }
-          ],
+          },
           "name": "minecraft:rotten_flesh"
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4.0,
+              "min": 1.0
             }
-          ],
+          },
           "name": "minecraft:bone"
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4.0,
+              "min": 1.0
             }
-          ],
+          },
           "name": "minecraft:string"
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 2.0,
+              "min": 1.0
             }
-          ],
+          },
           "name": "minecraft:gunpowder"
         }
       ],
@@ -108,16 +98,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 5.0,
-                "min": 2.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 5.0,
+              "min": 2.0
             }
-          ],
+          },
           "name": "minecraft:sweet_berries",
           "weight": 3
         },
@@ -128,16 +116,14 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4.0,
+              "min": 1.0
             }
-          ],
+          },
           "name": "minecraft:wheat",
           "weight": 2
         }
@@ -148,93 +134,97 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4.0,
+              "min": 1.0
             }
-          ],
+          },
           "name": "minecraft:emerald",
           "weight": 18
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "destination": "minecraft:on_woodland_explorer_maps",
-              "function": "minecraft:exploration_map",
-              "skip_existing_chunks": false
+              "type": "minecraft:exploration_map",
+              "destination": "#minecraft:on_woodland_explorer_maps"
             },
             {
-              "function": "minecraft:set_name",
-              "name": {
-                "translate": "filled_map.mansion"
+              "type": "minecraft:filtered",
+              "item_filter": {
+                "predicates": {
+                  "minecraft:map_id": {}
+                }
               },
-              "target": "item_name"
+              "on_fail": {
+                "type": "minecraft:discard"
+              }
             }
           ],
-          "name": "minecraft:map"
+          "name": "minecraft:woodland_explorer_map"
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:exploration_map",
               "decoration": "minecraft:trial_chambers",
-              "destination": "minecraft:on_trial_chambers_maps",
-              "function": "minecraft:exploration_map",
-              "skip_existing_chunks": false
+              "destination": "#minecraft:on_trial_chambers_maps"
             },
             {
-              "function": "minecraft:set_name",
-              "name": {
-                "translate": "filled_map.trial_chambers"
+              "type": "minecraft:filtered",
+              "item_filter": {
+                "predicates": {
+                  "minecraft:map_id": {}
+                }
               },
-              "target": "item_name"
+              "on_fail": {
+                "type": "minecraft:discard"
+              }
             }
           ],
-          "name": "minecraft:map"
+          "name": "minecraft:trial_explorer_map"
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:exploration_map",
               "decoration": "minecraft:monument",
-              "destination": "minecraft:on_ocean_explorer_maps",
-              "function": "minecraft:exploration_map",
-              "skip_existing_chunks": false
+              "destination": "#minecraft:on_ocean_explorer_maps"
             },
             {
-              "function": "minecraft:set_name",
-              "name": {
-                "translate": "filled_map.monument"
+              "type": "minecraft:filtered",
+              "item_filter": {
+                "predicates": {
+                  "minecraft:map_id": {}
+                }
               },
-              "target": "item_name"
+              "on_fail": {
+                "type": "minecraft:discard"
+              }
             }
           ],
-          "name": "minecraft:map"
+          "name": "minecraft:ocean_explorer_map"
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 4.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 4.0,
+              "min": 1.0
             }
-          ],
+          },
           "name": "minecraft:coal",
           "weight": 3
         }
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "magicalscepter:chests/old_taiga_cabin"
+  ]
 }

@@ -1,25 +1,23 @@
 {
   "color": 5209484,
   "experience_cost": 3,
-  "infusion": [
-    {
-      "condition": "minecraft:damage_source_properties",
-      "predicate": {
-        "direct_entity": {
-          "minecraft:entity_type": "minecraft:elder_guardian"
-        },
-        "source_entity": {
-          "minecraft:entity_type": "minecraft:elder_guardian"
-        },
-        "tags": [
-          {
-            "expected": true,
-            "id": "magicalscepter:infuses_guardian_scepter"
-          }
-        ]
-      }
+  "infusion": {
+    "type": "minecraft:damage_source_properties",
+    "predicate": {
+      "direct_entity": {
+        "minecraft:entity_type": "minecraft:elder_guardian"
+      },
+      "source_entity": {
+        "minecraft:entity_type": "minecraft:elder_guardian"
+      },
+      "tags": [
+        {
+          "expected": true,
+          "id": "#magicalscepter:infuses_guardian_scepter"
+        }
+      ]
     }
-  ],
+  },
   "spell_attack": "magicalscepter:guardian_beam",
   "spell_protect": "magicalscepter:guardian_haste"
 }

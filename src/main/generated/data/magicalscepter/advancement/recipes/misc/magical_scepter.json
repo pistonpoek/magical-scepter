@@ -13,15 +13,15 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "magicalscepter:magical_scepter"
+        "recipes": "magicalscepter:magical_scepter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_scepter",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_scepter"
     ]
   ],
   "rewards": {

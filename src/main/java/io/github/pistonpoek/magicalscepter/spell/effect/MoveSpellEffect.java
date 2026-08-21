@@ -35,7 +35,8 @@ public record MoveSpellEffect(FloatProvider power, boolean knockback) implements
             Entity entityTarget = context.target();
             Vec3 force = rotation.scale(power.sample(random));
             entityTarget.addDeltaMovement(force);
-            entityTarget.hurtMarked = true;
+            // TODO Check if hurt marked has been removed, renamed or changed.
+//            entityTarget.hurtMarked = true;
             entityTarget.needsSync = true;
             if (entityTarget instanceof Player playerEntity) {
                 playerEntity.applyPostImpulseGraceTime(10);

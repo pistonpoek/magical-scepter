@@ -3,7 +3,6 @@ package io.github.pistonpoek.magicalscepter.entity.effect;
 import io.github.pistonpoek.magicalscepter.mixson.MixsonEvents;
 import io.github.pistonpoek.magicalscepter.registry.tag.ModDamageTypeTags;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.advancements.predicates.TagPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -66,15 +65,15 @@ public class ModStatusEffects {
      * @see net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AllowDamage
      */
     public static boolean allowDamage(LivingEntity entity, DamageSource source, float amount) {
-        if (TagPredicate.is(DamageTypeTags.IS_EXPLOSION).matches(source.typeHolder())
-                && TagPredicate.isNot(ModDamageTypeTags.BYPASSES_STABILITY).matches(source.typeHolder())
+        if (source.is(DamageTypeTags.IS_EXPLOSION)
+                && !source.is(ModDamageTypeTags.BYPASSES_STABILITY)
                 && entity.hasEffect(ModStatusEffects.STABILITY)) {
             return false;
         }
 
         Entity sourceEntity = source.getDirectEntity();
         if (sourceEntity instanceof AbstractArrow
-                && TagPredicate.isNot(ModDamageTypeTags.BYPASSES_REPULSION).matches(source.typeHolder())
+                && !source.is(ModDamageTypeTags.BYPASSES_REPULSION)
                 && entity.hasEffect(ModStatusEffects.REPULSION)) {
             return false;
         }

@@ -17,7 +17,7 @@ public class BipedEntityRenderStateMixin extends ArmedEntityRenderState implemen
 
     @Override
     public float magical_scepter$getHandSwingProgress() {
-        return this.attackTime;
+        return this.swingAnimation;
     }
 
     @Override

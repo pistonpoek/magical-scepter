@@ -1,8 +1,9 @@
 package io.github.pistonpoek.magicalscepter.datagen;
 
+import io.github.pistonpoek.magicalscepter.datagen.advancement.ModAdvancementProvider;
 import io.github.pistonpoek.magicalscepter.datagen.codec.*;
-import io.github.pistonpoek.magicalscepter.datagen.loot.ModEntityLootTableProvider;
-import io.github.pistonpoek.magicalscepter.datagen.loot.ModLootTableProviders;
+import io.github.pistonpoek.magicalscepter.datagen.loot.ModChestLootProvider;
+import io.github.pistonpoek.magicalscepter.datagen.loot.ModEntityLootProvider;
 import io.github.pistonpoek.magicalscepter.datagen.tag.*;
 import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantments;
 import io.github.pistonpoek.magicalscepter.entity.damage.ModDamageTypes;
@@ -36,8 +37,8 @@ public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(StructureProvider::new);
         pack.addProvider(StructureSetProvider::new);
 
-        pack.addProvider(ModLootTableProviders::new);
-        pack.addProvider(ModEntityLootTableProvider::new);
+        pack.addProvider(ModChestLootProvider::new);
+        pack.addProvider(ModEntityLootProvider::new);
 
         pack.addProvider(ModBiomeTagProvider::new);
         pack.addProvider(ModDamageTypeTagProvider::new);

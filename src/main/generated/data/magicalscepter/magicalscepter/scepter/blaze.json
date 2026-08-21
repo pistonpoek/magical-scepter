@@ -1,25 +1,23 @@
 {
   "color": 16750848,
   "experience_cost": 4,
-  "infusion": [
-    {
-      "condition": "minecraft:damage_source_properties",
-      "predicate": {
-        "direct_entity": {
-          "minecraft:entity_type": "minecraft:small_fireball"
-        },
-        "source_entity": {
-          "minecraft:entity_type": "minecraft:blaze"
-        },
-        "tags": [
-          {
-            "expected": true,
-            "id": "magicalscepter:infuses_blaze_scepter"
-          }
-        ]
-      }
+  "infusion": {
+    "type": "minecraft:damage_source_properties",
+    "predicate": {
+      "direct_entity": {
+        "minecraft:entity_type": "minecraft:small_fireball"
+      },
+      "source_entity": {
+        "minecraft:entity_type": "minecraft:blaze"
+      },
+      "tags": [
+        {
+          "expected": true,
+          "id": "#magicalscepter:infuses_blaze_scepter"
+        }
+      ]
     }
-  ],
+  },
   "spell_attack": "magicalscepter:blaze_fire_charges",
   "spell_protect": "magicalscepter:blaze_fire_resistance"
 }

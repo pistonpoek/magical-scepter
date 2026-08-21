@@ -1,25 +1,23 @@
 {
   "color": 7561558,
   "experience_cost": 5,
-  "infusion": [
-    {
-      "condition": "minecraft:damage_source_properties",
-      "predicate": {
-        "direct_entity": {
-          "minecraft:entity_type": "minecraft:wither_skull"
-        },
-        "source_entity": {
-          "minecraft:entity_type": "minecraft:wither"
-        },
-        "tags": [
-          {
-            "expected": true,
-            "id": "magicalscepter:infuses_wither_scepter"
-          }
-        ]
-      }
+  "infusion": {
+    "type": "minecraft:damage_source_properties",
+    "predicate": {
+      "direct_entity": {
+        "minecraft:entity_type": "minecraft:wither_skull"
+      },
+      "source_entity": {
+        "minecraft:entity_type": "minecraft:wither"
+      },
+      "tags": [
+        {
+          "expected": true,
+          "id": "#magicalscepter:infuses_wither_scepter"
+        }
+      ]
     }
-  ],
+  },
   "spell_attack": "magicalscepter:wither_skull",
   "spell_protect": "magicalscepter:wither_repulsion"
 }

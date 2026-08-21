@@ -1,12 +1,13 @@
 package io.github.pistonpoek.magicalscepter.loot;
 
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Mod specific class that provides similar functionality to respective vanilla class.
@@ -14,8 +15,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
  * @see net.minecraft.world.level.storage.loot.BuiltInLootTables
  */
 public class ModLootTables {
-    private static final Set<ResourceKey<LootTable>> LOOT_TABLES = new HashSet<>();
-    private static final Set<ResourceKey<LootTable>> LOOT_TABLES_READ_ONLY = Collections.unmodifiableSet(LOOT_TABLES);
+    private static final Set<ResourceKey<LootTable>> LOCATIONS = new HashSet<>();
+    private static final Set<ResourceKey<LootTable>> IMMUTABLE_LOCATIONS = Collections.unmodifiableSet(LOCATIONS);
 
     public static final ResourceKey<LootTable> OLD_TAIGA_CABIN_CHEST = register("chests/old_taiga_cabin");
 
@@ -38,7 +39,7 @@ public class ModLootTables {
      */
     private static ResourceKey<LootTable> registerLootTable(ResourceKey<LootTable> key)
             throws IllegalArgumentException {
-        if (LOOT_TABLES.add(key)) {
+        if (LOCATIONS.add(key)) {
             return key;
         } else {
             throw new IllegalArgumentException(key.identifier() + " is already a registered built-in loot table");
@@ -50,7 +51,7 @@ public class ModLootTables {
      *
      * @return Set of all loot table registry keys.
      */
-    public static Set<ResourceKey<LootTable>> getAll() {
-        return LOOT_TABLES_READ_ONLY;
+    public static Set<ResourceKey<LootTable>> all() {
+        return IMMUTABLE_LOCATIONS;
     }
 }

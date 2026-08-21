@@ -8,8 +8,8 @@ import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import net.minecraft.advancements.predicates.SingleComponentItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 public record ScepterContentsPredicate(
         HolderSet<Scepter> scepters) implements SingleComponentItemPredicate<ScepterContentsComponent> {
-    public static final Codec<ScepterContentsPredicate> CODEC = RegistryCodecs.homogeneousList(ModRegistryKeys.SCEPTER)
+    public static final Codec<ScepterContentsPredicate> CODEC = RegistryCodecs.holderSet(ModRegistryKeys.SCEPTER)
             .xmap(ScepterContentsPredicate::new, ScepterContentsPredicate::scepters);
 
     @Override

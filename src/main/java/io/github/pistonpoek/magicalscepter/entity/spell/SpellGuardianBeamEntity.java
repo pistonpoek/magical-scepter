@@ -240,6 +240,6 @@ public class SpellGuardianBeamEntity extends Entity implements TraceableEntity {
 
     @Override
     public PushReaction getPistonPushReaction() {
-        return PushReaction.IGNORE;
+        return PushReaction.IGNORE_ENTITY;
     }
 }

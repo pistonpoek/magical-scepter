@@ -4,17 +4,14 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.component.ModDataComponentTypes;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
-import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.scepter.Scepter;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * Loot function to set a scepter in the scepter contents component of an item stack.
@@ -29,11 +26,11 @@ public class SetScepterLootFunction extends LootItemConditionalFunction {
     /**
      * Construct a set scepter loot function.
      *
-     * @param conditions List of conditions to create the loot function with.
-     * @param scepter    Registry entry of the scepter to set.
+     * @param condition Loot item condition to create the loot function with.
+     * @param scepter   Registry entry of the scepter to set.
      */
-    private SetScepterLootFunction(List<LootItemCondition> conditions, Holder<Scepter> scepter) {
-        super(conditions);
+    private SetScepterLootFunction(final Optional<Holder<LootItemCondition>> condition, final Holder<Scepter> scepter) {
+        super(condition);
         this.scepter = scepter;
     }
 
@@ -52,13 +49,10 @@ public class SetScepterLootFunction extends LootItemConditionalFunction {
     /**
      * Create a set scepter loot function with specified scepter registry entry.
      *
-     * @param key Registry key of the scepter to set with the loot function.
+     * @param scepter Holder of scepter to set with the loot function.
      * @return Set scepter loot function with the specified scepter.
      */
-    public static LootItemConditionalFunction.Builder<?> builder(HolderLookup.Provider  registries,
-                                                             ResourceKey<Scepter> key) {
-        HolderLookup.RegistryLookup<Scepter> impl = registries.lookupOrThrow(ModRegistryKeys.SCEPTER);
-        Holder<Scepter> scepter = impl.getOrThrow(key);
+    public static LootItemConditionalFunction.Builder<?> builder(Holder<Scepter> scepter) {
         return simpleBuilder(conditions -> new SetScepterLootFunction(conditions, scepter));
     }
 }

@@ -5,20 +5,20 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.github.pistonpoek.magicalscepter.registry.ModRegistryKeys;
 import io.github.pistonpoek.magicalscepter.spell.cast.SpellCast;
 import io.github.pistonpoek.magicalscepter.world.event.ModGameEvent;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.codec.RegistryFixedCodec;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public record Spell(List<SpellCast> casts, int cooldown, Component description) {
     public static final Codec<Spell> BASE_CODEC = RecordCodecBuilder.create(

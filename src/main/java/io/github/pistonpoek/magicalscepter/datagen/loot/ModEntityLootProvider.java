@@ -11,20 +11,25 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+
 import java.util.concurrent.CompletableFuture;
 
 /**
  * Mod data provider for entity loot tables.
+ *
+ * @see net.minecraft.data.loot.packs.VanillaEntityLoot
  */
-public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
+public class ModEntityLootProvider extends FabricEntityLootSubProvider {
     /**
      * Construct a mod entity loot table provider for data generation.
      *
      * @param output           Data output to generate entity loot table data into.
      * @param registriesFuture Registry lookup to initialize the data provider with.
      */
-    public ModEntityLootTableProvider(FabricPackOutput output,
-                                      CompletableFuture<HolderLookup.Provider> registriesFuture) {
+    public ModEntityLootProvider(
+            FabricPackOutput output,
+            CompletableFuture<HolderLookup.Provider> registriesFuture
+    ) {
         super(output, registriesFuture);
     }
 
@@ -34,7 +39,7 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                 LootTable.lootTable()
                         .pool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(Items.BROWN_MUSHROOM)
-                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries,
+                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(enchantments,
                                                 UniformGenerator.between(0.0f, 1.0f))
                                         ))
                                 .setRolls(UniformGenerator.between(0.0f, 1.0f))
@@ -45,7 +50,7 @@ public class ModEntityLootTableProvider extends FabricEntityLootSubProvider {
                                         .apply(SetItemCountFunction.setCount(
                                                 UniformGenerator.between(4.0f, 8.0f)
                                         ))
-                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries,
+                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(enchantments,
                                                 UniformGenerator.between(0.0f, 1.0f)
                                         ))
                                 ).build()

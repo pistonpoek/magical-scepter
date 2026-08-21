@@ -4,7 +4,9 @@ plugins {
     id 'maven-publish'
 }
 
-version = project.mod_version + "+" + project.minecraft_version
+String minecraftVersion = project.minecraft_version
+String minecraftDependency = minecraftVersion.contains("-") ? "~${minecraftVersion.split('-')[0]}-" : "~${minecraftVersion}"
+version = project.mod_version + "+" + minecraftVersion
 group = project.domain + "." + project.mod_id
 def mod = project.mod_id
 
@@ -88,7 +90,7 @@ processResources {
     inputs.property "id", mod_id
     inputs.property "version", mod_version
     inputs.property "loader_version", loader_version
-    inputs.property "minecraft_version", minecraft_version
+    inputs.property "minecraft_dependency", minecraftDependency
     inputs.property "mixson_version", mixson_version
 
     filesMatching("fabric.mod.json") {
@@ -96,7 +98,7 @@ processResources {
                 "id"               : mod_id,
                 "version"          : mod_version,
                 "loader_version"   : loader_version,
-                "minecraft_version": minecraft_version,
+                "minecraft_dependency": minecraftDependency,
                 "mixson_version"   : mixson_version
         ])
     }

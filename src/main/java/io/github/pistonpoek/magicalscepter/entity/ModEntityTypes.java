@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -90,7 +91,7 @@ public class ModEntityTypes {
         }
         for (ResourceKey<Biome> biome : SORCERER_SPAWN_BIOMES) {
             MixsonEvents.registerMonsterSpawnEntry(biome, MobCategory.MONSTER, 5,
-                    new MobSpawnSettings.SpawnerData(SORCERER, 1, 1));
+                    new MobSpawnSettings.SpawnerData(SORCERER, ConstantInt.of(1)));
         }
         registerDefaultAttributes();
         registerParrotMimicSounds();

@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.ramixin.mixson.EventContext;
@@ -21,8 +22,13 @@ public record BiomeSpawnEntryMixson(MobCategory spawnGroup, int weight,
     @Override
     public void runEvent(EventContext<JsonElement> context) {
         JsonObject root = context.getFile().getAsJsonObject();
-        JsonObject spawners = root.get("spawners").getAsJsonObject();
-        JsonArray spawnEntries = spawners.getAsJsonArray(spawnGroup().getName());
+        JsonObject attributes = root.getAsJsonObject("attributes");
+        JsonObject naturalMobSpawns = attributes.getAsJsonObject(
+                Identifier.withDefaultNamespace("gameplay/natural_mob_spawns").toString()
+        );
+        JsonObject argument = naturalMobSpawns.getAsJsonObject("argument");
+        JsonObject spawnsByCategory = argument.getAsJsonObject("spawns_by_category");
+        JsonArray spawnEntries = spawnsByCategory.getAsJsonArray(spawnGroup().getName());
         JsonObject mobEntry = MobSpawnSettings.SpawnerData.CODEC.codec()
                 .encodeStart(JsonOps.INSTANCE, spawnEntry()).getOrThrow().getAsJsonObject();
         mobEntry.addProperty("weight", weight());

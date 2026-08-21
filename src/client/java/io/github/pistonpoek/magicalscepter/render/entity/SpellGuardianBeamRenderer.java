@@ -31,7 +31,8 @@ public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamE
     }
 
     public boolean shouldRender(SpellGuardianBeamEntity entity, Frustum frustum, double d, double e, double f) {
-        if (super.shouldRender(entity, frustum, d, e, f)) {
+        // TODO check if partial ticks should come from somewhere, also why is method gray/not used?
+        if (super.shouldRender(entity, frustum, d, e, f, 1.0F)) {
             return true;
         } else {
             Entity target = entity.getTarget();

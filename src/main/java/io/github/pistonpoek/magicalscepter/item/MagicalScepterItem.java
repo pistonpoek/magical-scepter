@@ -7,7 +7,6 @@ import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.util.PlayerExperience;
-import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,6 +18,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
+import java.util.Optional;
 
 /**
  * Magical scepter item that can cast spells.
@@ -103,7 +104,8 @@ public class MagicalScepterItem extends Item implements AttackItem {
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL);
 
         SwingType swingType = isAttack ? SwingType.HIT : SwingType.PROTECT;
-        ((SwingHandLivingEntity) caster).magical_scepter$swingHand(hand, swingType);
+        // TODO swing hand update.
+//        ((SwingHandLivingEntity) caster).magical_scepter$swingHand(hand, swingType);
 
         if (caster.level().isClientSide()) {
             return itemStack;

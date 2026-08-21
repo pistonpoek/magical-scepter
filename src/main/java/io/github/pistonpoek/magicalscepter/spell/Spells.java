@@ -10,7 +10,6 @@ import io.github.pistonpoek.magicalscepter.spell.effect.*;
 import io.github.pistonpoek.magicalscepter.spell.position.*;
 import io.github.pistonpoek.magicalscepter.spell.rotation.*;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
 import net.minecraft.advancements.predicates.entity.EntityFlagsPredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.core.Holder;
@@ -200,7 +199,7 @@ public class Spells {
                         Component.translatable(getTranslationKey(BREEZE_JUMP_KEY)))
                 .addCast(SpellCast.builder()
                         .addTransformer(new FilterCastTransformer(
-                                ContextAwarePredicate.create(
+                                Holder.direct(
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
                                                 EntityPredicate.Builder.entity()
@@ -231,7 +230,7 @@ public class Spells {
                 )
                 .addCast(SpellCast.builder()
                         .addTransformer(new FilterCastTransformer(
-                                ContextAwarePredicate.create(
+                                Holder.direct(
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
                                                 EntityPredicate.Builder.entity()

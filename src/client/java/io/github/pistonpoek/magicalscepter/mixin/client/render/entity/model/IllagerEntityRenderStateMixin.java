@@ -17,7 +17,7 @@ public class IllagerEntityRenderStateMixin extends ArmedEntityRenderState implem
 
     @Override
     public float magical_scepter$getHandSwingProgress() {
-        return this.attackTime;
+        return this.swingAnimation;
     }
 
     @Override
