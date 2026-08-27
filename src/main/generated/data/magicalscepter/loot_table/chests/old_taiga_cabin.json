@@ -150,7 +150,7 @@
           "modifier": [
             {
               "type": "minecraft:exploration_map",
-              "destination": "#minecraft:on_woodland_explorer_maps"
+              "destination": "#minecraft:on_woodland_mansion_maps"
             },
             {
               "type": "minecraft:filtered",
@@ -164,7 +164,7 @@
               }
             }
           ],
-          "name": "minecraft:woodland_explorer_map"
+          "name": "minecraft:woodland_mansion_map"
         },
         {
           "type": "minecraft:item",
@@ -172,7 +172,7 @@
             {
               "type": "minecraft:exploration_map",
               "decoration": "minecraft:trial_chambers",
-              "destination": "#minecraft:on_trial_chambers_maps"
+              "destination": "#minecraft:on_buried_trial_chambers_maps"
             },
             {
               "type": "minecraft:filtered",
@@ -186,7 +186,7 @@
               }
             }
           ],
-          "name": "minecraft:trial_explorer_map"
+          "name": "minecraft:buried_trial_chambers_map"
         },
         {
           "type": "minecraft:item",
@@ -194,7 +194,7 @@
             {
               "type": "minecraft:exploration_map",
               "decoration": "minecraft:monument",
-              "destination": "#minecraft:on_ocean_explorer_maps"
+              "destination": "#minecraft:on_ocean_monument_maps"
             },
             {
               "type": "minecraft:filtered",
@@ -208,7 +208,7 @@
               }
             }
           ],
-          "name": "minecraft:ocean_explorer_map"
+          "name": "minecraft:ocean_monument_map"
         },
         {
           "type": "minecraft:item",

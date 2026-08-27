@@ -35,7 +35,7 @@ public class SpellDragonFireballRenderer extends EntityRenderer<SpellDragonFireb
         queue, CameraRenderState cameraState) {
         matrices.pushPose();
         matrices.scale(2.0F, 2.0F, 2.0F);
-        matrices.mulPose(cameraState.orientation);
+        matrices.rotate(cameraState.orientation);
         queue.submitCustomGeometry(matrices, LAYER, (entry, vertexConsumer) -> {
             produceVertex(vertexConsumer, entry, renderState.lightCoords, 0.0F, 0, 0, 1);
             produceVertex(vertexConsumer, entry, renderState.lightCoords, 1.0F, 0, 1, 1);

@@ -124,19 +124,19 @@ public class ModChestLootProvider extends SimpleFabricLootTableSubProvider {
                                         ))
                                 )
                                 .add(this.explorationMapItem(
-                                        StructureTags.ON_WOODLAND_EXPLORER_MAPS,
+                                        StructureTags.ON_WOODLAND_MANSION_MAPS,
                                         MapDecorationTypes.WOODLAND_MANSION,
-                                        Items.WOODLAND_EXPLORER_MAP
+                                        Items.WOODLAND_MANSION_MAP
                                 ))
                                 .add(this.explorationMapItem(
-                                        StructureTags.ON_TRIAL_CHAMBERS_MAPS,
+                                        StructureTags.ON_BURIED_TRIAL_CHAMBERS_MAPS,
                                         MapDecorationTypes.TRIAL_CHAMBERS,
-                                        Items.TRIAL_EXPLORER_MAP
+                                        Items.BURIED_TRIAL_CHAMBERS_MAP
                                 ))
                                 .add(this.explorationMapItem(
-                                        StructureTags.ON_OCEAN_EXPLORER_MAPS,
+                                        StructureTags.ON_OCEAN_MONUMENT_MAPS,
                                         MapDecorationTypes.OCEAN_MONUMENT,
-                                        Items.OCEAN_EXPLORER_MAP
+                                        Items.OCEAN_MONUMENT_MAP
                                 ))
                                 .add(LootItem.lootTableItem(Items.COAL).setWeight(3)
                                         .apply(SetItemCountFunction.setCount(

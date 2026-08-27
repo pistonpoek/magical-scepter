@@ -84,8 +84,8 @@ public class SpellGuardianBeamRenderer extends EntityRenderer<SpellGuardianBeamE
         vec3d = vec3d.normalize();
         float i = (float)Math.acos(vec3d.y);
         float j = (float) (Math.PI / 2) - (float)Math.atan2(vec3d.z, vec3d.x);
-        matrixStack.mulPose(Axis.YP.rotationDegrees(j * (180.0F / (float)Math.PI)));
-        matrixStack.mulPose(Axis.XP.rotationDegrees(i * (180.0F / (float)Math.PI)));
+        matrixStack.rotate(Axis.YP.rotationDegrees(j * Mth.RAD_TO_DEG));
+        matrixStack.rotate(Axis.XP.rotationDegrees(i * Mth.RAD_TO_DEG));
         float k = age * 0.05F * -1.5F;
         float l = progress * progress;
         int m = 64 + (int)(l * 191.0F);
