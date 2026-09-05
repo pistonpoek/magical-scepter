@@ -10,7 +10,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -40,18 +41,18 @@ public class ModEntityLootProvider extends FabricEntityLootSubProvider {
                         .pool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(Items.BROWN_MUSHROOM)
                                         .apply(EnchantedCountIncreaseFunction.lootingMultiplier(enchantments,
-                                                UniformGenerator.between(0.0f, 1.0f))
+                                                ContextFloatProviders.between(0.0f, 1.0f))
                                         ))
-                                .setRolls(UniformGenerator.between(0.0f, 1.0f))
+                                .setRolls(ContextIntProviders.between(0, 1))
                                 .build()
                         )
                         .pool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(Items.LAPIS_LAZULI)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(4.0f, 8.0f)
+                                                ContextIntProviders.between(4, 8)
                                         ))
                                         .apply(EnchantedCountIncreaseFunction.lootingMultiplier(enchantments,
-                                                UniformGenerator.between(0.0f, 1.0f)
+                                                ContextFloatProviders.between(0.0f, 1.0f)
                                         ))
                                 ).build()
                         )

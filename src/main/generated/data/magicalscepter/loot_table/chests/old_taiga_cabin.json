@@ -18,7 +18,7 @@
           "weight": 2
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
       "entries": [
@@ -37,8 +37,8 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 9.0,
-        "min": 6.0
+        "max": 9,
+        "min": 6
       }
     },
     {
@@ -49,8 +49,8 @@
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 5.0,
-              "min": 2.0
+              "max": 5,
+              "min": 2
             }
           },
           "name": "minecraft:rotten_flesh"
@@ -61,8 +61,8 @@
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 4.0,
-              "min": 1.0
+              "max": 4,
+              "min": 1
             }
           },
           "name": "minecraft:bone"
@@ -73,8 +73,8 @@
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 4.0,
-              "min": 1.0
+              "max": 4,
+              "min": 1
             }
           },
           "name": "minecraft:string"
@@ -85,14 +85,14 @@
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 2.0,
-              "min": 1.0
+              "max": 2,
+              "min": 1
             }
           },
           "name": "minecraft:gunpowder"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
       "entries": [
@@ -102,8 +102,8 @@
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 5.0,
-              "min": 2.0
+              "max": 5,
+              "min": 2
             }
           },
           "name": "minecraft:sweet_berries",
@@ -120,15 +120,15 @@
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 4.0,
-              "min": 1.0
+              "max": 4,
+              "min": 1
             }
           },
           "name": "minecraft:wheat",
           "weight": 2
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
       "entries": [
@@ -138,8 +138,8 @@
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 4.0,
-              "min": 1.0
+              "max": 4,
+              "min": 1
             }
           },
           "name": "minecraft:emerald",
@@ -216,15 +216,15 @@
             "type": "minecraft:set_count",
             "count": {
               "type": "minecraft:uniform",
-              "max": 4.0,
-              "min": 1.0
+              "max": 4,
+              "min": 1
             }
           },
           "name": "minecraft:coal",
           "weight": 3
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ]
 }

@@ -9,8 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class SetExperienceLootFunction extends LootItemConditionalFunction {
             instance -> commonFields(instance)
                     .and(
                             instance.group(
-                                    NumberProviders.CODEC.fieldOf("count")
+                                    ContextIntProviders.CODEC.fieldOf("count")
                                             .forGetter(function -> function.count),
                                     Codec.BOOL.fieldOf("add").orElse(false)
                                             .forGetter(function -> function.add)
@@ -30,7 +30,7 @@ public class SetExperienceLootFunction extends LootItemConditionalFunction {
                     )
                     .apply(instance, SetExperienceLootFunction::new)
     );
-    private final Holder<NumberProvider> count;
+    private final Holder<ContextIntProvider> count;
     private final boolean add;
 
     /**
@@ -40,7 +40,7 @@ public class SetExperienceLootFunction extends LootItemConditionalFunction {
      * @param count     Loot number provider to create loot function with.
      * @param add       Truth assignment, if number should be added to existing data value.
      */
-    private SetExperienceLootFunction(Optional<Holder<LootItemCondition>> condition, Holder<NumberProvider> count, boolean add) {
+    private SetExperienceLootFunction(Optional<Holder<LootItemCondition>> condition, Holder<ContextIntProvider> count, boolean add) {
         super(condition);
         this.count = count;
         this.add = add;
@@ -67,7 +67,7 @@ public class SetExperienceLootFunction extends LootItemConditionalFunction {
      * @param count Loot number provider to create loot function with.
      * @return Set experience loot function with the number provider.
      */
-    public static LootItemConditionalFunction.Builder<?> builder(Holder<NumberProvider> count) {
+    public static LootItemConditionalFunction.Builder<?> builder(Holder<ContextIntProvider> count) {
         return simpleBuilder(list -> new SetExperienceLootFunction(list, count, false));
     }
 
@@ -78,7 +78,7 @@ public class SetExperienceLootFunction extends LootItemConditionalFunction {
      * @param add   Truth assignment, if number should be added to existing data value.
      * @return Set experience loot function with the number provider.
      */
-    public static LootItemConditionalFunction.Builder<?> builder(Holder<NumberProvider> count, boolean add) {
+    public static LootItemConditionalFunction.Builder<?> builder(Holder<ContextIntProvider> count, boolean add) {
         return simpleBuilder(list -> new SetExperienceLootFunction(list, count, add));
     }
 }

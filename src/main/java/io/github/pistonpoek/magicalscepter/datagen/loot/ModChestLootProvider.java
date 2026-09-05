@@ -32,7 +32,7 @@ import net.minecraft.world.level.storage.loot.entries.UniformContainerBase;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import org.jspecify.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -77,28 +77,28 @@ public class ModChestLootProvider extends SimpleFabricLootTableSubProvider {
                                 .add(LootItem.lootTableItem(Items.BROWN_MUSHROOM))
                                 .add(LootItem.lootTableItem(Items.LAPIS_LAZULI))
                                 .add(LootItem.lootTableItem(Items.EXPERIENCE_BOTTLE))
-                                .setRolls(UniformGenerator.between(6.0f, 9.0f))
+                                .setRolls(ContextIntProviders.between(6, 9))
                                 .build()
                         )
                         .pool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(Items.ROTTEN_FLESH)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(2.0f, 5.0f)
+                                                ContextIntProviders.between(2, 5)
                                         ))
                                 )
                                 .add(LootItem.lootTableItem(Items.BONE)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(1.0f, 4.0f)
+                                                ContextIntProviders.between(1, 4)
                                         ))
                                 )
                                 .add(LootItem.lootTableItem(Items.STRING)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(1.0f, 4.0f)
+                                                ContextIntProviders.between(1, 4)
                                         ))
                                 )
                                 .add(LootItem.lootTableItem(Items.GUNPOWDER)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(1.0f, 2.0f)
+                                                ContextIntProviders.between(1, 2)
                                         ))
                                 )
                                 .build()
@@ -106,13 +106,13 @@ public class ModChestLootProvider extends SimpleFabricLootTableSubProvider {
                         .pool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(Items.SWEET_BERRIES).setWeight(3)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(2.0f, 5.0f)
+                                                ContextIntProviders.between(2, 5)
                                         ))
                                 )
                                 .add(LootItem.lootTableItem(Items.BREAD).setWeight(3))
                                 .add(LootItem.lootTableItem(Items.WHEAT).setWeight(2)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(1.0f, 4.0f)
+                                                ContextIntProviders.between(1, 4)
                                         ))
                                 )
                                 .build()
@@ -120,7 +120,7 @@ public class ModChestLootProvider extends SimpleFabricLootTableSubProvider {
                         .pool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(Items.EMERALD).setWeight(18)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(1.0f, 4.0f)
+                                                ContextIntProviders.between(1, 4)
                                         ))
                                 )
                                 .add(this.explorationMapItem(
@@ -140,7 +140,7 @@ public class ModChestLootProvider extends SimpleFabricLootTableSubProvider {
                                 ))
                                 .add(LootItem.lootTableItem(Items.COAL).setWeight(3)
                                         .apply(SetItemCountFunction.setCount(
-                                                UniformGenerator.between(1.0f, 4.0f)
+                                                ContextIntProviders.between(1, 4)
                                         ))
                                 )
                                 .build()
