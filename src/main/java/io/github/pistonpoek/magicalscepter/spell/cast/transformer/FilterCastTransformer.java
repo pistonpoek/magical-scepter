@@ -2,7 +2,7 @@ package io.github.pistonpoek.magicalscepter.spell.cast.transformer;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.github.pistonpoek.magicalscepter.loot.context.ModLootContextTypes;
+import io.github.pistonpoek.magicalscepter.loot.context.ModLootContextParamSets;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellCasting;
 import io.github.pistonpoek.magicalscepter.spell.cast.context.SpellContext;
 import net.minecraft.core.BlockPos;
@@ -40,7 +40,7 @@ public record FilterCastTransformer(Holder<LootItemCondition> filters) implement
                 .withParameter(LootContextParams.ORIGIN, position)
                 .withParameter(LootContextParams.TOOL, stack)
                 .withParameter(LootContextParams.BLOCK_STATE, blockState)
-                .create(ModLootContextTypes.SPELL_CAST);
+                .create(ModLootContextParamSets.SPELL_CAST);
         LootContext lootContext = new LootContext.Builder(lootWorldContext).create(Optional.empty());
         if (filters.value().test(lootContext)) {
             return List.of(casting);

@@ -8,7 +8,6 @@
         "GhastEntityMixin",
         "ItemStackMixin",
         "LivingEntityMixin",
-        "LootContextTypesMixin",
         "ParrotEntityMixin",
         "PatrolEntityMixin",
         "RaiderEntityMixin",
