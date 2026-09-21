@@ -1,1 +1,5 @@
 classTweaker  v2  official
+
+extend-enum  net/minecraft/world/item/SwingAnimationType  MAGICALSCEPTER_SWIRL
+
+accessible method net/minecraft/client/model/HumanoidModel setupAttackAnimation (Lnet/minecraft/client/renderer/entity/state/HumanoidRenderState;)V

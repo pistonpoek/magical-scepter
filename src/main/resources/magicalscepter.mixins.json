@@ -11,6 +11,7 @@
         "PatrolEntityMixin",
         "RaiderEntityMixin",
         "RaidMixin",
+        "SwingAnimationTypeMixin",
         "VibrationsMixin"
     ],
     "injectors": {

@@ -6,7 +6,10 @@
         "data.ItemModelGeneratorMixin",
         "gui.hud.InGameHudMixin",
         "gui.hud.bar.ExperienceBarMixin",
+        "model.HumanoidModelMixin",
         "network.ClientPlayNetworkHandlerMixin",
+        "render.FirstPersonHandsAndItemsRendererMixin",
+        "render.entity.layers.ItemInHandLayerMixin",
         "render.item.tint.TintSourceTypesMixin"
     ],
     "injectors": {

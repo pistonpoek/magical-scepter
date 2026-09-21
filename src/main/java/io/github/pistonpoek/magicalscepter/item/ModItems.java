@@ -21,6 +21,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.component.UseCooldown;
 
 import java.util.Optional;
@@ -38,7 +39,8 @@ public class ModItems {
     private static final Function<Item.Properties, Item.Properties> SCEPTER_SETTINGS = (settings) ->
             settings.rarity(Rarity.RARE);
     private static final Function<Item.Properties, Item.Properties> USABLE_SCEPTER_SETTINGS = SCEPTER_SETTINGS
-            .andThen((settings) -> settings.durability(64).repairable(ModItemTags.SCEPTER_MATERIALS));
+            .andThen((settings) -> settings.durability(64).repairable(ModItemTags.SCEPTER_MATERIALS)
+                    .component(DataComponents.INTERACT_ANIMATION, new SwingAnimation(SwingAnimationType.MAGICALSCEPTER_SWIRL, SwingAnimation.DEFAULT.duration())));
     private static final Function<Item.Properties, Item.Properties> ARCANE_SCEPTER_SETTINGS = USABLE_SCEPTER_SETTINGS
             .andThen((settings) -> settings.component(DataComponents.USE_COOLDOWN,
                     new UseCooldown(0.5F, Optional.of(ModItemIds.ARCANE_SCEPTER.identifier()))));

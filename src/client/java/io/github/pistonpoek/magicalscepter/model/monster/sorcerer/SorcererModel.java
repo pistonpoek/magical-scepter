@@ -18,5 +18,10 @@ public class SorcererModel<S extends IllagerRenderState> extends IllagerModel<S>
     public void setupAnim(final S state) {
         super.setupAnim(state);
         getHat().visible = !state.isAggressive;
+
+        if (state.armPose == AbstractIllager.IllagerArmPose.NEUTRAL) {
+            AnimationUtils.bobArms(humanoid.rightArm, humanoid.leftArm, state.ageInTicks);
+            humanoid.setupAttackAnimation(state);
+        }
     }
 }
