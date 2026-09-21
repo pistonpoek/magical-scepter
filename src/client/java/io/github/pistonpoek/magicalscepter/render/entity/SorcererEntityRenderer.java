@@ -2,13 +2,13 @@ package io.github.pistonpoek.magicalscepter.render.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.pistonpoek.magicalscepter.entity.mob.SorcererEntity;
+import io.github.pistonpoek.magicalscepter.model.monster.sorcerer.SorcererModel;
 import io.github.pistonpoek.magicalscepter.render.entity.model.ModEntityModelLayers;
 import io.github.pistonpoek.magicalscepter.util.ModIdentifier;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.model.monster.illager.IllagerModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.IllagerRenderer;
 import net.minecraft.client.renderer.entity.layers.ItemInHandLayer;
 import net.minecraft.client.renderer.entity.state.IllagerRenderState;
@@ -19,8 +19,8 @@ import net.minecraft.resources.Identifier;
 public class SorcererEntityRenderer extends IllagerRenderer<SorcererEntity, IllagerRenderState> {
     private static final Identifier TEXTURE = ModIdentifier.of("textures/entity/illager/sorcerer.png");
 
-    public SorcererEntityRenderer(EntityRendererProvider.Context context) {
-        super(context, new IllagerModel<>(context.bakeLayer(ModEntityModelLayers.SORCERER)), 0.5F);
+    public SorcererEntityRenderer(final Context context) {
+        super(context, new SorcererModel<>(context.bakeLayer(ModEntityModelLayers.SORCERER)), 0.5F);
         this.addLayer(
                 new ItemInHandLayer<>(this) {
                     public void submit(
@@ -38,7 +38,6 @@ public class SorcererEntityRenderer extends IllagerRenderer<SorcererEntity, Illa
     @Override
     public void submit(IllagerRenderState renderState, PoseStack matrixStack,
             SubmitNodeCollector orderedRenderCommandQueue, CameraRenderState cameraRenderState) {
-        this.model.getHat().visible = !renderState.isAggressive;
         super.submit(renderState, matrixStack, orderedRenderCommandQueue, cameraRenderState);
     }
 
