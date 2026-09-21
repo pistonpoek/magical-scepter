@@ -47,6 +47,8 @@ loom {
             runDir "build/gametest"
         }
     }
+
+    accessWidenerPath = file("src/main/resources/${mod}.classtweaker")
 }
 
 wiki {
