@@ -15,8 +15,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 public class ModPlayPackets {
     public static final CustomPacketPayload.TypeAndCodec<?, AttackItemPayload> ATTACK_ITEM =
             registerClientToServerPayload(AttackItemPayload.ID, AttackItemPayload.CODEC);
-    public static final CustomPacketPayload.TypeAndCodec<?, SwingHandPayload> SWING_HAND =
-            registerServerToClientPayload(SwingHandPayload.ID, SwingHandPayload.CODEC);
 
     /**
      * Initialize the class for the static fields.

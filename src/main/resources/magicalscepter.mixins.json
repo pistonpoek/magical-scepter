@@ -7,7 +7,6 @@
         "EnchantmentMixin",
         "GhastEntityMixin",
         "ItemStackMixin",
-        "LivingEntityMixin",
         "ParrotEntityMixin",
         "PatrolEntityMixin",
         "RaiderEntityMixin",
