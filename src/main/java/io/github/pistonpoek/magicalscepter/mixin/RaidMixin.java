@@ -44,11 +44,11 @@ public abstract class RaidMixin {
     /**
      * Capture local variables at the entity creation during the spawning of a next wave.
      *
-     * @param world        Server world to create entity in.
+     * @param level        Server world to create entity in.
      * @param pos          Block position to spawn entity at.
      * @param callbackInfo Callback info to return values to the entity creation.
-     * @param wave         Integer that is the current wave indicator.
-     * @param count        Integer count of the amount of entities to spawn for the current type.
+     * @param groupNumber         Integer that is the current wave indicator.
+     * @param i        Integer count of the amount of entities to spawn for the current type.
      */
     @Inject(
             method = "spawnGroup",
@@ -58,19 +58,19 @@ public abstract class RaidMixin {
                     ordinal = 0
             )
     )
-    private void captureLocalVariables(ServerLevel world,
+    private void captureLocalVariables(ServerLevel level,
                                        BlockPos pos, CallbackInfo callbackInfo,
-                                       @Local(ordinal = 0) int wave, @Local(ordinal = 5) int count) {
-        this.magicalscepter$world = world;
-        this.magicalscepter$wave = wave;
-        this.magicalscepter$count = count;
+                                       @Local(name = "groupNumber") int groupNumber, @Local(name = "i") int i) {
+        this.magicalscepter$world = level;
+        this.magicalscepter$wave = groupNumber;
+        this.magicalscepter$count = i;
     }
 
     /**
      * Create a raider entity based on the current raider entity being created.
      *
      * @param instance Entity type of the raider entity currently being created.
-     * @param world World to create the raider entity in.
+     * @param level World to create the raider entity in.
      * @param reason Spawn reason for the raider entity.
      * @param <T> Type of raider entity currently being created.
      * @return Entity created based on the current raider entity being created.
@@ -83,24 +83,24 @@ public abstract class RaidMixin {
                     ordinal = 0
             )
     )
-    private <T extends Entity> T createRaiderEntity(EntityType<T> instance, Level world, EntitySpawnReason reason) {
+    private <T extends Entity> T createRaiderEntity(EntityType<T> instance, Level level, EntitySpawnReason reason) {
         int wave = this.magicalscepter$wave;
         int count = this.magicalscepter$count;
         if (instance.equals(EntityTypes.PILLAGER)) {
             if (wave == 4 && !this.shouldSpawnBonusGroup() && count == 0) {
-                magicalscepter$setOptionalSorcererRaiderEntity(world, reason);
+                magicalscepter$setOptionalSorcererRaiderEntity(level, reason);
                 return null;
             } else if (wave >= 5 && count == 0) {
-                magicalscepter$setSorcererRaiderEntity(world, reason);
+                magicalscepter$setSorcererRaiderEntity(level, reason);
                 return null;
             }
         }
         if (instance.equals(EntityTypes.VINDICATOR) && wave >= 5 && count == 0) {
-            magicalscepter$setOptionalSorcererRaiderEntity(world, reason);
+            magicalscepter$setOptionalSorcererRaiderEntity(level, reason);
             return null;
         }
         this.magicalscepter$raiderEntity = null;
-        return instance.create(world, reason);
+        return instance.create(level, reason);
     }
 
     /**
@@ -130,7 +130,7 @@ public abstract class RaidMixin {
     /**
      * Replace the current raider entity with the raider entity of this class, if it exists.
      *
-     * @param raiderEntity Raider entity to update with created raider entity.
+     * @param raider Raider entity to update with created raider entity.
      * @return Raider entity that is updated with a new raider entity, if it exists.
      */
     @ModifyVariable(
@@ -140,19 +140,19 @@ public abstract class RaidMixin {
             ),
             ordinal = 0
     )
-    private Raider createSorcererRaiderEntity(Raider raiderEntity) {
+    private Raider createSorcererRaiderEntity(Raider raider) {
         Raider newRaiderEntity = this.magicalscepter$raiderEntity;
         if (newRaiderEntity != null) {
             this.magicalscepter$raiderEntity = null;
             return newRaiderEntity;
         }
-        return raiderEntity;
+        return raider;
     }
 
     /**
      * Get the ravager passenger based on the current raider entity that is set to be passenger.
      *
-     * @param raiderEntity Raider entity set to be the ravager passenger.
+     * @param ridingRaider Raider entity set to be the ravager passenger.
      * @return Raider entity to be the ravager passenger.
      */
     @ModifyVariable(
@@ -162,7 +162,7 @@ public abstract class RaidMixin {
             ),
             ordinal = 1
     )
-    private Raider getRavagerPassenger(Raider raiderEntity) {
+    private Raider getRavagerPassenger(Raider ridingRaider) {
         int wave = this.magicalscepter$wave;
         int count = this.magicalscepter$count;
         ServerLevel world = magicalscepter$world;
