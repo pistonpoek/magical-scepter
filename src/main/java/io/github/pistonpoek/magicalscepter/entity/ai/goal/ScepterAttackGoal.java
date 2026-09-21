@@ -6,14 +6,16 @@ import io.github.pistonpoek.magicalscepter.item.MagicalScepterItem;
 import io.github.pistonpoek.magicalscepter.scepter.ScepterHelper;
 import io.github.pistonpoek.magicalscepter.spell.Spell;
 import io.github.pistonpoek.magicalscepter.util.LivingEntityHand;
-import java.util.EnumSet;
-import java.util.Optional;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
+
+import java.util.EnumSet;
+import java.util.Optional;
 
 /**
  * Entity attack goal for the use of a magical scepter,
@@ -75,7 +77,8 @@ public class ScepterAttackGoal<T extends Monster> extends Goal {
     public void start() {
         super.start();
         this.actor.setAggressive(true);
-        if (this.actor.getSensing().hasLineOfSight(this.actor.getTarget())) {
+        if (this.actor.getTarget() instanceof LivingEntity target &&
+                this.actor.getSensing().hasLineOfSight(target)) {
             this.targetSeeingTicker = 15;
         }
     }
@@ -137,6 +140,10 @@ public class ScepterAttackGoal<T extends Monster> extends Goal {
             ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, this.actor,
                     scepterStack, attack, InteractionHand.MAIN_HAND);
             this.actor.setItemInHand(hand, usedScepterStack);
+            SwingAnimation swingAnimation = attack ?
+                    scepterStack.getAttackAnimation() :
+                    scepterStack.getInteractAnimation();
+            this.actor.swing(InteractionHand.MAIN_HAND, swingAnimation);
         });
     }
 

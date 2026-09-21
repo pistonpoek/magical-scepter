@@ -135,7 +135,7 @@ public class SorcererEntity extends AbstractIllager {
     }
 
     @Override
-    public AbstractIllager.IllagerArmPose getArmPose() {
-        return this.isAggressive() ? AbstractIllager.IllagerArmPose.NEUTRAL : AbstractIllager.IllagerArmPose.CROSSED;
+    public IllagerArmPose getArmPose() {
+        return this.isAggressive() ? IllagerArmPose.NEUTRAL : IllagerArmPose.CROSSED;
     }
 }

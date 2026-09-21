@@ -83,7 +83,7 @@ public class MagicalScepterItem extends Item implements AttackItem {
 
         ItemStack usedScepterStack = MagicalScepterItem.castSpell(spell, user, itemStack, isAttack, hand);
 
-        return InteractionResult.CONSUME.heldItemTransformedTo(usedScepterStack);
+        return InteractionResult.SUCCESS.heldItemTransformedTo(usedScepterStack);
     }
 
     /**
@@ -102,10 +102,6 @@ public class MagicalScepterItem extends Item implements AttackItem {
         caster.makeSound(isAttack ?
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_ATTACK_SPELL :
                 ModSoundEvents.ITEM_MAGICAL_SCEPTER_CAST_PROTECT_SPELL);
-
-        SwingType swingType = isAttack ? SwingType.HIT : SwingType.PROTECT;
-        // TODO swing hand update.
-//        ((SwingHandLivingEntity) caster).magical_scepter$swingHand(hand, swingType);
 
         if (caster.level().isClientSide()) {
             return itemStack;

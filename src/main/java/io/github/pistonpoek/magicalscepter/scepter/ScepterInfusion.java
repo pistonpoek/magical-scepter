@@ -3,7 +3,6 @@ package io.github.pistonpoek.magicalscepter.scepter;
 import io.github.pistonpoek.magicalscepter.advancement.criterion.ModCriteria;
 import io.github.pistonpoek.magicalscepter.component.ScepterContentsComponent;
 import io.github.pistonpoek.magicalscepter.sound.ModSoundEvents;
-import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerLevel;
@@ -16,6 +15,8 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+
+import java.util.Optional;
 
 import static io.github.pistonpoek.magicalscepter.scepter.ScepterHelper.INFUSABLE_SCEPTER;
 
