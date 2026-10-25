@@ -67,7 +67,7 @@ public class ModChestLootProvider extends SimpleFabricLootTableSubProvider {
                         .pool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(ModItems.SCEPTER).setWeight(5))
                                 .add(LootItem.lootTableItem(ModItems.MAGICAL_SCEPTER).setWeight(2)
-                                        .apply(SetScepterLootFunction.builder(
+                                        .apply(SetScepterLootFunction.setScepter(
                                                 scepters().getOrThrow(Scepters.MAGICAL_KEY)
                                         ))
                                 )

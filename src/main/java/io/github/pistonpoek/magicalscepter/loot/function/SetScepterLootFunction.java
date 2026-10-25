@@ -52,7 +52,7 @@ public class SetScepterLootFunction extends LootItemConditionalFunction {
      * @param scepter Holder of scepter to set with the loot function.
      * @return Set scepter loot function with the specified scepter.
      */
-    public static LootItemConditionalFunction.Builder<?> builder(Holder<Scepter> scepter) {
+    public static LootItemConditionalFunction.Builder<?> setScepter(Holder<Scepter> scepter) {
         return simpleBuilder(conditions -> new SetScepterLootFunction(conditions, scepter));
     }
 }
