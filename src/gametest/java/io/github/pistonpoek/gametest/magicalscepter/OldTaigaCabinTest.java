@@ -79,10 +79,14 @@ public class OldTaigaCabinTest implements CustomTestMethodInvoker {
     @GameTest(structure="gametest:old_taiga_cabin/loot_with_command")
     public void lootWithCommand(GameTestHelper context, TestBlockChecker checker) {
         checker.start();
-        context.succeedIf(() -> checkLootItems(context));
+        context.succeedOnTickWhen(1, () -> checkLootItems(context));
     }
 
     private void checkLootItems(GameTestHelper context) {
+        checkLootItems(context, false);
+    }
+
+    private void checkLootItems(GameTestHelper context, Boolean withExplorerMap) {
         List<ItemEntity> itemEntities = context.getEntities(EntityTypes.ITEM);
         List<Item> items = itemEntities.stream().map(ItemEntity::getItem).map(ItemStack::getItem).toList();
 
@@ -107,9 +111,71 @@ public class OldTaigaCabinTest implements CustomTestMethodInvoker {
                 Component.nullToEmpty("Loot does not contain local food!"));
 
         context.assertTrue(items.contains(Items.EMERALD) ||
-                        items.contains(Items.MAP) ||
+                        (!withExplorerMap || containsOldTaigaCabinLootExplorerMap(items)) ||
                         items.contains(Items.COAL),
                 Component.nullToEmpty("Loot does not contain exploration treasure!"));
+    }
+
+    private static Boolean containsOldTaigaCabinLootExplorerMap(List<Item> items) {
+        return items.contains(Items.WOODLAND_MANSION_MAP) ||
+               items.contains(Items.BURIED_TRIAL_CHAMBERS_MAP) ||
+               items.contains(Items.OCEAN_MONUMENT_MAP);
+    }
+
+    // TODO clean up manual test, make explorer map check more detailed.
+    @GameTest(structure="gametest:old_taiga_cabin/generate_with_structure_block", manualOnly = true)
+    public void generateWithStructureBlockWithMapLoot(GameTestHelper context, TestBlockChecker checker) {
+        checker.start();
+        context.assertEntityPresent(ModEntityTypes.SORCERER, BlockPos.containing(2, 1, 3));
+        context.assertBlockPresent(Blocks.CRAFTING_TABLE, BlockPos.containing(3, 1, 2));
+        context.assertBlockPresent(Blocks.CHEST, BlockPos.containing(4, 1, 2));
+        context.assertBlockPresent(Blocks.POTTED_BROWN_MUSHROOM, BlockPos.containing(1, 2, 3));
+        context.assertBlockPresent(Blocks.COBBLESTONE, BlockPos.containing(4, 0, 5));
+        context.assertBlockPresent(Blocks.SPRUCE_LOG, BlockPos.containing(2, 5, 4));
+        context.assertBlockPresent(Blocks.SPRUCE_PLANKS, BlockPos.containing(5, 2, 3));
+        context.assertBlockPresent(Blocks.SPRUCE_FENCE, BlockPos.containing(3, 4, 1));
+        context.assertBlockPresent(Blocks.SPRUCE_SLAB, BlockPos.containing(3, 3, 7));
+        context.assertBlockPresent(Blocks.SPRUCE_FENCE, BlockPos.containing(2, 2, 6));
+        context.assertBlockPresent(Blocks.AIR, BlockPos.containing(4, 2, 6));
+
+        context.destroyBlock(BlockPos.containing(4, 1, 2));
+        checkLootItems(context, true);
+        context.succeed();
+    }
+
+    @GameTest(structure="gametest:old_taiga_cabin/generate_with_structure_block_mirrored", manualOnly = true)
+    public void generateWithStructureBlockMirroredWithMapLoot(GameTestHelper context, TestBlockChecker checker) {
+        checker.start();
+        context.assertEntityPresent(ModEntityTypes.SORCERER, BlockPos.containing(4, 1, 3));
+        context.assertBlockPresent(Blocks.CRAFTING_TABLE, BlockPos.containing(3, 1, 2));
+        context.assertBlockPresent(Blocks.CHEST, BlockPos.containing(2, 1, 2));
+        context.assertBlockPresent(Blocks.POTTED_BROWN_MUSHROOM, BlockPos.containing(5, 2, 3));
+        context.assertBlockPresent(Blocks.COBBLESTONE, BlockPos.containing(2, 0, 5));
+        context.assertBlockPresent(Blocks.SPRUCE_LOG, BlockPos.containing(4, 5, 4));
+        context.assertBlockPresent(Blocks.SPRUCE_PLANKS, BlockPos.containing(1, 2, 3));
+        context.assertBlockPresent(Blocks.SPRUCE_FENCE, BlockPos.containing(3, 4, 1));
+        context.assertBlockPresent(Blocks.SPRUCE_SLAB, BlockPos.containing(3, 3, 7));
+        context.assertBlockPresent(Blocks.SPRUCE_FENCE, BlockPos.containing(4, 2, 6));
+        context.assertBlockPresent(Blocks.AIR, BlockPos.containing(2, 2, 6));
+
+        context.destroyBlock(BlockPos.containing(2, 1, 2));
+        checkLootItems(context, true);
+        context.succeed();
+    }
+
+    @GameTest(structure="gametest:old_taiga_cabin/loot_with_chest", manualOnly = true)
+    public void lootWithChestWithMapLoot(GameTestHelper context, TestBlockChecker checker) {
+        Player player = context.makeMockPlayer(GameType.SURVIVAL);
+        context.useBlock(BlockPos.containing(0, 1, 0), player);
+        context.destroyBlock(BlockPos.containing(0, 1, 0));
+        checkLootItems(context, true);
+        context.succeed();
+    }
+
+    @GameTest(structure="gametest:old_taiga_cabin/loot_with_command", manualOnly = true)
+    public void lootWithCommandWithMapLoot(GameTestHelper context, TestBlockChecker checker) {
+        checker.start();
+        context.succeedOnTickWhen(1, () -> checkLootItems(context, true));
     }
 }
 
