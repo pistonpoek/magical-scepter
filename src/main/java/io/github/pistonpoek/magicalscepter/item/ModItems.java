@@ -21,6 +21,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.MapDecorations;
 import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.component.UseCooldown;
 
@@ -57,6 +58,8 @@ public class ModItems {
     public static final Item MAGICAL_SCEPTER = register(ModItemIds.MAGICAL_SCEPTER, MagicalScepterItem::new,
             USABLE_SCEPTER_SETTINGS.apply(new Item.Properties()
                     .component(ModDataComponentTypes.SCEPTER_CONTENTS, ScepterContentsComponent.DEFAULT)));
+
+    public static final Item OLD_TAIGA_CABIN_MAP = registerItem(ModItemIds.OLD_TAIGA_CABIN_MAP, MapItem::new, mapProperties());
 
     public static final Item SORCERER_SPAWN_EGG = register(ModItemIds.SORCERER_SPAWN_EGG, SpawnEggItem::new,
             new Item.Properties().spawnEgg(ModEntityTypes.SORCERER));
@@ -182,5 +185,14 @@ public class ModItems {
         }
 
         return Registry.register(BuiltInRegistries.ITEM, key, item);
+    }
+
+    /**
+     * Get default map item properties.
+     *
+     * @return Item properties that are the default for map items.
+     */
+    private static Item.Properties mapProperties() {
+        return new Item.Properties().component(DataComponents.MAP_DECORATIONS, MapDecorations.EMPTY);
     }
 }

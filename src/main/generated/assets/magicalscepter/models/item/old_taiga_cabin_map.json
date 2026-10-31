@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "magicalscepter:item/old_taiga_cabin_map"
+  }
+}

@@ -27,7 +27,7 @@ public class ModItemTagProvider extends VanillaItemTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider arg) {
+    protected void addTags(HolderLookup.Provider registries) {
         this.tag(ModItemTags.SORCERER_PREFERRED_WEAPONS)
                 .add(ModItemIds.SCEPTER)
                 .add(ModItemIds.MAGICAL_SCEPTER);
@@ -52,5 +52,8 @@ public class ModItemTagProvider extends VanillaItemTagsProvider {
 
         this.tag(ItemTags.VANISHING_ENCHANTABLE)
                 .addTag(ModItemTags.SCEPTERS);
+
+        this.tag(ItemTags.CLONABLE_MAPS)
+                .add(ModItemIds.OLD_TAIGA_CABIN_MAP);
     }
 }

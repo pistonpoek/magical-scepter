@@ -51,6 +51,7 @@ public class ModModelProvider extends FabricModelProvider {
             registerScepter(scepterItemModelGenerator, ModItems.MAGICAL_SCEPTER, HANDHELD_SCEPTER);
         }
 
+        itemModelGenerator.generateFlatItem(ModItems.OLD_TAIGA_CABIN_MAP, ModelTemplates.FLAT_ITEM);
         itemModelGenerator.generateFlatItem(ModItems.SORCERER_SPAWN_EGG, ModelTemplates.FLAT_ITEM);
     }
 

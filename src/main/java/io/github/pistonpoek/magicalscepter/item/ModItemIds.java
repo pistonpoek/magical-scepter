@@ -18,6 +18,8 @@ public class ModItemIds {
     public static final ResourceKey<Item> CHARGED_ARCANE_SCEPTER = create("charged_arcane_scepter");
     public static final ResourceKey<Item> MAGICAL_SCEPTER = create("magical_scepter");
 
+    public static final ResourceKey<Item> OLD_TAIGA_CABIN_MAP = create("old_taiga_cabin_map");
+
     public static final ResourceKey<Item> SORCERER_SPAWN_EGG = createSpawnEgg(ModEntityTypeIds.SORCERER);
 
     /**

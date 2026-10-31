@@ -7,6 +7,7 @@ import io.github.pistonpoek.magicalscepter.enchantment.ModEnchantmentEffectCompo
 import io.github.pistonpoek.magicalscepter.entity.ModEntityTypes;
 import io.github.pistonpoek.magicalscepter.entity.effect.ModStatusEffects;
 import io.github.pistonpoek.magicalscepter.item.ModItems;
+import io.github.pistonpoek.magicalscepter.item.map.ModMapDecorationTypes;
 import io.github.pistonpoek.magicalscepter.loot.function.ModLootFunctionTypes;
 import io.github.pistonpoek.magicalscepter.network.packet.ModPlayPackets;
 import io.github.pistonpoek.magicalscepter.particle.ModParticleTypes;
@@ -36,6 +37,7 @@ public class MagicalScepter implements ModInitializer {
     public void onInitialize() {
         ModRegistries.init();
         ModItems.init();
+        ModMapDecorationTypes.init();
         ModRecipeSerializer.init();
         ModStatusEffects.init();
         ModDataComponentTypes.init();

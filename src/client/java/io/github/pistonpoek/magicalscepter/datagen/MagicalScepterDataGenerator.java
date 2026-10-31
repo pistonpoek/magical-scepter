@@ -47,6 +47,7 @@ public class MagicalScepterDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(ModEntityTypeTagProvider::new);
         pack.addProvider(ModGameEventTagProvider::new);
         pack.addProvider(ScepterTagProvider::new);
+        pack.addProvider(ModStructureTagProvider::new);
 
         pack.addProvider(ModAdvancementProvider::new);
         pack.addProvider(ModLanguageProvider::new);

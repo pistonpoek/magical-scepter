@@ -89,6 +89,7 @@ public class ModLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add(ModItems.CHARGED_ARCANE_SCEPTER, "Charged Arcane Scepter");
         translationBuilder.add(ModItems.SCEPTER, "Scepter");
         translationBuilder.add(ModItems.MAGICAL_SCEPTER, "Magical Scepter");
+        translationBuilder.add(ModItems.OLD_TAIGA_CABIN_MAP, "Old Taiga Cabin Map");
         translationBuilder.add(ModItems.SORCERER_SPAWN_EGG, "Sorcerer Spawn Egg");
 
         // Scepter
